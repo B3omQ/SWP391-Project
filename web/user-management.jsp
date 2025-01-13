@@ -413,7 +413,7 @@
                    <div class="row">
     <div class="col-12 mt-4">
 
-<form action="<%= request.getContextPath() %>/userManager" method="POST">
+<form action="<%= request.getContextPath() %>/userManager" method="get">
             <div class="table-responsive bg-white shadow rounded">
                 <table class="table table-bordered table-hover">
                     <thead class="thead-dark">
@@ -430,14 +430,14 @@
                     </thead>
                     <tbody>
                 
-                        <c:if test="${empty userList}">
+                        <c:if test="${empty accounts}">
                             <tr>
                                 <td colspan="8" class="text-center">No users available.</td>
                             </tr>
                         </c:if>
 
                        
-                        <c:forEach var="account" items="${userList}">
+                        <c:forEach var="account" items="${accounts}">
                             <tr>
                                 <td>${account.id}</td>
                                 <td>${account.fullName}</td>
