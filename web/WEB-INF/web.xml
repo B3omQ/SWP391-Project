@@ -7,13 +7,12 @@
     </servlet>
     <servlet>
         <servlet-name>AccountManagement</servlet-name>
-        <servlet-class>Controller.UserManager</servlet-class>
+        <servlet-class>Controller.UserManagement</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Register</servlet-name>
         <url-pattern>/register</url-pattern>
     </servlet-mapping>
-
     <servlet>
         <servlet-name>Login</servlet-name>
         <servlet-class>Controller.Login</servlet-class>
@@ -38,5 +37,8 @@
         <servlet-name>ChangePassword</servlet-name>
         <url-pattern>/changePassword</url-pattern>
     </servlet-mapping>
-     
+    <servlet-mapping>
+        <servlet-name>AccountManagement</servlet-name>
+        <url-pattern>/userManager</url-pattern>
+    </servlet-mapping>
 </web-app>
