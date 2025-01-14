@@ -78,6 +78,8 @@ public class ChangePassword extends HttpServlet {
         } 
    
         else {
+                        String encodedNewPassword = accountValidation.hashPassword(newPassword);
+
             accountDAO.UpdatePassword(newPassword, fullName, phoneNumber);
             request.setAttribute("msg2", "Password changed successfully.");
         }

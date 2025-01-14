@@ -1,6 +1,9 @@
 package Validation;
 
 import java.util.regex.Pattern;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 
 public class AccountValidation {
 
@@ -11,11 +14,11 @@ public class AccountValidation {
         if (role.equals("staff")) {
             return "staff";
         }
-        return "admin"; 
+        return "admin";
     }
 
     public boolean checkMatching(String password, String cPassword) {
-        return password.equals(cPassword); 
+        return password.equals(cPassword);
     }
 
     public boolean checkHashOfPassword(String password) {
@@ -32,5 +35,20 @@ public class AccountValidation {
         boolean hasSpecialChar = Pattern.compile("[@#$%^&+=!~(){}\\[\\]\\-]").matcher(password).find();
 
         return hasUppercase && hasLowercase && hasDigit && hasSpecialChar;
+    }
+
+    public String hashPassword(String password) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] hash = md.digest(password.getBytes());
+            return Base64.getEncoder().encodeToString(hash);
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("Error");
+        }
+    }
+
+    public boolean checkPassword(String password, String hashedPassword) {
+        String hashedInput = hashPassword(password);
+        return hashedInput.equals(hashedPassword);
     }
 }

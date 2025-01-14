@@ -7,6 +7,8 @@
     <title>Sign Up</title>
     <link href="<%= request.getContextPath() %>/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="<%= request.getContextPath() %>/assets/css/style.min.css" rel="stylesheet" type="text/css" />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
 </head>
 <body>
     <section class="bg-half-150 d-table w-100 bg-light">
@@ -112,7 +114,7 @@
                                 </div>
                             </form>
 
-            >
+            
                             <div class="text-center mt-3">
                                 <p>Already have an account? 
                                     <a href="<%= request.getContextPath() %>/login.jsp">Sign in</a>
