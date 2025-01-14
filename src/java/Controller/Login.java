@@ -21,9 +21,10 @@ public class Login extends HttpServlet {
         String email = request.getParameter("email");
         String passWord = request.getParameter("password");
         String rememberMe = request.getParameter("remember");
+        String encodedPassword = av.hashPassword(passWord);
 
      
-        Account account = d.Login(email, passWord);  
+        Account account = d.Login(email, encodedPassword);  
 
         if (account != null) {
        
