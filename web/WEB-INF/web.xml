@@ -9,6 +9,18 @@
         <servlet-name>AccountManagement</servlet-name>
         <servlet-class>Controller.UserManagement</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ProfileSetting</servlet-name>
+        <servlet-class>Controller.ProfileSetting</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateProfileServlet</servlet-name>
+        <servlet-class>Controller.UpdateProfileServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Logout</servlet-name>
+        <servlet-class>Controller.Logout</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Register</servlet-name>
         <url-pattern>/register</url-pattern>
@@ -40,5 +52,13 @@
     <servlet-mapping>
         <servlet-name>AccountManagement</servlet-name>
         <url-pattern>/userManager</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateProfileServlet</servlet-name>
+        <url-pattern>/updateProfileServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Logout</servlet-name>
+        <url-pattern>/Logout</url-pattern>
     </servlet-mapping>
 </web-app>

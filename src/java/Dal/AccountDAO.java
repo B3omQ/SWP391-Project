@@ -82,6 +82,19 @@ public class AccountDAO extends DBContext {
         e.printStackTrace();
     }
 }
+ public boolean updateAccountProfile(int id, String fullName, String phoneNumber, String address) {
+    String sql = "UPDATE [dbo].[Account] SET full_name = ?, phone_number = ?, address = ? WHERE id = ?";
+    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        stmt.setString(1, fullName);
+        stmt.setString(2, phoneNumber);
+        stmt.setString(3, address);
+        stmt.setInt(4, id);
+        return stmt.executeUpdate() > 0;
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false;
+}
 
       public Account getAccountByNameAndPhone(String name, String sdt) {
         String sql = "SELECT * FROM [dbo].[Account] a JOIN [dbo].[Role] r ON a.role_id = r.role_id WHERE a.Full_Name = ? AND a.Phone_Number = ?";

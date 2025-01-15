@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Doctris - Doctor Appointment Booking System</title>
+    <title>SmartBanking</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Premium Bootstrap 4 Landing Page Template" />
     <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health" />
@@ -94,7 +94,7 @@
                                 alt=""></button>
                         <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3"
                             style="min-width: 200px;">
-                            <a class="dropdown-item d-flex align-items-center text-dark" href="doctor-profile.jsp">
+                            <a class="dropdown-item d-flex align-items-center text-dark" href="account-profile.jsp">
                                 <img src="<%= request.getContextPath() %>/assets/images/doctors/01.jpg"
                                     class="avatar avatar-md-sm rounded-circle border shadow" alt="">
                                 <div class="flex-1 ms-2">
@@ -105,13 +105,17 @@
                             <a class="dropdown-item text-dark" href="doctor-dashboard.jsp"><span
                                     class="mb-0 d-inline-block me-1"><i
                                         class="uil uil-dashboard align-middle h6"></i></span> Dashboard</a>
-                            <a class="dropdown-item text-dark" href="doctor-profile-setting.jsp"><span
+                            <a class="dropdown-item text-dark" href="account-profile.jsp"><span
                                     class="mb-0 d-inline-block me-1"><i
                                         class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
                             <div class="dropdown-divider border-top"></div>
-                            <a class="dropdown-item text-dark" href="login.jsp"><span
-                                    class="mb-0 d-inline-block me-1"><i
-                                        class="uil uil-sign-out-alt align-middle h6"></i></span> Logout</a>
+                            <form action="Logout" method="POST" style="display: inline;">
+    <button type="submit" class="dropdown-item text-dark">
+        <span class="mb-0 d-inline-block me-1">
+            <i class="uil uil-sign-out-alt align-middle h6"></i>
+        </span> Logout
+    </button>
+</form>
                         </div>
                     </div>
                 </li>
@@ -145,7 +149,7 @@
                                     <li><a href="patient-review.jsp" class="sub-menu-item">Reviews</a></li>
                                     <li><a href="doctor-messages.jsp" class="sub-menu-item">Messages</a></li>
                                     <li><a href="doctor-profile.jsp" class="sub-menu-item">Profile</a></li>
-                                    <li><a href="doctor-profile-setting.jsp" class="sub-menu-item">Profile Settings</a>
+                                    <li><a href="account-profile.jsp" class="sub-menu-item">Profile Settings</a>
                                     </li>
                                     <li><a href="doctor-chat.jsp" class="sub-menu-item">Chat</a></li>
                                     <li><a href="login.jsp" class="sub-menu-item">Login</a></li>
