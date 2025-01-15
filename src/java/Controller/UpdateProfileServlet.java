@@ -5,6 +5,7 @@
 
 package Controller;
 
+import Dal.AccountDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,10 +15,10 @@ import jakarta.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author dai
+ * @author emkob
  */
-public class Logout extends HttpServlet {
-   
+public class UpdateProfileServlet extends HttpServlet {
+     private AccountDAO d = new AccountDAO();  
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -29,13 +30,14 @@ public class Logout extends HttpServlet {
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LogoutController</title>");  
+            out.println("<title>Servlet UpdateProfileServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet LogoutController at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet UpdateProfileServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -52,9 +54,7 @@ public class Logout extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        request.getSession().invalidate();
-        
-        response.sendRedirect("login.jsp");
+        processRequest(request, response);
     } 
 
     /** 
@@ -67,8 +67,22 @@ public class Logout extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        doGet(request, response);
+         int id = Integer.parseInt(request.getParameter("id"));
+        String fullName = request.getParameter("fullName");
+        String phoneNumber = request.getParameter("phoneNumber");
+        String address = request.getParameter("address");
+
+        boolean updateSuccess = d.updateAccountProfile(id, fullName, phoneNumber, address);
+
+        if (updateSuccess) {
+            request.setAttribute("message", "Profile updated successfully!");
+        } else {
+            request.setAttribute("message", "Failed to update profile.");
+        }
+
+        request.getRequestDispatcher("account-profile.jsp").forward(request, response);
     }
+    
 
     /** 
      * Returns a short description of the servlet.
