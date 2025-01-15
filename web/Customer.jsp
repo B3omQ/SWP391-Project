@@ -27,6 +27,13 @@
 </head>
 
 <body>
+      <%
+ 
+        if (session.getAttribute("account") == null) {
+ 
+            response.sendRedirect("login.jsp");
+            return; 
+        } %>
     <!-- Loader -->
     <div id="preloader">
         <div id="status">
