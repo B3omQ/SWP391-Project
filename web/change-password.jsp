@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>Account Recovery - Secure Password Reset</title>
+    <title>SmartBanking</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Account Recovery Page for Secure System" />
     <meta name="keywords" content="Recovery, Reset, Password, Security, Account" />

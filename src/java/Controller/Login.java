@@ -21,12 +21,16 @@ public class Login extends HttpServlet {
         String email = request.getParameter("email");
         String passWord = request.getParameter("password");
         String rememberMe = request.getParameter("remember");
+        String encodedPassword = av.hashPassword(passWord);
 
      
-        Account account = d.Login(email, passWord);  
+        Account account = d.Login(email, encodedPassword);  
 
         if (account != null) {
-       
+       if (request.getSession().getAttribute("account") != null) {
+        response.sendRedirect("index.jsp"); 
+        return;
+    }
             if (rememberMe != null) {
                 Cookie emailCookie = new Cookie("email", email);
                 emailCookie.setMaxAge(60 * 60 * 24 * 7);  
