@@ -400,8 +400,7 @@
 
                                             <div class="col-sm-12 col-md-7 mt-4 mt-sm-0">
                                                 <div class="d-grid">
-                                                    <a href="#" class="btn btn-primary" data-bs-toggle="modal"
-                                                       data-bs-target="#appointmentform">Appointment</a>
+                                                    <a href="addUser.jsp" class="btn btn-primary">Add</a>
                                                 </div>
                                             </div><!--end col-->
                                         </div><!--end row-->
