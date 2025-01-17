@@ -71,6 +71,24 @@ public class AccountDAO extends DBContext {
         return false;
     }
 
+    public void addUser(String fullName, String passWord, String gender, String phoneNumber,
+            String address, String email, Role role) {
+        String sql = "INSERT INTO [dbo].[Account] ([Full_Name], [Password], [Gender], [Phone_Number], [Address], [Email], [Role_ID]) "
+                + "VALUES (?, ?, ?, ?, ?, ?, (select role_id from Role where role_name = ?))";
+        try (PreparedStatement p = connection.prepareStatement(sql)) {
+            p.setString(1, fullName);
+            p.setString(2, passWord);
+            p.setString(3, gender);
+            p.setString(4, phoneNumber);
+            p.setString(5, address);
+            p.setString(6, email);
+            p.setString(7, role.getRoleName());
+            p.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
     public Account getAccountById(int id) {
         String sql = "SELECT * FROM Account a JOIN Role r ON a.role_id = r.role_id WHERE id = ?";
 
