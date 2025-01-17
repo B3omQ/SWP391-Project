@@ -56,7 +56,7 @@
 
                 <ul class="sidebar-menu pt-3">
                     <li><a href="index.html"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
-                    <li><a href="user-management.jsp"><i
+                    <li><a href="<%= request.getContextPath() %>/userManager"><i
                                 class="uil uil-stethoscope me-2 d-inline-block"></i>Account Management</a></li>
 
                     <li class="sidebar-dropdown">
