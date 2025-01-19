@@ -122,6 +122,31 @@ public class AccountDAO extends DBContext {
         }
         return null;  
 }
+    public Account getAccountByEmail(String email) {
+    String sql = "SELECT * FROM [dbo].[Account] a JOIN [dbo].[Role] r ON a.role_id = r.role_id WHERE a.email = ?";
+    try (PreparedStatement p = connection.prepareStatement(sql)) {
+        p.setString(1, email);
+        try (ResultSet rs = p.executeQuery()) {
+            if (rs.next()) {
+                Role role = new Role(rs.getInt("role_id"), rs.getString("role_name"));
+                return new Account(
+                    rs.getInt("id"), 
+                    rs.getString("email"), 
+                    rs.getString("password"), 
+                    rs.getString("full_name"), 
+                    rs.getString("gender"),
+                    rs.getString("phone_number"), 
+                    rs.getString("address"),
+                    role 
+                );
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return null;
+}
+
      public List<Account> getAllAccounts() {
         List<Account> accounts = new ArrayList<>();
         String sql = "SELECT * FROM Account a JOIN Role r ON a.role_id = r.role_id";
@@ -147,5 +172,47 @@ public class AccountDAO extends DBContext {
         }
         return accounts;
     }
+public Account getAccountByID(int id) {
+    String sql = "SELECT a.id, a.email, a.password, a.full_name, a.gender, "
+               + "a.phone_number, a.address, r.role_id, r.role_name "
+               + "FROM Account a "
+               + "JOIN Role r ON a.role_id = r.role_id "
+               + "WHERE a.id = ?";
+
+    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        ps.setInt(1, id);
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                Role role = new Role(rs.getInt("role_id"), rs.getString("role_name"));
+                return new Account(
+                        rs.getInt("id"),
+                        rs.getString("email"),
+                        rs.getString("password"),
+                        rs.getString("full_name"),
+                        rs.getString("gender"),
+                        rs.getString("phone_number"),
+                        rs.getString("address"),
+                        role
+                );
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return null;
+}
+public boolean updatePasswordByEmail(String email, String password) {
+    String sql = "UPDATE Account SET password = ? WHERE email = ?";
+
+    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        ps.setString(1, password);
+        ps.setString(2, email);
+        int rowsAffected = ps.executeUpdate();
+        return rowsAffected > 0;
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false;
+}
 
 }
