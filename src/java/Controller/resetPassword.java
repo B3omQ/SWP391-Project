@@ -9,6 +9,7 @@ import Dal.AccountDAO;
 import Dal.DAOTokenForget;
 import Model.Account;
 import Model.TokenForgetPassword;
+import Validation.AccountValidation;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -109,49 +110,67 @@ throws ServletException, IOException {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        String confirmPassword = request.getParameter("confirm_password");
-        //validate password...
-        if(!password.equals(confirmPassword)) {
-            request.setAttribute("mess", "confirm password must same password");
-            request.setAttribute("email", email);
-            request.getRequestDispatcher("resetPassword.jsp").forward(request, response);
-            return;
-        }
-        HttpSession session = request.getSession();
-        String tokenStr = (String) session.getAttribute("token");
-        TokenForgetPassword tokenForgetPassword = DAOToken.getTokenPassword(tokenStr);
-        //check token is valid, of time, of used
-        resetService service = new resetService();
-        if (tokenForgetPassword == null) {
-            request.setAttribute("mess", "token invalid");
-            request.getRequestDispatcher("requestPassword.jsp").forward(request, response);
-            return;
-        }
-        if (tokenForgetPassword.isIsUsed()) {
-            request.setAttribute("mess", "token is used");
-            request.getRequestDispatcher("requestPassword.jsp").forward(request, response);
-            return;
-        }
-        if (service.isExpireTime(tokenForgetPassword.getExpiryTime())) {
-            request.setAttribute("mess", "token is expiry time");
-            request.getRequestDispatcher("requestPassword.jsp").forward(request, response);
-            return;
-        }
+protected void doPost(HttpServletRequest request, HttpServletResponse response)
+throws ServletException, IOException {
+    String email = request.getParameter("email");
+    String password = request.getParameter("password");
+    String confirmPassword = request.getParameter("confirm_password");
 
-        //update is used of token
-        tokenForgetPassword.setToken(tokenStr);
-        tokenForgetPassword.setIsUsed(true);
+    AccountValidation validator = new AccountValidation();
 
-       DAOAccount.updatePasswordByEmail(email, password);
-        DAOToken.updateStatus(tokenForgetPassword);
-
-        //save user in session and redirect to home
-        request.getRequestDispatcher("index.html").forward(request, response);
+    // Validate password complexity
+    if (!validator.checkHashOfPassword(password)) {
+        request.setAttribute("mess", "Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and a special character.");
+        request.setAttribute("email", email);
+        request.getRequestDispatcher("resetPassword.jsp").forward(request, response);
+        return;
     }
+
+    // Ensure passwords match
+    if (!password.equals(confirmPassword)) {
+        request.setAttribute("mess", "Confirmation password does not match.");
+        request.setAttribute("email", email);
+        request.getRequestDispatcher("resetPassword.jsp").forward(request, response);
+        return;
+    }
+
+    HttpSession session = request.getSession();
+    String tokenStr = (String) session.getAttribute("token");
+    TokenForgetPassword tokenForgetPassword = DAOToken.getTokenPassword(tokenStr);
+
+    // Validate the token
+    resetService service = new resetService();
+    if (tokenForgetPassword == null) {
+        request.setAttribute("mess", "Invalid token.");
+        request.getRequestDispatcher("requestPassword.jsp").forward(request, response);
+        return;
+    }
+    if (tokenForgetPassword.isIsUsed()) {
+        request.setAttribute("mess", "Token has already been used.");
+        request.getRequestDispatcher("requestPassword.jsp").forward(request, response);
+        return;
+    }
+    if (service.isExpireTime(tokenForgetPassword.getExpiryTime())) {
+        request.setAttribute("mess", "Token has expired.");
+        request.getRequestDispatcher("requestPassword.jsp").forward(request, response);
+        return;
+    }
+
+    // Hash the password before saving to the database
+    String hashedPassword = validator.hashPassword(password);
+
+    // Update the new password in the database
+    DAOAccount.updatePasswordByEmail(email, hashedPassword);
+
+    // Mark the token as used
+    tokenForgetPassword.setIsUsed(true);
+    DAOToken.updateStatus(tokenForgetPassword);
+
+    // Redirect to the login page
+     request.setAttribute("success", "Password reset successfully!");
+    request.getRequestDispatcher("index.html").forward(request, response);
+}
+
     /** 
      * Returns a short description of the servlet.
      * @return a String containing servlet description
