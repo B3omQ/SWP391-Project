@@ -66,10 +66,13 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
-                                        <div class="mb-3">
-                                            <label class="form-label">Password <span class="text-danger">*</span></label>
-                                            <input type="password" class="form-control" placeholder="Password" name="password" required>
-                                        </div>
+                                      <div class="mb-3 position-relative">
+    <label class="form-label">Password <span class="text-danger">*</span></label>
+    <input type="password" class="form-control" placeholder="Password" name="password" id="password" required>
+   <span class="position-absolute top-50 end-0 translate-middle-y pe-3 cursor-pointer" onclick="togglePassword()" style="padding-top: 30px;">
+    <i id="togglePasswordIcon" class="mdi mdi-eye-outline"></i>
+</span>
+</div
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="d-flex justify-content-between">
@@ -79,7 +82,7 @@
                                                     <label class="form-check-label" for="remember-check">Remember me</label>
                                                 </div>
                                             </div>
-                                            <a href="<%= request.getContextPath() %>/forgot-password.jsp" class="text-dark h6 mb-0">Forgot password?</a>
+                                            <a href="<%= request.getContextPath() %>/requestPassword" class="text-dark h6 mb-0">Forgot password?</a>
                                         </div>
                                     </div>
                                     <div class="col-lg-12 mb-0">
@@ -107,4 +110,20 @@
     <script src="<%= request.getContextPath() %>/assets/js/feather.min.js"></script>
     <script src="<%= request.getContextPath() %>/assets/js/app.js"></script>
 </body>
+<script>
+    function togglePassword() {
+        const passwordField = document.getElementById('password');
+        const toggleIcon = document.getElementById('togglePasswordIcon');
+        if (passwordField.type === 'password') {
+            passwordField.type = 'text';
+            toggleIcon.classList.remove('mdi-eye-outline');
+            toggleIcon.classList.add('mdi-eye-off-outline');
+        } else {
+            passwordField.type = 'password';
+            toggleIcon.classList.remove('mdi-eye-off-outline');
+            toggleIcon.classList.add('mdi-eye-outline');
+        }
+    }
+</script>
+
 </html>
