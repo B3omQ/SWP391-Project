@@ -58,7 +58,7 @@
                         <li><a href="index.html"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
                         <li><a href="<%= request.getContextPath() %>/staffManagement"><i
                                     class="uil uil-stethoscope me-2 d-inline-block"></i>Staff Management</a></li>
-                        <li><a href="<%= request.getContextPath() %>/customerManager"><i
+                        <li><a href="<%= request.getContextPath() %>/customerManagement"><i
                                     class="uil uil-stethoscope me-2 d-inline-block"></i>Customer Management</a></li>             
 
                         <li class="sidebar-dropdown">

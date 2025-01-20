@@ -58,7 +58,7 @@
                         <li><a href="index.html"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
                         <li><a href="<%= request.getContextPath() %>/staffManagement"><i
                                     class="uil uil-stethoscope me-2 d-inline-block"></i>Staff Management</a></li>
-                        <li><a href="<%= request.getContextPath() %>/customerManager"><i
+                        <li><a href="<%= request.getContextPath() %>/customerManagement"><i
                                     class="uil uil-stethoscope me-2 d-inline-block"></i>Customer Management</a></li>
 
                         <li class="sidebar-dropdown">
@@ -414,39 +414,39 @@
                         <div class="row">
                             <div class="col-12 mt-4">
 
-                                <form action="<%= request.getContextPath() %>/userManager" method="get">
+                                <form action="<%= request.getContextPath() %>/customerManager" method="get">
                                     <div class="table-responsive bg-white shadow rounded">
                                         <table class="table table-bordered table-hover">
                                             <thead class="thead-dark">
                                                 <tr>
                                                     <th>#</th>
+                                                    <th>Username</th>
                                                     <th>Name</th>
-                                                    <th>Email</th>
-                                                    <th>Gender</th>
+                                                    <th>Email</th>                                                  
                                                     <th>Phone</th>
                                                     <th>Address</th>
-                                                    <th>Role</th>
+                                                    <th>Wallet</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
 
-                                                <c:if test="${empty accounts}">
+                                                <c:if test="${empty customers}">
                                                     <tr>
-                                                        <td colspan="8" class="text-center">No users available.</td>
+                                                        <td colspan="8" class="text-center">No customers available.</td>
                                                     </tr>
                                                 </c:if>
 
 
-                                                <c:forEach var="account" items="${accounts}">
+                                                <c:forEach var="customer" items="${customers}">
                                                     <tr>
-                                                        <td>${account.id}</td>
-                                                        <td>${account.fullName}</td>
-                                                        <td>${account.email}</td>
-                                                        <td>${account.gender}</td>
-                                                        <td>${account.phoneNumber}</td>
-                                                        <td>${account.address}</td>
-                                                        <td>${account.role != null ? account.role.roleName : 'No Role'}</td>
+                                                        <td>${customer.id}</td>
+                                                        <td>${customer.username}</td>
+                                                        <td>${customer.firstName} ${customer.lastName}</td>
+                                                        <td>${customer.email}</td>
+                                                        <td>${customer.phone}</td>                                                       
+                                                        <td>${customer.address}</td>
+                                                        <td>${customer.wallet}</td>                                                        
                                                         <td>                                                           
                                                             <button type="button" class="btn btn-warning btn-sm" onclick="editUser('${account.id}')">Edit</button>
                                                             <button type="button" class="btn btn-danger btn-sm" onclick="deleteUser('${account.id}')">Delete</button>

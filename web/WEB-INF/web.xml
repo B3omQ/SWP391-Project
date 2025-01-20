@@ -25,6 +25,10 @@
         <servlet-name>StaffManagement</servlet-name>
         <servlet-class>Controller.StaffManagement</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CustomerManagement</servlet-name>
+        <servlet-class>Controller.CustomerManagement</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Register</servlet-name>
         <url-pattern>/register</url-pattern>
@@ -68,5 +72,9 @@
     <servlet-mapping>
         <servlet-name>StaffManagement</servlet-name>
         <url-pattern>/staffManagement</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CustomerManagement</servlet-name>
+        <url-pattern>/customerManagement</url-pattern>
     </servlet-mapping>
 </web-app>
