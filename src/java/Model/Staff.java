@@ -1,9 +1,14 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package Model;
-
 import java.math.BigDecimal;
-
-public class Customer {
-
+/**
+ *
+ * @author emkob
+ */
+public class Staff {
     private int id;
     private String username;
     private String password;
@@ -12,15 +17,13 @@ public class Customer {
     private String lastName;
     private String phone;
     private String address;
-    private BigDecimal wallet; // Đổi sang kiểu BigDecimal để lưu số tiền
+    private BigDecimal salary;
+    private Role role;  // Giữ lại kiểu Role như trước
 
-    // Constructor không tham số
-    public Customer() {
-    }
-
-    // Constructor với tất cả các tham số
-    public Customer(int id, String username, String password, String email, 
-                    String firstName, String lastName, String phone, String address, BigDecimal wallet) {
+    // Constructor
+    public Staff(int id, String username, String password, String email, 
+                 String firstName, String lastName, String phone, 
+                 String address, BigDecimal salary, Role role) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -29,10 +32,12 @@ public class Customer {
         this.lastName = lastName;
         this.phone = phone;
         this.address = address;
-        this.wallet = wallet;
+        this.salary = salary;
+        this.role = role;  // Giữ lại Role object
     }
 
-    // Getters và Setters
+    // Getters and setters for all fields
+
     public int getId() {
         return id;
     }
@@ -97,11 +102,19 @@ public class Customer {
         this.address = address;
     }
 
-    public BigDecimal getWallet() {
-        return wallet;
+    public BigDecimal getSalary() {
+        return salary;
     }
 
-    public void setWallet(BigDecimal wallet) {
-        this.wallet = wallet;
+    public void setSalary(BigDecimal salary) {
+        this.salary = salary;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

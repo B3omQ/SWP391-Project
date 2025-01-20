@@ -21,25 +21,23 @@ public class CustomerDAO extends DBContext {
 
     private AccountValidation av = new AccountValidation();
 
-  public Customer Login(String email, String password) {
-    String sql = "SELECT * FROM [dbo].[Customer] c JOIN [dbo].[Role] r ON c.role_id = r.role_id WHERE c.Email = ? AND c.Password = ?";
+   public Customer Login(String email, String password) {
+    String sql = "SELECT * FROM [dbo].[Customer] WHERE Email = ? AND Password = ?";
     try (PreparedStatement p = connection.prepareStatement(sql)) {
         p.setString(1, email);
-        p.setString(2, password); // Đảm bảo password là mật khẩu đã mã hóa
+        p.setString(2, password);
         try (ResultSet rs = p.executeQuery()) {
             if (rs.next()) {
-                Role role = new Role(rs.getInt("role_id"), rs.getString("role_name"));
                 return new Customer(
-                    rs.getInt("id"),
-                    rs.getString("email"),
-                    rs.getString("username"),
-                    rs.getString("password"),
-                    rs.getString("firstName"),
-                    rs.getString("lastName"),
-                    rs.getString("gender"),
-                    rs.getString("phone"),
-                    rs.getString("address"),
-                    role
+                    rs.getInt("Id"),
+                    rs.getString("Username"),    // Cập nhật từ "email" sang "Username"
+                    rs.getString("Password"),    // Cập nhật từ "password" thành "Password"
+                    rs.getString("Email"),       // Cập nhật từ "email" thành "Email"
+                    rs.getString("FirstName"),   // Cập nhật từ "firstName" thành "FirstName"
+                    rs.getString("LastName"),    // Cập nhật từ "lastName" thành "LastName"
+                    rs.getString("Phone"),       // Cập nhật từ "phone" thành "Phone"
+                    rs.getString("Address"),     // Cập nhật từ "address" thành "Address"
+                    rs.getBigDecimal("Wallet")   // Cập nhật từ "wallet" với kiểu BigDecimal
                 );
             }
         }
@@ -48,24 +46,8 @@ public class CustomerDAO extends DBContext {
     }
     return null;
 }
-    public void register(Customer customer) {
-        String sql = "INSERT INTO [dbo].[Customer] (Email, Username, Password, FirstName, LastName, Gender, Phone, Address, Role_ID) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement p = connection.prepareStatement(sql)) {
-            p.setString(1, customer.getEmail());
-            p.setString(2, customer.getUsername());
-            p.setString(3, customer.getPassword());
-            p.setString(4, customer.getFirstName());
-            p.setString(5, customer.getLastName());
-            p.setString(6, customer.getGender());
-            p.setString(7, customer.getPhone());
-            p.setString(8, customer.getAddress());
-            p.setInt(9, customer.getRole().getRoleId());
-            p.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+   
+
 
     public boolean checkCustomerExists(String email) {
         String sql = "SELECT * FROM [dbo].[Customer] WHERE Email = ?";
@@ -91,96 +73,90 @@ public class CustomerDAO extends DBContext {
         }
     }
 
-    public List<Customer> getAllCustomers() {
-        List<Customer> customers = new ArrayList<>();
-        String sql = "SELECT * FROM [dbo].[Customer] c JOIN [dbo].[Role] r ON c.role_id = r.role_id";
-        try (PreparedStatement stmt = connection.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
-            while (rs.next()) {
-                Role role = new Role(rs.getInt("role_id"), rs.getString("role_name"));
-                Customer customer = new Customer(
-                        rs.getInt("id"),
-                        rs.getString("email"),
-                        rs.getString("username"),
-                        rs.getString("password"),
-                        rs.getString("firstName"),
-                        rs.getString("lastName"),
-                        rs.getString("gender"),
-                        rs.getString("phone"),
-                        rs.getString("address"),
-                        role
+   public List<Customer> getAllCustomers() {
+    List<Customer> customers = new ArrayList<>();
+    String sql = "SELECT * FROM [dbo].[Customer]";
+    try (PreparedStatement stmt = connection.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+        while (rs.next()) {
+            Customer customer = new Customer(
+                    rs.getInt("Id"),
+                    rs.getString("Username"),  // Cập nhật tên trường thành "Username"
+                    rs.getString("Password"),  // Cập nhật tên trường thành "Password"
+                    rs.getString("Email"),     // Cập nhật tên trường thành "Email"
+                    rs.getString("FirstName"), // Cập nhật tên trường thành "FirstName"
+                    rs.getString("LastName"),  // Cập nhật tên trường thành "LastName"
+                    rs.getString("Phone"),     // Cập nhật tên trường thành "Phone"
+                    rs.getString("Address"),   // Cập nhật tên trường thành "Address"
+                    rs.getBigDecimal("Wallet") // Cập nhật để lấy giá trị "Wallet" kiểu BigDecimal
+            );
+            customers.add(customer);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return customers;
+}
+
+public Customer getCustomerById(int Id) {
+    String sql = "SELECT * FROM [dbo].[Customer] WHERE Id = ?";
+    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        ps.setInt(1, Id);
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return new Customer(
+                        rs.getInt("Id"),
+                        rs.getString("Username"),  // Cập nhật tên trường thành "Username"
+                        rs.getString("Password"),  // Cập nhật tên trường thành "Password"
+                        rs.getString("Email"),     // Cập nhật tên trường thành "Email"
+                        rs.getString("FirstName"), // Cập nhật tên trường thành "FirstName"
+                        rs.getString("LastName"),  // Cập nhật tên trường thành "LastName"
+                        rs.getString("Phone"),     // Cập nhật tên trường thành "Phone"
+                        rs.getString("Address"),   // Cập nhật tên trường thành "Address"
+                        rs.getBigDecimal("Wallet") // Cập nhật để lấy giá trị "Wallet" kiểu BigDecimal
                 );
-                customers.add(customer);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-        return customers;
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+    return null;
+}
 
-    public Customer getCustomerById(int id) {
-        String sql = "SELECT * FROM [dbo].[Customer] c JOIN [dbo].[Role] r ON c.role_id = r.role_id WHERE c.id = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, id);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    Role role = new Role(rs.getInt("role_id"), rs.getString("role_name"));
-                    return new Customer(
-                            rs.getInt("id"),
-                            rs.getString("email"),
-                            rs.getString("username"),
-                            rs.getString("password"),
-                            rs.getString("firstName"),
-                            rs.getString("lastName"),
-                            rs.getString("gender"),
-                            rs.getString("phone"),
-                            rs.getString("address"),
-                            role
-                    );
-                }
+public boolean updatePasswordByEmail(String email, String password) {
+    String sql = "UPDATE Customer SET Password = ? WHERE Email = ?"; // Cập nhật tên trường thành "Password"
+    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        ps.setString(1, password);
+        ps.setString(2, email);
+        int rowsAffected = ps.executeUpdate();
+        return rowsAffected > 0;
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false;
+}
+
+public Customer getCustomerByEmail(String email) {
+    String sql = "SELECT * FROM Customer WHERE Email = ?"; // Cập nhật tên trường thành "Email"
+    try (PreparedStatement p = connection.prepareStatement(sql)) {
+        p.setString(1, email);
+        try (ResultSet rs = p.executeQuery()) {
+            if (rs.next()) {
+                return new Customer(
+                        rs.getInt("Id"),
+                        rs.getString("Username"),  // Cập nhật tên trường thành "Username"
+                        rs.getString("Password"),  // Cập nhật tên trường thành "Password"
+                        rs.getString("Email"),     // Cập nhật tên trường thành "Email"
+                        rs.getString("FirstName"), // Cập nhật tên trường thành "FirstName"
+                        rs.getString("LastName"),  // Cập nhật tên trường thành "LastName"
+                        rs.getString("Phone"),     // Cập nhật tên trường thành "Phone"
+                        rs.getString("Address"),   // Cập nhật tên trường thành "Address"
+                        rs.getBigDecimal("Wallet") // Cập nhật để lấy giá trị "Wallet" kiểu BigDecimal
+                );
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-        return null;
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
-
-    public boolean updatePasswordByEmail(String email, String password) {
-        String sql = "UPDATE Customer SET password = ? WHERE email = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, password);
-            ps.setString(2, email);
-            int rowsAffected = ps.executeUpdate();
-            return rowsAffected > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    public Customer getCustomerByEmail(String email) {
-        String sql = "SELECT * FROM Customer c JOIN Role r ON c.role_id = r.role_id WHERE c.email = ?";
-        try (PreparedStatement p = connection.prepareStatement(sql)) {
-            p.setString(1, email);
-            try (ResultSet rs = p.executeQuery()) {
-                if (rs.next()) {
-                    Role role = new Role(rs.getInt("role_id"), rs.getString("role_name"));
-                    return new Customer(
-                            rs.getInt("id"),
-                            rs.getString("email"),
-                            rs.getString("username"),
-                            rs.getString("password"),
-                            rs.getString("firstName"),
-                            rs.getString("lastName"),
-                            rs.getString("gender"),
-                            rs.getString("phone"),
-                            rs.getString("address"),
-                            role
-                    );
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+    return null;
+}
 }
