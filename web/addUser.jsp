@@ -57,7 +57,7 @@
                     <ul class="sidebar-menu pt-3">
                         <li><a href="index.html"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
                         <li><a href="<%= request.getContextPath() %>/userManager"><i
-                                    class="uil uil-stethoscope me-2 d-inline-block"></i>Account Management</a></li>
+                                    class="uil uil-stethoscope me-2 d-inline-block"></i>User Management</a></li>
 
                         <li class="sidebar-dropdown">
                             <a href="javascript:void(0)"><i class="uil uil-user me-2 d-inline-block"></i>Doctors</a>
@@ -379,7 +379,7 @@
                                 <nav aria-label="breadcrumb" class="d-inline-block mt-2">
                                     <ul class="breadcrumb breadcrumb-muted bg-transparent rounded mb-0 p-0">
                                         <li class="breadcrumb-item"><a href="index.html">Doctris</a></li>
-                                        <li class="breadcrumb-item active" aria-current="page">Account Management</li>
+                                        <li class="breadcrumb-item active" aria-current="page">User Management</li>
                                     </ul>
                                 </nav>
                             </div><!--end col-->
