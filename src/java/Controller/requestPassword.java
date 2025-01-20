@@ -5,9 +5,9 @@
 
 package Controller;
 
-import Dal.AccountDAO;
+import Dal.CustomerDAO;
 import Dal.DAOTokenForget;
-import Model.Account;
+import Model.Customer;
 import Model.TokenForgetPassword;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -71,10 +71,10 @@ public class requestPassword extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-  AccountDAO daoUser = new AccountDAO();
+  CustomerDAO daoUser = new CustomerDAO();
         String email = request.getParameter("email");
         //email co ton tai trong db
-        Account account = daoUser.getAccountByEmail(email);
+        Customer account = daoUser.getCustomerByEmail(email);
         if(account == null) {
             request.setAttribute("mess", "email khong ton tai");
             request.getRequestDispatcher("requestPassword.jsp").forward(request, response);
@@ -96,7 +96,7 @@ public class requestPassword extends HttpServlet {
             request.getRequestDispatcher("requestPassword.jsp").forward(request, response);
             return;
         }
-        boolean isSend = service.sendEmail(email, linkReset, account.getFullName());
+        boolean isSend = service.sendEmail(email, linkReset, account.getFirstName());
         if(!isSend) {
             request.setAttribute("mess", "can not send request");
             request.getRequestDispatcher("requestPassword.jsp").forward(request, response);
