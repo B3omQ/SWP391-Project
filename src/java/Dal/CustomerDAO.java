@@ -81,6 +81,31 @@ public boolean updatePasswordById(int customerId, String newPassword) {
     }
 }
 
+public List<Customer> getAllCustomers() {
+    String sql = "SELECT * FROM [dbo].[Customer] ";
+    List<Customer> c = new ArrayList<>();
+    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Customer customer = new Customer(
+                        rs.getInt("Id"),
+                        rs.getString("Username"),  
+                        rs.getString("Password"),  
+                        rs.getString("Email"),    
+                        rs.getString("FirstName"),
+                        rs.getString("LastName"),  
+                        rs.getString("Phone"),   
+                        rs.getString("Address"),   
+                        rs.getBigDecimal("Wallet") 
+                );
+                c.add(customer);
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return c;
+}
 
 
  

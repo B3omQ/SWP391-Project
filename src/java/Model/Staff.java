@@ -111,4 +111,11 @@ public class Staff {
     public void setRole(Role role) {
         this.role = role;
     }
+
+    @Override
+    public String toString() {
+        return "Staff{" + "id=" + id + ", username=" + username + ", password=" + password + ", email=" + email + ", firstName=" + firstName + ", lastName=" + lastName + ", phone=" + phone + ", address=" + address + ", salary=" + salary + ", role=" + role + '}';
+    }
+    
+    
 }

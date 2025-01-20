@@ -56,7 +56,7 @@
 
                     <ul class="sidebar-menu pt-3">
                         <li><a href="index.html"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
-                        <li><a href="<%= request.getContextPath() %>/staffManager"><i
+                        <li><a href="<%= request.getContextPath() %>/staffManagement"><i
                                     class="uil uil-stethoscope me-2 d-inline-block"></i>Staff Management</a></li>
                         <li><a href="<%= request.getContextPath() %>/customerManager"><i
                                     class="uil uil-stethoscope me-2 d-inline-block"></i>Customer Management</a></li>
@@ -414,39 +414,41 @@
                         <div class="row">
                             <div class="col-12 mt-4">
 
-                                <form action="<%= request.getContextPath() %>/userManager" method="get">
+                                <form action="<%= request.getContextPath() %>/staffManagement" method="get">
                                     <div class="table-responsive bg-white shadow rounded">
                                         <table class="table table-bordered table-hover">
                                             <thead class="thead-dark">
                                                 <tr>
                                                     <th>#</th>
+                                                    <th>Username</th>
                                                     <th>Name</th>
-                                                    <th>Email</th>
-                                                    <th>Gender</th>
+                                                    <th>Email</th>                                                  
                                                     <th>Phone</th>
                                                     <th>Address</th>
+                                                    <th>Salary</th>
                                                     <th>Role</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
 
-                                                <c:if test="${empty accounts}">
+                                                <c:if test="${empty staffs}">
                                                     <tr>
-                                                        <td colspan="8" class="text-center">No users available.</td>
+                                                        <td colspan="8" class="text-center">No staffs available.</td>
                                                     </tr>
                                                 </c:if>
 
 
-                                                <c:forEach var="account" items="${accounts}">
+                                                <c:forEach var="staff" items="${staffs}">
                                                     <tr>
-                                                        <td>${account.id}</td>
-                                                        <td>${account.fullName}</td>
-                                                        <td>${account.email}</td>
-                                                        <td>${account.gender}</td>
-                                                        <td>${account.phoneNumber}</td>
-                                                        <td>${account.address}</td>
-                                                        <td>${account.role != null ? account.role.roleName : 'No Role'}</td>
+                                                        <td>${staff.id}</td>
+                                                        <td>${staff.username}</td>
+                                                        <td>${staff.firstName} ${staff.lastName}</td>
+                                                        <td>${staff.email}</td>
+                                                        <td>${staff.phone}</td>                                                       
+                                                        <td>${staff.address}</td>
+                                                        <td>${staff.salary}</td>
+                                                        <td>${staff.role != null ? staff.role.roleName : 'No Role'}</td>
                                                         <td>                                                           
                                                             <button type="button" class="btn btn-warning btn-sm" onclick="editUser('${account.id}')">Edit</button>
                                                             <button type="button" class="btn btn-danger btn-sm" onclick="deleteUser('${account.id}')">Delete</button>

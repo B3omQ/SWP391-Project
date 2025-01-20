@@ -21,6 +21,10 @@
         <servlet-name>Logout</servlet-name>
         <servlet-class>Controller.Logout</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>StaffManagement</servlet-name>
+        <servlet-class>Controller.StaffManagement</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Register</servlet-name>
         <url-pattern>/register</url-pattern>
@@ -60,5 +64,9 @@
     <servlet-mapping>
         <servlet-name>Logout</servlet-name>
         <url-pattern>/Logout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StaffManagement</servlet-name>
+        <url-pattern>/staffManagement</url-pattern>
     </servlet-mapping>
 </web-app>
