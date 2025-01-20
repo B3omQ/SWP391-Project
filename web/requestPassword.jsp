@@ -66,7 +66,7 @@
                                     <div class="mx-auto">
                                         <p class="mb-0 mt-3">
                                             <small class="text-dark me-2">Remember your password ?</small> 
-                                            <a href="login.html" class="text-dark h6 mb-0">Sign in</a>
+                                            <a href="login.jsp" class="text-dark h6 mb-0">Sign in</a>
                                         </p>
                                     </div>
                                     <p class="text-danger text-center">${mess}</p>

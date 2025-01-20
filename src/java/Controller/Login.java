@@ -1,7 +1,7 @@
 package Controller;
 
-import Dal.AccountDAO;
-import Model.Account;
+import Dal.CustomerDAO;
+import Model.Customer;
 import Validation.AccountValidation;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class Login extends HttpServlet {
 
-    private AccountDAO d = new AccountDAO();  
+    private CustomerDAO d = new CustomerDAO();  
     private AccountValidation av = new AccountValidation(); 
 
     @Override
@@ -24,9 +24,9 @@ public class Login extends HttpServlet {
         String encodedPassword = av.hashPassword(passWord);
 
      
-        Account account = d.Login(email, encodedPassword);  
+        Customer customer = d.Login(email, encodedPassword);  
 
-        if (account != null) {
+        if (customer != null) {
        if (request.getSession().getAttribute("account") != null) {
         response.sendRedirect("index.jsp"); 
         return;
@@ -51,14 +51,14 @@ public class Login extends HttpServlet {
             }
 
            
-            request.getSession().setAttribute("account", account);
+            request.getSession().setAttribute("account", customer);
 
   
-            if (account.getRole().getRoleId() == 1) { 
+            if (customer.getRole().getRoleId() == 1) { 
                 response.sendRedirect("staff.jsp");
-            } else if (account.getRole().getRoleId() == 2) { 
+            } else if (customer.getRole().getRoleId() == 2) { 
                 response.sendRedirect("Customer.jsp");
-            } else if (account.getRole().getRoleId() == 3) { 
+            } else if (customer.getRole().getRoleId() == 3) { 
                 response.sendRedirect("Admin.jsp");
             } else {
 

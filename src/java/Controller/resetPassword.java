@@ -5,9 +5,9 @@
 
 package Controller;
 
-import Dal.AccountDAO;
+import Dal.CustomerDAO;
 import Dal.DAOTokenForget;
-import Model.Account;
+import Model.Customer;
 import Model.TokenForgetPassword;
 import Validation.AccountValidation;
 import java.io.IOException;
@@ -24,7 +24,7 @@ import jakarta.servlet.http.HttpSession;
  */
 public class resetPassword extends HttpServlet {
      DAOTokenForget DAOToken = new DAOTokenForget();
-    AccountDAO DAOAccount = new AccountDAO();
+    CustomerDAO DAOAccount = new CustomerDAO();
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -85,10 +85,9 @@ throws ServletException, IOException {
             return;
         }
         
-        // Lấy thông tin tài khoản từ userId
-        Account account = DAOAccount.getAccountByID(tokenForgetPassword.getUserId());
+       Customer account = DAOAccount.getCustomerById(tokenForgetPassword.getUserId());
         
-        // Kiểm tra xem account có null hay không trước khi truy cập vào email
+    
         if (account == null) {
             request.setAttribute("mess", "Account not found");
             request.getRequestDispatcher("requestPassword.jsp").forward(request, response);
