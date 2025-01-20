@@ -30,14 +30,14 @@ public class CustomerDAO extends DBContext {
             if (rs.next()) {
                 return new Customer(
                     rs.getInt("Id"),
-                    rs.getString("Username"),    // Cập nhật từ "email" sang "Username"
-                    rs.getString("Password"),    // Cập nhật từ "password" thành "Password"
-                    rs.getString("Email"),       // Cập nhật từ "email" thành "Email"
-                    rs.getString("FirstName"),   // Cập nhật từ "firstName" thành "FirstName"
-                    rs.getString("LastName"),    // Cập nhật từ "lastName" thành "LastName"
-                    rs.getString("Phone"),       // Cập nhật từ "phone" thành "Phone"
-                    rs.getString("Address"),     // Cập nhật từ "address" thành "Address"
-                    rs.getBigDecimal("Wallet")   // Cập nhật từ "wallet" với kiểu BigDecimal
+                    rs.getString("Username"),    
+                    rs.getString("Password"),    
+                    rs.getString("Email"),       
+                    rs.getString("FirstName"),   
+                    rs.getString("LastName"),    
+                    rs.getString("Phone"),       
+                    rs.getString("Address"),    
+                    rs.getBigDecimal("Wallet")   
                 );
             }
         }
@@ -47,7 +47,17 @@ public class CustomerDAO extends DBContext {
     return null;
 }
    
+public void updatePassword(String newPassword, String email) {
+    String sql = "UPDATE Customer SET Password = ? WHERE Email = ?";
 
+    try (PreparedStatement p = connection.prepareStatement(sql)) {
+        p.setString(1, newPassword);
+        p.setString(2, email);
+        p.executeUpdate();
+    } catch (SQLException e) {
+        e.printStackTrace(); 
+    }
+}
 
     public boolean checkCustomerExists(String email) {
         String sql = "SELECT * FROM [dbo].[Customer] WHERE Email = ?";
@@ -61,42 +71,26 @@ public class CustomerDAO extends DBContext {
         }
         return false;
     }
-
-    public void updatePassword(String email, String newPassword) {
-        String sql = "UPDATE [dbo].[Customer] SET Password = ? WHERE Email = ?";
-        try (PreparedStatement p = connection.prepareStatement(sql)) {
-            p.setString(1, newPassword);
-            p.setString(2, email);
-            p.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-   public List<Customer> getAllCustomers() {
-    List<Customer> customers = new ArrayList<>();
-    String sql = "SELECT * FROM [dbo].[Customer]";
-    try (PreparedStatement stmt = connection.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
-        while (rs.next()) {
-            Customer customer = new Customer(
-                    rs.getInt("Id"),
-                    rs.getString("Username"),  // Cập nhật tên trường thành "Username"
-                    rs.getString("Password"),  // Cập nhật tên trường thành "Password"
-                    rs.getString("Email"),     // Cập nhật tên trường thành "Email"
-                    rs.getString("FirstName"), // Cập nhật tên trường thành "FirstName"
-                    rs.getString("LastName"),  // Cập nhật tên trường thành "LastName"
-                    rs.getString("Phone"),     // Cập nhật tên trường thành "Phone"
-                    rs.getString("Address"),   // Cập nhật tên trường thành "Address"
-                    rs.getBigDecimal("Wallet") // Cập nhật để lấy giá trị "Wallet" kiểu BigDecimal
-            );
-            customers.add(customer);
-        }
+public boolean updatePasswordById(int customerId, String newPassword) {
+    String sql = "UPDATE [dbo].[Customer] SET Password = ? WHERE Id = ?";
+    try (PreparedStatement p = connection.prepareStatement(sql)) {
+        AccountValidation accountValidation = new AccountValidation();
+        String hashedPassword = accountValidation.hashPassword(newPassword);
+        
+        p.setString(1, hashedPassword);
+        p.setInt(2, customerId);  
+        
+        int rowsAffected = p.executeUpdate();
+        return rowsAffected > 0; 
     } catch (SQLException e) {
         e.printStackTrace();
+        return false; 
     }
-    return customers;
 }
 
+
+
+ 
 public Customer getCustomerById(int Id) {
     String sql = "SELECT * FROM [dbo].[Customer] WHERE Id = ?";
     try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -105,14 +99,14 @@ public Customer getCustomerById(int Id) {
             if (rs.next()) {
                 return new Customer(
                         rs.getInt("Id"),
-                        rs.getString("Username"),  // Cập nhật tên trường thành "Username"
-                        rs.getString("Password"),  // Cập nhật tên trường thành "Password"
-                        rs.getString("Email"),     // Cập nhật tên trường thành "Email"
-                        rs.getString("FirstName"), // Cập nhật tên trường thành "FirstName"
-                        rs.getString("LastName"),  // Cập nhật tên trường thành "LastName"
-                        rs.getString("Phone"),     // Cập nhật tên trường thành "Phone"
-                        rs.getString("Address"),   // Cập nhật tên trường thành "Address"
-                        rs.getBigDecimal("Wallet") // Cập nhật để lấy giá trị "Wallet" kiểu BigDecimal
+                        rs.getString("Username"),  
+                        rs.getString("Password"),  
+                        rs.getString("Email"),    
+                        rs.getString("FirstName"),
+                        rs.getString("LastName"),  
+                        rs.getString("Phone"),   
+                        rs.getString("Address"),   
+                        rs.getBigDecimal("Wallet") 
                 );
             }
         }
@@ -123,7 +117,7 @@ public Customer getCustomerById(int Id) {
 }
 
 public boolean updatePasswordByEmail(String email, String password) {
-    String sql = "UPDATE Customer SET Password = ? WHERE Email = ?"; // Cập nhật tên trường thành "Password"
+    String sql = "UPDATE Customer SET Password = ? WHERE Email = ?"; 
     try (PreparedStatement ps = connection.prepareStatement(sql)) {
         ps.setString(1, password);
         ps.setString(2, email);
@@ -136,21 +130,21 @@ public boolean updatePasswordByEmail(String email, String password) {
 }
 
 public Customer getCustomerByEmail(String email) {
-    String sql = "SELECT * FROM Customer WHERE Email = ?"; // Cập nhật tên trường thành "Email"
+    String sql = "SELECT * FROM Customer WHERE Email = ?";
     try (PreparedStatement p = connection.prepareStatement(sql)) {
         p.setString(1, email);
         try (ResultSet rs = p.executeQuery()) {
             if (rs.next()) {
                 return new Customer(
                         rs.getInt("Id"),
-                        rs.getString("Username"),  // Cập nhật tên trường thành "Username"
-                        rs.getString("Password"),  // Cập nhật tên trường thành "Password"
-                        rs.getString("Email"),     // Cập nhật tên trường thành "Email"
-                        rs.getString("FirstName"), // Cập nhật tên trường thành "FirstName"
-                        rs.getString("LastName"),  // Cập nhật tên trường thành "LastName"
-                        rs.getString("Phone"),     // Cập nhật tên trường thành "Phone"
-                        rs.getString("Address"),   // Cập nhật tên trường thành "Address"
-                        rs.getBigDecimal("Wallet") // Cập nhật để lấy giá trị "Wallet" kiểu BigDecimal
+                        rs.getString("Username"),  
+                        rs.getString("Password"), 
+                        rs.getString("Email"),     
+                        rs.getString("FirstName"), 
+                        rs.getString("LastName"),  
+                        rs.getString("Phone"),    
+                        rs.getString("Address"),   
+                        rs.getBigDecimal("Wallet") 
                 );
             }
         }
@@ -159,4 +153,23 @@ public Customer getCustomerByEmail(String email) {
     }
     return null;
 }
+public boolean updateCustomerInfo(Customer customer) {
+    String sql = "UPDATE [dbo].[Customer] SET Username = ?, Email = ?, FirstName = ?, LastName = ?, Phone = ?, Address = ? WHERE Id = ?";
+    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        ps.setString(1, customer.getUsername());
+        ps.setString(2, customer.getEmail());
+        ps.setString(3, customer.getFirstName());
+        ps.setString(4, customer.getLastName());
+        ps.setString(5, customer.getPhone());
+        ps.setString(6, customer.getAddress());
+        ps.setInt(7, customer.getId());
+
+        int rowsAffected = ps.executeUpdate();
+        return rowsAffected > 0;
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false;
+}
+
 }

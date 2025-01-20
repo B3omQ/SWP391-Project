@@ -40,15 +40,21 @@
                                             </div>
                                         </div>
                                         <div class="col-12">
-                                            <div class="form-floating mb-3">
+                                            <div class="form-floating mb-3 position-relative">
                                                 <input type="password" class="form-control" name="password" id="password" value="" placeholder="Password" required>
                                                 <label for="password" class="form-label">Password</label>
+                                                <span class="position-absolute top-50 end-0 translate-middle-y pe-3 cursor-pointer" onclick="togglePassword('password', 'togglePasswordIcon')" style="padding-top: 30px;">
+                                                    <i id="togglePasswordIcon" class="mdi mdi-eye-outline"></i>
+                                                </span>
                                             </div>
                                         </div>
                                         <div class="col-12">
-                                            <div class="form-floating mb-3">
-                                                <input type="password" class="form-control" name="confirm_password" id="confirm_password" value="" placeholder="Password" required>
+                                            <div class="form-floating mb-3 position-relative">
+                                                <input type="password" class="form-control" name="confirm_password" id="confirm_password" value="" placeholder="Confirm Password" required>
                                                 <label for="confirm_password" class="form-label">Confirm Password</label>
+                                                <span class="position-absolute top-50 end-0 translate-middle-y pe-3 cursor-pointer" onclick="togglePassword('confirm_password', 'toggleConfirmPasswordIcon')" style="padding-top: 30px;">
+                                                    <i id="toggleConfirmPasswordIcon" class="mdi mdi-eye-outline"></i>
+                                                </span>
                                             </div>
                                         </div>
                                         <div class="col-12">
@@ -65,5 +71,22 @@
                 </div>
             </div>
         </section>
+
+        <script>
+            function togglePassword(passwordFieldId, iconId) {
+                var passwordField = document.getElementById(passwordFieldId);
+                var toggleIcon = document.getElementById(iconId);
+
+                if (passwordField.type === "password") {
+                    passwordField.type = "text";
+                    toggleIcon.classList.remove("mdi-eye-outline");
+                    toggleIcon.classList.add("mdi-eye-off-outline");
+                } else {
+                    passwordField.type = "password";
+                    toggleIcon.classList.remove("mdi-eye-off-outline");
+                    toggleIcon.classList.add("mdi-eye-outline");
+                }
+            }
+        </script>
     </body>
 </html>

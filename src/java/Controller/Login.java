@@ -56,10 +56,8 @@ public class Login extends HttpServlet {
            Staff staff = staffDAO.getStaffByUsername(email);
 
         if (staff != null && staff.getPassword().equals(encodedPassword)) {
-            // Nếu là staff, kiểm tra role
             Role role = staff.getRole();
             if (role != null) {
-                // Xử lý cookie nhớ tài khoản
                 if (rememberMe != null) {
                     Cookie emailCookie = new Cookie("email", email);
                     emailCookie.setMaxAge(60 * 60 * 24 * 7);
@@ -78,10 +76,8 @@ public class Login extends HttpServlet {
                     response.addCookie(passWordCookie);
                 }
 
-                // Lưu staff vào session
                 request.getSession().setAttribute("account", staff);
 
-                // Role-based redirection
                 switch (role.getRoleId()) {
                     case 1:
                         response.sendRedirect("Admin.jsp");
@@ -96,14 +92,12 @@ public class Login extends HttpServlet {
                 }
                 return;
             } else {
-                // Nếu không có role hợp lệ
                 request.setAttribute("errorAccount", "Invalid role assigned to this account.");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
                 return;
             }
         }
 
-        // Nếu không phải customer hay staff
         request.setAttribute("errorAccount", "This account does not exist or wrong credentials.");
         request.getRequestDispatcher("login.jsp").forward(request, response);
     }
