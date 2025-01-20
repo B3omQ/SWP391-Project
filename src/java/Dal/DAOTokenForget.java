@@ -28,15 +28,15 @@ public class DAOTokenForget extends DBContext{
 public boolean insertTokenForget(TokenForgetPassword tokenForget) {
     String sql = "INSERT INTO tokenForgetPassword (token, isUsed, userId, expiryTime) VALUES (?, ?, ?, ?)";
     
-    // Cập nhật thời gian hết hạn (expiryTime) là 1 giờ sau thời gian hiện tại
-    LocalDateTime expiryTime = LocalDateTime.now().plusHours(1); // Cộng 1 giờ
-    String formattedExpiryTime = getFormatDate(expiryTime); // Định dạng lại ngày giờ thành chuỗi
+ 
+    LocalDateTime expiryTime = LocalDateTime.now().plusHours(1);
+    String formattedExpiryTime = getFormatDate(expiryTime); 
 
     try (PreparedStatement ps = connection.prepareStatement(sql)) {
         ps.setString(1, tokenForget.getToken());
         ps.setBoolean(2, tokenForget.isIsUsed());
         ps.setInt(3, tokenForget.getUserId());
-        ps.setString(4, formattedExpiryTime);  // Thêm giá trị expiryTime vào câu lệnh SQL
+        ps.setString(4, formattedExpiryTime);  
         return ps.executeUpdate() > 0;
     } catch (SQLException e) {
         System.err.println("Error while inserting tokenForgetPassword: " + e.getMessage());
