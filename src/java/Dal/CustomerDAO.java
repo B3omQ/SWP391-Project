@@ -208,4 +208,16 @@ public class CustomerDAO extends DBContext {
             e.printStackTrace();
         }
     }
+    
+    public void deleteCustomer(int id) {
+        String sql = "DELETE FROM Customer\n"
+                + "WHERE Id = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, id + "");
+            ps.executeUpdate();
+        } catch (SQLException e) {
+
+        }
+    }
 }

@@ -33,6 +33,14 @@
         <servlet-name>AddCustomer</servlet-name>
         <servlet-class>Controller.AddCustomer</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>EditCustomer</servlet-name>
+        <servlet-class>Controller.EditCustomer</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteCustomer</servlet-name>
+        <servlet-class>Controller.DeleteCustomer</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Register</servlet-name>
         <url-pattern>/register</url-pattern>
@@ -84,5 +92,13 @@
     <servlet-mapping>
         <servlet-name>AddCustomer</servlet-name>
         <url-pattern>/addCustomer</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditCustomer</servlet-name>
+        <url-pattern>/editCustomer</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteCustomer</servlet-name>
+        <url-pattern>/deleteCustomer</url-pattern>
     </servlet-mapping>
 </web-app>
