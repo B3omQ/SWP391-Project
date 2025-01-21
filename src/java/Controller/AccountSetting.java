@@ -1,11 +1,13 @@
+//package Controller;
+//
 ///*
 // * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
 // * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
 // */
 //
-//package Controller;
 //
-//
+//import Dal.CustomerDAO;
+//import Model.Customer;
 //import java.io.IOException;
 //import java.io.PrintWriter;
 //import jakarta.servlet.ServletException;
@@ -17,8 +19,8 @@
 // *
 // * @author emkob
 // */
-//public class UpdateProfileServlet extends HttpServlet {
-//     private AccountDAO d = new AccountDAO();  
+//public class AccountSetting extends HttpServlet {
+//      private CustomerDAO customerDAO = new CustomerDAO();
 //    /** 
 //     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
 //     * @param request servlet request
@@ -34,10 +36,10 @@
 //            out.println("<!DOCTYPE html>");
 //            out.println("<html>");
 //            out.println("<head>");
-//            out.println("<title>Servlet UpdateProfileServlet</title>");  
+//            out.println("<title>Servlet AccountSetting</title>");  
 //            out.println("</head>");
 //            out.println("<body>");
-//            out.println("<h1>Servlet UpdateProfileServlet at " + request.getContextPath () + "</h1>");
+//            out.println("<h1>Servlet AccountSetting at " + request.getContextPath () + "</h1>");
 //            out.println("</body>");
 //            out.println("</html>");
 //        }
@@ -67,21 +69,35 @@
 //    @Override
 //    protected void doPost(HttpServletRequest request, HttpServletResponse response)
 //    throws ServletException, IOException {
-//         int id = Integer.parseInt(request.getParameter("id"));
-//        String fullName = request.getParameter("fullName");
-//        String phoneNumber = request.getParameter("phoneNumber");
+//         String username = request.getParameter("username");
+//        String email = request.getParameter("email");
+//        String firstName = request.getParameter("firstName");
+//        String lastName = request.getParameter("lastName");
+//        String phone = request.getParameter("phone");
 //        String address = request.getParameter("address");
+//Customer customer = (Customer) request.getSession().getAttribute("account");
+//        if (customer != null) {
+//            customer.setUsername(username);
+//            customer.setEmail(email);
+//            customer.setFirstName(firstName);
+//            customer.setLastName(lastName);
+//            customer.setPhone(phone);
+//            customer.setAddress(address);
 //
-//        boolean updateSuccess = d.updateAccountProfile(id, fullName, phoneNumber, address);
+//            boolean updateSuccess = customerDAO.updateCustomerInfo(customer);
 //
-//        if (updateSuccess) {
-//            request.setAttribute("message", "Profile updated successfully!");
+//            if (updateSuccess) {
+//                request.getSession().setAttribute("account", customer);
+//                response.sendRedirect("acc.jsp");
+//            } else {
+//                request.setAttribute("error", "Failed to update profile. Please try again.");
+//                request.getRequestDispatcher("updateProfile.jsp").forward(request, response);
+//            }
 //        } else {
-//            request.setAttribute("message", "Failed to update profile.");
+//            response.sendRedirect("login.jsp");
 //        }
-//
-//        request.getRequestDispatcher("account-profile.jsp").forward(request, response);
 //    }
+//
 //    
 //
 //    /** 
