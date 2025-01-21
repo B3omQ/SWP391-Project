@@ -41,6 +41,10 @@
         <servlet-name>DeleteCustomer</servlet-name>
         <servlet-class>Controller.DeleteCustomer</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddStaff</servlet-name>
+        <servlet-class>Controller.AddStaff</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Register</servlet-name>
         <url-pattern>/register</url-pattern>
@@ -100,5 +104,9 @@
     <servlet-mapping>
         <servlet-name>DeleteCustomer</servlet-name>
         <url-pattern>/deleteCustomer</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddStaff</servlet-name>
+        <url-pattern>/addStaff</url-pattern>
     </servlet-mapping>
 </web-app>

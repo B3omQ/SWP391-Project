@@ -8,6 +8,7 @@ import Model.Staff;
 import com.sun.jdi.connect.spi.Connection;
 import Model.Role;
 import Validation.AccountValidation;
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -50,6 +51,79 @@ public class StaffDAO extends DBContext {
         return null;
     }
 
+    public Staff getStaffByEmail(String email) {
+        String sql = " SELECT * FROM Staff s LEFT JOIN Role r on s.RoleId = r.Id WHERE Email = ?";
+        try (PreparedStatement p = connection.prepareStatement(sql)) {
+            p.setString(1, email);
+            try (ResultSet rs = p.executeQuery()) {
+                if (rs.next()) {
+                    return new Staff(
+                            rs.getInt("Id"),
+                            rs.getString("Username"),
+                            rs.getString("Password"),
+                            rs.getString("Email"),
+                            rs.getString("FirstName"),
+                            rs.getString("LastName"),
+                            rs.getString("Phone"),
+                            rs.getString("Address"),
+                            rs.getBigDecimal("Salary"),
+                            // Assuming Role is another class and handled appropriately
+                            new Role(rs.getInt("Id"), rs.getString("Name")) // Modify as needed
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; // Return null if no staff found
+    }
+
+    public int getRoleIdByName(String roleName) {
+        String sql = "SELECT Id FROM Role WHERE Name = ?";
+        try (PreparedStatement p = connection.prepareStatement(sql)) {
+            p.setString(1, roleName);
+            try (ResultSet rs = p.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("Id"); // Return the Role ID
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1; // Return -1 if not found
+    }
+
+    public boolean addStaff(String username, String password, String email,
+            String firstName, String lastName,
+            String phone, String address,
+            BigDecimal salary, String roleName) {
+        StaffDAO s = new StaffDAO();
+        int roleId = s.getRoleIdByName(roleName);
+        if (roleId == -1) {
+            System.out.println("Role not found: " + roleName);
+            return false; // Handle case where role is not found
+        }
+
+        String sql = "INSERT INTO Staff (Username, Password, Email, FirstName, LastName, Phone, Address, Salary, RoleId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement p = connection.prepareStatement(sql)) {
+            p.setString(1, username);
+            p.setString(2, password);
+            p.setString(3, email);
+            p.setString(4, firstName);
+            p.setString(5, lastName);
+            p.setString(6, phone);
+            p.setString(7, address);
+            p.setBigDecimal(8, salary);
+            p.setInt(9, roleId); // Use the retrieved Role ID
+
+            int rowsAffected = p.executeUpdate();
+            return rowsAffected > 0; // Return true if a row was added
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false; // Return false if an error occurred
+        }
+    }
+
     public List<Staff> getAllStaffs() {
         List<Staff> staffList = new ArrayList<>();
         String sql = "SELECT s.*, r.Name AS RoleName FROM [dbo].[Staff] s LEFT JOIN [dbo].[Role] r ON s.RoleId = r.Id";
@@ -80,12 +154,9 @@ public class StaffDAO extends DBContext {
         }
         return staffList; // Return the populated list of staff
     }
-    
+
     public static void main(String[] args) {
         StaffDAO s = new StaffDAO();
-        List<Staff> ss = s.getAllStaffs();
-        for(Staff a : ss) {
-            System.out.println(a.toString());
-        }
+        System.out.println(s.getStaffByEmail("user5@gmail.com"));
     }
 }
