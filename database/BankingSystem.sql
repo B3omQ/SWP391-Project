@@ -1,84 +1,84 @@
 USE [master]
 GO
-/****** Object:  Database [Banking_System]    Script Date: 1/16/2025 8:43:57 AM ******/
-CREATE DATABASE [Banking_System]
+/****** Object:  Database [BankingSystem]    Script Date: 1/20/2025 4:43:22 PM ******/
+CREATE DATABASE [BankingSystem]
 GO
-ALTER DATABASE [Banking_System] SET COMPATIBILITY_LEVEL = 160
+ALTER DATABASE [BankingSystem] SET COMPATIBILITY_LEVEL = 160
 GO
 IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
 begin
-EXEC [Banking_System].[dbo].[sp_fulltext_database] @action = 'enable'
+EXEC [BankingSystem].[dbo].[sp_fulltext_database] @action = 'enable'
 end
 GO
-ALTER DATABASE [Banking_System] SET ANSI_NULL_DEFAULT OFF 
+ALTER DATABASE [BankingSystem] SET ANSI_NULL_DEFAULT OFF 
 GO
-ALTER DATABASE [Banking_System] SET ANSI_NULLS OFF 
+ALTER DATABASE [BankingSystem] SET ANSI_NULLS OFF 
 GO
-ALTER DATABASE [Banking_System] SET ANSI_PADDING OFF 
+ALTER DATABASE [BankingSystem] SET ANSI_PADDING OFF 
 GO
-ALTER DATABASE [Banking_System] SET ANSI_WARNINGS OFF 
+ALTER DATABASE [BankingSystem] SET ANSI_WARNINGS OFF 
 GO
-ALTER DATABASE [Banking_System] SET ARITHABORT OFF 
+ALTER DATABASE [BankingSystem] SET ARITHABORT OFF 
 GO
-ALTER DATABASE [Banking_System] SET AUTO_CLOSE OFF 
+ALTER DATABASE [BankingSystem] SET AUTO_CLOSE OFF 
 GO
-ALTER DATABASE [Banking_System] SET AUTO_SHRINK OFF 
+ALTER DATABASE [BankingSystem] SET AUTO_SHRINK OFF 
 GO
-ALTER DATABASE [Banking_System] SET AUTO_UPDATE_STATISTICS ON 
+ALTER DATABASE [BankingSystem] SET AUTO_UPDATE_STATISTICS ON 
 GO
-ALTER DATABASE [Banking_System] SET CURSOR_CLOSE_ON_COMMIT OFF 
+ALTER DATABASE [BankingSystem] SET CURSOR_CLOSE_ON_COMMIT OFF 
 GO
-ALTER DATABASE [Banking_System] SET CURSOR_DEFAULT  GLOBAL 
+ALTER DATABASE [BankingSystem] SET CURSOR_DEFAULT  GLOBAL 
 GO
-ALTER DATABASE [Banking_System] SET CONCAT_NULL_YIELDS_NULL OFF 
+ALTER DATABASE [BankingSystem] SET CONCAT_NULL_YIELDS_NULL OFF 
 GO
-ALTER DATABASE [Banking_System] SET NUMERIC_ROUNDABORT OFF 
+ALTER DATABASE [BankingSystem] SET NUMERIC_ROUNDABORT OFF 
 GO
-ALTER DATABASE [Banking_System] SET QUOTED_IDENTIFIER OFF 
+ALTER DATABASE [BankingSystem] SET QUOTED_IDENTIFIER OFF 
 GO
-ALTER DATABASE [Banking_System] SET RECURSIVE_TRIGGERS OFF 
+ALTER DATABASE [BankingSystem] SET RECURSIVE_TRIGGERS OFF 
 GO
-ALTER DATABASE [Banking_System] SET  ENABLE_BROKER 
+ALTER DATABASE [BankingSystem] SET  ENABLE_BROKER 
 GO
-ALTER DATABASE [Banking_System] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+ALTER DATABASE [BankingSystem] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
 GO
-ALTER DATABASE [Banking_System] SET DATE_CORRELATION_OPTIMIZATION OFF 
+ALTER DATABASE [BankingSystem] SET DATE_CORRELATION_OPTIMIZATION OFF 
 GO
-ALTER DATABASE [Banking_System] SET TRUSTWORTHY OFF 
+ALTER DATABASE [BankingSystem] SET TRUSTWORTHY OFF 
 GO
-ALTER DATABASE [Banking_System] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+ALTER DATABASE [BankingSystem] SET ALLOW_SNAPSHOT_ISOLATION OFF 
 GO
-ALTER DATABASE [Banking_System] SET PARAMETERIZATION SIMPLE 
+ALTER DATABASE [BankingSystem] SET PARAMETERIZATION SIMPLE 
 GO
-ALTER DATABASE [Banking_System] SET READ_COMMITTED_SNAPSHOT OFF 
+ALTER DATABASE [BankingSystem] SET READ_COMMITTED_SNAPSHOT OFF 
 GO
-ALTER DATABASE [Banking_System] SET HONOR_BROKER_PRIORITY OFF 
+ALTER DATABASE [BankingSystem] SET HONOR_BROKER_PRIORITY OFF 
 GO
-ALTER DATABASE [Banking_System] SET RECOVERY FULL 
+ALTER DATABASE [BankingSystem] SET RECOVERY FULL 
 GO
-ALTER DATABASE [Banking_System] SET  MULTI_USER 
+ALTER DATABASE [BankingSystem] SET  MULTI_USER 
 GO
-ALTER DATABASE [Banking_System] SET PAGE_VERIFY CHECKSUM  
+ALTER DATABASE [BankingSystem] SET PAGE_VERIFY CHECKSUM  
 GO
-ALTER DATABASE [Banking_System] SET DB_CHAINING OFF 
+ALTER DATABASE [BankingSystem] SET DB_CHAINING OFF 
 GO
-ALTER DATABASE [Banking_System] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+ALTER DATABASE [BankingSystem] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
 GO
-ALTER DATABASE [Banking_System] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+ALTER DATABASE [BankingSystem] SET TARGET_RECOVERY_TIME = 60 SECONDS 
 GO
-ALTER DATABASE [Banking_System] SET DELAYED_DURABILITY = DISABLED 
+ALTER DATABASE [BankingSystem] SET DELAYED_DURABILITY = DISABLED 
 GO
-ALTER DATABASE [Banking_System] SET ACCELERATED_DATABASE_RECOVERY = OFF  
+ALTER DATABASE [BankingSystem] SET ACCELERATED_DATABASE_RECOVERY = OFF  
 GO
-EXEC sys.sp_db_vardecimal_storage_format N'Banking_System', N'ON'
+EXEC sys.sp_db_vardecimal_storage_format N'BankingSystem', N'ON'
 GO
-ALTER DATABASE [Banking_System] SET QUERY_STORE = ON
+ALTER DATABASE [BankingSystem] SET QUERY_STORE = ON
 GO
-ALTER DATABASE [Banking_System] SET QUERY_STORE (OPERATION_MODE = READ_WRITE, CLEANUP_POLICY = (STALE_QUERY_THRESHOLD_DAYS = 30), DATA_FLUSH_INTERVAL_SECONDS = 900, INTERVAL_LENGTH_MINUTES = 60, MAX_STORAGE_SIZE_MB = 1000, QUERY_CAPTURE_MODE = AUTO, SIZE_BASED_CLEANUP_MODE = AUTO, MAX_PLANS_PER_QUERY = 200, WAIT_STATS_CAPTURE_MODE = ON)
+ALTER DATABASE [BankingSystem] SET QUERY_STORE (OPERATION_MODE = READ_WRITE, CLEANUP_POLICY = (STALE_QUERY_THRESHOLD_DAYS = 30), DATA_FLUSH_INTERVAL_SECONDS = 900, INTERVAL_LENGTH_MINUTES = 60, MAX_STORAGE_SIZE_MB = 1000, QUERY_CAPTURE_MODE = AUTO, SIZE_BASED_CLEANUP_MODE = AUTO, MAX_PLANS_PER_QUERY = 200, WAIT_STATS_CAPTURE_MODE = ON)
 GO
-USE [Banking_System]
+USE [BankingSystem]
 GO
-/****** Object:  Table [dbo].[Customer]    Script Date: 1/16/2025 8:43:57 AM ******/
+/****** Object:  Table [dbo].[Customer]    Script Date: 1/20/2025 4:43:23 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -86,106 +86,54 @@ GO
 CREATE TABLE [dbo].[Customer](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[Username] [nvarchar](50) NOT NULL,
-	[Password] [nvarchar](50) NOT NULL,
-	[FirstName] [varchar](10) NOT NULL,
-	[LastName] [varchar](10) NOT NULL,
+	[Password] [nvarchar](255) NOT NULL,
+	[Email] [nvarchar](255) NOT NULL,
+	[FirstName] [varchar](50) NOT NULL,
+	[LastName] [varchar](50) NOT NULL,
 	[Phone] [nvarchar](255) NOT NULL,
-	[Address] [nvarchar](255) NOT NULL,
-PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-/****** Object:  Table [dbo].[ChatConversation]    Script Date: 1/16/2025 8:43:57 AM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[ChatConversation](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[StaffId] [int] NULL,
-	[CusId] [int] NULL,
-	[DateCreate] [datetime] NOT NULL,
-PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-/****** Object:  Table [dbo].[ChatMessage]    Script Date: 1/16/2025 8:43:57 AM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[ChatMessage](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[ConId] [int] NULL,
-	[SenderType] [nvarchar](255) NOT NULL,
-	[SenderId] [int] NOT NULL,
-	[Description] [nvarchar](max) NOT NULL,
-	[DateCreate] [datetime] NULL,
-	[IsRead] [bit] NULL,
+	[Address] [nvarchar](max) NOT NULL,
+	[Wallet] [decimal](10, 2) NOT NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Deposition]    Script Date: 1/16/2025 8:43:57 AM ******/
+/****** Object:  Table [dbo].[DepHistory]    Script Date: 1/20/2025 4:43:23 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE TABLE [dbo].[Deposition](
+CREATE TABLE [dbo].[DepHistory](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[CusId] [int] NULL,
-	[DateCreate] [datetime] NOT NULL,
-	[Amount] [bigint] NOT NULL,
-	[Status] [nvarchar](255) NULL,
-PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-/****** Object:  Table [dbo].[History]    Script Date: 1/16/2025 8:43:57 AM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[History](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[CusId] [int] NULL,
-	[TransactionId] [int] NULL,
-	[SavingId] [int] NULL,
-	[LoanId] [int] NULL,
-PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-/****** Object:  Table [dbo].[HistoryInformation]    Script Date: 1/16/2025 8:43:57 AM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[HistoryInformation](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[HistoryId] [int] NULL,
-	[ServiceType] [nvarchar](255) NOT NULL,
-	[ServiceId] [int] NOT NULL,
-	[Description] [nvarchar](max) NOT NULL,
-	[DateCreate] [datetime] NOT NULL,
-	[Status] [nvarchar](255) NULL,
+	[DepId] [int] NULL,
+	[Discription] [nvarchar](max) NOT NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Loan]    Script Date: 1/16/2025 8:43:57 AM ******/
+/****** Object:  Table [dbo].[DepMoney]    Script Date: 1/20/2025 4:43:23 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[DepMoney](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[CusId] [int] NULL,
+	[DepAmount] [decimal](10, 2) NOT NULL,
+	[StartDate] [datetime] NOT NULL,
+	[EndDate] [datetime] NOT NULL,
+	[SavingRate] [decimal](10, 2) NOT NULL,
+	[DepType] [nvarchar](255) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Loan]    Script Date: 1/20/2025 4:43:23 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -196,15 +144,46 @@ CREATE TABLE [dbo].[Loan](
 	[StartDate] [datetime] NOT NULL,
 	[EndDate] [datetime] NOT NULL,
 	[DateExpired] [int] NULL,
-	[Amount] [bigint] NOT NULL,
-	[Status] [nvarchar](255) NULL,
+	[LoanAmount] [decimal](10, 2) NOT NULL,
+	[LoanStatus] [nvarchar](255) NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Role]    Script Date: 1/16/2025 8:43:57 AM ******/
+/****** Object:  Table [dbo].[LoanHistory]    Script Date: 1/20/2025 4:43:23 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[LoanHistory](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[LoanId] [int] NULL,
+	[Discription] [nvarchar](max) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[LoanPayment]    Script Date: 1/20/2025 4:43:23 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[LoanPayment](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[LoanId] [int] NULL,
+	[PaymentAmount] [decimal](10, 2) NOT NULL,
+	[PaidDate] [datetime] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Role]    Script Date: 1/20/2025 4:43:23 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -218,26 +197,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Saving]    Script Date: 1/16/2025 8:43:57 AM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[Saving](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[CusId] [int] NULL,
-	[Amount] [bigint] NOT NULL,
-	[StartDate] [datetime] NOT NULL,
-	[EndDate] [datetime] NOT NULL,
-	[Rate] [decimal](10, 2) NOT NULL,
-	[Status] [nvarchar](255) NULL,
-PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-/****** Object:  Table [dbo].[Staff]    Script Date: 1/16/2025 8:43:57 AM ******/
+/****** Object:  Table [dbo].[Staff]    Script Date: 1/20/2025 4:43:23 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -245,113 +205,49 @@ GO
 CREATE TABLE [dbo].[Staff](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[Username] [nvarchar](50) NOT NULL,
-	[Password] [nvarchar](50) NOT NULL,
-	[FirstName] [varchar](10) NOT NULL,
-	[LastName] [varchar](10) NOT NULL,
+	[Password] [nvarchar](255) NOT NULL,
+	[Email] [nvarchar](255) NOT NULL,
+	[FirstName] [varchar](50) NOT NULL,
+	[LastName] [varchar](50) NOT NULL,
 	[Phone] [nvarchar](255) NOT NULL,
-	[Address] [nvarchar](255) NOT NULL,
+	[Address] [nvarchar](max) NOT NULL,
+	[Salary] [decimal](10, 2) NOT NULL,
 	[RoleId] [int] NULL,
-PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-/****** Object:  Table [dbo].[Transaction]    Script Date: 1/16/2025 8:43:57 AM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[Transaction](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[SenderId] [int] NULL,
-	[ReceiverID] [int] NULL,
-	[DateCreate] [datetime] NOT NULL,
-	[Amount] [bigint] NOT NULL,
-	[Description] [nvarchar](max) NULL,
-	[TotalAmount] [bigint] NOT NULL,
-	[Status] [nvarchar](255) NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Wallet]    Script Date: 1/16/2025 8:43:57 AM ******/
-SET ANSI_NULLS ON
+ALTER TABLE [dbo].[Customer] ADD  DEFAULT ((50000.00)) FOR [Wallet]
 GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[Wallet](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[CusId] [int] NULL,
-	[Amount] [bigint] NOT NULL,
-PRIMARY KEY CLUSTERED 
-(
-	[Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-ALTER TABLE [dbo].[ChatMessage] ADD  DEFAULT (getdate()) FOR [DateCreate]
-GO
-ALTER TABLE [dbo].[ChatMessage] ADD  DEFAULT ((0)) FOR [IsRead]
-GO
-ALTER TABLE [dbo].[Deposition] ADD  DEFAULT (getdate()) FOR [DateCreate]
-GO
-ALTER TABLE [dbo].[HistoryInformation] ADD  DEFAULT (getdate()) FOR [DateCreate]
+ALTER TABLE [dbo].[DepMoney] ADD  DEFAULT (getdate()) FOR [StartDate]
 GO
 ALTER TABLE [dbo].[Loan] ADD  DEFAULT (getdate()) FOR [StartDate]
 GO
-ALTER TABLE [dbo].[Saving] ADD  DEFAULT (getdate()) FOR [StartDate]
+ALTER TABLE [dbo].[LoanPayment] ADD  DEFAULT (getdate()) FOR [PaidDate]
 GO
-ALTER TABLE [dbo].[Transaction] ADD  DEFAULT (getdate()) FOR [DateCreate]
+ALTER TABLE [dbo].[Staff] ADD  DEFAULT ((0.00)) FOR [Salary]
 GO
-ALTER TABLE [dbo].[ChatConversation]  WITH CHECK ADD FOREIGN KEY([CusId])
+ALTER TABLE [dbo].[DepHistory]  WITH CHECK ADD FOREIGN KEY([DepId])
+REFERENCES [dbo].[DepMoney] ([Id])
+GO
+ALTER TABLE [dbo].[DepMoney]  WITH CHECK ADD FOREIGN KEY([CusId])
 REFERENCES [dbo].[Customer] ([Id])
-GO
-ALTER TABLE [dbo].[ChatConversation]  WITH CHECK ADD FOREIGN KEY([StaffId])
-REFERENCES [dbo].[Staff] ([Id])
-GO
-ALTER TABLE [dbo].[ChatMessage]  WITH CHECK ADD FOREIGN KEY([ConId])
-REFERENCES [dbo].[ChatConversation] ([Id])
-GO
-ALTER TABLE [dbo].[Deposition]  WITH CHECK ADD FOREIGN KEY([CusId])
-REFERENCES [dbo].[Customer] ([Id])
-GO
-ALTER TABLE [dbo].[History]  WITH CHECK ADD FOREIGN KEY([CusId])
-REFERENCES [dbo].[Customer] ([Id])
-GO
-ALTER TABLE [dbo].[History]  WITH CHECK ADD FOREIGN KEY([LoanId])
-REFERENCES [dbo].[Loan] ([Id])
-GO
-ALTER TABLE [dbo].[History]  WITH CHECK ADD FOREIGN KEY([SavingId])
-REFERENCES [dbo].[Saving] ([Id])
-GO
-ALTER TABLE [dbo].[History]  WITH CHECK ADD FOREIGN KEY([TransactionId])
-REFERENCES [dbo].[Transaction] ([Id])
-GO
-ALTER TABLE [dbo].[HistoryInformation]  WITH CHECK ADD FOREIGN KEY([HistoryId])
-REFERENCES [dbo].[History] ([Id])
 GO
 ALTER TABLE [dbo].[Loan]  WITH CHECK ADD FOREIGN KEY([CusId])
 REFERENCES [dbo].[Customer] ([Id])
 GO
-ALTER TABLE [dbo].[Saving]  WITH CHECK ADD FOREIGN KEY([CusId])
-REFERENCES [dbo].[Customer] ([Id])
+ALTER TABLE [dbo].[LoanHistory]  WITH CHECK ADD FOREIGN KEY([LoanId])
+REFERENCES [dbo].[Loan] ([Id])
+GO
+ALTER TABLE [dbo].[LoanPayment]  WITH CHECK ADD FOREIGN KEY([LoanId])
+REFERENCES [dbo].[Loan] ([Id])
 GO
 ALTER TABLE [dbo].[Staff]  WITH CHECK ADD FOREIGN KEY([RoleId])
 REFERENCES [dbo].[Role] ([Id])
 GO
-ALTER TABLE [dbo].[Transaction]  WITH CHECK ADD FOREIGN KEY([ReceiverID])
-REFERENCES [dbo].[Customer] ([Id])
-GO
-ALTER TABLE [dbo].[Transaction]  WITH CHECK ADD FOREIGN KEY([SenderId])
-REFERENCES [dbo].[Customer] ([Id])
-GO
-ALTER TABLE [dbo].[Wallet]  WITH CHECK ADD FOREIGN KEY([CusId])
-REFERENCES [dbo].[Customer] ([Id])
-GO
 USE [master]
 GO
-ALTER DATABASE [Banking_System] SET  READ_WRITE 
+ALTER DATABASE [BankingSystem] SET  READ_WRITE 
 GO
