@@ -29,6 +29,10 @@
         <servlet-name>CustomerManagement</servlet-name>
         <servlet-class>Controller.CustomerManagement</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddCustomer</servlet-name>
+        <servlet-class>Controller.AddCustomer</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Register</servlet-name>
         <url-pattern>/register</url-pattern>
@@ -76,5 +80,9 @@
     <servlet-mapping>
         <servlet-name>CustomerManagement</servlet-name>
         <url-pattern>/customerManagement</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddCustomer</servlet-name>
+        <url-pattern>/addCustomer</url-pattern>
     </servlet-mapping>
 </web-app>
