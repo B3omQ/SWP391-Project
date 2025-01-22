@@ -57,7 +57,7 @@
                                 <div class="alert alert-danger text-center">${errorAccount}</div>
                             </c:if>
                             <!-- Login Form -->
-                            <form action="<%= request.getContextPath() %>/login" method="POST" class="login-form mt-4">
+                            <form action="<%= request.getContextPath() %>/AuthServlet?action=login" method="POST" class="login-form mt-4">
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <div class="mb-3">

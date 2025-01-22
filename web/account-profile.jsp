@@ -343,18 +343,7 @@
 
                             </div>
                         </div>                                        
-                        <div class="rounded shadow mt-4">
-                            <div class="p-4 border-bottom">
-                                <h5 class="mb-0 text-danger">Delete Account :</h5>
-                            </div>
-
-                            <div class="p-4">
-                                <h6 class="mb-0 fw-normal">Do you want to delete the account? Please press below "Delete" button</h6>
-                                <div class="mt-4">
-                                    <button class="btn btn-danger">Delete Account</button>
-                                </div><!--end col-->
-                            </div>
-                        </div>
+                        
                     </div><!--end col-->
                 </div><!--end row-->
             </div><!--end container-->

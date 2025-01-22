@@ -44,7 +44,7 @@
                     <div class="card login-page bg-white shadow mt-4 rounded border-0">
                         <div class="card-body">
                             <h4 class="text-center">Change Password</h4>
-                            <form action="<%= request.getContextPath() %>/changePassword" method="POST">
+<form action="<%= request.getContextPath() %>/AuthServlet?action=changePassword" method="POST">
                                 <div class="mb-3">
                                     <label for="fullName" class="form-label">Full Name <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Enter your full name" required>
