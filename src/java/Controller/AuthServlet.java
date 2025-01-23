@@ -46,46 +46,52 @@ public class AuthServlet extends HttpServlet {
             response.sendRedirect("login.jsp");
         }
     }
+private void handleLogin(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+    String email = request.getParameter("email");
+    String passWord = request.getParameter("password");
+    String rememberMe = request.getParameter("remember");
+    String encodedPassword = av.hashPassword(passWord);
 
-    private void handleLogin(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String email = request.getParameter("email");
-        String passWord = request.getParameter("password");
-        String rememberMe = request.getParameter("remember");
-        String encodedPassword = av.hashPassword(passWord);
-
-        Customer customer = customerDAO.Login(email, encodedPassword);
-
-        if (customer != null) {
-            handleRememberMe(response, email, passWord, rememberMe);
-            request.getSession().setAttribute("account", customer);
-            response.sendRedirect("Customer.jsp");
-            return;
-        }
-
-        Staff staff = staffDAO.getStaffByUsername(email);
-        if (staff != null && staff.getPassword().equals(encodedPassword)) {
-            handleRememberMe(response, email, passWord, rememberMe);
-            request.getSession().setAttribute("account", staff);
-            
-            switch (staff.getRole().getRoleId()) {
-                case 1:
-                    response.sendRedirect("Admin.jsp");
-                    break;
-                case 2:
-                    response.sendRedirect("Customer.jsp");
-                    break;
-                default:
-                    request.setAttribute("errorAccount", "Invalid role assigned to this account.");
-                    request.getRequestDispatcher("login.jsp").forward(request, response);
-                    break;
-            }
-            return;
-        }
-
-        request.setAttribute("errorAccount", "This account does not exist or wrong credentials.");
+    if (customerDAO.isAccountLocked(email)) {
+        request.setAttribute("errorAccount", "Tài khoản của bạn đã bị khóa. Vui lòng thử lại sau 10 phút.");
         request.getRequestDispatcher("login.jsp").forward(request, response);
+        return;
     }
+
+    Customer customer = customerDAO.login(email, encodedPassword);
+
+    if (customer != null) {
+        customerDAO.resetFailedLogin(email);
+        handleRememberMe(response, email, passWord, rememberMe);
+        request.getSession().setAttribute("account", customer);
+        response.sendRedirect("Customer.jsp");
+        return;
+    }
+
+    Staff staff = staffDAO.getStaffByUsername(email);
+    if (staff != null && staff.getPassword().equals(encodedPassword)) {
+        handleRememberMe(response, email, passWord, rememberMe);
+        request.getSession().setAttribute("account", staff);
+        response.sendRedirect(staff.getRole().getRoleId() == 1 ? "Admin.jsp" : "Customer.jsp");
+        return;
+    }
+
+    customerDAO.increaseFailedLogin(email);
+    if (customerDAO.isAccountLocked(email)) {
+        request.setAttribute("errorAccount", "Bạn đã nhập sai mật khẩu quá số lần cho phép. Tài khoản bị khóa trong 10 phút.");
+    } else {
+        int remainingAttempts = 3 - customerDAO.getFailedAttempts(email);
+if (remainingAttempts > 0) {
+    request.setAttribute("errorAccount", "Sai email hoặc mật khẩu. Bạn còn " + remainingAttempts + " lần thử.");
+} else {
+    request.setAttribute("errorAccount", "Bạn đã nhập sai mật khẩu quá số lần cho phép. Tài khoản bị khóa trong 10 phút.");
+}
+
+    }
+    request.getRequestDispatcher("login.jsp").forward(request, response);
+}
+
 
     private void handleLogout(HttpServletRequest request, HttpServletResponse response)
             throws IOException {

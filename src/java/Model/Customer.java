@@ -1,6 +1,7 @@
 package Model;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 public class Customer {
 
@@ -13,6 +14,8 @@ public class Customer {
     private String phone;
     private String address;
     private BigDecimal wallet; // Đổi sang kiểu BigDecimal để lưu số tiền
+    private int failedAttempts; // Số lần nhập sai mật khẩu
+    private LocalDateTime lockTime; // Thời gian khóa tài khoản
 
     // Constructor không tham số
     public Customer() {
@@ -20,7 +23,8 @@ public class Customer {
 
     // Constructor với tất cả các tham số
     public Customer(int id, String username, String password, String email, 
-                    String firstName, String lastName, String phone, String address, BigDecimal wallet) {
+                    String firstName, String lastName, String phone, String address, 
+                    BigDecimal wallet, int failedAttempts, LocalDateTime lockTime) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -30,6 +34,8 @@ public class Customer {
         this.phone = phone;
         this.address = address;
         this.wallet = wallet;
+        this.failedAttempts = failedAttempts;
+        this.lockTime = lockTime;
     }
 
     // Getters và Setters
@@ -103,5 +109,21 @@ public class Customer {
 
     public void setWallet(BigDecimal wallet) {
         this.wallet = wallet;
+    }
+
+    public int getFailedAttempts() {
+        return failedAttempts;
+    }
+
+    public void setFailedAttempts(int failedAttempts) {
+        this.failedAttempts = failedAttempts;
+    }
+
+    public LocalDateTime getLockTime() {
+        return lockTime;
+    }
+
+    public void setLockTime(LocalDateTime lockTime) {
+        this.lockTime = lockTime;
     }
 }

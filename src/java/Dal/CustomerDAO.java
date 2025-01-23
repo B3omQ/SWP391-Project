@@ -1,63 +1,86 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Dal;
 
 import Model.Customer;
-import Model.Role;
 import Validation.AccountValidation;
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
-/**
- *
- * @author emkob
- */
 public class CustomerDAO extends DBContext {
 
     private AccountValidation av = new AccountValidation();
 
-   public Customer Login(String email, String password) {
-    String sql = "SELECT * FROM [dbo].[Customer] WHERE Email = ? AND Password = ?";
-    try (PreparedStatement p = connection.prepareStatement(sql)) {
-        p.setString(1, email);
-        p.setString(2, password);
-        try (ResultSet rs = p.executeQuery()) {
+    public Customer login(String email, String password) {
+        if (isAccountLocked(email)) {
+            return null; // Tài khoản đang bị khóa
+        }
+        
+        String sql = "SELECT * FROM [dbo].[Customer] WHERE Email = ?";
+        try (PreparedStatement p = connection.prepareStatement(sql)) {
+            p.setString(1, email);
+            try (ResultSet rs = p.executeQuery()) {
+                if (rs.next()) {
+                    if (rs.getString("Password").equals(password)) {
+                        resetFailedLogin(email);
+                        return mapResultSetToCustomer(rs);
+                    } else {
+                        increaseFailedLogin(email);
+                        if (rs.getInt("failed_attempts") + 1 >= 3) {
+                            lockAccount(email);
+                        }
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+public boolean isAccountLocked(String email) {
+    String sql = "SELECT failed_attempts, lock_time FROM Customer WHERE Email = ?";
+    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        ps.setString(1, email);
+        try (ResultSet rs = ps.executeQuery()) {
             if (rs.next()) {
-                return new Customer(
-                    rs.getInt("Id"),
-                    rs.getString("Username"),    
-                    rs.getString("Password"),    
-                    rs.getString("Email"),       
-                    rs.getString("FirstName"),   
-                    rs.getString("LastName"),    
-                    rs.getString("Phone"),       
-                    rs.getString("Address"),    
-                    rs.getBigDecimal("Wallet")   
-                );
+                int failedAttempts = rs.getInt("failed_attempts");
+                Timestamp lockTime = rs.getTimestamp("lock_time");
+
+                if (lockTime != null) {
+                    long timeElapsed = System.currentTimeMillis() - lockTime.getTime();
+                    if (timeElapsed < 10 * 60 * 1000) {
+                        return true; // Vẫn bị khóa
+                    } else {
+                        resetFailedLogin(email);
+                    }
+                }
+
+                // Nếu `failed_attempts >= 3` mà `lock_time = NULL`, tự động khóa tài khoản
+                if (failedAttempts >= 3 && lockTime == null) {
+                    lockAccount(email);
+                    return true;
+                }
             }
         }
     } catch (SQLException e) {
-        e.printStackTrace(); 
+        e.printStackTrace();
     }
-    return null;
+    return false;
 }
-   
-public void updatePassword(String newPassword, String email) {
-    String sql = "UPDATE Customer SET Password = ? WHERE Email = ?";
 
-    try (PreparedStatement p = connection.prepareStatement(sql)) {
-        p.setString(1, newPassword);
-        p.setString(2, email);
-        p.executeUpdate();
-    } catch (SQLException e) {
-        e.printStackTrace(); 
+
+    public void updatePassword(String newPassword, String email) {
+        String sql = "UPDATE Customer SET Password = ? WHERE Email = ?";
+        try (PreparedStatement p = connection.prepareStatement(sql)) {
+            p.setString(1, newPassword);
+            p.setString(2, email);
+            p.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
-}
 
     public boolean checkCustomerExists(String email) {
         String sql = "SELECT * FROM [dbo].[Customer] WHERE Email = ?";
@@ -71,105 +94,132 @@ public void updatePassword(String newPassword, String email) {
         }
         return false;
     }
-public boolean updatePasswordById(int customerId, String newPassword) {
-    String sql = "UPDATE [dbo].[Customer] SET Password = ? WHERE Id = ?";
-    try (PreparedStatement p = connection.prepareStatement(sql)) {
-        AccountValidation accountValidation = new AccountValidation();
-        String hashedPassword = accountValidation.hashPassword(newPassword);
-        
-        p.setString(1, hashedPassword);
-        p.setInt(2, customerId);  
-        
-        int rowsAffected = p.executeUpdate();
-        return rowsAffected > 0; 
+
+    public Customer getCustomerById(int id) {
+        String sql = "SELECT * FROM [dbo].[Customer] WHERE Id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return mapResultSetToCustomer(rs);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Customer getCustomerByEmail(String email) {
+        String sql = "SELECT * FROM [dbo].[Customer] WHERE Email = ?";
+        try (PreparedStatement p = connection.prepareStatement(sql)) {
+            p.setString(1, email);
+            try (ResultSet rs = p.executeQuery()) {
+                if (rs.next()) {
+                    return mapResultSetToCustomer(rs);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+public void increaseFailedLogin(String email) {
+    String sql = "UPDATE Customer SET failed_attempts = failed_attempts + 1 WHERE Email = ?";
+    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        ps.setString(1, email);
+        ps.executeUpdate();
     } catch (SQLException e) {
         e.printStackTrace();
-        return false; 
+    }
+
+    // Kiểm tra lại failed_attempts ngay sau khi cập nhật
+    if (getFailedAttempts(email) >= 3) {
+        lockAccount(email);
     }
 }
 
 
+    public void resetFailedLogin(String email) {
+        String sql = "UPDATE Customer SET failed_attempts = 0, lock_time = NULL WHERE Email = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, email);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
- 
-public Customer getCustomerById(int Id) {
-    String sql = "SELECT * FROM [dbo].[Customer] WHERE Id = ?";
+  public void lockAccount(String email) {
+    String sql = "UPDATE Customer SET lock_time = ?, failed_attempts = 0 WHERE Email = ?";
     try (PreparedStatement ps = connection.prepareStatement(sql)) {
-        ps.setInt(1, Id);
+        ps.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now()));
+        ps.setString(2, email);
+        ps.executeUpdate();
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+}
+
+
+    public boolean updatePasswordById(int customerId, String newPassword) {
+        String sql = "UPDATE [dbo].[Customer] SET Password = ? WHERE Id = ?";
+        try (PreparedStatement p = connection.prepareStatement(sql)) {
+            String hashedPassword = av.hashPassword(newPassword);
+            p.setString(1, hashedPassword);
+            p.setInt(2, customerId);
+            int rowsAffected = p.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean updatePasswordByEmail(String email, String password) {
+        String sql = "UPDATE [dbo].[Customer] SET Password = ? WHERE Email = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            String hashedPassword = av.hashPassword(password);
+            ps.setString(1, hashedPassword);
+            ps.setString(2, email);
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    private Customer mapResultSetToCustomer(ResultSet rs) throws SQLException {
+        return new Customer(
+            rs.getInt("Id"),
+            rs.getString("Username"),
+            rs.getString("Password"),
+            rs.getString("Email"),
+            rs.getString("FirstName"),
+            rs.getString("LastName"),
+            rs.getString("Phone"),
+            rs.getString("Address"),
+            rs.getBigDecimal("Wallet"),
+            rs.getInt("failed_attempts"),
+            rs.getTimestamp("lock_time") != null ? rs.getTimestamp("lock_time").toLocalDateTime() : null
+        );
+    }
+    public int getFailedAttempts(String email) {
+    String sql = "SELECT failed_attempts FROM Customer WHERE Email = ?";
+    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        ps.setString(1, email);
         try (ResultSet rs = ps.executeQuery()) {
             if (rs.next()) {
-                return new Customer(
-                        rs.getInt("Id"),
-                        rs.getString("Username"),  
-                        rs.getString("Password"),  
-                        rs.getString("Email"),    
-                        rs.getString("FirstName"),
-                        rs.getString("LastName"),  
-                        rs.getString("Phone"),   
-                        rs.getString("Address"),   
-                        rs.getBigDecimal("Wallet") 
-                );
+                return rs.getInt("failed_attempts");
             }
         }
     } catch (SQLException e) {
         e.printStackTrace();
     }
-    return null;
+    return 0;
 }
 
-public boolean updatePasswordByEmail(String email, String password) {
-    String sql = "UPDATE Customer SET Password = ? WHERE Email = ?"; 
-    try (PreparedStatement ps = connection.prepareStatement(sql)) {
-        ps.setString(1, password);
-        ps.setString(2, email);
-        int rowsAffected = ps.executeUpdate();
-        return rowsAffected > 0;
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-    return false;
-}
-
-public Customer getCustomerByEmail(String email) {
-    String sql = "SELECT * FROM Customer WHERE Email = ?";
-    try (PreparedStatement p = connection.prepareStatement(sql)) {
-        p.setString(1, email);
-        try (ResultSet rs = p.executeQuery()) {
-            if (rs.next()) {
-                return new Customer(
-                        rs.getInt("Id"),
-                        rs.getString("Username"),  
-                        rs.getString("Password"), 
-                        rs.getString("Email"),     
-                        rs.getString("FirstName"), 
-                        rs.getString("LastName"),  
-                        rs.getString("Phone"),    
-                        rs.getString("Address"),   
-                        rs.getBigDecimal("Wallet") 
-                );
-            }
-        }
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-    return null;
-}
-public boolean updateCustomerInfo(Customer customer) {
-    String sql = "UPDATE [dbo].[Customer] SET Username = ?, Email = ?, FirstName = ?, LastName = ?, Phone = ?, Address = ? WHERE Id = ?";
-    try (PreparedStatement ps = connection.prepareStatement(sql)) {
-        ps.setString(1, customer.getUsername());
-        ps.setString(2, customer.getEmail());
-        ps.setString(3, customer.getFirstName());
-        ps.setString(4, customer.getLastName());
-        ps.setString(5, customer.getPhone());
-        ps.setString(6, customer.getAddress());
-        ps.setInt(7, customer.getId());
-
-        int rowsAffected = ps.executeUpdate();
-        return rowsAffected > 0;
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-    return false;
-}
 
 }
