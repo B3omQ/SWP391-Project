@@ -49,6 +49,10 @@
         <servlet-name>EditStaff</servlet-name>
         <servlet-class>Controller.EditStaff</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeleteStaff</servlet-name>
+        <servlet-class>Controller.DeleteStaff</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Register</servlet-name>
         <url-pattern>/register</url-pattern>
@@ -116,5 +120,9 @@
     <servlet-mapping>
         <servlet-name>EditStaff</servlet-name>
         <url-pattern>/editStaff</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteStaff</servlet-name>
+        <url-pattern>/deleteStaff</url-pattern>
     </servlet-mapping>
 </web-app>
