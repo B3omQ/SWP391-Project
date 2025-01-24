@@ -4,7 +4,7 @@
     <%@ page contentType="text/html;charset=UTF-8" language="java" %>
     <head>
         <meta charset="utf-8" />
-        <title>SmartBanking</title>
+        <title>Doctris - Doctor Appointment Booking System</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="Premium Bootstrap 4 Landing Page Template" />
         <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health" />
@@ -381,7 +381,7 @@
                                 <nav aria-label="breadcrumb" class="d-inline-block mt-2">
                                     <ul class="breadcrumb breadcrumb-muted bg-transparent rounded mb-0 p-0">
                                         <li class="breadcrumb-item"><a href="index.html">Doctris</a></li>
-                                        <li class="breadcrumb-item active" aria-current="page">Appointment</li>
+                                        <li class="breadcrumb-item active" aria-current="page">User Management</li>
                                     </ul>
                                 </nav>
                             </div><!--end col-->
@@ -402,7 +402,8 @@
 
                                             <div class="col-sm-12 col-md-7 mt-4 mt-sm-0">
                                                 <div class="d-grid">
-                                                    <a href="addStaff.jsp" class="btn btn-primary">Add</a>
+                                                    <a href="#" class="btn btn-primary" data-bs-toggle="modal"
+                                                       data-bs-target="#appointmentform">Appointment</a>
                                                 </div>
                                             </div><!--end col-->
                                         </div><!--end row-->
@@ -411,76 +412,140 @@
                             </div><!--end col-->
                         </div><!--end row-->
 
-                        <div class="row">
-                            <div class="col-12 mt-4">
-
-                                <form action="<%= request.getContextPath() %>/staffManagement" method="get">
-                                    <div class="table-responsive bg-white shadow rounded">
-                                        <table class="table table-bordered table-hover">
-                                            <thead class="thead-dark">
-                                                <tr>
-                                                    <th>#</th>
-                                                    <th>Username</th>
-                                                    <th>Name</th>
-                                                    <th>Email</th>                                                  
-                                                    <th>Phone</th>
-                                                    <th>Address</th>
-                                                    <th>Salary</th>
-                                                    <th>Role</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-
-                                                <c:if test="${empty staffs}">
-                                                    <tr>
-                                                        <td colspan="8" class="text-center">No staffs available.</td>
-                                                    </tr>
-                                                </c:if>
 
 
-                                                <c:forEach var="staff" items="${staffs}">
-                                                    <tr>
-                                                        <td>${staff.id}</td>
-                                                        <td>${staff.username}</td>
-                                                        <td>${staff.firstName} ${staff.lastName}</td>
-                                                        <td>${staff.email}</td>
-                                                        <td>${staff.phone}</td>                                                       
-                                                        <td>${staff.address}</td>
-                                                        <td>${staff.salary}</td>
-                                                        <td>${staff.role != null ? staff.role.roleName : 'No Role'}</td>
-                                                        <td>                                                           
-                                                            <button type="button" class="btn btn-warning btn-sm" onclick="editStaff('${staff.id}')">Edit</button>
-                                                            <button type="button" class="btn btn-danger btn-sm" onclick="deleteStaff('${staff.id}')">Delete</button>
-                                                        </td>
-                                                    </tr>
-                                                </c:forEach>
-                                            </tbody>
-                                        </table>
+                        <div class="row justify-content-center">
+                            <div class="col-10 mt-4">
+                                <div class="card login-page bg-white shadow mt-4 rounded border-0">
+                                    <div class="card-body">
+                                        <h4 class="text-center">Edit</h4>
+
+
+                                        <c:if test="${not empty successMessage}">
+                                            <div class="alert alert-success text-center">
+                                                ${successMessage}
+                                            </div>
+                                        </c:if>
+
+
+                                        <form action="<%= request.getContextPath() %>/editStaff" method="post" class="login-form mt-4">
+                                            <div class="row">
+
+                                                <!-- ID -->
+                                                <div class="col-md-12">
+                                                    <div class="mb-3">
+                                                        <label>ID</label>
+                                                        <input type="text" class="form-control" name="id" value="${staff.id}" readonly>
+                                                        <c:if test="${not empty errorID}">
+                                                            <span class="text-danger">${errorID}</span>
+                                                        </c:if>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Username -->
+                                                <div class="col-md-12">
+                                                    <div class="mb-3">
+                                                        <label>Username</label>
+                                                        <input type="text" class="form-control" name="username" value="${staff.username}">
+                                                        <c:if test="${not empty errorUsername}">
+                                                            <span class="text-danger">${errorUsername}</span>
+                                                        </c:if>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Email -->
+                                                <div class="col-md-12">
+                                                    <div class="mb-3">
+                                                        <label>Email</label>
+                                                        <input type="email" class="form-control" name="email" value="${staff.email}">
+                                                        <c:if test="${not empty errorEmail}">
+                                                            <span class="text-danger">${errorEmail}</span>
+                                                        </c:if>
+                                                    </div>
+                                                </div>
+
+                                                <!-- First Name -->
+                                                <div class="col-md-12">
+                                                    <div class="mb-3">
+                                                        <label>First Name</label>
+                                                        <input type="text" class="form-control" name="firstName" value="${staff.firstName}">
+                                                        <c:if test="${not empty errorFirstName}">
+                                                            <span class="text-danger">${errorFirstName}</span>
+                                                        </c:if>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Last Name -->
+                                                <div class="col-md-12">
+                                                    <div class="mb-3">
+                                                        <label>Last Name</label>
+                                                        <input type="text" class="form-control" name="lastName" value="${staff.lastName}">
+                                                        <c:if test="${not empty errorLastName}">
+                                                            <span class="text-danger">${errorLastName}</span>
+                                                        </c:if>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Phone Number -->
+                                                <div class="col-md-12">
+                                                    <div class="mb-3">
+                                                        <label>Phone Number</label>
+                                                        <input type="text" class="form-control" name="phone" value="${staff.phone}">
+                                                        <c:if test="${not empty errorPhone}">
+                                                            <span class="text-danger">${errorPhone}</span>
+                                                        </c:if>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Address -->
+                                                <div class="col-md-12">
+                                                    <div class="mb-3">
+                                                        <label>Address</label>
+                                                        <input type="text" class="form-control" name="address" value="${staff.address}">
+                                                        <c:if test="${not empty errorAddress}">
+                                                            <span class="text-danger">${errorAddress}</span>
+                                                        </c:if>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Salary -->
+                                                <div class="col-md-12">
+                                                    <div class="mb-3">
+                                                        <label>Salary</label>
+                                                        <input type="number" step="0.01" class="form-control" name="salary" value="${staff.salary}" required>
+                                                        <c:if test="${not empty errorSalary}">
+                                                            <span class="text-danger">${errorSalary}</span>
+                                                        </c:if>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Role -->
+                                                <div class="col-md-12">
+                                                    <div class="mb-3">
+                                                        <label>Role</label>
+                                                        <select id="role" class="form-control" name="role" required>
+                                                            <option value="Admin" <c:if test="${staff.role.roleId == 1}">selected</c:if>>Admin</option>
+                                                            <option value="Accountant" <c:if test="${staff.role.roleId == 2}">selected</c:if>>Accountant</option>
+                                                            <option value="Sale" <c:if test="${staff.role.roleId == 3}">selected</c:if>>Sale</option>  
+                                                            <option value="Manager" <c:if test="${staff.role.roleId == 4}">selected</c:if>>Manager</option>  
+                                                        </select>
+                                                    </div>
+                                                </div>        
+
+                                                <div class="row justify-content-center">
+                                                    <div class="col-md-10 text-center">
+                                                        <button type="submit" class="btn btn-primary">Confirm</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>           
+
+
                                     </div>
-                                </form>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="row text-center">
-                            <!-- PAGINATION START -->
-                            <div class="col-12 mt-4">
-                                <div class="d-md-flex align-items-center text-center justify-content-between">
-                                    <span class="text-muted me-3">Showing 1 - 10 out of 50</span>
-                                    <ul class="pagination justify-content-center mb-0 mt-3 mt-sm-0">
-                                        <li class="page-item"><a class="page-link" href="javascript:void(0)"
-                                                                 aria-label="Previous">Prev</a></li>
-                                        <li class="page-item active"><a class="page-link" href="javascript:void(0)">1</a>
-                                        </li>
-                                        <li class="page-item"><a class="page-link" href="javascript:void(0)">2</a></li>
-                                        <li class="page-item"><a class="page-link" href="javascript:void(0)">3</a></li>
-                                        <li class="page-item"><a class="page-link" href="javascript:void(0)"
-                                                                 aria-label="Next">Next</a></li>
-                                    </ul>
-                                </div>
-                            </div><!--end col-->
-                            <!-- PAGINATION END -->
-                        </div><!--end row-->
                     </div>
                 </div><!--end container-->
 
@@ -526,16 +591,6 @@
         <script src="<%= request.getContextPath() %>/assets/js/feather.min.js"></script>
         <!-- Main Js -->
         <script src="<%= request.getContextPath() %>/assets/js/app.js"></script>
-        <script>
-                                                    function editStaff(ID) {
-                                                        window.location.href = `editStaff?uid=` + ID;
-                                                    }
-                                                    function deleteStaff(ID) {
-                                                        if (confirm("Are you sure to delete staff with id = " + ID)) {
-                                                            window.location = "deleteStaff?uid=" + ID;
-                                                        }
-                                                    }
-        </script>
 
     </body>
 

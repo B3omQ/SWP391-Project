@@ -52,7 +52,7 @@ public class StaffDAO extends DBContext {
     }
 
     public Staff getStaffByEmail(String email) {
-        String sql = " SELECT * FROM Staff s LEFT JOIN Role r on s.RoleId = r.Id WHERE Email = ?";
+        String sql = " SELECT * FROM Staff s LEFT JOIN Role r on s.RoleId = r.Id WHERE s.Email = ?";
         try (PreparedStatement p = connection.prepareStatement(sql)) {
             p.setString(1, email);
             try (ResultSet rs = p.executeQuery()) {
@@ -91,6 +91,33 @@ public class StaffDAO extends DBContext {
             e.printStackTrace();
         }
         return -1; // Return -1 if not found
+    }
+
+    public Staff getStaffById(int id) {
+        String sql = " SELECT * FROM Staff s LEFT JOIN Role r on s.RoleId = r.Id WHERE s.Id = ?";
+        try (PreparedStatement p = connection.prepareStatement(sql)) {
+            p.setInt(1, id);
+            try (ResultSet rs = p.executeQuery()) {
+                if (rs.next()) {
+                    return new Staff(
+                            rs.getInt("Id"),
+                            rs.getString("Username"),
+                            rs.getString("Password"),
+                            rs.getString("Email"),
+                            rs.getString("FirstName"),
+                            rs.getString("LastName"),
+                            rs.getString("Phone"),
+                            rs.getString("Address"),
+                            rs.getBigDecimal("Salary"),
+                            // Assuming Role is another class and handled appropriately
+                            new Role(rs.getInt("Id"), rs.getString("Name")) // Modify as needed
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; // Return null if no staff found
     }
 
     public boolean addStaff(String username, String password, String email,
@@ -155,8 +182,34 @@ public class StaffDAO extends DBContext {
         return staffList; // Return the populated list of staff
     }
 
+    public void updateStaffInfo(Staff x, int id) {
+        String sql = "UPDATE Staff SET \n"
+                + "	Username = ?,\n"
+                + "	Email = ?,\n"
+                + "	FirstName = ?,\n"
+                + "	LastName = ?,\n"
+                + "	Phone = ?,\n"
+                + "	Address = ?,\n"
+                + "	RoleId = ?\n"
+                + "WHERE Id = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, x.getUsername());
+            ps.setString(2, x.getEmail());
+            ps.setString(3, x.getFirstName());
+            ps.setString(4, x.getLastName());
+            ps.setString(5, x.getPhone());
+            ps.setString(6, x.getAddress());
+            ps.setInt(7, x.getRole().getRoleId());
+            ps.setInt(8, id);
+            ps.executeUpdate();
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) {
         StaffDAO s = new StaffDAO();
-        System.out.println(s.getStaffByEmail("user5@gmail.com"));
+        System.out.println(s.getStaffById(1));
     }
 }
