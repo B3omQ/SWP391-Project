@@ -53,9 +53,16 @@
                         <div class="card-body">
                             <h4 class="text-center">Login</h4>
                             <!-- Error Message -->
-                            <c:if test="${not empty errorAccount}">
-                                <div class="alert alert-danger text-center">${errorAccount}</div>
-                            </c:if>
+                          <%
+    String errorAccount = (String) session.getAttribute("errorAccount");
+    if (errorAccount != null) {
+%>
+    <div class="alert alert-danger text-center"><%= errorAccount %></div>
+<%
+        session.removeAttribute("errorAccount");  // Xóa l?i ngay sau khi hi?n th?
+    }
+%>
+
                             <!-- Login Form -->
                             <form action="<%= request.getContextPath() %>/AuthServlet?action=login" method="POST" class="login-form mt-4">
                                 <div class="row">
