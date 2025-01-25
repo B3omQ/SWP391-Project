@@ -82,13 +82,8 @@ private void handleLogin(HttpServletRequest request, HttpServletResponse respons
         session.setAttribute("account", staff);
         response.sendRedirect(staff.getRole().getRoleId() == 1 ? "Admin.jsp" : "Customer.jsp");
         return;
-    }
-
-    // Chỉ tăng số lần thất bại một lần
-    if (!customerDAO.isAccountLocked(email)) {
-        customerDAO.increaseFailedLogin(email);
-    }
-
+    } 
+    
     if (customerDAO.isAccountLocked(email)) {
         session.setAttribute("errorAccount", "Bạn đã nhập sai mật khẩu quá số lần cho phép. Tài khoản bị khóa trong 10 phút.");
     } else {
