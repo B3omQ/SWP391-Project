@@ -1,0 +1,29 @@
+[33m6a2f375[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mdai[m[33m, [m[1;31morigin/dai[m[33m)[m Fix giảm fail_attemps về 1 thay vì 2
+[33m2b7ce7f[m Fix lỗi thông báo vẫn hiện khi F5
+[33mb2fb33a[m Update số lần đăng nhập
+[33m3107deb[m Cấu trúc lại controller
+[33m7735a39[m Fix template reset pass
+[33m8e0ee89[m Change pass in setting
+[33m81df208[m Thêm Staff và StaffDAO cho login
+[33m46812ea[m Update lại theo database
+[33md955d96[m Thêm hiển thị mật khẩu
+[33m5da33c6[m Thêm tính năng send email
+[33m760c3fd[m[33m ([m[1;32mmaster[m[33m)[m Thêm tính năng send email
+[33m0ee7c00[m[33m ([m[1;31morigin/long[m[33m)[m Update user-management.jsp: button Add and link addUser.jsp
+[33m985fc8f[m Update Admin.jsp: rename button User Management and change link when click it
+[33m9ba75af[m Add AddUser.java
+[33m17553d9[m Add addUser.jsp
+[33m163dbd4[m Update AccountDAO: add method addUser
+[33m75829c4[m Add DeleteUser
+[33md017201[m Update AccountDAO: add method deleteUser(int id)
+[33m3134f04[m Update AccountDAO: add method editUser and getAccountById; Add editUser.jsp and EditUser.java
+[33m60c5f6d[m Update user-management.jsp: add events when click Edit or Delete
+[33m951f34e[m Modify user-management.jsp: Click Account Management -> /userManager
+[33m2e1a222[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m Merge pull request #10 from B3omQ/dung
+[33m7e378ef[m[33m ([m[1;31morigin/dung[m[33m)[m update database
+[33m6434078[m Merge pull request #9 from B3omQ/long
+[33ma400052[m Update session
+[33me96d80c[m Update mã hoá mật khẩu
+[33m7712c09[m Mã hoá mật khẩu
+[33m6ba4efc[m Adding user-manager
+[33mbfc6151[m First : 13/1

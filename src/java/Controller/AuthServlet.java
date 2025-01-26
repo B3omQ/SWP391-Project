@@ -51,6 +51,7 @@ private void handleLogin(HttpServletRequest request, HttpServletResponse respons
     String email = request.getParameter("email");
     String passWord = request.getParameter("password");
     String rememberMe = request.getParameter("remember");
+        String encodedPassword = av.hashPassword(passWord);
 
     HttpSession session = request.getSession();  // Dùng session để lưu lỗi
 
@@ -66,11 +67,11 @@ private void handleLogin(HttpServletRequest request, HttpServletResponse respons
         return;
     }
 
-    Customer customer = customerDAO.login(email, passWord);
+    Customer customer = customerDAO.login(email, encodedPassword);
 
     if (customer != null) {
         customerDAO.resetFailedLogin(email);
-        handleRememberMe(response, email, passWord, rememberMe);
+        handleRememberMe(response, email, encodedPassword, rememberMe);
         session.setAttribute("account", customer);
         response.sendRedirect("Customer.jsp");
         return;

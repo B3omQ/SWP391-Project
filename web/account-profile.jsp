@@ -243,50 +243,49 @@
                             </div>
 
                             <div class="p-4">
-                                <form>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="mb-3">
-                                                <label class="form-label">First Name</label>
-                                                <input name="name" id="name" type="text" class="form-control" placeholder="First Name :">
-                                            </div>
-                                        </div><!--end col-->
+                                
+<form action="UpdateAccountServlet" method="post">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label class="form-label">First Name</label>
+                <input name="firstName" id="firstName" type="text" class="form-control" 
+                       placeholder="First Name" value="<%= customer.getFirstName() %>">
+            </div>
+        </div><!--end col-->
 
-                                        <div class="col-md-6">
-                                            <div class="mb-3">
-                                                <label class="form-label">Last Name</label>
-                                                <input name="name" id="name2" type="text" class="form-control" placeholder="Last Name :">
-                                            </div>
-                                        </div><!--end col-->
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label class="form-label">Last Name</label>
+                <input name="lastName" id="lastName" type="text" class="form-control" 
+                       placeholder="Last Name" value="<%= customer.getLastName() %>">
+            </div>
+        </div><!--end col-->
 
-                                        <div class="col-md-6">
-                                            <div class="mb-3">
-                                                <label class="form-label">Your Email</label>
-                                                <input name="email" id="email" type="email" class="form-control" placeholder="Your email :">
-                                            </div> 
-                                        </div><!--end col-->
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label class="form-label">Your Email</label>
+                <input name="email" id="email" type="email" class="form-control" 
+                       placeholder="Your Email" value="<%= customer.getEmail() %>" readonly>
+            </div> 
+        </div><!--end col-->
 
-                                        <div class="col-md-6">
-                                            <div class="mb-3">
-                                                <label class="form-label">Phone no.</label>
-                                                <input name="number" id="number" type="text" class="form-control" placeholder="Phone no. :">
-                                            </div>                                                                               
-                                        </div><!--end col-->
-
-                                        <div class="col-md-12">
-                                            <div class="mb-3">
-                                                <label class="form-label">Your Bio Here</label>
-                                                <textarea name="comments" id="comments" rows="4" class="form-control" placeholder="Bio :"></textarea>
-                                            </div>
-                                        </div>
-                                    </div><!--end row-->
-                                    
-                                    <div class="row">
-                                        <div class="col-sm-12">
-                                            <input type="submit" id="submit" name="send" class="btn btn-primary" value="Save changes">
-                                        </div><!--end col-->
-                                    </div><!--end row-->
-                                </form><!--end form--> 
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label class="form-label">Phone no.</label>
+                <input name="phone" id="phone" type="text" class="form-control" 
+                       placeholder="Phone no." value="<%= customer.getPhone() %>">
+            </div>                                                                               
+        </div><!--end col-->
+    </div><!--end row-->
+    
+    <div class="row">
+        <div class="col-sm-12">
+            <input type="hidden" name="id" value="<%= customer.getId() %>">
+            <input type="submit" id="submit" name="send" class="btn btn-primary" value="Save changes">
+        </div><!--end col-->
+    </div><!--end row-->
+</form>-end form--> 
                             </div>
                         </div>
 

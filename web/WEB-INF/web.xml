@@ -45,6 +45,10 @@
         <servlet-name>AuthServlet</servlet-name>
         <servlet-class>Controller.AuthServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AccountSettings</servlet-name>
+        <servlet-class>Controller.AccountSettings</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Register</servlet-name>
         <url-pattern>/register</url-pattern>
@@ -104,5 +108,9 @@
     <servlet-mapping>
         <servlet-name>AuthServlet</servlet-name>
         <url-pattern>/AuthServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AccountSettings</servlet-name>
+        <url-pattern>/AccountSettings</url-pattern>
     </servlet-mapping>
 </web-app>

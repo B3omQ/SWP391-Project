@@ -70,6 +70,21 @@ public class CustomerDAO extends DBContext {
     }
 
 
+    public boolean updateCustomer(Customer customer) {
+        String sql = "UPDATE customers SET first_name = ?, last_name = ?, email = ?, phone = ?, address = ? WHERE id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, customer.getFirstName());
+            ps.setString(2, customer.getLastName());
+            ps.setString(3, customer.getEmail());
+            ps.setString(4, customer.getPhone());
+            ps.setString(5, customer.getAddress());
+            ps.setInt(6, customer.getId());
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
     public void updatePassword(String newPassword, String email) {
         String sql = "UPDATE Customer SET Password = ? WHERE Email = ?";
         try (PreparedStatement p = connection.prepareStatement(sql)) {
