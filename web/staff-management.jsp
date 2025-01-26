@@ -466,16 +466,32 @@
                             <!-- PAGINATION START -->
                             <div class="col-12 mt-4">
                                 <div class="d-md-flex align-items-center text-center justify-content-between">
-                                    <span class="text-muted me-3">Showing 1 - 10 out of 50</span>
+                                    <span class="text-muted me-3">
+                                        <c:if test="${page == endPage}">
+                                            <c:if test="${(page - 1)* recordsPerPage + 1 == numberOfRecords}">
+                                                Showing ${numberOfRecords} out of ${numberOfRecords}
+                                            </c:if>
+                                            <c:if test="${(page - 1)* recordsPerPage + 1 != numberOfRecords}">
+                                                Showing ${(page - 1)* recordsPerPage + 1} - ${numberOfRecords} out of ${numberOfRecords}
+                                            </c:if>    
+                                        </c:if>
+                                        <c:if test="${page != endPage}">
+                                            Showing ${(page - 1)* recordsPerPage + 1} - ${page * recordsPerPage} out of ${numberOfRecords}
+                                        </c:if>
+                                    </span>                                    
                                     <ul class="pagination justify-content-center mb-0 mt-3 mt-sm-0">
-                                        <li class="page-item"><a class="page-link" href="javascript:void(0)"
-                                                                 aria-label="Previous">Prev</a></li>
-                                        <li class="page-item active"><a class="page-link" href="javascript:void(0)">1</a>
-                                        </li>
-                                        <li class="page-item"><a class="page-link" href="javascript:void(0)">2</a></li>
-                                        <li class="page-item"><a class="page-link" href="javascript:void(0)">3</a></li>
-                                        <li class="page-item"><a class="page-link" href="javascript:void(0)"
-                                                                 aria-label="Next">Next</a></li>
+                                        <!-- Prev -->
+                                        <c:if test="${page != 1}">
+                                            <li class="page-item"><a class="page-link" href="<%= request.getContextPath() %>/staffManagement?page=${page - 1}"
+                                                                     aria-label="Previous">Prev</a></li>
+                                            </c:if>  
+                                        <li class="page-item"><a class="page-link" href="<%= request.getContextPath() %>/staffManagement?page=${page}"
+                                                                 aria-label="CurrentPage">${page}</a></li>                       
+                                        <!-- Next -->
+                                        <c:if test="${page lt endPage}">
+                                            <li class="page-item"><a class="page-link" href="<%= request.getContextPath() %>/staffManagement?page=${page + 1}"
+                                                                     aria-label="Next">Next</a></li>
+                                            </c:if>
                                     </ul>
                                 </div>
                             </div><!--end col-->
@@ -527,14 +543,14 @@
         <!-- Main Js -->
         <script src="<%= request.getContextPath() %>/assets/js/app.js"></script>
         <script>
-                                                    function editStaff(ID) {
-                                                        window.location.href = `editStaff?uid=` + ID;
-                                                    }
-                                                    function deleteStaff(ID) {
-                                                        if (confirm("Are you sure to delete staff with id = " + ID)) {
-                                                            window.location = "deleteStaff?uid=" + ID;
-                                                        }
-                                                    }
+                                            function editStaff(ID) {
+                                                window.location.href = `editStaff?uid=` + ID;
+                                            }
+                                            function deleteStaff(ID) {
+                                                if (confirm("Are you sure to delete staff with id = " + ID)) {
+                                                    window.location = "deleteStaff?uid=" + ID;
+                                                }
+                                            }
         </script>
 
     </body>

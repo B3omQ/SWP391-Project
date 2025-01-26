@@ -203,11 +203,11 @@ public class StaffDAO extends DBContext {
             ps.setInt(7, x.getRole().getRoleId());
             ps.setInt(8, id);
             ps.executeUpdate();
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-    
+
     public void deleteStaff(int id) {
         String sql = "DELETE FROM Staff\n"
                 + "WHERE Id = ?";
@@ -220,8 +220,61 @@ public class StaffDAO extends DBContext {
         }
     }
 
+    public List<Staff> getAllStaffWithPagination(int offset, int recordsPerPage) {
+        List<Staff> staffs = new ArrayList<>();
+        String sql = "SELECT s.*, r.Name as RoleName from Staff s join Role r on s.RoleId = r.Id \n"
+                + "ORDER BY s.Id \n"
+                + "OFFSET ? ROWS \n"
+                + "FETCH NEXT ? ROWS ONLY";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, offset);
+            ps.setInt(2, recordsPerPage);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Role role = new Role(rs.getInt("RoleId"), rs.getString("RoleName")); // Assuming RoleId is available
+                Staff staff = new Staff(
+                        rs.getInt("Id"),
+                        rs.getString("Username"),
+                        rs.getString("Password"),
+                        rs.getString("Email"),
+                        rs.getString("FirstName"),
+                        rs.getString("LastName"),
+                        rs.getString("Phone"),
+                        rs.getString("Address"),
+                        rs.getBigDecimal("Salary"),
+                        role
+                );
+                staffs.add(staff); // Add the staff object to the list
+            }
+        } catch (SQLException e) {
+
+        }
+        return staffs;
+    }
+    
+    public int getNumberOfStaff() {
+        int count = 0;
+        String sql = "SELECT COUNT(Id) FROM Staff";
+        try {
+           PreparedStatement ps = connection.prepareStatement(sql);
+           ResultSet rs = ps.executeQuery();
+           if(rs.next()) {
+               count = rs.getInt(1);
+           }
+        } catch(SQLException e) {
+            
+        }
+        return count;
+    }
+
     public static void main(String[] args) {
         StaffDAO s = new StaffDAO();
         System.out.println(s.getStaffById(1));
+        List<Staff> ss = s.getAllStaffWithPagination(4, 3);
+        for (Staff x : ss) {
+            System.out.println(x.toString());
+        }
+        System.out.println("Total: " + s.getNumberOfStaff());
     }
 }

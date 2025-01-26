@@ -57,13 +57,22 @@ public class StaffManagement extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         StaffDAO sdao = new StaffDAO();
-        try{
-            List<Staff> staffs = sdao.getAllStaffs();
-            System.out.println("Accounts retrieved: " + staffs.size()); // Debug log
-            request.setAttribute("staffs", staffs);
-        }catch (NumberFormatException ex) {
-            System.out.println(ex);
+        String currentPage = request.getParameter("page");
+        int page;
+        try {
+            page = Integer.parseInt(currentPage);
+        } catch(NumberFormatException e) {
+            page = 1;
         }
+        int recordsPerPage = 3;
+        int numberOfRecords = sdao.getNumberOfStaff();
+        int endPage = numberOfRecords % recordsPerPage == 0 ? numberOfRecords / recordsPerPage : numberOfRecords / recordsPerPage + 1;
+        request.setAttribute("page", page);
+        request.setAttribute("endPage", endPage);
+        List<Staff> staffs = sdao.getAllStaffWithPagination((page - 1) * recordsPerPage, recordsPerPage);
+        request.setAttribute("staffs", staffs);
+        request.setAttribute("numberOfRecords", numberOfRecords);
+        request.setAttribute("recordsPerPage", recordsPerPage);
         request.getRequestDispatcher("staff-management.jsp").forward(request, response);
     } 
 
