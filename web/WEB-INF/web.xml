@@ -2,10 +2,6 @@
 <web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
     <!-- Đăng ký Servlet cho Register -->
     <servlet>
-        <servlet-name>Register</servlet-name>
-        <servlet-class>Controller.Register</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>AccountManagement</servlet-name>
         <servlet-class>Controller.UserManagement</servlet-class>
     </servlet>
@@ -41,13 +37,13 @@
         <servlet-name>ChangePass</servlet-name>
         <servlet-class>Controller.ChangePass</servlet-class>
     </servlet>
-    <servlet-mapping>
-        <servlet-name>Register</servlet-name>
-        <url-pattern>/register</url-pattern>
-    </servlet-mapping>
     <servlet>
         <servlet-name>Login</servlet-name>
         <servlet-class>Controller.Login</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateAccount</servlet-name>
+        <servlet-class>Consultant.controller.CreateAccount</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
@@ -97,5 +93,8 @@
         <servlet-name>ChangePass</servlet-name>
         <url-pattern>/ChangePass</url-pattern>
     </servlet-mapping>
-
+    <servlet-mapping>
+        <servlet-name>CreateAccount</servlet-name>
+        <url-pattern>/CreateAccount</url-pattern>
+    </servlet-mapping>
 </web-app>

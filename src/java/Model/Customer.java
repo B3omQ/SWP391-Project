@@ -1,6 +1,7 @@
 package Model;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 public class Customer {
 
@@ -12,6 +13,8 @@ public class Customer {
     private String lastName;
     private String phone;
     private String address;
+    private Date dob;
+    private String gender;
     private BigDecimal wallet; // Đổi sang kiểu BigDecimal để lưu số tiền
 
     // Constructor không tham số
@@ -20,7 +23,7 @@ public class Customer {
 
     // Constructor với tất cả các tham số
     public Customer(int id, String username, String password, String email, 
-                    String firstName, String lastName, String phone, String address, BigDecimal wallet) {
+                    String firstName, String lastName, String phone, String address,Date dob, String gender, BigDecimal wallet) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -30,6 +33,22 @@ public class Customer {
         this.phone = phone;
         this.address = address;
         this.wallet = wallet;
+    }
+
+    public Date getDob() {
+        return dob;
+    }
+
+    public void setDob(Date dob) {
+        this.dob = dob;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     // Getters và Setters
