@@ -13,6 +13,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import Dal.CustomerDAO;
+import Model.Customer;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  *
@@ -44,7 +48,37 @@ public class CreateAccount extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        CustomerDAO cdao = new CustomerDAO();
+        String username = request.getParameter("username");
+        String firstname = request.getParameter("firstname");
+        String lastname = request.getParameter("lastname");
+        String email = request.getParameter("email");
+        String address = request.getParameter("address");
+        String gender = request.getParameter("gender");
+        String phoneNumber = request.getParameter("phoneNumber");
+        String password = request.getParameter("password");
+        String dobStr = request.getParameter("dob");
         
+        Date dob = null;
+        
+        try {
+            if (dobStr != null && !dobStr.isEmpty()) {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // Ensure format matches input
+                dob = sdf.parse(dobStr);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+            request.setAttribute("error", "Invalid date format. Please use YYYY-MM-DD.");
+            request.getRequestDispatcher("./consultant/CreateAccount.jsp").forward(request, response);
+            return;
+        }
+        Customer customer = new Customer(username, password, email, firstname, lastname, phoneNumber, address, dob, gender);
+
+        boolean success = cdao.createNewAccount(customer);
+        
+        if (success) {
+            response.sendRedirect("success.jsp"); // Redirect to a success page
+        }
     }
 
     /** 

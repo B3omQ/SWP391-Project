@@ -19,6 +19,22 @@ public class Customer {
 
     // Constructor không tham số
     public Customer() {
+        this.wallet = BigDecimal.ZERO; //default wallet de = 0
+    }
+    
+    public Customer(String username, String password, String email, 
+                    String firstName, String lastName, String phone, String address, 
+                    Date dob, String gender) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phone = phone;
+        this.address = address;
+        this.dob = dob;
+        this.gender = gender;
+        this.wallet = BigDecimal.ZERO;
     }
 
     // Constructor với tất cả các tham số
@@ -32,7 +48,7 @@ public class Customer {
         this.lastName = lastName;
         this.phone = phone;
         this.address = address;
-        this.wallet = wallet;
+        this.wallet = BigDecimal.ZERO;
     }
 
     public Date getDob() {

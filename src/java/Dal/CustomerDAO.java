@@ -54,16 +54,18 @@ public class CustomerDAO extends DBContext {
         String sql = "INSERT INTO Customer (Username, Password, Email, FirstName, LastName, Gender, Dob, Phone, Address) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement p = connection.prepareStatement(sql)) {
+            java.sql.Date sqlDob = new java.sql.Date(customer.getDob().getTime());
             p.setString(1, customer.getUsername());
             p.setString(2, customer.getPassword());
             p.setString(3, customer.getEmail());
             p.setString(4, customer.getFirstName());
             p.setString(5, customer.getLastName());
             p.setString(6, customer.getGender());
-            p.setDate(7, (java.sql.Date) customer.getDob());
+            p.setDate(7, sqlDob);
             p.setString(8, customer.getPhone());
             p.setString(9, customer.getAddress());
             int rowInserted = p.executeUpdate();
+            
             return rowInserted > 0;
 
         } catch (SQLException e) {
@@ -200,5 +202,70 @@ public class CustomerDAO extends DBContext {
         }
         return false;
     }
+    public List<Customer> getAllCustomers(int offset, int recordsPerPage, String searchKey, String sortOrder) {
+        List<Customer> customerList = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("""
+                SELECT * FROM [PJ].[dbo].[Customer] WHERE 1=1
+            """);
 
+        List<Object> parameters = new ArrayList<>();
+
+        // Search bằng email hoặc username
+        if (searchKey != null && !searchKey.isEmpty()) {
+            sql.append(" AND (Username LIKE ? OR Email LIKE ?)");
+            parameters.add("%" + searchKey + "%");
+            parameters.add("%" + searchKey + "%");
+        }
+
+        // option sorts
+        if ("asc".equalsIgnoreCase(sortOrder)) {
+            sql.append(" ORDER BY Username ASC ");
+        } else if ("desc".equalsIgnoreCase(sortOrder)) {
+            sql.append(" ORDER BY Username DESC ");
+        } else {
+            sql.append(" ORDER BY Id ");
+        }
+
+        // Phân trang
+        sql.append("""
+                OFFSET ? ROWS
+                FETCH NEXT ? ROWS ONLY;
+            """);
+
+        try (PreparedStatement st = connection.prepareStatement(sql.toString())) {
+            int paramIndex = 1;
+            for (Object param : parameters) {
+                if (param instanceof String) {
+                    st.setString(paramIndex++, (String) param);
+                }
+            }
+
+            // Set pagination parameters
+            st.setInt(paramIndex++, offset);
+            st.setInt(paramIndex++, recordsPerPage);
+
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                Customer customer = new Customer(
+                            rs.getInt("Id"),
+                            rs.getString("Username"),
+                            rs.getString("Password"),
+                            rs.getString("Email"),
+                            rs.getString("FirstName"),
+                            rs.getString("LastName"),
+                            rs.getString("Phone"),
+                            rs.getString("Address"),
+                            rs.getDate("Dob"),
+                            rs.getString("Gender"),
+                            rs.getBigDecimal("Wallet")
+                    );
+                customerList.add(customer);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace(); // Use proper logging instead
+        }
+
+        return customerList;
+    }
 }

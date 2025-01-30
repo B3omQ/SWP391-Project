@@ -45,6 +45,10 @@
         <servlet-name>CreateAccount</servlet-name>
         <servlet-class>Consultant.controller.CreateAccount</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CustomerManagerment</servlet-name>
+        <servlet-class>Consultant.controller.CustomerManagement</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -96,5 +100,9 @@
     <servlet-mapping>
         <servlet-name>CreateAccount</servlet-name>
         <url-pattern>/CreateAccount</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CustomerManagerment</servlet-name>
+        <url-pattern>/CustomerManager</url-pattern>
     </servlet-mapping>
 </web-app>

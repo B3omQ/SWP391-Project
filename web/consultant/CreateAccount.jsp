@@ -49,72 +49,76 @@
         </div>
 
         <!-- Hero Start -->
-        <section class="bg-half-150 d-table w-100 bg-light" style="background: url('../assets/images/bg/bg-lines-one.png') center;">
-            <div class="container">
+        <section class=" d-table w-100 bg-light" style="background: url('../assets/images/bg/bg-lines-one.png')">
+            <div class="">
                 <div class="row justify-content-center">
-                    <div class="col-lg-5 col-md-8">
-                        <img src="../assets/images/logo-dark.png" height="24" class="mx-auto d-block" alt="">
+                    <div class="">
                         <div class="card login-page bg-white shadow mt-4 rounded border-0">
                             <div class="card-body">
-                                <h4 class="text-center">Sign Up</h4>  
-                                <form action="Create" method="post" class="login-form mt-4">
+                                <h4 class="text-center">Create New Customer Account</h4>  
+                                <form action="CreateAccount" method="post" class="login-form mt-4">
                                     <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="mb-3">
+                                                <label class="form-label">Username <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" placeholder="Username" name="username" required="">
+                                            </div>
+                                        </div>
                                         <div class="col-md-6">
                                             <div class="mb-3">                                               
                                                 <label class="form-label">First name <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" placeholder="First Name" name="s" required="">
+                                                <input type="text" class="form-control" placeholder="First Name" name="firstname" required="">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="mb-3">                                                
                                                 <label class="form-label">Last name <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" placeholder="Last Name" name="s" required="">
+                                                <input type="text" class="form-control" placeholder="Last Name" name="lastname" required="">
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="mb-3">
                                                 <label class="form-label">Your Email <span class="text-danger">*</span></label>
-                                                <input type="email" class="form-control" placeholder="Email" name="email" required="">
+                                                <input type="email" class="form-control" name="email" placeholder="Email" required="">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="mb-3">
+                                                <label class="form-label">Day of birth <span class="text-danger">*</span></label>
+                                                <input type="Date" class="form-control" name="dob" required="">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="mb-3">
+                                                <label class="form-label">Gender <span class="text-danger">*</span></label>
+                                                <select type="" class="form-control" name="gender" required="">
+                                                    <option value="Male">Male</option>
+                                                    <option value="Female">Female</option>
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="mb-3">
                                                 <label class="form-label">Password <span class="text-danger">*</span></label>
-                                                <input type="password" class="form-control" placeholder="Password" required="">
+                                                <input type="password" class="form-control" placeholder="Password" name="password" required="">
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="mb-3">
-                                                <div class="form-check">
-                                                    <input class="form-check-input align-middle" type="checkbox" value="" id="accept-tnc-check">
-                                                    <label class="form-check-label" for="accept-tnc-check">I Accept <a href="#" class="text-primary">Terms And Condition</a></label>
-                                                </div>
+                                                <label class="form-label">Address <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" placeholder="Address" name="address" required="">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="mb-3">
+                                                <label class="form-label">Phone number <span class="text-danger">*</span></label>
+                                                <input type="tel" class="form-control" placeholder="Phone number" name="phoneNumber" required="">
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="d-grid">
-                                                <button class="btn btn-primary">Register</button>
+                                                <button class="btn btn-primary w-50 justify-content-center">CREATE</button>
                                             </div>
-                                        </div>
-
-                                        <div class="col-lg-12 mt-3 text-center">
-                                            <h6 class="text-muted">Or</h6>
-                                        </div><!--end col-->
-                                        
-                                        <div class="col-6 mt-3">
-                                            <div class="d-grid">
-                                                <a href="javascript:void(0)" class="btn btn-soft-primary"><i class="uil uil-facebook"></i> Facebook</a>
-                                            </div>
-                                        </div><!--end col-->
-                                        
-                                        <div class="col-6 mt-3">
-                                            <div class="d-grid">
-                                                <a href="javascript:void(0)" class="btn btn-soft-primary"><i class="uil uil-google"></i> Google</a>
-                                            </div>
-                                        </div><!--end col-->
-
-                                        <div class="mx-auto">
-                                            <p class="mb-0 mt-3"><small class="text-dark me-2">Already have an account ?</small> <a href="login.html" class="text-dark fw-bold">Sign in</a></p>
                                         </div>
                                     </div>
                                 </form>
