@@ -35,8 +35,11 @@ public class CustomerManagement extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         CustomerDAO cdao = new CustomerDAO();
-        
-        List<Customer> customers = cdao.getAllCustomers(0, 0, null, null);
+        int offset = Integer.parseInt(request.getParameter("offset") != null ? request.getParameter("offset") : "0");
+        int recordsPerPage = Integer.parseInt(request.getParameter("recordsPerPage") != null ? request.getParameter("recordsPerPage") : "10");
+        String searchKey = request.getParameter("searchKey");
+        String sortOrder = request.getParameter("sortOrder");
+        List<Customer> customers = cdao.getAllCustomers(offset, recordsPerPage, searchKey, sortOrder);
         request.setAttribute("customers", customers);
         request.getRequestDispatcher("./consultant/Customer-management.jsp").forward(request, response);
     } 

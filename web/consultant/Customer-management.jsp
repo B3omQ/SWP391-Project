@@ -424,8 +424,8 @@
                             <th>Gender</th>
                             <th>Phone</th>
                             <th>Address</th>
-                            <th>Role</th>
-                            <th>Action</th>
+                            <th>Phone</th>
+                            <th>Wallet</th>
                         </tr>
                     </thead>
                     <tbody>
