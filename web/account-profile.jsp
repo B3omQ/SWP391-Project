@@ -84,14 +84,17 @@
                                 <a class="dropdown-item d-flex align-items-center text-dark" href="doctor-profile.html">
                                     <img src="<%= request.getContextPath() %>/assets/images/doctors/01.jpg" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
                                     <div class="flex-1 ms-2">
-                                        <span class="d-block mb-1">Calvin Carlo</span>
-                                        <small class="text-muted">Orthopedic</small>
+<span class="d-block mb-1">
+    ${account.firstName} ${account.lastName}
+</span>
+       
+                                        <small class="text-muted">Customer</small>
                                     </div>
                                 </a>
                                 <a class="dropdown-item text-dark" href="doctor-dashboard.html"><span class="mb-0 d-inline-block me-1"><i class="uil uil-dashboard align-middle h6"></i></span> Dashboard</a>
                                 <a class="dropdown-item text-dark" href="doctor-profile-setting.html"><span class="mb-0 d-inline-block me-1"><i class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
                                 <div class="dropdown-divider border-top"></div>
-                                <a class="dropdown-item text-dark" href="login.html"><span class="mb-0 d-inline-block me-1"><i class="uil uil-sign-out-alt align-middle h6"></i></span> Logout</a>
+                                <a class="dropdown-item text-dark" href="index.html+"><span class="mb-0 d-inline-block me-1"><i class="uil uil-sign-out-alt align-middle h6"></i></span> Logout</a>
                             </div>
                         </div>
                     </li>
@@ -117,12 +120,7 @@
                                     <a href="javascript:void(0)" class="menu-item"> Dashboard </a><span class="submenu-arrow"></span>
                                     <ul class="submenu">
                                         <li><a href="doctor-dashboard.html" class="sub-menu-item">Dashboard</a></li>
-                                        <li><a href="doctor-appointment.html" class="sub-menu-item">Appointment</a></li>
-                                        <li><a href="patient-list.html" class="sub-menu-item">Patients</a></li>
-                                        <li><a href="doctor-schedule.html" class="sub-menu-item">Schedule Timing</a></li>
-                                        <li><a href="invoices.html" class="sub-menu-item">Invoices</a></li>
-                                        <li><a href="patient-review.html" class="sub-menu-item">Reviews</a></li>
-                                        <li><a href="doctor-messages.html" class="sub-menu-item">Messages</a></li>
+                                 
                                         <li><a href="doctor-profile.html" class="sub-menu-item">Profile</a></li>
                                         <li><a href="doctor-profile-setting.html" class="sub-menu-item">Profile Settings</a></li>
                                         <li><a href="doctor-chat.html" class="sub-menu-item">Chat</a></li>
@@ -196,23 +194,17 @@
 
                             <div class="text-center avatar-profile margin-nagative mt-n5 position-relative pb-4 border-bottom">
                                 <img src="<%= request.getContextPath() %>/assets/images/doctors/01.jpg" class="rounded-circle shadow-md avatar avatar-md-md" alt="">
-                                <h5 class="mt-3 mb-1">Dr. Calvin Carlo</h5>
+                                <h5 class="mt-3 mb-1"> ${account.firstName} ${account.lastName}</h5>
+
                                 <p class="text-muted mb-0">Orthopedic</p>
                             </div>
 
                             <ul class="list-unstyled sidebar-nav mb-0">
                                 <li class="navbar-item"><a href="doctor-dashboard.html" class="navbar-link"><i class="ri-airplay-line align-middle navbar-icon"></i> Dashboard</a></li>
-                                <li class="navbar-item"><a href="doctor-appointment.html" class="navbar-link"><i class="ri-calendar-check-line align-middle navbar-icon"></i> Appointment</a></li>
-                                <li class="navbar-item"><a href="doctor-schedule.html" class="navbar-link"><i class="ri-timer-line align-middle navbar-icon"></i> Schedule Timing</a></li>
-                                <li class="navbar-item"><a href="invoices.html" class="navbar-link"><i class="ri-pages-line align-middle navbar-icon"></i> Invoices</a></li>
-                                <li class="navbar-item"><a href="doctor-messages.html" class="navbar-link"><i class="ri-mail-unread-line align-middle navbar-icon"></i> Messages</a></li>
+                                 <li class="navbar-item"><a href="doctor-dashboard.html" class="navbar-link"><i class="ri-airplay-line align-middle navbar-icon"></i>Manage Account Bank</a></li>
                                 <li class="navbar-item"><a href="doctor-profile.html" class="navbar-link"><i class="ri-user-line align-middle navbar-icon"></i> Profile</a></li>
                                 <li class="navbar-item"><a href="doctor-profile-setting.html" class="navbar-link"><i class="ri-user-settings-line align-middle navbar-icon"></i> Profile Settings</a></li>
-                                <li class="navbar-item"><a href="patient-list.html" class="navbar-link"><i class="ri-empathize-line align-middle navbar-icon"></i> Patients</a></li>
-                                <li class="navbar-item"><a href="patient-review.html" class="navbar-link"><i class="ri-chat-1-line align-middle navbar-icon"></i> Patients Review</a></li>
-                                <li class="navbar-item"><a href="doctor-chat.html" class="navbar-link"><i class="ri-chat-voice-line align-middle navbar-icon"></i> Chat</a></li>
-                                <li class="navbar-item"><a href="login.html" class="navbar-link"><i class="ri-login-circle-line align-middle navbar-icon"></i> Login</a></li>
-                                <li class="navbar-item"><a href="forgot-password.html" class="navbar-link"><i class="ri-device-recover-line align-middle navbar-icon"></i> Forgot Password</a></li>
+                              
                             </ul>
                         </div>
                     </div><!--end col-->
@@ -243,50 +235,79 @@
                             </div>
 
                             <div class="p-4">
-                                <form>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="mb-3">
-                                                <label class="form-label">First Name</label>
-                                                <input name="name" id="name" type="text" class="form-control" placeholder="First Name :">
-                                            </div>
-                                        </div><!--end col-->
+     <div class="row">
+    <!-- First Name -->
+    <div class="col-md-6">
+        <div class="mb-3">
+            <label for="firstName" class="form-label">First Name</label>
+            <input id="firstName" name="firstName" type="text" class="form-control"
+                   value="${account != null ? account.firstName : ''}" readonly>
+        </div>
+    </div>
 
-                                        <div class="col-md-6">
-                                            <div class="mb-3">
-                                                <label class="form-label">Last Name</label>
-                                                <input name="name" id="name2" type="text" class="form-control" placeholder="Last Name :">
-                                            </div>
-                                        </div><!--end col-->
+    <!-- Last Name -->
+    <div class="col-md-6">
+        <div class="mb-3">
+            <label for="lastName" class="form-label">Last Name</label>
+            <input id="lastName" name="lastName" type="text" class="form-control"
+                   value="${account != null ? account.lastName : ''}" readonly>
+        </div>
+    </div>
 
-                                        <div class="col-md-6">
-                                            <div class="mb-3">
-                                                <label class="form-label">Your Email</label>
-                                                <input name="email" id="email" type="email" class="form-control" placeholder="Your email :">
-                                            </div> 
-                                        </div><!--end col-->
+    <!-- Email -->
+    <div class="col-md-6">
+        <div class="mb-3">
+            <label for="email" class="form-label">Your Email</label>
+            <input id="email" name="email" type="email" class="form-control"
+                   value="${account != null ? account.email : ''}" readonly>
+        </div>
+    </div>
 
-                                        <div class="col-md-6">
-                                            <div class="mb-3">
-                                                <label class="form-label">Phone no.</label>
-                                                <input name="number" id="number" type="text" class="form-control" placeholder="Phone no. :">
-                                            </div>                                                                               
-                                        </div><!--end col-->
+    <!-- Phone -->
+    <div class="col-md-6">
+        <div class="mb-3">
+            <label for="phone" class="form-label">Phone Number</label>
+            <input id="phone" name="phone" type="text" class="form-control"
+                   value="${account != null ? account.phone : ''}" readonly>
+        </div>
+    </div>
 
-                                        <div class="col-md-12">
-                                            <div class="mb-3">
-                                                <label class="form-label">Your Bio Here</label>
-                                                <textarea name="comments" id="comments" rows="4" class="form-control" placeholder="Bio :"></textarea>
-                                            </div>
-                                        </div>
-                                    </div><!--end row-->
-                                    
-                                    <div class="row">
-                                        <div class="col-sm-12">
-                                            <input type="submit" id="submit" name="send" class="btn btn-primary" value="Save changes">
-                                        </div><!--end col-->
-                                    </div><!--end row-->
-                                </form><!--end form--> 
+    <!-- Gender -->
+    <div class="col-md-6">
+        <div class="mb-3">
+            <label for="gender" class="form-label">Gender</label>
+            <input id="gender" name="gender" type="text" class="form-control"
+                   value="${account != null ? account.gender : ''}" readonly>
+        </div>
+    </div>
+
+    <!-- Date of Birth -->
+    <div class="col-md-6">
+        <div class="mb-3">
+            <label for="dob" class="form-label">Date of Birth</label>
+            <input id="dob" name="dob" type="date" class="form-control"
+                   value="${account != null && account.dob != null ? account.dob : ''}" readonly>
+        </div>
+    </div>
+</div>
+
+
+            <!-- Save Changes Button -->
+<!--            <div class="row">
+                <div class="col-12 text-end">
+                    <input type="hidden" name="id" value="${account != null ? account.id : ''}">
+                    <button type="submit" name="send" class="btn btn-primary">Save Changes</button>
+                </div>
+            </div>-->
+        </form>
+<!--    <c:if test="${not empty error2}">
+    <p style="color: red;">${error2}</p>
+</c:if>
+
+<c:if test="${not empty success2}">
+    <p style="color: green;">${success2}</p>
+</c:if>-->
+
                             </div>
                         </div>
 
@@ -296,7 +317,7 @@
                             </div>
 
                             <div class="p-4">
-                 <form action="ChangePass" method="POST">
+<form action="<%= request.getContextPath() %>/AuthServlet?action=changePassword" method="POST">
     <div class="row">
         <div class="col-lg-12">
             <div class="mb-3 position-relative">
@@ -343,18 +364,7 @@
 
                             </div>
                         </div>                                        
-                        <div class="rounded shadow mt-4">
-                            <div class="p-4 border-bottom">
-                                <h5 class="mb-0 text-danger">Delete Account :</h5>
-                            </div>
-
-                            <div class="p-4">
-                                <h6 class="mb-0 fw-normal">Do you want to delete the account? Please press below "Delete" button</h6>
-                                <div class="mt-4">
-                                    <button class="btn btn-danger">Delete Account</button>
-                                </div><!--end col-->
-                            </div>
-                        </div>
+                        
                     </div><!--end col-->
                 </div><!--end row-->
             </div><!--end container-->
