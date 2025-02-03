@@ -49,7 +49,8 @@
                     <div class="card login-page bg-white shadow mt-4 rounded border-0">
                         <div class="card-body">
                             <h4 class="text-center">Recover Account</h4>
-                            <form class="login-form mt-4" action="requestPassword" method="POST">
+                          <form class="login-form mt-4" action="<%= request.getContextPath() %>/requestPassword" method="POST">
+
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <p class="text-muted">Please enter your email address. You will receive a link to create a new password via email.</p>

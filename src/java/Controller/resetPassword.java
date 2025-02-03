@@ -69,19 +69,19 @@ throws ServletException, IOException {
         
         if (tokenForgetPassword == null) {
             request.setAttribute("mess", "Token invalid");
-            request.getRequestDispatcher("requestPassword.jsp").forward(request, response);
+            request.getRequestDispatcher("auth/requestPassword.jsp").forward(request, response);
             return;
         }
         
         if (tokenForgetPassword.isIsUsed()) {
             request.setAttribute("mess", "Token is used");
-            request.getRequestDispatcher("requestPassword.jsp").forward(request, response);
+            request.getRequestDispatcher("auth/requestPassword.jsp").forward(request, response);
             return;
         }
         
         if (service.isExpireTime(tokenForgetPassword.getExpiryTime())) {
             request.setAttribute("mess", "Token is expired");
-            request.getRequestDispatcher("requestPassword.jsp").forward(request, response);
+            request.getRequestDispatcher("auth/requestPassword.jsp").forward(request, response);
             return;
         }
         
@@ -90,15 +90,15 @@ throws ServletException, IOException {
     
         if (account == null) {
             request.setAttribute("mess", "Account not found");
-            request.getRequestDispatcher("requestPassword.jsp").forward(request, response);
+            request.getRequestDispatcher("auth/requestPassword.jsp").forward(request, response);
             return;
         }
         
         request.setAttribute("email", account.getEmail());
         session.setAttribute("token", tokenForgetPassword.getToken());
-        request.getRequestDispatcher("resetPassword.jsp").forward(request, response);
+        request.getRequestDispatcher("auth/resetPassword.jsp").forward(request, response);
     } else {
-        request.getRequestDispatcher("requestPassword.jsp").forward(request, response);
+        request.getRequestDispatcher("auth/requestPassword.jsp").forward(request, response);
     }
 }
     /** 
@@ -121,7 +121,7 @@ throws ServletException, IOException {
     if (!validator.checkHashOfPassword(password)) {
         request.setAttribute("mess", "Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and a special character.");
         request.setAttribute("email", email);
-        request.getRequestDispatcher("resetPassword.jsp").forward(request, response);
+        request.getRequestDispatcher("auth/resetPassword.jsp").forward(request, response);
         return;
     }
 
@@ -129,7 +129,7 @@ throws ServletException, IOException {
     if (!password.equals(confirmPassword)) {
         request.setAttribute("mess", "Confirmation password does not match.");
         request.setAttribute("email", email);
-        request.getRequestDispatcher("resetPassword.jsp").forward(request, response);
+        request.getRequestDispatcher("auth/resetPassword.jsp").forward(request, response);
         return;
     }
 
@@ -141,17 +141,17 @@ throws ServletException, IOException {
     resetService service = new resetService();
     if (tokenForgetPassword == null) {
         request.setAttribute("mess", "Invalid token.");
-        request.getRequestDispatcher("requestPassword.jsp").forward(request, response);
+        request.getRequestDispatcher("auth/requestPassword.jsp").forward(request, response);
         return;
     }
     if (tokenForgetPassword.isIsUsed()) {
         request.setAttribute("mess", "Token has already been used.");
-        request.getRequestDispatcher("requestPassword.jsp").forward(request, response);
+        request.getRequestDispatcher("auth/requestPassword.jsp").forward(request, response);
         return;
     }
     if (service.isExpireTime(tokenForgetPassword.getExpiryTime())) {
         request.setAttribute("mess", "Token has expired.");
-        request.getRequestDispatcher("requestPassword.jsp").forward(request, response);
+        request.getRequestDispatcher("auth/requestPassword.jsp").forward(request, response);
         return;
     }
 

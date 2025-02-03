@@ -58,7 +58,7 @@ public class requestPassword extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        request.getRequestDispatcher("requestPassword.jsp").forward(request, response);
+        request.getRequestDispatcher("auth/requestPassword.jsp").forward(request, response);
     } 
 
     /** 
@@ -77,7 +77,7 @@ public class requestPassword extends HttpServlet {
         Customer account = daoUser.getCustomerByEmail(email);
         if(account == null) {
             request.setAttribute("mess", "email khong ton tai");
-            request.getRequestDispatcher("requestPassword.jsp").forward(request, response);
+            request.getRequestDispatcher("auth/requestPassword.jsp").forward(request, response);
             return;
         }
         resetService service = new resetService();
@@ -93,17 +93,17 @@ public class requestPassword extends HttpServlet {
         boolean isInsert = daoToken.insertTokenForget(newTokenForget);
         if(!isInsert) {
             request.setAttribute("mess", "have error in server");
-            request.getRequestDispatcher("requestPassword.jsp").forward(request, response);
+            request.getRequestDispatcher("auth/requestPassword.jsp").forward(request, response);
             return;
         }
         boolean isSend = service.sendEmail(email, linkReset, account.getFirstName());
         if(!isSend) {
             request.setAttribute("mess", "can not send request");
-            request.getRequestDispatcher("requestPassword.jsp").forward(request, response);
+            request.getRequestDispatcher("auth/requestPassword.jsp").forward(request, response);
             return;
         }
         request.setAttribute("mess", "send request success");
-        request.getRequestDispatcher("requestPassword.jsp").forward(request, response);    }
+        request.getRequestDispatcher("auth/requestPassword.jsp").forward(request, response);    }
 
     /** 
      * Returns a short description of the servlet.
