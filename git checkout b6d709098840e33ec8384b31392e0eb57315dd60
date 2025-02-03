@@ -1,0 +1,165 @@
+[33mcommit bc6be7211650df3105a14e54bcca1b966ec798c4[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mdai[m[33m, [m[1;31morigin/dai[m[33m)[m
+Author: AnhDai317 <emkobtchoiok@gmail.com>
+Date:   Mon Feb 3 19:39:09 2025 +0700
+
+    Them giao dien 404
+
+[33mcommit b6d709098840e33ec8384b31392e0eb57315dd60[m
+Author: AnhDai317 <emkobtchoiok@gmail.com>
+Date:   Mon Feb 3 15:07:26 2025 +0700
+
+    Kiem tra lai session
+
+[33mcommit bacb483d799d6cffe09a31771d0029f79ebbfb6e[m
+Author: AnhDai317 <emkobtchoiok@gmail.com>
+Date:   Mon Feb 3 14:45:50 2025 +0700
+
+    Fix lại đường dẫn
+
+[33mcommit c6ed7dc9810fddf315e362cec9d7282a709b7cb0[m
+Author: AnhDai317 <emkobtchoiok@gmail.com>
+Date:   Mon Feb 3 14:07:35 2025 +0700
+
+    Tích hợp lại package
+
+[33mcommit dfa5746f98c1cab917c3f2595a5f6b90ec1803f7[m
+Author: AnhDai317 <emkobtchoiok@gmail.com>
+Date:   Sun Feb 2 22:44:32 2025 +0700
+
+    Hien thi thong tin trong Account Setting
+
+[33mcommit 67f5cd03ead3875d6e3c9de554fb1bb04266927d[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmaster[m[33m)[m
+Author: B3omQ <tathienbao2004@gmail.com>
+Date:   Sun Feb 2 21:03:54 2025 +0700
+
+    Chia package
+
+[33mcommit e8bb09320bae8cb89614408748ada87b5549941b[m
+Merge: 4943d89 439f7d8
+Author: B3omQ <tathienbao2004@gmail.com>
+Date:   Tue Jan 21 09:20:03 2025 +0700
+
+    Merge branch 'dai'
+
+[33mcommit 439f7d83fd545a35e42dda79ace9c3071d040513[m
+Author: Naga2912 <anhdai317392@gmail.com>
+Date:   Tue Jan 21 09:15:03 2025 +0700
+
+    Update
+
+[33mcommit 1b6ef55e2e90ab88748153cf174e75661e19bee0[m
+Author: Naga2912 <anhdai317392@gmail.com>
+Date:   Tue Jan 21 09:07:28 2025 +0700
+
+    Update Database
+
+[33mcommit 7735a39110f3620b003b74b05d9d49db6f0f69b6[m
+Author: Dai <emkobtchoiok@gmail.com>
+Date:   Tue Jan 21 08:10:31 2025 +0700
+
+    Fix template reset pass
+
+[33mcommit 4943d89591979d271d732f79654703b4079b8ca3[m
+Merge: 2e1a222 d0ff394
+Author: Dungpt <phamtiendung508@gmail.com>
+Date:   Tue Jan 21 07:22:01 2025 +0700
+
+    Merge pull request #12 from B3omQ/dung
+    
+    update database
+
+[33mcommit 8e0ee89bc829bdc91fe1e7d609d5e7f90bd01990[m
+Author: Dai <emkobtchoiok@gmail.com>
+Date:   Mon Jan 20 22:24:40 2025 +0700
+
+    Change pass in setting
+
+[33mcommit 81df208d80b5cfca089d9ccf7b1362f161cf03b8[m
+Author: Dai <emkobtchoiok@gmail.com>
+Date:   Mon Jan 20 18:33:41 2025 +0700
+
+    Thêm Staff và StaffDAO cho login
+
+[33mcommit d0ff3943cc3bc76bb72a2554c69eca38880f89e7[m[33m ([m[1;31morigin/dung[m[33m)[m
+Author: jig04zxje <phamtiendugn508@gmail.com>
+Date:   Mon Jan 20 16:47:27 2025 +0700
+
+    update database
+
+[33mcommit 46812ea7d5d230d497e0179bac15b741a2afa1f0[m
+Author: Dai <emkobtchoiok@gmail.com>
+Date:   Mon Jan 20 12:02:26 2025 +0700
+
+    Update lại theo database
+
+[33mcommit d955d967dec561f040e848aa7266f72835da759b[m
+Author: Dai <emkobtchoiok@gmail.com>
+Date:   Sun Jan 19 22:07:22 2025 +0700
+
+    Thêm hiển thị mật khẩu
+
+[33mcommit 5da33c6a6a1ba3d189b0182a7ab615e8f5fa49cf[m
+Author: Dai <emkobtchoiok@gmail.com>
+Date:   Sun Jan 19 21:26:37 2025 +0700
+
+    Thêm tính năng send email
+
+[33mcommit 760c3fd9fc21dce561ec833941aa573c64e3607e[m
+Author: Dai <emkobtchoiok@gmail.com>
+Date:   Sun Jan 19 21:06:01 2025 +0700
+
+    Thêm tính năng send email
+
+[33mcommit 2e1a2227803bbe52ae5b8b69510af8c6334e34ca[m
+Merge: 6434078 7e378ef
+Author: Dungpt <phamtiendung508@gmail.com>
+Date:   Thu Jan 16 09:32:16 2025 +0700
+
+    Merge pull request #10 from B3omQ/dung
+    
+    Update database
+
+[33mcommit 7e378efa3f592fa1a58f5ff9831334a3396f06e6[m
+Author: jig04zxje <phamtiendugn508@gmail.com>
+Date:   Thu Jan 16 09:29:00 2025 +0700
+
+    update database
+
+[33mcommit 643407868bec82d1c0f7a8ea9230486f775a3859[m
+Merge: 6ba4efc a400052
+Author: Tạ Bảo <tathienbao2004@gmail.com>
+Date:   Thu Jan 16 08:37:52 2025 +0700
+
+    Merge pull request #9 from B3omQ/long
+    
+    Encryption password
+
+[33mcommit a4000520cfc3a161ccb731ae3f42953b8830097b[m
+Author: Dai <emkobtchoiok@gmail.com>
+Date:   Wed Jan 15 11:58:38 2025 +0700
+
+    Update session
+
+[33mcommit e96d80c28899a693ac123f42c2ffae208a4bff90[m
+Author: Dai <emkobtchoiok@gmail.com>
+Date:   Wed Jan 15 11:46:51 2025 +0700
+
+    Update mã hoá mật khẩu
+
+[33mcommit 7712c092b3b79ea6950f4d3b68fddd334ea71807[m
+Author: Dai <emkobtchoiok@gmail.com>
+Date:   Tue Jan 14 22:54:55 2025 +0700
+
+    Mã hoá mật khẩu
+
+[33mcommit 6ba4efcef420b914781a51822fde1d583922f7cd[m
+Author: B3omQ <tathienbao2004@gmail.com>
+Date:   Tue Jan 14 00:12:54 2025 +0700
+
+    Adding user-manager
+
+[33mcommit bfc61512acb32ea780e9d8ba10123cf8fb483f98[m
+Author: Dai <emkobtchoiok@gmail.com>
+Date:   Mon Jan 13 10:50:21 2025 +0700
+
+    First : 13/1

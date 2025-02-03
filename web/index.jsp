@@ -1,3 +1,5 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,17 +14,17 @@
     <meta name="website" content="../../../index.html" />
     <meta name="Version" content="v1.2.0" />
     <!-- favicon -->
-    <link rel="shortcut icon" href="assets/images/favicon.ico.png">
+    <link rel="shortcut icon" href="<%= request.getContextPath() %>/assets/images/favicon.ico.png">
     <!-- Bootstrap -->
-    <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="<%= request.getContextPath() %>/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <!-- Icons -->
-    <link href="assets/css/materialdesignicons.min.css" rel="stylesheet" type="text/css" />
-    <link href="assets/css/remixicon.css" rel="stylesheet" type="text/css" />
+    <link href="<%= request.getContextPath() %>/assets/css/materialdesignicons.min.css" rel="stylesheet" type="text/css" />
+    <link href="<%= request.getContextPath() %>/assets/css/remixicon.css" rel="stylesheet" type="text/css" />
     <link href="https://unicons.iconscout.com/release/v3.0.6/css/line.css" rel="stylesheet">
     <!-- SLIDER -->
-    <link rel="stylesheet" href="assets/css/tiny-slider.css" />
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/tiny-slider.css" />
     <!-- Css -->
-    <link href="assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
+    <link href="<%= request.getContextPath() %>/assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
 
 </head>
 
@@ -45,10 +47,10 @@
             <div>
                 <a class="logo" href="index.html">
                     <span class="logo-light-mode">
-                        <img src="assets/images/logo-dark.png" class="l-dark" height="24" alt="">
-                        <img src="assets/images/logo-light.png" class="l-light" height="24" alt="">
+                        <img src="<%= request.getContextPath() %>/assets/images/logo-dark.png" class="l-dark" height="24" alt="">
+                        <img src="<%= request.getContextPath() %>/assets/images/logo-light.png" class="l-light" height="24" alt="">
                     </span>
-                    <img src="assets/images/logo-light.png" height="24" class="logo-dark-mode" alt="">
+                    <img src="<%= request.getContextPath() %>/assets/images/logo-light.png" height="24" class="logo-dark-mode" alt="">
                 </a>
             </div>
             <!-- End Logo container-->
@@ -87,7 +89,7 @@
                 </li>
 <li class="list-inline-item mb-0 ms-1">
     <a href="
-       /auth/login.jsp" class="btn btn-pills btn-soft-primary">
+       ${pageContext.request.contextPath}/auth/login.jsp" class="btn btn-pills btn-soft-primary">
     <i class="uil uil-sign-in-alt align-middle h6 me-1"></i> Login
 </a>
 
@@ -96,12 +98,12 @@
                     <div class="dropdown dropdown-primary">
                         <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0"
                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img
-                                src="assets/images/doctors/01.jpg" class="avatar avatar-ex-small rounded-circle"
+                                src="<%= request.getContextPath() %>/assets/images/doctors/01.jpg" class="avatar avatar-ex-small rounded-circle"
                                 alt=""></button>
                         <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3"
                             style="min-width: 200px;">
                             <a class="dropdown-item d-flex align-items-center text-dark" href="doctor-profile.html">
-                                <img src="assets/images/doctors/01.jpg"
+                                <img src="<%= request.getContextPath() %>/assets/images/doctors/01.jpg"
                                     class="avatar avatar-md-sm rounded-circle border shadow" alt="">
                                 <div class="flex-1 ms-2">
                                     <span class="d-block mb-1">Calvin Carlo</span>
@@ -157,7 +159,7 @@
 <li><a href="
        
        
-       /auth/login.jsp" class="sub-menu-item">Login</a></li>
+       ${pageContext.request.contextPath}/auth/login.jsp" class="sub-menu-item">Login</a></li>
                                     <li><a href="
                                            /signup.jsp" class="sub-menu-item">Sign Up</a></li>
                                     <li><a href="
@@ -220,13 +222,13 @@
     <!-- Navbar End -->
 
     <!-- Start Hero -->
-    <section class="bg-half-260 d-table w-100" style="background: url('assets/images/bg/01.jpg') center;">
+    <section class="bg-half-260 d-table w-100" style="background: url('<%= request.getContextPath() %>/assets/images/bg/01.jpg') center;">
         <div class="bg-overlay bg-overlay-dark"></div>
         <div class="container">
             <div class="row mt-5 mt-lg-0">
                 <div class="col-12">
                     <div class="heading-title">
-                        <img src="assets/images/logo-icon2.png" height="50" alt="">
+                        <img src="<%= request.getContextPath() %>/assets/images/logo-icon2.png" height="50" alt="">
                         <h4 class="display-4 fw-bold text-white title-dark mt-3 mb-4">Trao niềm tin <br>Nhận tài Lộc Bank88</h4>
                         <p class="para-desc text-white-50 mb-0">Great service if you need a trusted banking partner for immediate financial assistance, secure transactions, or simple account management consultations.</p>
 
@@ -296,7 +298,7 @@
             <div class="row align-items-center">
                 <div class="col-lg-5 col-md-6">
                     <div class="position-relative">
-                        <img src="assets/images/about/about-2.png" class="img-fluid" alt="">
+                        <img src="<%= request.getContextPath() %>/assets/images/about/about-2.png" class="img-fluid" alt="">
                         <div class="play-icon">
                             <a href="#" data-bs-toggle="modal" data-bs-target="#watchvideomodal"
                                 class="play-btn video-play-icon">
@@ -503,7 +505,7 @@
                                     <th class="text-center py-5">09:00AM</th>
                                     <td>
                                         <div class="d-flex mb-3">
-                                            <img src="assets/images/doctors/01.jpg"
+                                            <img src="<%= request.getContextPath() %>/assets/images/doctors/01.jpg"
                                                 class="avatar avatar-md-sm rounded-circle border shadow" alt="">
                                             <div class="ms-3">
                                                 <h6 class="text-dark mb-0 d-block">Calvin Carlo</h6>
@@ -518,7 +520,7 @@
                                     <td></td>
                                     <td>
                                         <div class="d-flex mb-3">
-                                            <img src="assets/images/doctors/03.jpg"
+                                            <img src="<%= request.getContextPath() %>/assets/images/doctors/03.jpg"
                                                 class="avatar avatar-md-sm rounded-circle border shadow" alt="">
                                             <div class="ms-3">
                                                 <h6 class="text-dark mb-0 d-block">Alia Reddy</h6>
@@ -537,7 +539,7 @@
                                     <td></td>
                                     <td>
                                         <div class="d-flex mb-3">
-                                            <img src="assets/images/doctors/02.jpg"
+                                            <img src="<%= request.getContextPath() %>/assets/images/doctors/02.jpg"
                                                 class="avatar avatar-md-sm rounded-circle border shadow" alt="">
                                             <div class="ms-3">
                                                 <h6 class="text-dark mb-0 d-block">Cristino Murphy</h6>
@@ -550,7 +552,7 @@
                                     <td></td>
                                     <td>
                                         <div class="d-flex mb-3">
-                                            <img src="assets/images/doctors/05.jpg"
+                                            <img src="<%= request.getContextPath() %>/assets/images/doctors/05.jpg"
                                                 class="avatar avatar-md-sm rounded-circle border shadow" alt="">
                                             <div class="ms-3">
                                                 <h6 class="text-dark mb-0 d-block">Jennifer Ballance</h6>
@@ -563,7 +565,7 @@
                                     <td></td>
                                     <td>
                                         <div class="d-flex mb-3">
-                                            <img src="assets/images/doctors/04.jpg"
+                                            <img src="<%= request.getContextPath() %>/assets/images/doctors/04.jpg"
                                                 class="avatar avatar-md-sm rounded-circle border shadow" alt="">
                                             <div class="ms-3">
                                                 <h6 class="text-dark mb-0 d-block">Toni Kovar</h6>
@@ -582,7 +584,7 @@
                                     <td></td>
                                     <td>
                                         <div class="d-flex mb-3">
-                                            <img src="assets/images/doctors/06.jpg"
+                                            <img src="<%= request.getContextPath() %>/assets/images/doctors/06.jpg"
                                                 class="avatar avatar-md-sm rounded-circle border shadow" alt="">
                                             <div class="ms-3">
                                                 <h6 class="text-dark mb-0 d-block">Tara Arrington</h6>
@@ -595,7 +597,7 @@
                                     <td></td>
                                     <td>
                                         <div class="d-flex mb-3">
-                                            <img src="assets/images/doctors/05.jpg"
+                                            <img src="<%= request.getContextPath() %>/assets/images/doctors/05.jpg"
                                                 class="avatar avatar-md-sm rounded-circle border shadow" alt="">
                                             <div class="ms-3">
                                                 <h6 class="text-dark mb-0 d-block">Jennifer Ballance</h6>
@@ -616,7 +618,7 @@
                                     <td></td>
                                     <td>
                                         <div class="d-flex mb-3">
-                                            <img src="assets/images/doctors/06.jpg"
+                                            <img src="<%= request.getContextPath() %>/assets/images/doctors/06.jpg"
                                                 class="avatar avatar-md-sm rounded-circle border shadow" alt="">
                                             <div class="ms-3">
                                                 <h6 class="text-dark mb-0 d-block">Tara Arrington</h6>
@@ -630,7 +632,7 @@
                                     <td></td>
                                     <td>
                                         <div class="d-flex mb-3">
-                                            <img src="assets/images/doctors/06.jpg"
+                                            <img src="<%= request.getContextPath() %>/assets/images/doctors/06.jpg"
                                                 class="avatar avatar-md-sm rounded-circle border shadow" alt="">
                                             <div class="ms-3">
                                                 <h6 class="text-dark mb-0 d-block">Tara Arrington</h6>
@@ -646,7 +648,7 @@
                                     <th class="text-center py-5">06:00PM</th>
                                     <td>
                                         <div class="d-flex mb-3">
-                                            <img src="assets/images/doctors/03.jpg"
+                                            <img src="<%= request.getContextPath() %>/assets/images/doctors/03.jpg"
                                                 class="avatar avatar-md-sm rounded-circle border shadow" alt="">
                                             <div class="ms-3">
                                                 <h6 class="text-dark mb-0 d-block">Alia Reddy</h6>
@@ -659,7 +661,7 @@
                                     <td></td>
                                     <td>
                                         <div class="d-flex mb-3">
-                                            <img src="assets/images/doctors/04.jpg"
+                                            <img src="<%= request.getContextPath() %>/assets/images/doctors/04.jpg"
                                                 class="avatar avatar-md-sm rounded-circle border shadow" alt="">
                                             <div class="ms-3">
                                                 <h6 class="text-dark mb-0 d-block">Toni Kovar</h6>
@@ -672,7 +674,7 @@
                                     <td></td>
                                     <td>
                                         <div class="d-flex mb-3">
-                                            <img src="assets/images/doctors/05.jpg"
+                                            <img src="<%= request.getContextPath() %>/assets/images/doctors/05.jpg"
                                                 class="avatar avatar-md-sm rounded-circle border shadow" alt="">
                                             <div class="ms-3">
                                                 <h6 class="text-dark mb-0 d-block">Jennifer Ballance</h6>
@@ -685,7 +687,7 @@
                                     <td></td>
                                     <td>
                                         <div class="d-flex mb-3">
-                                            <img src="assets/images/doctors/03.jpg"
+                                            <img src="<%= request.getContextPath() %>/assets/images/doctors/03.jpg"
                                                 class="avatar avatar-md-sm rounded-circle border shadow" alt="">
                                             <div class="ms-3">
                                                 <h6 class="text-dark mb-0 d-block">Alia Reddy</h6>
@@ -702,7 +704,7 @@
                                     <td></td>
                                     <td>
                                         <div class="d-flex mb-3">
-                                            <img src="assets/images/doctors/04.jpg"
+                                            <img src="<%= request.getContextPath() %>/assets/images/doctors/04.jpg"
                                                 class="avatar avatar-md-sm rounded-circle border shadow" alt="">
                                             <div class="ms-3">
                                                 <h6 class="text-dark mb-0 d-block">Toni Kovar</h6>
@@ -714,7 +716,7 @@
                                     </td>
                                     <td>
                                         <div class="d-flex mb-3">
-                                            <img src="assets/images/doctors/05.jpg"
+                                            <img src="<%= request.getContextPath() %>/assets/images/doctors/05.jpg"
                                                 class="avatar avatar-md-sm rounded-circle border shadow" alt="">
                                             <div class="ms-3">
                                                 <h6 class="text-dark mb-0 d-block">Jennifer Ballance</h6>
@@ -727,7 +729,7 @@
                                     <td></td>
                                     <td>
                                         <div class="d-flex mb-3">
-                                            <img src="assets/images/doctors/04.jpg"
+                                            <img src="<%= request.getContextPath() %>/assets/images/doctors/04.jpg"
                                                 class="avatar avatar-md-sm rounded-circle border shadow" alt="">
                                             <div class="ms-3">
                                                 <h6 class="text-dark mb-0 d-block">Toni Kovar</h6>
@@ -767,7 +769,7 @@
                 <div class="col-xl-3 col-lg-3 col-md-6 mt-4 pt-2">
                     <div class="card team border-0 rounded shadow overflow-hidden">
                         <div class="team-img position-relative">
-                            <img src="assets/images/doctors/01.jpg" class="img-fluid" alt="">
+                            <img src="<%= request.getContextPath() %>/assets/images/doctors/01.jpg" class="img-fluid" alt="">
                             <ul class="list-unstyled team-social mb-0">
                                 <li><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i
                                             data-feather="facebook" class="icons"></i></a></li>
@@ -789,7 +791,7 @@
                 <div class="col-xl-3 col-lg-3 col-md-6 mt-4 pt-2">
                     <div class="card team border-0 rounded shadow overflow-hidden">
                         <div class="team-img position-relative">
-                            <img src="assets/images/doctors/02.jpg" class="img-fluid" alt="">
+                            <img src="<%= request.getContextPath() %>/assets/images/doctors/02.jpg" class="img-fluid" alt="">
                             <ul class="list-unstyled team-social mb-0">
                                 <li><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i
                                             data-feather="facebook" class="icons"></i></a></li>
@@ -811,7 +813,7 @@
                 <div class="col-xl-3 col-lg-3 col-md-6 mt-4 pt-2">
                     <div class="card team border-0 rounded shadow overflow-hidden">
                         <div class="team-img position-relative">
-                            <img src="assets/images/doctors/03.jpg" class="img-fluid" alt="">
+                            <img src="<%= request.getContextPath() %>/assets/images/doctors/03.jpg" class="img-fluid" alt="">
                             <ul class="list-unstyled team-social mb-0">
                                 <li><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i
                                             data-feather="facebook" class="icons"></i></a></li>
@@ -833,7 +835,7 @@
                 <div class="col-xl-3 col-lg-3 col-md-6 mt-4 pt-2">
                     <div class="card team border-0 rounded shadow overflow-hidden">
                         <div class="team-img position-relative">
-                            <img src="assets/images/doctors/04.jpg" class="img-fluid" alt="">
+                            <img src="<%= request.getContextPath() %>/assets/images/doctors/04.jpg" class="img-fluid" alt="">
                             <ul class="list-unstyled team-social mb-0">
                                 <li><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i
                                             data-feather="facebook" class="icons"></i></a></li>
@@ -867,7 +869,7 @@
                 <div class="col-12 text-center">
                     <div class="video-solution-cta position-relative" style="z-index: 1;">
                         <div class="position-relative">
-                            <img src="assets/images/bg/01.jpg" class="img-fluid rounded-md shadow-lg" alt="">
+                            <img src="<%= request.getContextPath() %>/assets/images/bg/01.jpg" class="img-fluid rounded-md shadow-lg" alt="">
                             <div class="play-icon">
                                 <a href="#" data-bs-toggle="modal" data-bs-target="#watchvideomodal"
                                     class="play-btn video-play-icon">
@@ -935,7 +937,7 @@
                             <p class="text-muted h6 fw-normal fst-italic">" It seems that only fragments of the original
                                 text remain in the Lorem Ipsum texts used today. The most well-known dummy text is the
                                 'Lorem Ipsum', which is said to have originated in the 16th century. "</p>
-                            <img src="assets/images/client/01.jpg"
+                            <img src="<%= request.getContextPath() %>/assets/images/client/01.jpg"
                                 class="img-fluid avatar avatar-small rounded-circle mx-auto shadow my-3" alt="">
                             <ul class="list-unstyled mb-0">
                                 <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
@@ -951,7 +953,7 @@
                             <p class="text-muted h6 fw-normal fst-italic">" The advantage of its Latin origin and the
                                 relative meaninglessness of Lorum Ipsum is that the text does not attract attention to
                                 itself or distract the viewer's attention from the layout. "</p>
-                            <img src="assets/images/client/02.jpg"
+                            <img src="<%= request.getContextPath() %>/assets/images/client/02.jpg"
                                 class="img-fluid avatar avatar-small rounded-circle mx-auto shadow my-3" alt="">
                             <ul class="list-unstyled mb-0">
                                 <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
@@ -968,7 +970,7 @@
                                 texts. These are usually used when a text is required purely to fill a space. These
                                 alternatives to the classic Lorem Ipsum texts are often amusing and tell short, funny or
                                 nonsensical stories. "</p>
-                            <img src="assets/images/client/03.jpg"
+                            <img src="<%= request.getContextPath() %>/assets/images/client/03.jpg"
                                 class="img-fluid avatar avatar-small rounded-circle mx-auto shadow my-3" alt="">
                             <ul class="list-unstyled mb-0">
                                 <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
@@ -985,7 +987,7 @@
                                 be traced back to a text composed by Cicero in 45 BC. Allegedly, a Latin scholar
                                 established the origin of the text by compiling all the instances of the unusual word
                                 'consectetur' he could find "</p>
-                            <img src="assets/images/client/04.jpg"
+                            <img src="<%= request.getContextPath() %>/assets/images/client/04.jpg"
                                 class="img-fluid avatar avatar-small rounded-circle mx-auto shadow my-3" alt="">
                             <ul class="list-unstyled mb-0">
                                 <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
@@ -1001,7 +1003,7 @@
                             <p class="text-muted h6 fw-normal fst-italic">" It seems that only fragments of the original
                                 text remain in the Lorem Ipsum texts used today. The most well-known dummy text is the
                                 'Lorem Ipsum', which is said to have originated in the 16th century. "</p>
-                            <img src="assets/images/client/05.jpg"
+                            <img src="<%= request.getContextPath() %>/assets/images/client/05.jpg"
                                 class="img-fluid avatar avatar-small rounded-circle mx-auto shadow my-3" alt="">
                             <ul class="list-unstyled mb-0">
                                 <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
@@ -1018,7 +1020,7 @@
                                 text remain in the Lorem Ipsum texts used today. One may speculate that over the course
                                 of time certain letters were added or deleted at various positions within the text. "
                             </p>
-                            <img src="assets/images/client/06.jpg"
+                            <img src="<%= request.getContextPath() %>/assets/images/client/06.jpg"
                                 class="img-fluid avatar avatar-small rounded-circle mx-auto shadow my-3" alt="">
                             <ul class="list-unstyled mb-0">
                                 <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
@@ -1049,7 +1051,7 @@
             <div class="row">
                 <div class="col-lg-4 col-md-6 col-12 mt-4 pt-2">
                     <div class="card blog blog-primary border-0 shadow rounded overflow-hidden">
-                        <img src="assets/images/blog/01.jpg" class="img-fluid" alt="">
+                        <img src="<%= request.getContextPath() %>/assets/images/blog/01.jpg" class="img-fluid" alt="">
                         <div class="card-body p-4">
                             <ul class="list-unstyled mb-2">
                                 <li class="list-inline-item text-muted small me-3"><i
@@ -1075,7 +1077,7 @@
 
                 <div class="col-lg-4 col-md-6 col-12 mt-4 pt-2">
                     <div class="card blog blog-primary border-0 shadow rounded overflow-hidden">
-                        <img src="assets/images/blog/02.jpg" class="img-fluid" alt="">
+                        <img src="<%= request.getContextPath() %>/assets/images/blog/02.jpg" class="img-fluid" alt="">
                         <div class="card-body p-4">
                             <ul class="list-unstyled mb-2">
                                 <li class="list-inline-item text-muted small me-3"><i
@@ -1101,7 +1103,7 @@
 
                 <div class="col-lg-4 col-md-6 col-12 mt-4 pt-2">
                     <div class="card blog blog-primary border-0 shadow rounded overflow-hidden">
-                        <img src="assets/images/blog/03.jpg" class="img-fluid" alt="">
+                        <img src="<%= request.getContextPath() %>/assets/images/blog/03.jpg" class="img-fluid" alt="">
                         <div class="card-body p-4">
                             <ul class="list-unstyled mb-2">
                                 <li class="list-inline-item text-muted small me-3"><i
@@ -1134,27 +1136,27 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-2 col-md-2 col-6 text-center py-4">
-                    <img src="assets/images/client/amazon.png" class="avatar avatar-client" alt="">
+                    <img src="<%= request.getContextPath() %>/assets/images/client/amazon.png" class="avatar avatar-client" alt="">
                 </div><!--end col-->
 
                 <div class="col-lg-2 col-md-2 col-6 text-center py-4">
-                    <img src="assets/images/client/google.png" class="avatar avatar-client" alt="">
+                    <img src="<%= request.getContextPath() %>/assets/images/client/google.png" class="avatar avatar-client" alt="">
                 </div><!--end col-->
 
                 <div class="col-lg-2 col-md-2 col-6 text-center py-4">
-                    <img src="assets/images/client/lenovo.png" class="avatar avatar-client" alt="">
+                    <img src="<%= request.getContextPath() %>/assets/images/client/lenovo.png" class="avatar avatar-client" alt="">
                 </div><!--end col-->
 
                 <div class="col-lg-2 col-md-2 col-6 text-center py-4">
-                    <img src="assets/images/client/paypal.png" class="avatar avatar-client" alt="">
+                    <img src="<%= request.getContextPath() %>/assets/images/client/paypal.png" class="avatar avatar-client" alt="">
                 </div><!--end col-->
 
                 <div class="col-lg-2 col-md-2 col-6 text-center py-4">
-                    <img src="assets/images/client/shopify.png" class="avatar avatar-client" alt="">
+                    <img src="<%= request.getContextPath() %>/assets/images/client/shopify.png" class="avatar avatar-client" alt="">
                 </div><!--end col-->
 
                 <div class="col-lg-2 col-md-2 col-6 text-center py-4">
-                    <img src="assets/images/client/spotify.png" class="avatar avatar-client" alt="">
+                    <img src="<%= request.getContextPath() %>/assets/images/client/spotify.png" class="avatar avatar-client" alt="">
                 </div><!--end col-->
             </div><!--end row-->
         </div><!--end container-->
@@ -1167,7 +1169,7 @@
             <div class="row">
                 <div class="col-xl-5 col-lg-4 mb-0 mb-md-4 pb-0 pb-md-2">
                     <a href="#" class="logo-footer">
-                        <img src="assets/images/logo-light.png" height="22" alt="">
+                        <img src="<%= request.getContextPath() %>/assets/images/logo-light.png" height="22" alt="">
                     </a>
                     <p class="mt-4 me-xl-5">Great doctor if you need your family member to get effective immediate
                         assistance, emergency treatment or a simple consultation.</p>
@@ -1189,7 +1191,7 @@
                                 <li><a href="blogs.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i>
                                         Blog</a></li>
                             <li>
-    <a href="/auth/login.jsp" class="text-foot">
+    <a href="${pageContext.request.contextPath}/auth/login.jsp" class="text-foot">
         <i class="mdi mdi-chevron-right me-1"></i> Login
     </a>
 </li>
@@ -1314,8 +1316,8 @@
         aria-labelledby="offcanvasRightLabel">
         <div class="offcanvas-header p-4 border-bottom">
             <h5 id="offcanvasRightLabel" class="mb-0">
-                <img src="assets/images/logo-dark.png" height="24" class="light-version" alt="">
-                <img src="assets/images/logo-light.png" height="24" class="dark-version" alt="">
+                <img src="<%= request.getContextPath() %>/assets/images/logo-dark.png" height="24" class="light-version" alt="">
+                <img src="<%= request.getContextPath() %>/assets/images/logo-light.png" height="24" class="dark-version" alt="">
             </h5>
             <button type="button" class="btn-close d-flex align-items-center text-dark" data-bs-dismiss="offcanvas"
                 aria-label="Close"><i class="uil uil-times fs-4"></i></button>
@@ -1329,36 +1331,36 @@
                             <ul class="text-center list-unstyled mb-0">
                                 <li class="d-grid"><a href="javascript:void(0)" class="rtl-version t-rtl-light"
                                         onclick="setTheme('style-rtl')"><img
-                                            src="assets/images/layouts/landing-light-rtl.png"
+                                            src="<%= request.getContextPath() %>/assets/images/layouts/landing-light-rtl.png"
                                             class="img-fluid rounded-md shadow-md d-block" alt=""><span
                                             class="text-muted mt-2 d-block">RTL Version</span></a></li>
                                 <li class="d-grid"><a href="javascript:void(0)" class="ltr-version t-ltr-light"
                                         onclick="setTheme('style')"><img
-                                            src="assets/images/layouts/landing-light.png"
+                                            src="<%= request.getContextPath() %>/assets/images/layouts/landing-light.png"
                                             class="img-fluid rounded-md shadow-md d-block" alt=""><span
                                             class="text-muted mt-2 d-block">LTR Version</span></a></li>
                                 <li class="d-grid"><a href="javascript:void(0)" class="dark-rtl-version t-rtl-dark"
                                         onclick="setTheme('style-dark-rtl')"><img
-                                            src="assets/images/layouts/landing-dark-rtl.png"
+                                            src="<%= request.getContextPath() %>/assets/images/layouts/landing-dark-rtl.png"
                                             class="img-fluid rounded-md shadow-md d-block" alt=""><span
                                             class="text-muted mt-2 d-block">RTL Version</span></a></li>
                                 <li class="d-grid"><a href="javascript:void(0)" class="dark-ltr-version t-ltr-dark"
                                         onclick="setTheme('style-dark')"><img
-                                            src="assets/images/layouts/landing-dark.png"
+                                            src="<%= request.getContextPath() %>/assets/images/layouts/landing-dark.png"
                                             class="img-fluid rounded-md shadow-md d-block" alt=""><span
                                             class="text-muted mt-2 d-block">LTR Version</span></a></li>
                                 <li class="d-grid"><a href="javascript:void(0)" class="dark-version t-dark mt-4"
                                         onclick="setTheme('style-dark')"><img
-                                            src="assets/images/layouts/landing-dark.png"
+                                            src="<%= request.getContextPath() %>/assets/images/layouts/landing-dark.png"
                                             class="img-fluid rounded-md shadow-md d-block" alt=""><span
                                             class="text-muted mt-2 d-block">Dark Version</span></a></li>
                                 <li class="d-grid"><a href="javascript:void(0)" class="light-version t-light mt-4"
                                         onclick="setTheme('style')"><img
-                                            src="assets/images/layouts/landing-light.png"
+                                            src="<%= request.getContextPath() %>/assets/images/layouts/landing-light.png"
                                             class="img-fluid rounded-md shadow-md d-block" alt=""><span
                                             class="text-muted mt-2 d-block">Light Version</span></a></li>
                                 <li class="d-grid"><a href="../admin/index.html" target="_blank" class="mt-4"><img
-                                            src="assets/images/layouts/light-dash.png"
+                                            src="<%= request.getContextPath() %>/assets/images/layouts/light-dash.png"
                                             class="img-fluid rounded-md shadow-md d-block" alt=""><span
                                             class="text-muted mt-2 d-block">Admin Dashboard</span></a></li>
                             </ul>
@@ -1415,16 +1417,16 @@
     <!-- MOdal End -->
 
     <!-- javascript -->
-    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="<%= request.getContextPath() %>/assets/js/bootstrap.bundle.min.js"></script>
     <!-- SLIDER -->
-    <script src="assets/js/tiny-slider.js"></script>
-    <script src="assets/js/tiny-slider-init.js"></script>
+    <script src="<%= request.getContextPath() %>/assets/js/tiny-slider.js"></script>
+    <script src="<%= request.getContextPath() %>/assets/js/tiny-slider-init.js"></script>
     <!-- Counter -->
-    <script src="assets/js/counter.init.js"></script>
+    <script src="<%= request.getContextPath() %>/assets/js/counter.init.js"></script>
     <!-- Icons -->
-    <script src="assets/js/feather.min.js"></script>
+    <script src="<%= request.getContextPath() %>/assets/js/feather.min.js"></script>
     <!-- Main Js -->
-    <script src="assets/js/app.js"></script>
+    <script src="<%= request.getContextPath() %>/assets/js/app.js"></script>
 </body>
 
 </html>
