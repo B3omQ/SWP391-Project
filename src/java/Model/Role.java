@@ -8,7 +8,10 @@ public class Role {
         this.roleId = roleId;
         this.roleName = roleName;
     }
-
+public Role(int roleId) {
+        this.roleId = roleId;
+        this.roleName = null; // Có thể set mặc định null nếu không cần roleName ngay
+    }
 
     public int getRoleId() {
         return roleId;

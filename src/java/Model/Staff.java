@@ -1,9 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Model;
+
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;  // Thêm import cho Date
+
 /**
  *
  * @author emkob
@@ -19,11 +20,12 @@ public class Staff {
     private String address;
     private BigDecimal salary;
     private Role role;  // Giữ lại kiểu Role như trước
+    private String gender;          // Thêm trường gender
+    private LocalDate dob;               // Thêm trường dob
+    private int failedAttempts;     // Thêm trường failed_attempts
+    private LocalDateTime lockTime;          // Thêm trường lock_time
 
-    // Constructor
-    public Staff(int id, String username, String password, String email, 
-                 String firstName, String lastName, String phone, 
-                 String address, BigDecimal salary, Role role) {
+    public Staff(int id, String username, String password, String email, String firstName, String lastName, String phone, String address, BigDecimal salary, Role role, String gender, LocalDate dob, int failedAttempts, LocalDateTime lockTime) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -33,10 +35,12 @@ public class Staff {
         this.phone = phone;
         this.address = address;
         this.salary = salary;
-        this.role = role;  // Giữ lại Role object
+        this.role = role;
+        this.gender = gender;
+        this.dob = dob;
+        this.failedAttempts = failedAttempts;
+        this.lockTime = lockTime;
     }
-
-    // Getters and setters for all fields
 
     public int getId() {
         return id;
@@ -117,4 +121,38 @@ public class Staff {
     public void setRole(Role role) {
         this.role = role;
     }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public LocalDate getDob() {
+        return dob;
+    }
+
+    public void setDob(LocalDate dob) {
+        this.dob = dob;
+    }
+
+    public int getFailedAttempts() {
+        return failedAttempts;
+    }
+
+    public void setFailedAttempts(int failedAttempts) {
+        this.failedAttempts = failedAttempts;
+    }
+
+    public LocalDateTime getLockTime() {
+        return lockTime;
+    }
+
+    public void setLockTime(LocalDateTime lockTime) {
+        this.lockTime = lockTime;
+    }
+
+ 
 }

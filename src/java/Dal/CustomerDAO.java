@@ -100,18 +100,6 @@ public class CustomerDAO extends DBContext {
         }
     }
 
-    public boolean checkCustomerExists(String email) {
-        String sql = "SELECT * FROM [dbo].[Customer] WHERE Email = ?";
-        try (PreparedStatement p = connection.prepareStatement(sql)) {
-            p.setString(1, email);
-            try (ResultSet rs = p.executeQuery()) {
-                return rs.next();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
 
     public Customer getCustomerById(int id) {
         String sql = "SELECT * FROM [dbo].[Customer] WHERE Id = ?";
@@ -178,20 +166,6 @@ public class CustomerDAO extends DBContext {
             e.printStackTrace();
         }
     }
-    public boolean updatePasswordById(int customerId, String newPassword) {
-        String sql = "UPDATE [dbo].[Customer] SET Password = ? WHERE Id = ?";
-        try (PreparedStatement p = connection.prepareStatement(sql)) {
-            String hashedPassword = av.hashPassword(newPassword);
-            p.setString(1, hashedPassword);
-            p.setInt(2, customerId);
-            int rowsAffected = p.executeUpdate();
-            return rowsAffected > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
     public boolean updatePasswordByEmail(String email, String password) {
         String sql = "UPDATE [dbo].[Customer] SET Password = ? WHERE Email = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -233,23 +207,5 @@ public class CustomerDAO extends DBContext {
             e.printStackTrace();
         }
     }
-public Customer getCustomerByUsername(String username) {
-        Customer customer = null;
-        String sql = "SELECT Id, Username, Password, Email, FirstName, LastName, Phone, " +
-                     "Address, failed_attempts, lock_time, Gender, Dob " +
-                     "FROM customers WHERE Username = ?";
-
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, username);
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next()) {
-                customer = mapResultSetToCustomer(rs);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return customer;
-    } 
 
 }
