@@ -64,7 +64,7 @@
 %>
 
                             <!-- Login Form -->
-                            <form action="<%= request.getContextPath() %>/AuthServlet?action=login" method="POST" class="login-form mt-4">
+                            <form action="<%= request.getContextPath() %>../AuthServlet?action=login" method="POST" class="login-form mt-4">
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <div class="mb-3">
@@ -97,12 +97,12 @@
                                             <button class="btn btn-primary" type="submit">Login</button>
                                         </div>
                                     </div>
-                                    <div class="col-12 text-center">
+<!--                                    <div class="col-12 text-center">
                                         <p class="mb-0 mt-3">
                                             <small class="text-dark me-2">Don't have an account?</small>
                                             <a href="<%= request.getContextPath() %>/signup.jsp" class="text-dark fw-bold">Sign up</a>
                                         </p>
-                                    </div>
+                                    </div>-->
                                 </div>
                             </form>
                         </div>

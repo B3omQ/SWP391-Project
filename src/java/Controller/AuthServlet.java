@@ -31,7 +31,7 @@ public class AuthServlet extends HttpServlet {
         } else if ("changePassword".equals(action)) {
             handleChangePassword(request, response);
         } else {
-            response.sendRedirect("login.jsp");
+            response.sendRedirect("auth/login.jsp");
         }
     }
 
@@ -43,7 +43,7 @@ public class AuthServlet extends HttpServlet {
         if ("logout".equals(action)) {
             handleLogout(request, response);
         } else {
-            response.sendRedirect("login.jsp");
+            response.sendRedirect("auth/login.jsp");
         }
     }
 private void handleLogin(HttpServletRequest request, HttpServletResponse response)
@@ -57,13 +57,13 @@ private void handleLogin(HttpServletRequest request, HttpServletResponse respons
 
     if (email == null || passWord == null) {
         session.setAttribute("errorAccount", "Vui lòng nhập email và mật khẩu.");
-        response.sendRedirect("login.jsp");
+        response.sendRedirect("auth/login.jsp");
         return;
     }
 
     if (customerDAO.isAccountLocked(email)) {
         session.setAttribute("errorAccount", "Tài khoản của bạn đã bị khóa. Vui lòng thử lại sau 10 phút.");
-        response.sendRedirect("login.jsp");
+        response.sendRedirect("auth/login.jsp");
         return;
     }
 
@@ -73,7 +73,7 @@ private void handleLogin(HttpServletRequest request, HttpServletResponse respons
         customerDAO.resetFailedLogin(email);
         handleRememberMe(response, email, encodedPassword, rememberMe);
         session.setAttribute("account", customer);
-        response.sendRedirect("Customer.jsp");
+        response.sendRedirect("customer/Customer.jsp");
         return;
     }
 
@@ -92,7 +92,7 @@ private void handleLogin(HttpServletRequest request, HttpServletResponse respons
         session.setAttribute("errorAccount", "Sai email hoặc mật khẩu. Bạn còn " + remainingAttempts + " lần thử.");
     }
 
-    response.sendRedirect("login.jsp");
+    response.sendRedirect("auth/login.jsp");
 }
 
 
@@ -100,7 +100,7 @@ private void handleLogin(HttpServletRequest request, HttpServletResponse respons
     private void handleLogout(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         request.getSession().invalidate();
-        response.sendRedirect("login.jsp");
+        response.sendRedirect("auth/login.jsp");
     }
 
    private void handleChangePassword(HttpServletRequest request, HttpServletResponse response)
@@ -109,7 +109,7 @@ private void handleLogin(HttpServletRequest request, HttpServletResponse respons
     Customer customer = (Customer) session.getAttribute("account");
 
     if (customer == null) {
-        response.sendRedirect("login.jsp");
+        response.sendRedirect("auth/login.jsp");
         return;
     }
 
@@ -120,25 +120,25 @@ private void handleLogin(HttpServletRequest request, HttpServletResponse respons
 
     if (oldPass == null || newPass == null || retypePass == null) {
         request.setAttribute("error", "Vui lòng nhập đầy đủ thông tin.");
-        request.getRequestDispatcher("account-profile.jsp").forward(request, response);
+        request.getRequestDispatcher("customer/account-profile.jsp").forward(request, response);
         return;
     }
 
     if (!av.checkPassword(encodedPassword, customer.getPassword())) {
         request.setAttribute("error", "Mật khẩu cũ không đúng!");
-        request.getRequestDispatcher("account-profile.jsp").forward(request, response);
+        request.getRequestDispatcher("customer/account-profile.jsp").forward(request, response);
         return;
     }
 
     if (!newPass.trim().equals(retypePass.trim())) {
         request.setAttribute("error", "Mật khẩu mới không khớp!");
-        request.getRequestDispatcher("account-profile.jsp").forward(request, response);
+        request.getRequestDispatcher("customer/account-profile.jsp").forward(request, response);
         return;
     }
 
     if (!av.checkHashOfPassword(newPass)) {
         request.setAttribute("error", "Mật khẩu mới phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt!");
-        request.getRequestDispatcher("account-profile.jsp").forward(request, response);
+        request.getRequestDispatcher("customer/account-profile.jsp").forward(request, response);
         return;
     }
 
@@ -150,7 +150,7 @@ private void handleLogin(HttpServletRequest request, HttpServletResponse respons
     session.setAttribute("account", customer);
 
     request.setAttribute("success", "Đổi mật khẩu thành công!");
-    request.getRequestDispatcher("account-profile.jsp").forward(request, response);
+    request.getRequestDispatcher("customer/account-profile.jsp").forward(request, response);
 }
 
     private void handleRememberMe(HttpServletResponse response, String email, String password, String rememberMe) {
