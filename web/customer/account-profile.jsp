@@ -24,7 +24,13 @@
         <link href="<%= request.getContextPath() %>/assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
 
     </head>
-
+ <%
+ 
+        if (session.getAttribute("account") == null) {
+ 
+response.sendRedirect(request.getContextPath() + "/auth/login.jsp");
+            return; 
+        } %>
     <body>
         <!-- Loader -->
         <div id="preloader">

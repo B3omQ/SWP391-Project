@@ -35,7 +35,7 @@
  
         if (session.getAttribute("account") == null) {
  
-            response.sendRedirect("login.jsp");
+response.sendRedirect(request.getContextPath() + "/auth/login.jsp");
             return; 
         } %>
     <!-- Loader -->
@@ -302,11 +302,7 @@
                                             class="mb-0 d-inline-block me-1"><i
                                                 class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
                                     <div class="dropdown-divider border-top"></div>
-                                    <form action="<%= request.getContextPath() %>/AuthServlet?action=logout" method="POST" class="dropdown-item text-dark">
-    <a href="#" onclick="this.closest('form').submit(); return false;">
-        <span class="mb-0 d-inline-block me-1"><i class="uil uil-sign-out-alt align-middle h6"></i></span> Logout
-    </a>
-</form>
+                                    
                                 </div>
                             </div>
                         </li>

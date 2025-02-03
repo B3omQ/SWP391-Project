@@ -18,6 +18,13 @@
     <link href="<%= request.getContextPath() %>/assets/css/materialdesignicons.min.css" rel="stylesheet" type="text/css" />
     <link href="<%= request.getContextPath() %>/assets/css/style.min.css" rel="stylesheet" type="text/css" />
 </head>
+ <%
+ 
+        if (session.getAttribute("account") == null) {
+ 
+response.sendRedirect(request.getContextPath() + "/auth/login.jsp");
+            return; 
+        } %>
 <body>
     <div id="preloader">
         <div id="status">
