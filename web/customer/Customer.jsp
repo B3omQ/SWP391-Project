@@ -17,6 +17,7 @@
     <link href="<%= request.getContextPath() %>/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <!-- simplebar -->
     <link href="<%= request.getContextPath() %>/assets/css/simplebar.css" rel="stylesheet" type="text/css" />
+
     <!-- Select2 -->
     <link href="<%= request.getContextPath() %>/assets/css/select2.min.css" rel="stylesheet" />
     <!-- Icons -->
@@ -69,10 +70,23 @@ response.sendRedirect(request.getContextPath() + "/auth/login.jsp");
     </a>
 </li>
 
-                  <li>
-  <a href="account-bank.jsp">
-    <i class="uil uil-university me-2 d-inline-block"></i> Manage Account Bank
-  </a>
+              <li class="sidebar-dropdown"> 
+   <a href="javascript:void(0)"><i class="uil uil-university me-2 d-inline-block"></i>Manage Account Bank</a>
+   <div class="sidebar-submenu">
+      <ul>
+         <li><a href="blogs.html">Dashboard</a></li>
+         <li><a href="deposit.jsp">Deposit</a></li>
+         <li class="sidebar-dropdown">
+            <a href="javascript:void(0)"><i ></i>Move Money</a>
+            <div class="sidebar-submenu">
+               <ul>
+                  <li><a href="transfer.jsp">In SmartBank</a></li>
+                  <li><a href="javascript:void(0)">Other Banks (Unavailable)</a></li>
+               </ul>
+            </div>
+         </li>
+      </ul>
+   </div>
 </li>
 
                     <li class="sidebar-dropdown">
@@ -189,7 +203,7 @@ response.sendRedirect(request.getContextPath() + "/auth/login.jsp");
                             </a>
                         </li>
 
-                        <li class="list-inline-item mb-0 ms-1">
+<!--                        <li class="list-inline-item mb-0 ms-1">
                             <div class="dropdown dropdown-primary">
                                 <button type="button"
                                     class="btn btn-icon btn-pills btn-soft-primary dropdown-toggle p-0"
@@ -273,7 +287,7 @@ response.sendRedirect(request.getContextPath() + "/auth/login.jsp");
                                     </a>
                                 </div>
                             </div>
-                        </li>
+                        </li>-->
 
                         <li class="list-inline-item mb-0 ms-1">
                             <div class="dropdown dropdown-primary">
@@ -760,10 +774,10 @@ response.sendRedirect(request.getContextPath() + "/auth/login.jsp");
             <button type="button" class="btn-close d-flex align-items-center text-dark" data-bs-dismiss="offcanvas"
                 aria-label="Close"><i class="uil uil-times fs-4"></i></button>
         </div>
-        <div class="offcanvas-body p-4 px-md-5">
+<!--        <div class="offcanvas-body p-4 px-md-5">
             <div class="row">
                 <div class="col-12">
-                    <!-- Style switcher -->
+                     Style switcher 
                     <div id="style-switcher">
                         <div>
                             <ul class="text-center list-unstyled mb-0">
@@ -802,9 +816,9 @@ response.sendRedirect(request.getContextPath() + "/auth/login.jsp");
                             </ul>
                         </div>
                     </div>
-                    <!-- end Style switcher -->
-                </div><!--end col-->
-            </div><!--end row-->
+                     end Style switcher 
+                </div>end col
+            </div>end row
         </div>
 
         <div class="offcanvas-footer p-4 border-top text-center">
@@ -823,8 +837,8 @@ response.sendRedirect(request.getContextPath() + "/auth/login.jsp");
                             class="uil uil-envelope align-middle" title="email"></i></a></li>
                 <li class="list-inline-item mb-0"><a href="../../../index.html" target="_blank" class="rounded"><i
                             class="uil uil-globe align-middle" title="website"></i></a></li>
-            </ul><!--end icon-->
-        </div>
+            </ul>end icon
+        </div>-->
     </div>
     <!-- Offcanvas End -->
 
