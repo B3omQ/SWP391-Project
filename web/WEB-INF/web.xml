@@ -144,8 +144,7 @@
     </filter>
     <filter-mapping>
         <filter-name>StaffFilter</filter-name>
-        <url-pattern>/staff/</url-pattern>
-        <!-- Áp dụng filter cho tất cả các URL bắt đầu bằng /staff -->
+        <url-pattern>/staff/*</url-pattern>
     </filter-mapping>
     <error-page>
     <error-code>404</error-code>

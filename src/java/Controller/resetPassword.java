@@ -167,7 +167,7 @@ throws ServletException, IOException {
 
     // Redirect to the login page
      request.setAttribute("success", "Password reset successfully!");
-    request.getRequestDispatcher("index.html").forward(request, response);
+    request.getRequestDispatcher("index.jsp").forward(request, response);
 }
 
     /** 

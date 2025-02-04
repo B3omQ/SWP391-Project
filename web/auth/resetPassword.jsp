@@ -24,14 +24,14 @@
     </head>
     <body class="bg-primary">
    <div class="back-to-home rounded d-none d-sm-block">
-        <a href="index.html" class="btn btn-icon btn-primary"><i data-feather="home" class="icons"></i></a>
+        <a href="index.jsp" class="btn btn-icon btn-primary"><i data-feather="home" class="icons"></i></a>
     </div>
         <%-- Display success message and redirect if exists --%>
         <% String success = (String) request.getAttribute("success"); %>
         <% if (success != null) { %>
             <script>
                 alert("<%= success %>");
-                window.location.href = "index.html"; 
+                window.location.href = "index.jsp"; 
             </script>
         <% } %>
 

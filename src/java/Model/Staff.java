@@ -19,11 +19,11 @@ public class Staff {
     private String phone;
     private String address;
     private BigDecimal salary;
-    private Role role;  // Giữ lại kiểu Role như trước
-    private String gender;          // Thêm trường gender
-    private LocalDate dob;               // Thêm trường dob
-    private int failedAttempts;     // Thêm trường failed_attempts
-    private LocalDateTime lockTime;          // Thêm trường lock_time
+    private Role role;  
+    private String gender;          
+    private LocalDate dob;            
+    private int failedAttempts;  
+    private LocalDateTime lockTime;
 
     public Staff(int id, String username, String password, String email, String firstName, String lastName, String phone, String address, BigDecimal salary, Role role, String gender, LocalDate dob, int failedAttempts, LocalDateTime lockTime) {
         this.id = id;

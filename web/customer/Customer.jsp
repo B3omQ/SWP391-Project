@@ -9,7 +9,7 @@
     <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health" />
     <meta name="author" content="Shreethemes" />
     <meta name="email" content="support@shreethemes.in" />
-    <meta name="website" content="../../../index.html" />
+    <meta name="website" content="../../../index.jsp" />
     <meta name="Version" content="v1.2.0" />
     <!-- favicon -->
     <link rel="shortcut icon" href="<%= request.getContextPath() %>/assets/images/favicon.ico.png">
@@ -55,7 +55,7 @@ response.sendRedirect(request.getContextPath() + "/auth/login.jsp");
             <div class="sidebar-content" data-simplebar style="height: calc(100% - 60px);">
                 <div class="sidebar-brand">
                     <a href="../landing/index-two.html">
-                        <!--<a href="index.html">-->
+                        <!--<a href="index.jsp">-->
                         <img src="<%= request.getContextPath() %>/assets/images/logo-dark.png" height="24" class="logo-light-mode" alt="">
                         <img src="<%= request.getContextPath() %>/assets/images/logo-light.png" height="24" class="logo-dark-mode" alt="">
                     </a>
@@ -309,7 +309,7 @@ response.sendRedirect(request.getContextPath() + "/auth/login.jsp");
                                  <small class="text-muted">Khách Hàng</small>
                                         </div>
                                     </a>
-                                    <a class="dropdown-item text-dark" href="index.html"><span
+                                    <a class="dropdown-item text-dark" href="index.jsp"><span
                                             class="mb-0 d-inline-block me-1"><i
                                                 class="uil uil-dashboard align-middle h6"></i></span> Dashboard</a>
                                     <a class="dropdown-item text-dark" href="account-profile.jsp"><span
@@ -749,7 +749,7 @@ response.sendRedirect(request.getContextPath() + "/auth/login.jsp");
                             <div class="text-sm-start text-center">
                                 <p class="mb-0 text-muted">
                                     <script>document.write(new Date().getFullYear())</script> © Doctris. Design with <i
-                                        class="mdi mdi-heart text-danger"></i> by <a href="../../../index.html"
+                                        class="mdi mdi-heart text-danger"></i> by <a href="../../../index.jsp"
                                         target="_blank" class="text-reset">Shreethemes</a>.
                                 </p>
                             </div>
@@ -809,7 +809,7 @@ response.sendRedirect(request.getContextPath() + "/auth/login.jsp");
                                         onclick="setTheme('style')"><img src="<%= request.getContextPath() %>/assets/images/layouts/light-dash.png"
                                             class="img-fluid rounded-md shadow-md d-block" alt=""><span
                                             class="text-muted mt-2 d-block">Light Version</span></a></li>
-                                <li class="d-grid"><a href="../landing/index.html" target="_blank" class="mt-4"><img
+                                <li class="d-grid"><a href="../landing/index.jsp" target="_blank" class="mt-4"><img
                                             src="<%= request.getContextPath() %>/assets/images/layouts/landing-light.png"
                                             class="img-fluid rounded-md shadow-md d-block" alt=""><span
                                             class="text-muted mt-2 d-block">Landing Demos</span></a></li>
@@ -835,7 +835,7 @@ response.sendRedirect(request.getContextPath() + "/auth/login.jsp");
                         class="rounded"><i class="uil uil-twitter align-middle" title="twitter"></i></a></li>
                 <li class="list-inline-item mb-0"><a href="mailto:support@shreethemes.in" class="rounded"><i
                             class="uil uil-envelope align-middle" title="email"></i></a></li>
-                <li class="list-inline-item mb-0"><a href="../../../index.html" target="_blank" class="rounded"><i
+                <li class="list-inline-item mb-0"><a href="../../../index.jsp" target="_blank" class="rounded"><i
                             class="uil uil-globe align-middle" title="website"></i></a></li>
             </ul>end icon
         </div>-->

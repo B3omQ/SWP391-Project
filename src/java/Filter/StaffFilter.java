@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebFilter("/staff/")  // Chặn tất cả request tới thư mục /staff/
+@WebFilter("/staff/*")  // Chặn tất cả request tới thư mục /staff/
 public class StaffFilter implements Filter {
     
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) 
@@ -19,14 +19,10 @@ public class StaffFilter implements Filter {
 
         // Kiểm tra vai trò (role) của người dùng
         String role = (session != null) ? (String) session.getAttribute("role") : null;
-
-        // Nếu không phải staff, chuyển hướng về trang của customer
         if (role == null || !role.equals("staff")) {
-            httpResponse.sendRedirect(httpRequest.getContextPath() + "/C.jsp");
+            httpResponse.sendRedirect(httpRequest.getContextPath() + "/customer/Customer.jsp");
             return;
         }
-
-        // Nếu đúng là staff, tiếp tục request
         chain.doFilter(request, response);
     }
 }
