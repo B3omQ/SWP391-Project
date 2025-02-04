@@ -1,4 +1,4 @@
-package Controller;
+package controller;
 
 import Dal.CustomerDAO;
 import Dal.StaffDAO;

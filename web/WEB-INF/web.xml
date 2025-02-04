@@ -7,7 +7,7 @@
     </servlet>
     <servlet>
         <servlet-name>AccountManagement</servlet-name>
-        <servlet-class>Controller.UserManagement</servlet-class>
+        <servlet-class>controller.UserManagement</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ProfileSetting</servlet-name>
@@ -15,23 +15,23 @@
     </servlet>
     <servlet>
         <servlet-name>UpdateProfileServlet</servlet-name>
-        <servlet-class>Controller.UpdateProfileServlet</servlet-class>
+        <servlet-class>controller.UpdateProfileServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Logout</servlet-name>
-        <servlet-class>Controller.Logout</servlet-class>
+        <servlet-class>controller.Logout</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>resetPassword</servlet-name>
-        <servlet-class>Controller.resetPassword</servlet-class>
+        <servlet-class>controller.resetPassword</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>requestPassword</servlet-name>
-        <servlet-class>Controller.requestPassword</servlet-class>
+        <servlet-class>controller.requestPassword</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AccountSetting</servlet-name>
-        <servlet-class>Controller.AccountSetting</servlet-class>
+        <servlet-class>controller.AccountSetting</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ChangePasswordServlet</servlet-name>
@@ -39,7 +39,7 @@
     </servlet>
     <servlet>
         <servlet-name>ChangePass</servlet-name>
-        <servlet-class>Controller.ChangePass</servlet-class>
+        <servlet-class>controller.ChangePass</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Register</servlet-name>
@@ -47,7 +47,7 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>Login</servlet-name>
-        <servlet-class>Controller.Login</servlet-class>
+        <servlet-class>controller.Login</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
@@ -97,5 +97,4 @@
         <servlet-name>ChangePass</servlet-name>
         <url-pattern>/ChangePass</url-pattern>
     </servlet-mapping>
-
 </web-app>
