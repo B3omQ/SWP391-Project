@@ -21,19 +21,21 @@ public class AuthServlet extends HttpServlet {
     private AccountValidation av = new AccountValidation();
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
 
-        String action = request.getParameter("action");
+protected void doPost(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+    String action = request.getParameter("action");
 
-        if ("login".equals(action)) {
-            handleLogin(request, response);
-        } else if ("changePassword".equals(action)) {
-            handleChangePassword(request, response);
-        } else {
-            response.sendRedirect("auth/login.jsp");
-        }
+    if ("logout".equals(action)) {
+        handleLogout(request, response);
+    } else if ("login".equals(action)) {
+        handleLogin(request, response);
+    } else if ("changePassword".equals(action)) {
+        handleChangePassword(request, response);
+    } else {
+        response.sendRedirect("auth/login.jsp");
     }
+}
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

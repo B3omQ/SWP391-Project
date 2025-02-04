@@ -26,6 +26,7 @@
     </head>
 
     <body>
+        
         <!-- Loader -->
         <div id="preloader">
             <div id="status">

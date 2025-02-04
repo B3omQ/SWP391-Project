@@ -97,11 +97,15 @@ response.sendRedirect(request.getContextPath() + "/auth/login.jsp");
                                         <small class="text-muted">Customer</small>
                                     </div>
                                 </a>
-                                <a class="dropdown-item text-dark" href="doctor-dashboard.html"><span class="mb-0 d-inline-block me-1"><i class="uil uil-dashboard align-middle h6"></i></span> Dashboard</a>
-                                <a class="dropdown-item text-dark" href="doctor-profile-setting.html"><span class="mb-0 d-inline-block me-1"><i class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
+                                <a class="dropdown-item text-dark" href="Customer.jsp"><span class="mb-0 d-inline-block me-1"><i class="uil uil-dashboard align-middle h6"></i></span> Dashboard</a>
+                                <a class="dropdown-item text-dark" href="account-profile.jsp"><span class="mb-0 d-inline-block me-1"><i class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
                                 <div class="dropdown-divider border-top"></div>
-                                <a class="dropdown-item text-dark" href="/index.jsp"><span class="mb-0 d-inline-block me-1"><i class="uil uil-sign-out-alt align-middle h6"></i></span> Logout</a>
-                            </div>
+<a class="dropdown-item text-dark" href="<%= request.getContextPath() %>/AuthServlet?action=logout">
+    <span class="mb-0 d-inline-block me-1">
+        <i class="uil uil-sign-out-alt align-middle h6"></i>
+    </span> 
+    Logout
+</a>                            </div>
                         </div>
                     </li>
                 </ul>
@@ -206,10 +210,9 @@ response.sendRedirect(request.getContextPath() + "/auth/login.jsp");
                             </div>
 
                             <ul class="list-unstyled sidebar-nav mb-0">
-                                <li class="navbar-item"><a href="doctor-dashboard.html" class="navbar-link"><i class="ri-airplay-line align-middle navbar-icon"></i> Dashboard</a></li>
-                                 <li class="navbar-item"><a href="doctor-dashboard.html" class="navbar-link"><i class="ri-airplay-line align-middle navbar-icon"></i>Manage Account Bank</a></li>
-                                <li class="navbar-item"><a href="doctor-profile.html" class="navbar-link"><i class="ri-user-line align-middle navbar-icon"></i> Profile</a></li>
-                                <li class="navbar-item"><a href="doctor-profile-setting.html" class="navbar-link"><i class="ri-user-settings-line align-middle navbar-icon"></i> Profile Settings</a></li>
+                                <li class="navbar-item"><a href="Customer.jsp" class="navbar-link"><i class="ri-airplay-line align-middle navbar-icon"></i> Dashboard</a></li>
+                                 <li class="navbar-item"><a href="manage-bank.jsp" class="navbar-link"><i class="ri-airplay-line align-middle navbar-icon"></i>Manage Account Bank</a></li>
+                                <li class="navbar-item"><a href="account-profile.jsp" class="navbar-link"><i class="ri-user-settings-line align-middle navbar-icon"></i> Profile Settings</a></li>
                               
                             </ul>
                         </div>

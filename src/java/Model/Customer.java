@@ -14,21 +14,20 @@ public class Customer {
     private String lastName;
     private String phone;
     private String address;
-    private BigDecimal wallet; // Đổi sang kiểu BigDecimal để lưu số tiền
-    private int failedAttempts; // Số lần nhập sai mật khẩu
-    private LocalDateTime lockTime; // Thời gian khóa tài khoản
-    private String gender; // Giới tính
-    private LocalDate dob; // Ngày sinh
+    private BigDecimal wallet; 
+    private int failedAttempts; 
+    private LocalDateTime lockTime; 
+    private String gender; 
+    private LocalDate dob; 
+    private String image; 
 
-    // Constructor không tham số
     public Customer() {
     }
 
-    // Constructor với tất cả các tham số
     public Customer(int id, String username, String password, String email, 
                     String firstName, String lastName, String phone, String address, 
                     BigDecimal wallet, int failedAttempts, LocalDateTime lockTime, 
-                    String gender, LocalDate dob) {
+                    String gender, LocalDate dob, String image) {  // Thêm tham số image
         this.id = id;
         this.username = username;
         this.password = password;
@@ -42,9 +41,9 @@ public class Customer {
         this.lockTime = lockTime;
         this.gender = gender;
         this.dob = dob;
+        this.image = image; 
     }
 
-    // Getters và Setters
     public int getId() {
         return id;
     }
@@ -147,5 +146,13 @@ public class Customer {
 
     public void setDob(LocalDate dob) {
         this.dob = dob;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;  
     }
 }

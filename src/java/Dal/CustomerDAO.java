@@ -28,13 +28,13 @@ public class CustomerDAO extends DBContext {
             rs.getInt("failed_attempts"),
             rs.getTimestamp("lock_time") != null ? rs.getTimestamp("lock_time").toLocalDateTime() : null,
             rs.getString("Gender"),
-            rs.getDate("Dob") != null ? rs.getDate("Dob").toLocalDate() : null
+            rs.getDate("Dob") != null ? rs.getDate("Dob").toLocalDate() : null,
+                 rs.getString("Image")
         );
     }
-     // Xử lý đăng nhập
     public Customer login(String email, String password) {
     if (isAccountLocked(email)) {
-        return null; // Tài khoản bị khóa
+        return null; 
     }
 
     String sql = "SELECT * FROM [dbo].[Customer] WHERE Email = ?";
@@ -67,14 +67,13 @@ public class CustomerDAO extends DBContext {
 
                     if (lockTime != null) {
                         long elapsedTime = System.currentTimeMillis() - lockTime.getTime();
-                        if (elapsedTime < 10 * 60 * 1000) { // Chưa qua 10 phút
+                        if (elapsedTime < 10 * 60 * 1000) {
                             return true;
                         } else {
                             unlockAccount(email);
                         }
                     }
 
-                    // Nếu đã sai 6 lần mà chưa bị khóa, khóa ngay
                     if (failedAttempts >= 6 && lockTime == null) {
                         lockAccount(email);
                         return true;
@@ -140,7 +139,6 @@ public class CustomerDAO extends DBContext {
             e.printStackTrace();
         }
 
-        // Kiểm tra lại số lần nhập sai
         if (getFailedAttempts(email) >= 6) {
             lockAccount(email);
         }
@@ -195,8 +193,6 @@ public class CustomerDAO extends DBContext {
         }
         return 0;
     }
-
-    // Map dữ liệu
 
  public void unlockAccount(String email) {
         String sql = "UPDATE Customer SET lock_time = NULL WHERE Email = ?";

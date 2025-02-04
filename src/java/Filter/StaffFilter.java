@@ -15,9 +15,9 @@ public class StaffFilter implements Filter {
         
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
-        HttpSession session = httpRequest.getSession(false); // Lấy session hiện tại (không tạo mới)
+        HttpSession session = httpRequest.getSession(false); 
 
-        // Kiểm tra vai trò (role) của người dùng
+
         String role = (session != null) ? (String) session.getAttribute("role") : null;
         if (role == null || !role.equals("staff")) {
             httpResponse.sendRedirect(httpRequest.getContextPath() + "/customer/Customer.jsp");
