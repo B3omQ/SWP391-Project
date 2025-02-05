@@ -7,15 +7,7 @@ import java.util.Base64;
 
 public class AccountValidation {
 
-    public String checkRole(String role) {
-        if (role.equals("customer")) {
-            return "customer";
-        }
-        if (role.equals("staff")) {
-            return "staff";
-        }
-        return "admin";
-    }
+
 
     public boolean checkMatching(String password, String cPassword) {
         return password.equals(cPassword);

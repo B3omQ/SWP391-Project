@@ -209,82 +209,91 @@
 <%
     }
 %>
-                            <div class="p-4">
-     <div class="row">
-    <!-- First Name -->
-    <div class="col-md-6">
-        <div class="mb-3">
-            <label for="firstName" class="form-label">First Name</label>
-            <input id="firstName" name="firstName" type="text" class="form-control"
-                   value="${account != null ? account.firstName : ''}" readonly>
-        </div>
-    </div>
-
-    <!-- Last Name -->
-    <div class="col-md-6">
-        <div class="mb-3">
-            <label for="lastName" class="form-label">Last Name</label>
-            <input id="lastName" name="lastName" type="text" class="form-control"
-                   value="${account != null ? account.lastName : ''}" readonly>
-        </div>
-    </div>
-
-    <!-- Email -->
-    <div class="col-md-6">
-        <div class="mb-3">
-            <label for="email" class="form-label">Your Email</label>
-            <input id="email" name="email" type="email" class="form-control"
-                   value="${account != null ? account.email : ''}" readonly>
-        </div>
-    </div>
-
-    <!-- Phone -->
-    <div class="col-md-6">
-        <div class="mb-3">
-            <label for="phone" class="form-label">Phone Number</label>
-            <input id="phone" name="phone" type="text" class="form-control"
-                   value="${account != null ? account.phone : ''}" readonly>
-        </div>
-    </div>
-
-    <!-- Gender -->
-    <div class="col-md-6">
-        <div class="mb-3">
-            <label for="gender" class="form-label">Gender</label>
-            <input id="gender" name="gender" type="text" class="form-control"
-                   value="${account != null ? account.gender : ''}" readonly>
-        </div>
-    </div>
-
-    <!-- Date of Birth -->
-    <div class="col-md-6">
-        <div class="mb-3">
-            <label for="dob" class="form-label">Date of Birth</label>
-            <input id="dob" name="dob" type="date" class="form-control"
-                   value="${account != null && account.dob != null ? account.dob : ''}" readonly>
-        </div>
-    </div>
-</div>
-
-
-            <!-- Save Changes Button -->
-<!--            <div class="row">
-                <div class="col-12 text-end">
-                    <input type="hidden" name="id" value="${account != null ? account.id : ''}">
-                    <button type="submit" name="send" class="btn btn-primary">Save Changes</button>
+        <form action="<%= request.getContextPath() %>/UpdateInfo" method="post">
+    <div class="p-4">
+        <div class="row">
+            <!-- First Name (Không th? ch?nh s?a) -->
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="firstName" class="form-label">First Name</label>
+                    <input id="firstName" name="firstName" type="text" class="form-control"
+                           value="${account != null ? account.firstName : ''}" readonly>
                 </div>
-            </div>-->
-        </form>
-<!--    <c:if test="${not empty error2}">
-    <p style="color: red;">${error2}</p>
-</c:if>
+            </div>
 
-<c:if test="${not empty success2}">
-    <p style="color: green;">${success2}</p>
-</c:if>-->
+            <!-- Last Name (Không th? ch?nh s?a) -->
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="lastName" class="form-label">Last Name</label>
+                    <input id="lastName" name="lastName" type="text" class="form-control"
+                           value="${account != null ? account.lastName : ''}" readonly>
+                </div>
+            </div>
 
-                            </div>
-                        </div>
+            <!-- Email (Có th? ch?nh s?a) -->
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="email" class="form-label">Your Email</label>
+                    <input id="email" name="email" type="email" class="form-control"
+                           value="${account != null ? account.email : ''}" required>
+                </div>
+            </div>
+
+            <!-- Phone (Có th? ch?nh s?a) -->
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="phone" class="form-label">Phone Number</label>
+                    <input id="phone" name="phone" type="text" class="form-control"
+                           value="${account != null ? account.phone : ''}" required>
+                </div>
+            </div>
+
+            <!-- Gender (Không th? ch?nh s?a) -->
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="gender" class="form-label">Gender</label>
+                    <input id="gender" name="gender" type="text" class="form-control"
+                           value="${account != null ? account.gender : ''}" readonly>
+                </div>
+            </div>
+
+            <!-- Date of Birth (Không th? ch?nh s?a) -->
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="dob" class="form-label">Date of Birth</label>
+                    <input id="dob" name="dob" type="date" class="form-control"
+                           value="${account != null && account.dob != null ? account.dob : ''}" readonly>
+                </div>
+            </div>
+
+            <!-- Address (Có th? ch?nh s?a) -->
+            <div class="col-md-12">
+                <div class="mb-3">
+                    <label for="address" class="form-label">Address</label>
+                    <input id="address" name="address" type="text" class="form-control"
+                           value="${account != null && account.address != null ? account.address : ''}" required>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nút Save Changes -->
+        <div class="row">
+            <div class="col-12 text-end">
+                <input type="hidden" name="id" value="${account != null ? account.id : ''}">
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </div>
+        </div>
+
+        <!-- Thông báo thành công / l?i -->
+        <c:if test="${not empty error2}">
+            <p style="color: red;">${error2}</p>
+        </c:if>
+        <c:if test="${not empty success2}">
+            <p style="color: green;">${success2}</p>
+        </c:if>
+    </div>
+</form>
+
 
                         <div class="rounded shadow mt-4">
                             <div class="p-4 border-bottom">

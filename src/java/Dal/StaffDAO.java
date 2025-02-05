@@ -185,12 +185,26 @@ public boolean isAccountLocked(String email) {
     }
     return false;
 }
-public void updateStaffImage(int customerId, String imagePath) {
+ public void updateStaff(Staff staff) {
+    String sql = "UPDATE Staff SET email = ?, phone = ?, address = ? WHERE id = ?";
+    try (PreparedStatement p = connection.prepareStatement(sql)) {
+
+        p.setString(1, staff.getEmail());
+        p.setString(2, staff.getPhone());
+        p.setString(3, staff.getAddress());
+        p.setInt(4, staff.getId());
+
+        p.executeUpdate();
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+}
+public void updateStaffImage(int staffId, String imagePath) {
         String sql = "UPDATE Staff SET Image = ? WHERE Id = ?";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, imagePath);
-            ps.setInt(2, customerId);
+            ps.setInt(2, staffId);
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

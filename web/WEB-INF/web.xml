@@ -61,6 +61,10 @@
         <servlet-name>UploadImageServlet</servlet-name>
         <servlet-class>Controller.UploadImageServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UpdateInfo</servlet-name>
+        <servlet-class>Controller.UpdateInfo</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Register</servlet-name>
         <url-pattern>/register</url-pattern>
@@ -136,6 +140,10 @@
     <servlet-mapping>
         <servlet-name>UploadImageServlet</servlet-name>
         <url-pattern>/UploadImageServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateInfo</servlet-name>
+        <url-pattern>/UpdateInfo</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>1440</session-timeout>

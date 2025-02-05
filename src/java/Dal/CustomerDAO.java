@@ -32,6 +32,21 @@ public class CustomerDAO extends DBContext {
                  rs.getString("Image")
         );
     }
+          public void updateCustomer(Customer customer) {
+    String sql = "UPDATE Customer SET email = ?, phone = ?, address = ? WHERE id = ?";
+    try (PreparedStatement p = connection.prepareStatement(sql)) {
+
+        p.setString(1, customer.getEmail());
+        p.setString(2, customer.getPhone());
+        p.setString(3, customer.getAddress());
+        p.setInt(4, customer.getId());
+
+        p.executeUpdate();
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+}
+
     public Customer login(String email, String password) {
     if (isAccountLocked(email)) {
         return null; 
