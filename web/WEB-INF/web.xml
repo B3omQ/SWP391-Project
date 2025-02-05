@@ -41,6 +41,10 @@
         <servlet-name>ChangePass</servlet-name>
         <servlet-class>controller.ChangePass</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CustomerManager</servlet-name>
+        <servlet-class>Controller.manager.CustomerManager</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Register</servlet-name>
         <url-pattern>/register</url-pattern>
@@ -96,5 +100,9 @@
     <servlet-mapping>
         <servlet-name>ChangePass</servlet-name>
         <url-pattern>/ChangePass</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CustomerManager</servlet-name>
+        <url-pattern>/customer-manager</url-pattern>
     </servlet-mapping>
 </web-app>

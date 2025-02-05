@@ -24,6 +24,19 @@ public class Customer {
     public Customer() {
     }
 
+    public Customer(int id, String email, String firstName, String lastName, String phone, String address, String gender, LocalDate dob, String image) {
+        this.id = id;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phone = phone;
+        this.address = address;
+        this.gender = gender;
+        this.dob = dob;
+        this.image = image;
+    }    // Thêm constructor 
+    
+
     public Customer(int id, String username, String password, String email, 
                     String firstName, String lastName, String phone, String address, 
                     BigDecimal wallet, int failedAttempts, LocalDateTime lockTime, 
