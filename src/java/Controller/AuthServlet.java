@@ -56,7 +56,7 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
         String rememberMe = request.getParameter("remember");
         String encodedPassword = av.hashPassword(passWord);
 
-        HttpSession session = request.getSession();  // Dùng session để lưu lỗi
+        HttpSession session = request.getSession();  
 
         if (email == null || passWord == null) {
             session.setAttribute("errorAccount", "Vui lòng nhập email và mật khẩu.");
@@ -80,18 +80,24 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
             return;
         }
 
-        Staff staff = staffDAO.login(email, encodedPassword);
-        if (staff != null && av.checkPassword(passWord, staff.getPassword())) {
-            handleRememberMe(response, email, passWord, rememberMe);
-            session.setAttribute("account", staff);
-            response.sendRedirect(staff.getRole().getRoleId() == 1 ? "Admin.jsp" : "Customer.jsp");
-            return;
-        }
+       Staff staff = staffDAO.login(email, encodedPassword);
+if (staff != null && av.checkPassword(encodedPassword, staff.getPassword())) { 
+    staffDAO.resetFailedLogin(email);
+    handleRememberMe(response, email, passWord, rememberMe);
+    session.setAttribute("staff", staff);
+    session.setAttribute("role", "staff");
 
+    response.sendRedirect(staff.getRole().getRoleId() == 1 ? "staff/Admin.jsp" : "Support.jsp");
+    return;
+}
+    int failedAttempts = customerDAO.getFailedAttempts(email);
+    if (failedAttempts == 0) { 
+        failedAttempts = staffDAO.getFailedAttempts(email);
+    }
         if (isAccountLocked(email)) {
         session.setAttribute("errorAccount", "Bạn đã nhập sai mật khẩu quá số lần cho phép. Tài khoản bị khóa trong 10 phút.");
     } else {
-        int remainingAttempts = 6 - customerDAO.getFailedAttempts(email);
+        int remainingAttempts = 6 - failedAttempts;
         session.setAttribute("errorAccount", "Sai email hoặc mật khẩu. Bạn còn " + remainingAttempts + " lần thử.");
     }
         response.sendRedirect("auth/login.jsp");

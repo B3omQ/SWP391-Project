@@ -24,31 +24,11 @@ public class StaffDAO extends DBContext {
 
     private AccountValidation av = new AccountValidation();
 
-    public Staff getStaffByUsername(String email) {
-
-        String sql = "SELECT s.*, r.Id AS Id, r.role_name AS Name FROM [dbo].[Staff] s "
-                + "LEFT JOIN [dbo].[Role] r ON s.RoleId = r.Id WHERE s.Email = ?";
-
-        try (PreparedStatement p = connection.prepareStatement(sql)) {
-            p.setString(1, email);
-            try (ResultSet rs = p.executeQuery()) {
-                if (rs.next()) {
-                    Role role = new Role(rs.getInt("Id"), rs.getString("Name"));
-
-                    return mapResultSetToStaff(rs);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+    
 
     public static Staff mapResultSetToStaff(ResultSet rs) throws SQLException {
-        // Chuyển đổi từ java.sql.Date sang LocalDate cho dob
         LocalDate dob = rs.getDate("Dob") != null ? rs.getDate("Dob").toLocalDate() : null;
 
-        // Chuyển đổi từ java.sql.Timestamp sang LocalDateTime cho lockTime
         LocalDateTime lockTime = rs.getTimestamp("lock_time") != null ? rs.getTimestamp("lock_time").toLocalDateTime() : null;
 
         return new Staff(
@@ -65,7 +45,8 @@ public class StaffDAO extends DBContext {
                 rs.getString("Gender"), // Lấy Gender từ database
                 dob, // Sử dụng LocalDate cho Dob
                 rs.getInt("failed_attempts"), // Lấy failed_attempts từ database
-                lockTime // Sử dụng LocalDateTime cho lockTime
+                lockTime, // Sử dụng LocalDateTime cho lockTime,
+                rs.getString("Image")
         );
     }
 
@@ -154,7 +135,7 @@ public void lockAccount(String email) {
 }
 public Staff login(String email, String password) {
     if (isAccountLocked(email)) {
-        return null; // Tài khoản bị khóa
+        return null; 
     }
 
     String sql = "SELECT * FROM [dbo].[Staff] WHERE Email = ?";
@@ -204,6 +185,17 @@ public boolean isAccountLocked(String email) {
     }
     return false;
 }
+public void updateStaffImage(int customerId, String imagePath) {
+        String sql = "UPDATE Staff SET Image = ? WHERE Id = ?";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, imagePath);
+            ps.setInt(2, customerId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
  public void updatePassword(String newPassword, String email) {
     String sql = "UPDATE Staff SET Password = ? WHERE Email = ?";
     try (PreparedStatement p = connection.prepareStatement(sql)) {

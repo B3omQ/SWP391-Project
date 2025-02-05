@@ -34,13 +34,13 @@
 
     <body>
      <%
-    // Kiểm tra session
+
     if (session.getAttribute("account") == null) {
         response.sendRedirect(request.getContextPath() + "/auth/login.jsp");
         return; 
     }
 
-    // Lấy thông tin người dùng từ session
+
     Customer account = (Customer) session.getAttribute("account");
     String imagePath;
 
@@ -64,7 +64,7 @@
         <nav id="sidebar" class="sidebar-wrapper">
             <div class="sidebar-content" data-simplebar style="height: calc(100% - 60px);">
                 <div class="sidebar-brand">
-                    <a href="../landing/index-two.html">
+                    <a href="Customer.jsp">
                         <!--<a href="index.jsp">-->
                         <img src="<%= request.getContextPath() %>/assets/images/logo-dark.png" height="24" class="logo-light-mode" alt="">
                         <img src="<%= request.getContextPath() %>/assets/images/logo-light.png" height="24" class="logo-dark-mode" alt="">
@@ -319,7 +319,7 @@
                                  <small class="text-muted">Khách Hàng</small>
                                         </div>
                                     </a>
-                                    <a class="dropdown-item text-dark" href="index.jsp"><span
+                                    <a class="dropdown-item text-dark" href="Customer.jsp"><span
                                             class="mb-0 d-inline-block me-1"><i
                                                 class="uil uil-dashboard align-middle h6"></i></span> Dashboard</a>
                                     <a class="dropdown-item text-dark" href="account-profile.jsp"><span
@@ -377,7 +377,7 @@
                             <div class="text-sm-start text-center">
                                 <p class="mb-0 text-muted">
                                     <script>document.write(new Date().getFullYear())</script> © Doctris. Design with <i
-                                        class="mdi mdi-heart text-danger"></i> by <a href="../../../index.jsp"
+                                        class="mdi mdi-heart text-danger"></i> by <a href="../../../Customer.jsp"
                                         target="_blank" class="text-reset">Shreethemes</a>.
                                 </p>
                             </div>

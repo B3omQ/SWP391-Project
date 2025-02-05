@@ -66,7 +66,7 @@
         <nav id="sidebar" class="sidebar-wrapper">
             <div class="sidebar-content" data-simplebar style="height: calc(100% - 60px);">
                 <div class="sidebar-brand">
-                    <a href="../landing/index-two.html">
+                    <a href="Customer.jsp">
                         <!--<a href="index.jsp">-->
                         <img src="<%= request.getContextPath() %>/assets/images/logo-dark.png" height="24" class="logo-light-mode" alt="">
                         <img src="<%= request.getContextPath() %>/assets/images/logo-light.png" height="24" class="logo-dark-mode" alt="">

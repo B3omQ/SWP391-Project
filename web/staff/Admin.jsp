@@ -1,4 +1,6 @@
   <%@ page contentType="text/html; charset=UTF-8" language="java" %>
+  <%@ page import="Model.Staff" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +11,7 @@
     <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health" />
     <meta name="author" content="Shreethemes" />
     <meta name="email" content="support@shreethemes.in" />
-    <meta name="website" content="../../../index.html" />
+    <meta name="website" content="../../../index.jsp" />
     <meta name="Version" content="v1.2.0" />
     <!-- favicon -->
     <link rel="shortcut icon" href="<%= request.getContextPath() %>/assets/images/favicon.ico.png">
@@ -17,6 +19,7 @@
     <link href="<%= request.getContextPath() %>/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <!-- simplebar -->
     <link href="<%= request.getContextPath() %>/assets/css/simplebar.css" rel="stylesheet" type="text/css" />
+
     <!-- Select2 -->
     <link href="<%= request.getContextPath() %>/assets/css/select2.min.css" rel="stylesheet" />
     <!-- Icons -->
@@ -31,13 +34,23 @@
 </head>
 
 <body>
-      <%
- 
-        if (session.getAttribute("account") == null) {
- 
-            response.sendRedirect("login.jsp");
-            return; 
-        } %>
+   <%
+    // Kiểm tra session
+    if (session.getAttribute("staff") == null) {
+        response.sendRedirect(request.getContextPath() + "/auth/login.jsp");
+        return; 
+    }
+
+    Staff staff = (Staff) session.getAttribute("staff");
+    String imagePath;
+
+    if (staff != null && staff.getImage() != null && !staff.getImage().isEmpty()) {
+        imagePath = request.getContextPath() + "/uploads/" + staff.getImage();
+    } else {
+        imagePath = request.getContextPath() + "/assets/images/default-avatar.jpg"; // ảnh mặc định
+    }
+%>
+
     <!-- Loader -->
     <div id="preloader">
         <div id="status">
@@ -53,63 +66,40 @@
         <nav id="sidebar" class="sidebar-wrapper">
             <div class="sidebar-content" data-simplebar style="height: calc(100% - 60px);">
                 <div class="sidebar-brand">
-                    <a href="../landing/index-two.html">
-                        <!--<a href="index.html">-->
+                    <a href="Customer.jsp">
+                        <!--<a href="index.jsp">-->
                         <img src="<%= request.getContextPath() %>/assets/images/logo-dark.png" height="24" class="logo-light-mode" alt="">
                         <img src="<%= request.getContextPath() %>/assets/images/logo-light.png" height="24" class="logo-dark-mode" alt="">
                     </a>
                 </div>
 
                 <ul class="sidebar-menu pt-3">
-                    <li><a href="index.html"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
-                    <li><a href="user-management.jsp"><i
-                                class="uil uil-stethoscope me-2 d-inline-block"></i>User Management</a></li>
+                    <li><a href="Customer.jsp"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>      
+                    <li>
+    <a href="staff-profile.jsp">
+        <i class="uil uil-cog me-2 d-inline-block"></i>
+        Account-Settings
+    </a>
+</li>
 
-                    <li class="sidebar-dropdown">
-                        <a href="javascript:void(0)"><i class="uil uil-user me-2 d-inline-block"></i>Doctors</a>
-                        <div class="sidebar-submenu">
-                            <ul>
-                                <li><a href="doctors.html">Doctors</a></li>
-                                <li><a href="add-doctor.html">Add Doctor</a></li>
-                                <li><a href="dr-profile.html">Profile</a></li>
-                            </ul>
-                        </div>
-                    </li>
-
-                    <li class="sidebar-dropdown">
-                        <a href="javascript:void(0)"><i class="uil uil-wheelchair me-2 d-inline-block"></i>Patients</a>
-                        <div class="sidebar-submenu">
-                            <ul>
-                                <li><a href="patients.html">All Patients</a></li>
-                                <li><a href="add-patient.html">Add Patients</a></li>
-                                <li><a href="patient-profile.html">Profile</a></li>
-                            </ul>
-                        </div>
-                    </li>
-
-                    <li class="sidebar-dropdown">
-                        <a href="javascript:void(0)"><i class="uil uil-apps me-2 d-inline-block"></i>Apps</a>
-                        <div class="sidebar-submenu">
-                            <ul>
-                                <li><a href="chat.html">Chat</a></li>
-                                <li><a href="email.html">Email</a></li>
-                                <li><a href="calendar.html">Calendar</a></li>
-                            </ul>
-                        </div>
-                    </li>
-
-                    <li class="sidebar-dropdown">
-                        <a href="javascript:void(0)"><i
-                                class="uil uil-shopping-cart me-2 d-inline-block"></i>Pharmacy</a>
-                        <div class="sidebar-submenu">
-                            <ul>
-                                <li><a href="shop.html">Shop</a></li>
-                                <li><a href="product-detail.html">Shop Detail</a></li>
-                                <li><a href="shopcart.html">Shopcart</a></li>
-                                <li><a href="checkout.html">Checkout</a></li>
-                            </ul>
-                        </div>
-                    </li>
+              <li class="sidebar-dropdown"> 
+   <a href="javascript:void(0)"><i class="uil uil-university me-2 d-inline-block"></i>Manage Account Bank</a>
+   <div class="sidebar-submenu">
+      <ul>
+         <li><a href="blogs.html">Dashboard</a></li>
+         <li><a href="deposit.jsp">Deposit</a></li>
+         <li class="sidebar-dropdown">
+            <a href="javascript:void(0)"><i ></i>Move Money</a>
+            <div class="sidebar-submenu">
+               <ul>
+                  <li><a href="transfer.jsp">In SmartBank</a></li>
+                  <li><a href="javascript:void(0)">Other Banks (Unavailable)</a></li>
+               </ul>
+            </div>
+         </li>
+      </ul>
+   </div>
+</li>
 
                     <li class="sidebar-dropdown">
                         <a href="javascript:void(0)"><i class="uil uil-flip-h me-2 d-inline-block"></i>Blogs</a>
@@ -120,41 +110,9 @@
                             </ul>
                         </div>
                     </li>
+                    
 
-                    <li class="sidebar-dropdown">
-                        <a href="javascript:void(0)"><i class="uil uil-file me-2 d-inline-block"></i>Pages</a>
-                        <div class="sidebar-submenu">
-                            <ul>
-                                <li><a href="faqs.html">FAQs</a></li>
-                                <li><a href="review.html">Reviews</a></li>
-                                <li><a href="invoice-list.html">Invoice List</a></li>
-                                <li><a href="invoice.html">Invoice</a></li>
-                                <li><a href="terms.html">Terms & Policy</a></li>
-                                <li><a href="privacy.html">Privacy Policy</a></li>
-                                <li><a href="error.html">404 !</a></li>
-                                <li><a href="blank-page.html">Blank Page</a></li>
-                            </ul>
-                        </div>
-                    </li>
-
-                    <li class="sidebar-dropdown">
-                        <a href="javascript:void(0)"><i
-                                class="uil uil-sign-in-alt me-2 d-inline-block"></i>Authentication</a>
-                        <div class="sidebar-submenu">
-                            <ul>
-                                <li><a href="login.html">Login</a></li>
-                                <li><a href="signup.html">Signup</a></li>
-                                <li><a href="forgot-password.html">Forgot Password</a></li>
-                                <li><a href="lock-screen.html">Lock Screen</a></li>
-                                <li><a href="thankyou.html">Thank you...!</a></li>
-                            </ul>
-                        </div>
-                    </li>
-
-                    <li><a href="components.html"><i class="uil uil-cube me-2 d-inline-block"></i>Components</a></li>
-
-                    <li><a href="../landing/index-two.html" target="_blank"><i
-                                class="uil uil-window me-2 d-inline-block"></i>Landing page</a></li>
+                  
                 </ul>
                 <!-- sidebar-menu  -->
             </div>
@@ -257,7 +215,7 @@
                             </a>
                         </li>
 
-                        <li class="list-inline-item mb-0 ms-1">
+<!--                        <li class="list-inline-item mb-0 ms-1">
                             <div class="dropdown dropdown-primary">
                                 <button type="button"
                                     class="btn btn-icon btn-pills btn-soft-primary dropdown-toggle p-0"
@@ -341,35 +299,43 @@
                                     </a>
                                 </div>
                             </div>
-                        </li>
+                        </li>-->
 
                         <li class="list-inline-item mb-0 ms-1">
                             <div class="dropdown dropdown-primary">
                                 <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0"
                                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img
-                                        src="<%= request.getContextPath() %>/assets/images/doctors/01.jpg"
+                                        src="<%= imagePath %>" 
                                         class="avatar avatar-ex-small rounded-circle" alt=""></button>
                                 <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3"
                                     style="min-width: 200px;">
                                     <a class="dropdown-item d-flex align-items-center text-dark"
                                         href="https://shreethemes.in/doctris/layouts/admin/profile.html">
-                                        <img src="<%= request.getContextPath() %>/assets/images/doctors/01.jpg"
-                                            class="avatar avatar-md-sm rounded-circle border shadow" alt="">
+                                        <img src="<%= imagePath %>" class="avatar avatar-md-sm rounded-circle border shadow" alt="Avatar">
+
                                         <div class="flex-1 ms-2">
-                                            <span class="d-block mb-1">Calvin Carlo</span>
-                                            <small class="text-muted">Orthopedic</small>
+<span class="d-block mb-1">
+    ${staff.firstName} ${staff.lastName}
+</span>
+                                 <small class="text-muted">Khách Hàng</small>
                                         </div>
                                     </a>
-                                    <a class="dropdown-item text-dark" href="index.html"><span
+                                    <a class="dropdown-item text-dark" href="index.jsp"><span
                                             class="mb-0 d-inline-block me-1"><i
                                                 class="uil uil-dashboard align-middle h6"></i></span> Dashboard</a>
-                                    <a class="dropdown-item text-dark" href="dr-profile.html"><span
+                                    <a class="dropdown-item text-dark" href="staff-profile.jsp"><span
                                             class="mb-0 d-inline-block me-1"><i
                                                 class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
                                     <div class="dropdown-divider border-top"></div>
-                                    <a class="dropdown-item text-dark" href="lock-screen.html"><span
-                                            class="mb-0 d-inline-block me-1"><i
-                                                class="uil uil-sign-out-alt align-middle h6"></i></span> Logout</a>
+<a class="dropdown-item text-dark" href="<%= request.getContextPath() %>/AuthServlet?action=logout">
+    <span class="mb-0 d-inline-block me-1">
+        <i class="uil uil-sign-out-alt align-middle h6"></i>
+    </span> 
+    Logout
+</a>
+
+
+
                                 </div>
                             </div>
                         </li>
@@ -379,94 +345,8 @@
 
             <div class="container-fluid">
                 <div class="layout-specing">
-                    <h5 class="mb-0">Dashboard</h5>
-
-                    <div class="row">
-                        <div class="col-xl-2 col-lg-4 col-md-4 mt-4">
-                            <div class="card features feature-primary rounded border-0 shadow p-4">
-                                <div class="d-flex align-items-center">
-                                    <div class="icon text-center rounded-md">
-                                        <i class="uil uil-bed h3 mb-0"></i>
-                                    </div>
-                                    <div class="flex-1 ms-2">
-                                        <h5 class="mb-0">558</h5>
-                                        <p class="text-muted mb-0">Patients</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div><!--end col-->
-
-                        <div class="col-xl-2 col-lg-4 col-md-4 mt-4">
-                            <div class="card features feature-primary rounded border-0 shadow p-4">
-                                <div class="d-flex align-items-center">
-                                    <div class="icon text-center rounded-md">
-                                        <i class="uil uil-file-medical-alt h3 mb-0"></i>
-                                    </div>
-                                    <div class="flex-1 ms-2">
-                                        <h5 class="mb-0">$2164</h5>
-                                        <p class="text-muted mb-0">Avg. costs</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div><!--end col-->
-
-                        <div class="col-xl-2 col-lg-4 col-md-4 mt-4">
-                            <div class="card features feature-primary rounded border-0 shadow p-4">
-                                <div class="d-flex align-items-center">
-                                    <div class="icon text-center rounded-md">
-                                        <i class="uil uil-social-distancing h3 mb-0"></i>
-                                    </div>
-                                    <div class="flex-1 ms-2">
-                                        <h5 class="mb-0">112</h5>
-                                        <p class="text-muted mb-0">Staff Members</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div><!--end col-->
-
-                        <div class="col-xl-2 col-lg-4 col-md-4 mt-4">
-                            <div class="card features feature-primary rounded border-0 shadow p-4">
-                                <div class="d-flex align-items-center">
-                                    <div class="icon text-center rounded-md">
-                                        <i class="uil uil-ambulance h3 mb-0"></i>
-                                    </div>
-                                    <div class="flex-1 ms-2">
-                                        <h5 class="mb-0">16</h5>
-                                        <p class="text-muted mb-0">Vehicles</p>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div><!--end col-->
-
-                        <div class="col-xl-2 col-lg-4 col-md-4 mt-4">
-                            <div class="card features feature-primary rounded border-0 shadow p-4">
-                                <div class="d-flex align-items-center">
-                                    <div class="icon text-center rounded-md">
-                                        <i class="uil uil-medkit h3 mb-0"></i>
-                                    </div>
-                                    <div class="flex-1 ms-2">
-                                        <h5 class="mb-0">220</h5>
-                                        <p class="text-muted mb-0">Appointment</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div><!--end col-->
-
-                        <div class="col-xl-2 col-lg-4 col-md-4 mt-4">
-                            <div class="card features feature-primary rounded border-0 shadow p-4">
-                                <div class="d-flex align-items-center">
-                                    <div class="icon text-center rounded-md">
-                                        <i class="uil uil-medical-drip h3 mb-0"></i>
-                                    </div>
-                                    <div class="flex-1 ms-2">
-                                        <h5 class="mb-0">10</h5>
-                                        <p class="text-muted mb-0">Operations</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div><!--end col-->
-                    </div><!--end row-->
+                    <h5 class="mb-0">Dashboard</h5>                 
+                        
 
                     <div class="row">
                         <div class="col-xl-8 col-lg-7 mt-4">
@@ -875,160 +755,7 @@
                             </div>
                         </div><!--end col-->
 
-                        <div class="col-xl-4 col-lg-12 mt-4">
-                            <div class="card border-0 shadow rounded">
-                                <div class="p-4 border-bottom">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <h6 class="mb-0"><i class="uil uil-user text-primary me-1 h5"></i> Patients
-                                            Reviews</h6>
-
-                                        <div class="mb-0 position-relative">
-                                            <select class="form-select form-control" id="dailypatient">
-                                                <option selected>New</option>
-                                                <option value="2019">Old</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <ul class="list-unstyled mb-0 p-4" data-simplebar style="height: 355px;">
-                                    <li class="d-flex align-items-center justify-content-between">
-                                        <div class="d-flex align-items-center">
-                                            <img src="<%= request.getContextPath() %>/assets/images/doctors/01.jpg"
-                                                class="avatar avatar-small rounded-circle border shadow" alt="">
-                                            <div class="flex-1 ms-3">
-                                                <span class="d-block h6 mb-0">Dr. Calvin Carlo</span>
-                                                <small class="text-muted">Orthopedic</small>
-
-                                                <ul class="list-unstyled mb-0">
-                                                    <li class="list-inline-item text-muted">(45)</li>
-                                                    <li class="list-inline-item"><i
-                                                            class="mdi mdi-star text-warning"></i></li>
-                                                    <li class="list-inline-item"><i
-                                                            class="mdi mdi-star text-warning"></i></li>
-                                                    <li class="list-inline-item"><i
-                                                            class="mdi mdi-star text-warning"></i></li>
-                                                    <li class="list-inline-item"><i
-                                                            class="mdi mdi-star text-warning"></i></li>
-                                                    <li class="list-inline-item"><i
-                                                            class="mdi mdi-star text-warning"></i></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-
-                                        <p class="text-muted mb-0">150 Patients</p>
-                                    </li>
-
-                                    <li class="d-flex align-items-center justify-content-between mt-4">
-                                        <div class="d-flex align-items-center">
-                                            <img src="<%= request.getContextPath() %>/assets/images/doctors/02.jpg"
-                                                class="avatar avatar-small rounded-circle border shadow" alt="">
-                                            <div class="flex-1 ms-3">
-                                                <span class="d-block h6 mb-0">Dr. Cristino Murphy</span>
-                                                <small class="text-muted">Gynecology</small>
-
-                                                <ul class="list-unstyled mb-0">
-                                                    <li class="list-inline-item text-muted">(75)</li>
-                                                    <li class="list-inline-item"><i
-                                                            class="mdi mdi-star text-warning"></i></li>
-                                                    <li class="list-inline-item"><i
-                                                            class="mdi mdi-star text-warning"></i></li>
-                                                    <li class="list-inline-item"><i
-                                                            class="mdi mdi-star text-warning"></i></li>
-                                                    <li class="list-inline-item"><i
-                                                            class="mdi mdi-star text-warning"></i></li>
-                                                    <li class="list-inline-item"><i
-                                                            class="mdi mdi-star text-warning"></i></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-
-                                        <p class="text-muted mb-0">350 Patients</p>
-                                    </li>
-
-                                    <li class="d-flex align-items-center justify-content-between mt-4">
-                                        <div class="d-flex align-items-center">
-                                            <img src="<%= request.getContextPath() %>/assets/images/doctors/03.jpg"
-                                                class="avatar avatar-small rounded-circle border shadow" alt="">
-                                            <div class="flex-1 ms-3">
-                                                <span class="d-block h6 mb-0">Dr. Alia Reddy</span>
-                                                <small class="text-muted">Psychotherapy</small>
-
-                                                <ul class="list-unstyled mb-0">
-                                                    <li class="list-inline-item text-muted">(48)</li>
-                                                    <li class="list-inline-item"><i
-                                                            class="mdi mdi-star text-warning"></i></li>
-                                                    <li class="list-inline-item"><i
-                                                            class="mdi mdi-star text-warning"></i></li>
-                                                    <li class="list-inline-item"><i
-                                                            class="mdi mdi-star text-warning"></i></li>
-                                                    <li class="list-inline-item"><i
-                                                            class="mdi mdi-star text-warning"></i></li>
-                                                    <li class="list-inline-item"><i
-                                                            class="mdi mdi-star text-warning"></i></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-
-                                        <p class="text-muted mb-0">450 Patients</p>
-                                    </li>
-
-                                    <li class="d-flex align-items-center justify-content-between mt-4">
-                                        <div class="d-flex align-items-center">
-                                            <img src="<%= request.getContextPath() %>/assets/images/doctors/04.jpg"
-                                                class="avatar avatar-small rounded-circle border shadow" alt="">
-                                            <div class="flex-1 ms-3">
-                                                <span class="d-block h6 mb-0">Dr. Toni Kover</span>
-                                                <small class="text-muted">Dentist</small>
-
-                                                <ul class="list-unstyled mb-0">
-                                                    <li class="list-inline-item text-muted">(68)</li>
-                                                    <li class="list-inline-item"><i
-                                                            class="mdi mdi-star text-warning"></i></li>
-                                                    <li class="list-inline-item"><i
-                                                            class="mdi mdi-star text-warning"></i></li>
-                                                    <li class="list-inline-item"><i
-                                                            class="mdi mdi-star text-warning"></i></li>
-                                                    <li class="list-inline-item"><i
-                                                            class="mdi mdi-star text-warning"></i></li>
-                                                    <li class="list-inline-item"><i
-                                                            class="mdi mdi-star text-warning"></i></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-
-                                        <p class="text-muted mb-0">484 Patients</p>
-                                    </li>
-
-                                    <li class="d-flex align-items-center justify-content-between mt-4">
-                                        <div class="d-flex align-items-center">
-                                            <img src="<%= request.getContextPath() %>/assets/images/doctors/05.jpg"
-                                                class="avatar avatar-small rounded-circle border shadow" alt="">
-                                            <div class="flex-1 ms-3">
-                                                <span class="d-block h6 mb-0">Dr. Jennifer Ballance</span>
-                                                <small class="text-muted">Cardiology</small>
-
-                                                <ul class="list-unstyled mb-0">
-                                                    <li class="list-inline-item text-muted">(55)</li>
-                                                    <li class="list-inline-item"><i
-                                                            class="mdi mdi-star text-warning"></i></li>
-                                                    <li class="list-inline-item"><i
-                                                            class="mdi mdi-star text-warning"></i></li>
-                                                    <li class="list-inline-item"><i
-                                                            class="mdi mdi-star text-warning"></i></li>
-                                                    <li class="list-inline-item"><i
-                                                            class="mdi mdi-star text-warning"></i></li>
-                                                    <li class="list-inline-item"><i
-                                                            class="mdi mdi-star text-warning"></i></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-
-                                        <p class="text-muted mb-0">476 Patients</p>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div><!--end col-->
+            
                     </div><!--end row-->
                 </div>
             </div><!--end container-->
@@ -1041,7 +768,7 @@
                             <div class="text-sm-start text-center">
                                 <p class="mb-0 text-muted">
                                     <script>document.write(new Date().getFullYear())</script> © Doctris. Design with <i
-                                        class="mdi mdi-heart text-danger"></i> by <a href="../../../index.html"
+                                        class="mdi mdi-heart text-danger"></i> by <a href="../../../index.jsp"
                                         target="_blank" class="text-reset">Shreethemes</a>.
                                 </p>
                             </div>
@@ -1066,10 +793,10 @@
             <button type="button" class="btn-close d-flex align-items-center text-dark" data-bs-dismiss="offcanvas"
                 aria-label="Close"><i class="uil uil-times fs-4"></i></button>
         </div>
-        <div class="offcanvas-body p-4 px-md-5">
+<!--        <div class="offcanvas-body p-4 px-md-5">
             <div class="row">
                 <div class="col-12">
-                    <!-- Style switcher -->
+                     Style switcher 
                     <div id="style-switcher">
                         <div>
                             <ul class="text-center list-unstyled mb-0">
@@ -1101,16 +828,16 @@
                                         onclick="setTheme('style')"><img src="<%= request.getContextPath() %>/assets/images/layouts/light-dash.png"
                                             class="img-fluid rounded-md shadow-md d-block" alt=""><span
                                             class="text-muted mt-2 d-block">Light Version</span></a></li>
-                                <li class="d-grid"><a href="../landing/index.html" target="_blank" class="mt-4"><img
+                                <li class="d-grid"><a href="../landing/index.jsp" target="_blank" class="mt-4"><img
                                             src="<%= request.getContextPath() %>/assets/images/layouts/landing-light.png"
                                             class="img-fluid rounded-md shadow-md d-block" alt=""><span
                                             class="text-muted mt-2 d-block">Landing Demos</span></a></li>
                             </ul>
                         </div>
                     </div>
-                    <!-- end Style switcher -->
-                </div><!--end col-->
-            </div><!--end row-->
+                     end Style switcher 
+                </div>end col
+            </div>end row
         </div>
 
         <div class="offcanvas-footer p-4 border-top text-center">
@@ -1127,10 +854,10 @@
                         class="rounded"><i class="uil uil-twitter align-middle" title="twitter"></i></a></li>
                 <li class="list-inline-item mb-0"><a href="mailto:support@shreethemes.in" class="rounded"><i
                             class="uil uil-envelope align-middle" title="email"></i></a></li>
-                <li class="list-inline-item mb-0"><a href="../../../index.html" target="_blank" class="rounded"><i
+                <li class="list-inline-item mb-0"><a href="../../../index.jsp" target="_blank" class="rounded"><i
                             class="uil uil-globe align-middle" title="website"></i></a></li>
-            </ul><!--end icon-->
-        </div>
+            </ul>end icon
+        </div>-->
     </div>
     <!-- Offcanvas End -->
 

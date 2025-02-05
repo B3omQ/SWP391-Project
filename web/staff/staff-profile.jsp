@@ -1,4 +1,4 @@
-<%@ page import="Model.Customer" %>
+<%@ page import="Model.Staff" %>
 
 <!DOCTYPE html>
     <html lang="en">
@@ -25,22 +25,23 @@
         <link href="<%= request.getContextPath() %>/assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
 
     </head>
-     <%
+   <%
     // Ki?m tra session
-    if (session.getAttribute("account") == null) {
+    if (session.getAttribute("staff") == null) {
         response.sendRedirect(request.getContextPath() + "/auth/login.jsp");
         return; 
     }
 
-    Customer account = (Customer) session.getAttribute("account");
+    Staff staff = (Staff) session.getAttribute("staff");
     String imagePath;
 
-    if (account != null && account.getImage() != null && !account.getImage().isEmpty()) {
-        imagePath = request.getContextPath() + "/uploads/" + account.getImage();
+    if (staff != null && staff.getImage() != null && !staff.getImage().isEmpty()) {
+        imagePath = request.getContextPath() + "/uploads/" + staff.getImage();
     } else {
         imagePath = request.getContextPath() + "/assets/images/default-avatar.jpg"; // ?nh m?c ??nh
     }
 %>
+
 
     <body>
         <!-- Loader -->
@@ -102,14 +103,14 @@
                                     <img src="<%= imagePath %>" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
                                     <div class="flex-1 ms-2">
 <span class="d-block mb-1">
-    ${account.firstName} ${account.lastName}
+    ${staff.firstName} ${staff.lastName}
 </span>
        
                                         <small class="text-muted">Customer</small>
                                     </div>
                                 </a>
                                 <a class="dropdown-item text-dark" href="Customer.jsp"><span class="mb-0 d-inline-block me-1"><i class="uil uil-dashboard align-middle h6"></i></span> Dashboard</a>
-                                <a class="dropdown-item text-dark" href="account-profile.jsp"><span class="mb-0 d-inline-block me-1"><i class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
+                                <a class="dropdown-item text-dark" href="staff-profile.jsp"><span class="mb-0 d-inline-block me-1"><i class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
                                 <div class="dropdown-divider border-top"></div>
 <a class="dropdown-item text-dark" href="<%= request.getContextPath() %>/AuthServlet?action=logout">
     <span class="mb-0 d-inline-block me-1">
@@ -153,7 +154,7 @@
 
                             <div class="text-center avatar-profile margin-nagative mt-n5 position-relative pb-4 border-bottom">
                                 <img src="<%= imagePath %>" class="rounded-circle shadow-md avatar avatar-md-md" alt="">
-                                <h5 class="mt-3 mb-1"> ${account.firstName} ${account.lastName}</h5>
+                                <h5 class="mt-3 mb-1"> ${staff.firstName} ${staff.lastName}</h5>
 
                                 <p class="text-muted mb-0">Orthopedic</p>
                             </div>
@@ -161,7 +162,7 @@
                             <ul class="list-unstyled sidebar-nav mb-0">
                                 <li class="navbar-item"><a href="Customer.jsp" class="navbar-link"><i class="ri-airplay-line align-middle navbar-icon"></i> Dashboard</a></li>
                                  <li class="navbar-item"><a href="manage-bank.jsp" class="navbar-link"><i class="ri-airplay-line align-middle navbar-icon"></i>Manage Account Bank</a></li>
-                                <li class="navbar-item"><a href="account-profile.jsp" class="navbar-link"><i class="ri-user-settings-line align-middle navbar-icon"></i> Profile Settings</a></li>
+                                <li class="navbar-item"><a href="staff-profile.jsp" class="navbar-link"><i class="ri-user-settings-line align-middle navbar-icon"></i> Profile Settings</a></li>
                               
                             </ul>
                         </div>
@@ -216,7 +217,7 @@
         <div class="mb-3">
             <label for="firstName" class="form-label">First Name</label>
             <input id="firstName" name="firstName" type="text" class="form-control"
-                   value="${account != null ? account.firstName : ''}" readonly>
+                   value="${staff != null ? staff.firstName : ''}" readonly>
         </div>
     </div>
 
@@ -225,7 +226,7 @@
         <div class="mb-3">
             <label for="lastName" class="form-label">Last Name</label>
             <input id="lastName" name="lastName" type="text" class="form-control"
-                   value="${account != null ? account.lastName : ''}" readonly>
+                   value="${staff != null ? staff.lastName : ''}" readonly>
         </div>
     </div>
 
@@ -234,7 +235,7 @@
         <div class="mb-3">
             <label for="email" class="form-label">Your Email</label>
             <input id="email" name="email" type="email" class="form-control"
-                   value="${account != null ? account.email : ''}" readonly>
+                   value="${staff != null ? staff.email : ''}" readonly>
         </div>
     </div>
 
@@ -243,7 +244,7 @@
         <div class="mb-3">
             <label for="phone" class="form-label">Phone Number</label>
             <input id="phone" name="phone" type="text" class="form-control"
-                   value="${account != null ? account.phone : ''}" readonly>
+                   value="${staff != null ? staff.phone : ''}" readonly>
         </div>
     </div>
 
@@ -252,7 +253,7 @@
         <div class="mb-3">
             <label for="gender" class="form-label">Gender</label>
             <input id="gender" name="gender" type="text" class="form-control"
-                   value="${account != null ? account.gender : ''}" readonly>
+                   value="${staff != null ? staff.gender : ''}" readonly>
         </div>
     </div>
 
@@ -261,7 +262,7 @@
         <div class="mb-3">
             <label for="dob" class="form-label">Date of Birth</label>
             <input id="dob" name="dob" type="date" class="form-control"
-                   value="${account != null && account.dob != null ? account.dob : ''}" readonly>
+                   value="${staff != null && staff.dob != null ? staff.dob : ''}" readonly>
         </div>
     </div>
 </div>
@@ -270,7 +271,7 @@
             <!-- Save Changes Button -->
 <!--            <div class="row">
                 <div class="col-12 text-end">
-                    <input type="hidden" name="id" value="${account != null ? account.id : ''}">
+                    <input type="hidden" name="id" value="${staff != null ? staff.id : ''}">
                     <button type="submit" name="send" class="btn btn-primary">Save Changes</button>
                 </div>
             </div>-->

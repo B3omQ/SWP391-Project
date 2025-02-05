@@ -24,8 +24,9 @@ public class Staff {
     private LocalDate dob;            
     private int failedAttempts;  
     private LocalDateTime lockTime;
+  private String image; 
 
-    public Staff(int id, String username, String password, String email, String firstName, String lastName, String phone, String address, BigDecimal salary, Role role, String gender, LocalDate dob, int failedAttempts, LocalDateTime lockTime) {
+    public Staff(int id, String username, String password, String email, String firstName, String lastName, String phone, String address, BigDecimal salary, Role role, String gender, LocalDate dob, int failedAttempts, LocalDateTime lockTime, String image) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -40,6 +41,7 @@ public class Staff {
         this.dob = dob;
         this.failedAttempts = failedAttempts;
         this.lockTime = lockTime;
+        this.image = image;
     }
 
     public int getId() {
@@ -154,5 +156,12 @@ public class Staff {
         this.lockTime = lockTime;
     }
 
- 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+  
 }

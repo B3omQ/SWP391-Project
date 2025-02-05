@@ -39,7 +39,7 @@
         <!-- Loader -->
         
         <div class="back-to-home rounded d-none d-sm-block">
-            <a href="index.jsp" class="btn btn-icon btn-primary"><i data-feather="home" class="icons"></i></a>
+            <a href="Customer.jsp" class="btn btn-icon btn-primary"><i data-feather="home" class="icons"></i></a>
         </div>
 
         <!-- Hero Start -->
@@ -48,9 +48,9 @@
                 <div class="row justify-content-center">
                     <div class="col-lg-7 col-md-10 text-center">
                         <img src="<%= request.getContextPath() %>/assets/images/403.jpg" class="img-fluid" alt="">
-                        <h3 class="mb-4">Page Not Found</h3>
+                        <h3 class="mb-4">404 Page Not Found</h3>
                         <p class="text-muted para-desc mx-auto">Explore and learn more about everything from machine learning and global payments to  scaling your team.</p>
-                        <a href="index.jsp" class="btn btn-primary mt-2">Go To Home</a>
+                        <a href="Customer.jsp" class="btn btn-primary mt-2">Go To Home</a>
                     </div><!--end col-->
                 </div><!--end row-->
             </div><!--end container-->
