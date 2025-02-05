@@ -1,6 +1,8 @@
 package model;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public class Customer {
 
@@ -12,15 +14,20 @@ public class Customer {
     private String lastName;
     private String phone;
     private String address;
-    private BigDecimal wallet; // Đổi sang kiểu BigDecimal để lưu số tiền
+    private BigDecimal wallet; 
+    private int failedAttempts; 
+    private LocalDateTime lockTime; 
+    private String gender; 
+    private LocalDate dob; 
+    private String image; 
 
-    // Constructor không tham số
     public Customer() {
     }
 
-    // Constructor với tất cả các tham số
     public Customer(int id, String username, String password, String email, 
-                    String firstName, String lastName, String phone, String address, BigDecimal wallet) {
+                    String firstName, String lastName, String phone, String address, 
+                    BigDecimal wallet, int failedAttempts, LocalDateTime lockTime, 
+                    String gender, LocalDate dob, String image) {  // Thêm tham số image
         this.id = id;
         this.username = username;
         this.password = password;
@@ -30,9 +37,13 @@ public class Customer {
         this.phone = phone;
         this.address = address;
         this.wallet = wallet;
+        this.failedAttempts = failedAttempts;
+        this.lockTime = lockTime;
+        this.gender = gender;
+        this.dob = dob;
+        this.image = image; 
     }
 
-    // Getters và Setters
     public int getId() {
         return id;
     }
@@ -103,5 +114,45 @@ public class Customer {
 
     public void setWallet(BigDecimal wallet) {
         this.wallet = wallet;
+    }
+
+    public int getFailedAttempts() {
+        return failedAttempts;
+    }
+
+    public void setFailedAttempts(int failedAttempts) {
+        this.failedAttempts = failedAttempts;
+    }
+
+    public LocalDateTime getLockTime() {
+        return lockTime;
+    }
+
+    public void setLockTime(LocalDateTime lockTime) {
+        this.lockTime = lockTime;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public LocalDate getDob() {
+        return dob;
+    }
+
+    public void setDob(LocalDate dob) {
+        this.dob = dob;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;  
     }
 }

@@ -4,6 +4,10 @@
  */
 package model;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;  
+
 /**
  *
  * @author emkob
@@ -18,12 +22,14 @@ public class Staff {
     private String phone;
     private String address;
     private BigDecimal salary;
-    private Role role;  // Giữ lại kiểu Role như trước
+    private Role role;  
+    private String gender;          
+    private LocalDate dob;            
+    private int failedAttempts;  
+    private LocalDateTime lockTime;
+  private String image; 
 
-    // Constructor
-    public Staff(int id, String username, String password, String email, 
-                 String firstName, String lastName, String phone, 
-                 String address, BigDecimal salary, Role role) {
+    public Staff(int id, String username, String password, String email, String firstName, String lastName, String phone, String address, BigDecimal salary, Role role, String gender, LocalDate dob, int failedAttempts, LocalDateTime lockTime, String image) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -33,10 +39,13 @@ public class Staff {
         this.phone = phone;
         this.address = address;
         this.salary = salary;
-        this.role = role;  // Giữ lại Role object
+        this.role = role;
+        this.gender = gender;
+        this.dob = dob;
+        this.failedAttempts = failedAttempts;
+        this.lockTime = lockTime;
+        this.image = image;
     }
-
-    // Getters and setters for all fields
 
     public int getId() {
         return id;
@@ -117,4 +126,45 @@ public class Staff {
     public void setRole(Role role) {
         this.role = role;
     }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public LocalDate getDob() {
+        return dob;
+    }
+
+    public void setDob(LocalDate dob) {
+        this.dob = dob;
+    }
+
+    public int getFailedAttempts() {
+        return failedAttempts;
+    }
+
+    public void setFailedAttempts(int failedAttempts) {
+        this.failedAttempts = failedAttempts;
+    }
+
+    public LocalDateTime getLockTime() {
+        return lockTime;
+    }
+
+    public void setLockTime(LocalDateTime lockTime) {
+        this.lockTime = lockTime;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+  
 }

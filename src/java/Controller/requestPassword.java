@@ -5,10 +5,10 @@
 
 package controller;
 
-import Dal.CustomerDAO;
-import Dal.DAOTokenForget;
-import Model.Customer;
-import Model.TokenForgetPassword;
+import dal.CustomerDAO;
+import dal.DAOTokenForget;
+import model.Customer;
+import model.TokenForgetPassword;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
