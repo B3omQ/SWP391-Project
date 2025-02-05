@@ -57,6 +57,10 @@
         <servlet-name>Staff</servlet-name>
         <servlet-class>Filter.Staff</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UploadImageServlet</servlet-name>
+        <servlet-class>Controller.UploadImageServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Register</servlet-name>
         <url-pattern>/register</url-pattern>
@@ -129,6 +133,10 @@
         <servlet-name>Staff</servlet-name>
         <url-pattern>/Staff</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UploadImageServlet</servlet-name>
+        <url-pattern>/UploadImageServlet</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>1440</session-timeout>
         <!-- 1440 phút = 24 giờ -->
@@ -147,7 +155,7 @@
         <url-pattern>/staff/*</url-pattern>
     </filter-mapping>
     <error-page>
-    <error-code>404</error-code>
-    <location>/error/404.jsp</location>
-</error-page>
+        <error-code>404</error-code>
+        <location>/error/404.jsp</location>
+    </error-page>
 </web-app>

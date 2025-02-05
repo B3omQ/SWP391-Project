@@ -33,13 +33,23 @@
 </head>
 
     <body>
-          <%
- 
-        if (session.getAttribute("account") == null) {
- 
-response.sendRedirect(request.getContextPath() + "/auth/login.jsp");
-            return; 
-        } %>
+     <%
+    // Kiểm tra session
+    if (session.getAttribute("account") == null) {
+        response.sendRedirect(request.getContextPath() + "/auth/login.jsp");
+        return; 
+    }
+
+    // Lấy thông tin người dùng từ session
+    Customer account = (Customer) session.getAttribute("account");
+    String imagePath;
+
+    if (account != null && account.getImage() != null && !account.getImage().isEmpty()) {
+        imagePath = request.getContextPath() + "/uploads/" + account.getImage();
+    } else {
+        imagePath = request.getContextPath() + "/assets/images/default-avatar.jpg"; // Ảnh mặc định
+    }
+%>
 <!--            <div id="preloader">
         <div id="status">
             <div class="spinner">

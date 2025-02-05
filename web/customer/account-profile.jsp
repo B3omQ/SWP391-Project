@@ -1,3 +1,4 @@
+<%@ page import="Model.Customer" %>
 
 <!DOCTYPE html>
     <html lang="en">
@@ -24,13 +25,24 @@
         <link href="<%= request.getContextPath() %>/assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
 
     </head>
- <%
- 
-        if (session.getAttribute("account") == null) {
- 
-response.sendRedirect(request.getContextPath() + "/auth/login.jsp");
-            return; 
-        } %>
+     <%
+    // Ki?m tra session
+    if (session.getAttribute("account") == null) {
+        response.sendRedirect(request.getContextPath() + "/auth/login.jsp");
+        return; 
+    }
+
+    // L?y thông tin ng??i dùng t? session
+    Customer account = (Customer) session.getAttribute("account");
+    String imagePath;
+
+    if (account != null && account.getImage() != null && !account.getImage().isEmpty()) {
+        imagePath = request.getContextPath() + "/uploads/" + account.getImage();
+    } else {
+        imagePath = request.getContextPath() + "/assets/images/default-avatar.jpg"; // ?nh m?c ??nh
+    }
+%>
+
     <body>
         <!-- Loader -->
         <div id="preloader">
@@ -88,7 +100,7 @@ response.sendRedirect(request.getContextPath() + "/auth/login.jsp");
                             <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="<%= request.getContextPath() %>/assets/images/doctors/01.jpg" class="avatar avatar-ex-small rounded-circle" alt=""></button>
                             <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3" style="min-width: 200px;">
                                 <a class="dropdown-item d-flex align-items-center text-dark" href="doctor-profile.html">
-                                    <img src="<%= request.getContextPath() %>/assets/images/doctors/01.jpg" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
+                                    <img src="<%= imagePath %>" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
                                     <div class="flex-1 ms-2">
 <span class="d-block mb-1">
     ${account.firstName} ${account.lastName}
@@ -123,69 +135,7 @@ response.sendRedirect(request.getContextPath() + "/auth/login.jsp");
                             </ul>
                         </li>
 
-                        <li class="has-submenu parent-parent-menu-item">
-                            <a href="javascript:void(0)">Doctors</a><span class="menu-arrow"></span>
-                            <ul class="submenu">
-                                <li class="has-submenu parent-menu-item">
-                                    <a href="javascript:void(0)" class="menu-item"> Dashboard </a><span class="submenu-arrow"></span>
-                                    <ul class="submenu">
-                                        <li><a href="doctor-dashboard.html" class="sub-menu-item">Dashboard</a></li>
-                                 
-                                        <li><a href="doctor-profile.html" class="sub-menu-item">Profile</a></li>
-                                        <li><a href="doctor-profile-setting.html" class="sub-menu-item">Profile Settings</a></li>
-                                        <li><a href="doctor-chat.html" class="sub-menu-item">Chat</a></li>
-                                        <li><a href="login.html" class="sub-menu-item">Login</a></li>
-                                        <li><a href="signup.html" class="sub-menu-item">Sign Up</a></li>
-                                        <li><a href="forgot-password.html" class="sub-menu-item">Forgot Password</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="doctor-team-one.html" class="sub-menu-item">Doctors One</a></li>
-                                <li><a href="doctor-team-two.html" class="sub-menu-item">Doctors Two</a></li>
-                                <li><a href="doctor-team-three.html" class="sub-menu-item">Doctors Three</a></li>
-                            </ul>
-                        </li>
-
-                        <li class="has-submenu parent-menu-item">
-                            <a href="javascript:void(0)">Patients</a><span class="menu-arrow"></span>
-                            <ul class="submenu">
-                                <li><a href="patient-dashboard.html" class="sub-menu-item">Dashboard</a></li>
-                                <li><a href="patient-profile.html" class="sub-menu-item">Profile</a></li>
-                                <li><a href="booking-appointment.html" class="sub-menu-item">Book Appointment</a></li>
-                                <li><a href="patient-invoice.html" class="sub-menu-item">Invoice</a></li>
-                            </ul>
-                        </li>
-
-                        <li class="has-submenu parent-menu-item">
-                            <a href="javascript:void(0)">Pharmacy</a><span class="menu-arrow"></span>
-                            <ul class="submenu">
-                                <li><a href="pharmacy.html" class="sub-menu-item">Pharmacy</a></li>
-                                <li><a href="pharmacy-shop.html" class="sub-menu-item">Shop</a></li>
-                                <li><a href="pharmacy-product-detail.html" class="sub-menu-item">Medicine Detail</a></li>
-                                <li><a href="pharmacy-shop-cart.html" class="sub-menu-item">Shop Cart</a></li>
-                                <li><a href="pharmacy-checkout.html" class="sub-menu-item">Checkout</a></li>
-                                <li><a href="pharmacy-account.html" class="sub-menu-item">Account</a></li>
-                            </ul>
-                        </li>
-        
-                        <li class="has-submenu parent-parent-menu-item"><a href="javascript:void(0)">Pages</a><span class="menu-arrow"></span>
-                            <ul class="submenu">
-                                <li><a href="aboutus.html" class="sub-menu-item"> About Us</a></li>
-                                <li><a href="departments.html" class="sub-menu-item">Departments</a></li>
-                                <li><a href="faqs.html" class="sub-menu-item">FAQs</a></li>
-                                <li class="has-submenu parent-menu-item">
-                                    <a href="javascript:void(0)" class="menu-item"> Blogs </a><span class="submenu-arrow"></span>
-                                    <ul class="submenu">
-                                        <li><a href="blogs.html" class="sub-menu-item">Blogs</a></li>
-                                        <li><a href="blog-detail.html" class="sub-menu-item">Blog Details</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="terms.html" class="sub-menu-item">Terms & Policy</a></li>
-                                <li><a href="privacy.html" class="sub-menu-item">Privacy Policy</a></li>
-                                <li><a href="error.html" class="sub-menu-item">404 !</a></li>
-                                <li><a href="contact.html" class="sub-menu-item">Contact</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="../admin/index.jsp" class="sub-menu-item" target="_blank">Admin</a></li>
+                      
                     </ul><!--end navigation menu-->
                 </div><!--end navigation-->
             </div><!--end container-->
@@ -203,7 +153,7 @@ response.sendRedirect(request.getContextPath() + "/auth/login.jsp");
                             </div>
 
                             <div class="text-center avatar-profile margin-nagative mt-n5 position-relative pb-4 border-bottom">
-                                <img src="<%= request.getContextPath() %>/assets/images/doctors/01.jpg" class="rounded-circle shadow-md avatar avatar-md-md" alt="">
+                                <img src="<%= imagePath %>" class="rounded-circle shadow-md avatar avatar-md-md" alt="">
                                 <h5 class="mt-3 mb-1"> ${account.firstName} ${account.lastName}</h5>
 
                                 <p class="text-muted mb-0">Orthopedic</p>
@@ -225,24 +175,41 @@ response.sendRedirect(request.getContextPath() + "/auth/login.jsp");
                                 <h5 class="mb-0">Personal Information :</h5>
                             </div>
 
-                            <div class="p-4 border-bottom">
-                                <div class="row align-items-center">
-                                    <div class="col-lg-2 col-md-4">
-                                        <img src="<%= request.getContextPath() %>/assets/images/doctors/01.jpg" class="avatar avatar-md-md rounded-pill shadow mx-auto d-block" alt="">
-                                    </div><!--end col-->
+                <div class="p-4 border-bottom">
+    <div class="row align-items-center">
+        <div class="col-lg-2 col-md-4">
+            <img src="<%= imagePath %>" class="avatar avatar-md-md rounded-pill shadow mx-auto d-block" alt="User Image">
+        </div>
 
-                                    <div class="col-lg-5 col-md-8 text-center text-md-start mt-4 mt-sm-0">
-                                        <h5 class="">Upload your picture</h5>
-                                        <p class="text-muted mb-0">For best results, use an image at least 256px by 256px in either .jpg or .png format</p>
-                                    </div><!--end col-->
+        <div class="col-lg-5 col-md-8 text-center text-md-start mt-4 mt-sm-0">
+            <h5>Upload your picture</h5>
+            <p class="text-muted mb-0">For best results, use an image at least 256px by 256px in either .jpg or .png format</p>
+        </div>
 
-                                    <div class="col-lg-5 col-md-12 text-lg-end text-center mt-4 mt-lg-0">                                        
-                                        <a href="#" class="btn btn-primary">Upload</a>
-                                        <a href="#" class="btn btn-soft-primary ms-2">Remove</a>
-                                    </div><!--end col-->
-                                </div><!--end row-->
-                            </div>
+        <div class="col-lg-5 col-md-12 text-lg-end text-center mt-4 mt-lg-0">
+            <!-- Form Upload -->
+            <form action="<%= request.getContextPath() %>/UploadImageServlet" method="post" enctype="multipart/form-data">
+                <input type="file" name="image" accept=".jpg,.png" class="form-control mb-2">
+                <button type="submit" class="btn btn-primary">Upload</button>
+            </form>
+        </div>
+    </div>
+</div>
 
+<!-- Hi?n th? thông báo khi có l?i -->
+<%
+    String error = request.getParameter("error");
+    String success = request.getParameter("success");
+    if (error != null) {
+%>
+        <div class="alert alert-danger"><%= error %></div>
+<%
+    } else if (success != null) {
+%>
+        <div class="alert alert-success"><%= success %></div>
+<%
+    }
+%>
                             <div class="p-4">
      <div class="row">
     <!-- First Name -->

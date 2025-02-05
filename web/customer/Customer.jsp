@@ -1,4 +1,6 @@
   <%@ page contentType="text/html; charset=UTF-8" language="java" %>
+  <%@ page import="Model.Customer" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,13 +34,23 @@
 </head>
 
 <body>
-      <%
- 
-        if (session.getAttribute("account") == null) {
- 
-response.sendRedirect(request.getContextPath() + "/auth/login.jsp");
-            return; 
-        } %>
+     <%
+    // Kiểm tra session
+    if (session.getAttribute("account") == null) {
+        response.sendRedirect(request.getContextPath() + "/auth/login.jsp");
+        return; 
+    }
+
+    // Lấy thông tin người dùng từ session
+    Customer account = (Customer) session.getAttribute("account");
+    String imagePath;
+
+    if (account != null && account.getImage() != null && !account.getImage().isEmpty()) {
+        imagePath = request.getContextPath() + "/uploads/" + account.getImage();
+    } else {
+        imagePath = request.getContextPath() + "/assets/images/default-avatar.jpg"; // Ảnh mặc định
+    }
+%>
     <!-- Loader -->
     <div id="preloader">
         <div id="status">
@@ -293,16 +305,15 @@ response.sendRedirect(request.getContextPath() + "/auth/login.jsp");
                             <div class="dropdown dropdown-primary">
                                 <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0"
                                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img
-                                        src="<%= request.getContextPath() %>/assets/images/doctors/01.jpg"
+                                        src="<%= imagePath %>" 
                                         class="avatar avatar-ex-small rounded-circle" alt=""></button>
                                 <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3"
                                     style="min-width: 200px;">
                                     <a class="dropdown-item d-flex align-items-center text-dark"
                                         href="https://shreethemes.in/doctris/layouts/admin/profile.html">
-                                        <img src="<%= request.getContextPath() %>/assets/images/doctors/01.jpg"
-                                            class="avatar avatar-md-sm rounded-circle border shadow" alt="">
+                                        <img src="<%= imagePath %>" class="avatar avatar-md-sm rounded-circle border shadow" alt="Avatar">
+
                                         <div class="flex-1 ms-2">
-<jsp:useBean id="account" type="Model.Customer" scope="session" />
 <span class="d-block mb-1">
     ${account.firstName} ${account.lastName}
 </span>

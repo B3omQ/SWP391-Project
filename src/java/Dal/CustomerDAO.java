@@ -55,7 +55,17 @@ public class CustomerDAO extends DBContext {
     return null;
 }
 
+public void updateCustomerImage(int customerId, String imagePath) {
+        String sql = "UPDATE Customer SET Image = ? WHERE Id = ?";
 
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, imagePath);
+            ps.setInt(2, customerId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
  public boolean isAccountLocked(String email) {
         String sql = "SELECT failed_attempts, lock_time FROM Customer WHERE Email = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
