@@ -23,14 +23,12 @@ public class UploadImageServlet extends HttpServlet {
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
 
-    // Lấy session và kiểm tra xem account có tồn tại không
     HttpSession session = request.getSession(false);
     if (session == null) {
         response.sendRedirect(request.getContextPath() + "/auth/login.jsp");
         return;
     }
 
-    // Kiểm tra nếu session chứa customer hoặc staff
     Object account = session.getAttribute("account");
     Object staff = session.getAttribute("staff");
     
@@ -39,14 +37,12 @@ public class UploadImageServlet extends HttpServlet {
         return;
     }
 
-    // Lấy file từ request
     Part filePart = request.getPart("image");
     if (filePart == null || filePart.getSize() == 0) {
         response.sendRedirect(request.getContextPath() + "/profile.jsp?error=NoFileSelected");
         return;
     }
 
-    // Kiểm tra định dạng file hợp lệ
     String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
     String fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
     if (!fileExtension.equals("jpg") && !fileExtension.equals("png")) {
@@ -54,33 +50,28 @@ public class UploadImageServlet extends HttpServlet {
         return;
     }
 
-    // Định nghĩa đường dẫn upload
     String uploadPath = getServletContext().getRealPath("/") + UPLOAD_DIRECTORY;
     File uploadDir = new File(uploadPath);
     if (!uploadDir.exists()) {
         uploadDir.mkdir();
     }
 
-    // Lưu file vào thư mục server
     String filePath = uploadPath + File.separator + fileName;
     filePart.write(filePath);
 
-    // Kiểm tra và cập nhật ảnh cho Customer hoặc Staff
-    if (account != null) {  // Customer
+    if (account != null) {  
         Customer customer = (Customer) account;
-        customer.setImage(fileName);  // Lưu tên file ảnh vào model
+        customer.setImage(fileName);  
         CustomerDAO customerDAO = new CustomerDAO();
-        customerDAO.updateCustomerImage(customer.getId(), fileName);  // Cập nhật ảnh trong DB
+        customerDAO.updateCustomerImage(customer.getId(), fileName);  
         
-        // Chuyển hướng về trang profile của customer
         response.sendRedirect(request.getContextPath() + "/customer/account-profile.jsp?success=ImageUpdated");
-    } else if (staff != null) {  // Staff
+    } else if (staff != null) {  
         Staff staffMember = (Staff) staff;
-        staffMember.setImage(fileName);  // Lưu tên file ảnh vào model
+        staffMember.setImage(fileName);  
         StaffDAO staffDAO = new StaffDAO();
-        staffDAO.updateStaffImage(staffMember.getId(), fileName);  // Cập nhật ảnh trong DB
+        staffDAO.updateStaffImage(staffMember.getId(), fileName); 
         
-        // Chuyển hướng về trang profile của staff
         response.sendRedirect(request.getContextPath() + "/staff/staff-profile.jsp?success=ImageUpdated");
     }
 }
