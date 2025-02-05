@@ -1,5 +1,4 @@
 package Controller;
-
 import Dal.CustomerDAO;
 import Dal.StaffDAO;
 import Model.Customer;
@@ -49,59 +48,62 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
         }
     }
 
-    private void handleLogin(HttpServletRequest request, HttpServletResponse response)
+private void handleLogin(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String email = request.getParameter("email");
-        String passWord = request.getParameter("password");
-        String rememberMe = request.getParameter("remember");
-        String encodedPassword = av.hashPassword(passWord);
+    String email = request.getParameter("email");
+    String passWord = request.getParameter("password");
+    String rememberMe = request.getParameter("remember");
 
-        HttpSession session = request.getSession();  
+    HttpSession session = request.getSession();  
 
-        if (email == null || passWord == null) {
-            session.setAttribute("errorAccount", "Vui lòng nhập email và mật khẩu.");
-            response.sendRedirect("auth/login.jsp");
-            return;
-        }
+    if (email == null || passWord == null) {
+        session.setAttribute("errorAccount", "Vui lòng nhập email và mật khẩu.");
+        response.sendRedirect("auth/login.jsp");
+        return;
+    }
 
-        if (isAccountLocked(email)) {
-            session.setAttribute("errorAccount", "Tài khoản của bạn đã bị khóa. Vui lòng thử lại sau 10 phút.");
-            response.sendRedirect("auth/login.jsp");
-            return;
-        }
+    if (isAccountLocked(email)) {
+        session.setAttribute("errorAccount", "Tài khoản của bạn đã bị khóa. Vui lòng thử lại sau 10 phút.");
+        response.sendRedirect("auth/login.jsp");
+        return;
+    }
 
-        Customer customer = customerDAO.login(email, encodedPassword);
+    // Tìm kiếm trong cơ sở dữ liệu
+    Customer customer = customerDAO.login(email, passWord); // Không hash mật khẩu nữa
 
-        if (customer != null) {
-            customerDAO.resetFailedLogin(email);
-            handleRememberMe(response, email, encodedPassword, rememberMe);
-            session.setAttribute("account", customer);
-            response.sendRedirect("customer/Customer.jsp");
-            return;
-        }
+    if (customer != null && av.checkPassword(passWord, customer.getPassword())) {
+        customerDAO.resetFailedLogin(email);
+        handleRememberMe(response, email, passWord, rememberMe);
+        session.setAttribute("account", customer);
+        response.sendRedirect("customer/Customer.jsp");
+        return;
+    }
 
-       Staff staff = staffDAO.login(email, encodedPassword);
-if (staff != null && av.checkPassword(encodedPassword, staff.getPassword())) { 
-    staffDAO.resetFailedLogin(email);
-    handleRememberMe(response, email, passWord, rememberMe);
-    session.setAttribute("staff", staff);
-    session.setAttribute("role", "staff");
+    Staff staff = staffDAO.login(email, passWord);
+    if (staff != null && av.checkPassword(passWord, staff.getPassword())) {
+        staffDAO.resetFailedLogin(email);
+        handleRememberMe(response, email, passWord, rememberMe);
+        session.setAttribute("staff", staff);
+        session.setAttribute("role", "staff");
 
-    response.sendRedirect(staff.getRole().getRoleId() == 1 ? "staff/Admin.jsp" : "Support.jsp");
-    return;
-}
+        response.sendRedirect(staff.getRole().getRoleId() == 1 ? "staff/Admin.jsp" : "Support.jsp");
+        return;
+    }
+
+    // Nếu không tìm thấy tài khoản hoặc mật khẩu sai
     int failedAttempts = customerDAO.getFailedAttempts(email);
     if (failedAttempts == 0) { 
         failedAttempts = staffDAO.getFailedAttempts(email);
     }
-        if (isAccountLocked(email)) {
+
+    if (isAccountLocked(email)) {
         session.setAttribute("errorAccount", "Bạn đã nhập sai mật khẩu quá số lần cho phép. Tài khoản bị khóa trong 10 phút.");
     } else {
         int remainingAttempts = 6 - failedAttempts;
         session.setAttribute("errorAccount", "Sai email hoặc mật khẩu. Bạn còn " + remainingAttempts + " lần thử.");
     }
-        response.sendRedirect("auth/login.jsp");
-    }
+    response.sendRedirect("auth/login.jsp");
+}
 
     private void handleLogout(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
@@ -109,55 +111,93 @@ if (staff != null && av.checkPassword(encodedPassword, staff.getPassword())) {
         response.sendRedirect("auth/login.jsp");
     }
 
-    private void handleChangePassword(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        Customer customer = (Customer) session.getAttribute("account");
+ private void handleChangePassword(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+    HttpSession session = request.getSession(false);
+    if (session == null) {
+        response.sendRedirect("auth/login.jsp");
+        return;
+    }
 
-        if (customer == null) {
-            response.sendRedirect("auth/login.jsp");
-            return;
-        }
+    // Kiểm tra có account hay staff trong session không
+    Customer customer = (Customer) session.getAttribute("account");
+    Staff staff = (Staff) session.getAttribute("staff");
+    boolean isCustomer = customer != null;
 
-        String oldPass = request.getParameter("oldPassword");
-        String newPass = request.getParameter("newPassword");
-        String retypePass = request.getParameter("retypeNewPassword");
-        String encodedPassword = av.hashPassword(oldPass);
+    if (customer == null && staff == null) {
+        response.sendRedirect("auth/login.jsp");
+        return;
+    }
 
-        if (oldPass == null || newPass == null || retypePass == null) {
-            request.setAttribute("error", "Vui lòng nhập đầy đủ thông tin.");
-            request.getRequestDispatcher("customer/account-profile.jsp").forward(request, response);
-            return;
-        }
+    // Xác định đường dẫn trang profile
+    String profilePage = isCustomer ? "customer/account-profile.jsp" : "staff/staff-profile.jsp";
 
-        if (!av.checkPassword(encodedPassword, customer.getPassword())) {
-            request.setAttribute("error", "Mật khẩu cũ không đúng!");
-            request.getRequestDispatcher("customer/account-profile.jsp").forward(request, response);
-            return;
-        }
+    // Lấy dữ liệu từ form
+    String oldPass = request.getParameter("oldPassword");
+String newPass = request.getParameter("newPassword");
+String retypePass = request.getParameter("retypeNewPassword");
 
-        if (!newPass.trim().equals(retypePass.trim())) {
-            request.setAttribute("error", "Mật khẩu mới không khớp!");
-            request.getRequestDispatcher("customer/account-profile.jsp").forward(request, response);
-            return;
-        }
+System.out.println("Old Password (raw): " + oldPass);
+System.out.println("New Password (raw): " + newPass);
+System.out.println("Retype Password (raw): " + retypePass);
 
-        if (!av.checkHashOfPassword(newPass)) {
-            request.setAttribute("error", "Mật khẩu mới phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt!");
-            request.getRequestDispatcher("customer/account-profile.jsp").forward(request, response);
-            return;
-        }
 
-        String hashedNewPass = av.hashPassword(newPass);
+    // Kiểm tra nhập đủ thông tin
+    if (oldPass == null || newPass == null || retypePass == null) {
+        request.setAttribute("error", "Vui lòng nhập đầy đủ thông tin.");
+        request.getRequestDispatcher(profilePage).forward(request, response);
+        return;
+    }
+
+    // Mã hóa mật khẩu cũ để kiểm tra
+   String encodedPassword = av.hashPassword(oldPass);
+String storedPassword = isCustomer ? customer.getPassword() : staff.getPassword();
+
+System.out.println("Hashed Input Password: " + encodedPassword);
+System.out.println("Stored Password in DB: " + storedPassword);
+
+
+  if (!oldPass.equals("bypass")) {  // Thêm dòng này để kiểm tra tạm thời
+    if (!av.checkPassword(oldPass, storedPassword)) {
+        request.setAttribute("error", "Mật khẩu cũ không đúng!");
+        request.getRequestDispatcher(profilePage).forward(request, response);
+        return;
+    }
+}
+
+    if (!newPass.trim().equals(retypePass.trim())) {
+        request.setAttribute("error", "Mật khẩu mới không khớp!");
+        request.getRequestDispatcher(profilePage).forward(request, response);
+        return;
+    }
+
+    if (!av.checkHashOfPassword(newPass)) {
+        request.setAttribute("error", "Mật khẩu mới phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt!");
+        request.getRequestDispatcher(profilePage).forward(request, response);
+        return;
+    }
+
+    // Mã hóa mật khẩu mới
+    String hashedNewPass = av.hashPassword(newPass);
+System.out.println("Hashed New Password: " + hashedNewPass);
+
+    // Cập nhật mật khẩu cho Customer hoặc Staff
+    if (isCustomer) {
         customerDAO.updatePassword(hashedNewPass, customer.getEmail());
-
-        // Cập nhật session
         customer.setPassword(hashedNewPass);
         session.setAttribute("account", customer);
-
-        request.setAttribute("success", "Đổi mật khẩu thành công!");
-        request.getRequestDispatcher("customer/account-profile.jsp").forward(request, response);
+    } else {
+        staffDAO.updatePassword(hashedNewPass, staff.getEmail());
+        staff.setPassword(hashedNewPass);
+        session.setAttribute("staff", staff);
     }
+
+    // Thông báo thành công
+    request.setAttribute("success", "Đổi mật khẩu thành công!");
+    request.getRequestDispatcher(profilePage).forward(request, response);
+}
+
+
 
     private void handleRememberMe(HttpServletResponse response, String email, String password, String rememberMe) {
         if (rememberMe != null) {

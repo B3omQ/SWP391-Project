@@ -1,16 +1,33 @@
-package Validation;
 
+package Validation;
 import java.util.regex.Pattern;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
+import java.nio.charset.StandardCharsets;  // Thêm dòng này
 
 public class AccountValidation {
 
+    private static final Pattern EMAIL_PATTERN = 
+        Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
 
-
+    private static final Pattern PHONE_PATTERN = 
+        Pattern.compile("^0\\d{9}$"); 
+    
     public boolean checkMatching(String password, String cPassword) {
         return password.equals(cPassword);
+    }
+
+    public boolean isValidEmail(String email) {
+        return email != null && EMAIL_PATTERN.matcher(email).matches();
+    }
+
+    public boolean isValidPhone(String phone) {
+        return phone != null && PHONE_PATTERN.matcher(phone).matches();
+    }
+
+    public boolean isValidAddress(String address) {
+        return address != null && !address.trim().isEmpty();
     }
 
     public boolean checkHashOfPassword(String password) {
@@ -19,11 +36,8 @@ public class AccountValidation {
         }
 
         boolean hasUppercase = Pattern.compile("[A-Z]").matcher(password).find();
-
         boolean hasLowercase = Pattern.compile("[a-z]").matcher(password).find();
-
         boolean hasDigit = Pattern.compile("[0-9]").matcher(password).find();
-
         boolean hasSpecialChar = Pattern.compile("[@#$%^&+=!~(){}\\[\\]\\-]").matcher(password).find();
 
         return hasUppercase && hasLowercase && hasDigit && hasSpecialChar;
@@ -32,10 +46,10 @@ public class AccountValidation {
     public String hashPassword(String password) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
-            byte[] hash = md.digest(password.getBytes());
+            byte[] hash = md.digest(password.getBytes(StandardCharsets.UTF_8)); // Sử dụng UTF-8
             return Base64.getEncoder().encodeToString(hash);
         } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("Error");
+            throw new RuntimeException("Error hashing password", e);
         }
     }
 
