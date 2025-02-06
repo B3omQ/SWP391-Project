@@ -155,11 +155,8 @@ throws ServletException, IOException {
         return;
     }
 
-    // Hash the password before saving to the database
-    String hashedPassword = validator.hashPassword(password);
 
-    // Update the new password in the database
-    DAOAccount.updatePasswordByEmail(email, hashedPassword);
+    DAOAccount.updatePasswordByEmail(email, password);
 
     // Mark the token as used
     tokenForgetPassword.setIsUsed(true);
