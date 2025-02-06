@@ -1,171 +1,169 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package model;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
+/**
+ *
+ * @author JIGGER
+ */
 public class Customer {
 
     private int id;
     private String username;
     private String password;
+    private String image;
     private String email;
-    private String firstName;
-    private String lastName;
+    private String firstname;
+    private String lastname;
+    private String gender;
+    private LocalDate dob;
     private String phone;
-    private String address;
-    private BigDecimal wallet; 
-    private int failedAttempts; 
-    private LocalDateTime lockTime; 
-    private String gender; 
-    private LocalDate dob; 
-    private String image; 
+    private String Address;
+    private int failAttempt;
+    private LocalDateTime locktime;
+    private BigDecimal wallet;
 
     public Customer() {
     }
 
-    public Customer(int id, String email, String firstName, String lastName, String phone, String address, String gender, LocalDate dob, String image) {
-        this.id = id;
-        this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phone = phone;
-        this.address = address;
-        this.gender = gender;
-        this.dob = dob;
-        this.image = image;
-    }    // Thêm constructor 
-    
-
-    public Customer(int id, String username, String password, String email, 
-                    String firstName, String lastName, String phone, String address, 
-                    BigDecimal wallet, int failedAttempts, LocalDateTime lockTime, 
-                    String gender, LocalDate dob, String image) {  // Thêm tham số image
+    public Customer(int id, String username, String password, String image, String email, String firstname, String lastname, String gender, LocalDate dob, String phone, String Address, int failAttempt, LocalDateTime locktime, BigDecimal wallet) {
         this.id = id;
         this.username = username;
         this.password = password;
+        this.image = image;
         this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phone = phone;
-        this.address = address;
-        this.wallet = wallet;
-        this.failedAttempts = failedAttempts;
-        this.lockTime = lockTime;
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.gender = gender;
         this.dob = dob;
-        this.image = image; 
+        this.phone = phone;
+        this.Address = Address;
+        this.failAttempt = failAttempt;
+        this.locktime = locktime;
+        this.wallet = wallet;
     }
 
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getUsername() {
         return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public String getImage() {
+        return image;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public String getFirstname() {
+        return firstname;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public BigDecimal getWallet() {
-        return wallet;
-    }
-
-    public void setWallet(BigDecimal wallet) {
-        this.wallet = wallet;
-    }
-
-    public int getFailedAttempts() {
-        return failedAttempts;
-    }
-
-    public void setFailedAttempts(int failedAttempts) {
-        this.failedAttempts = failedAttempts;
-    }
-
-    public LocalDateTime getLockTime() {
-        return lockTime;
-    }
-
-    public void setLockTime(LocalDateTime lockTime) {
-        this.lockTime = lockTime;
+    public String getLastname() {
+        return lastname;
     }
 
     public String getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
     public LocalDate getDob() {
         return dob;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public String getAddress() {
+        return Address;
+    }
+
+    public int getFailAttempt() {
+        return failAttempt;
+    }
+
+    public LocalDateTime getLocktime() {
+        return locktime;
+    }
+
+    public BigDecimal getWallet() {
+        return wallet;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     public void setDob(LocalDate dob) {
         this.dob = dob;
     }
 
-    public String getImage() {
-        return image;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
-    public void setImage(String image) {
-        this.image = image;  
+    public void setAddress(String Address) {
+        this.Address = Address;
     }
+
+    public void setFailAttempt(int failAttempt) {
+        this.failAttempt = failAttempt;
+    }
+
+    public void setLocktime(LocalDateTime locktime) {
+        this.locktime = locktime;
+    }
+
+    public void setWallet(BigDecimal wallet) {
+        this.wallet = wallet;
+    }
+
+    @Override
+    public String toString() {
+        return "Customer{" + "id=" + id + ", username=" + username + ", password=" + password + ", image=" + image + ", email=" + email + ", firstname=" + firstname + ", lastname=" + lastname + ", gender=" + gender + ", dob=" + dob + ", phone=" + phone + ", Address=" + Address + ", failAttempt=" + failAttempt + ", locktime=" + locktime + ", wallet=" + wallet + '}';
+    }
+
 }

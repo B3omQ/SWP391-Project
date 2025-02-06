@@ -8,6 +8,6 @@ package dal;
  *
  * @author JIGGER
  */
-public class StaffDAO {
+public class UtilDAO {
     
 }

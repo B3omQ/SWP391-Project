@@ -1,39 +1,45 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package model;
 
+/**
+ *
+ * @author JIGGER
+ */
 public class Role {
-    private int roleId;
-    private String roleName;
 
-    public Role(int roleId, String roleName) {
-        this.roleId = roleId;
-        this.roleName = roleName;
-    }
-public Role(int roleId) {
-        this.roleId = roleId;
-        this.roleName = null; 
+    private int id;
+    private String name;
+
+    public Role() {
     }
 
-    public int getRoleId() {
-        return roleId;
+    public Role(int id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
-    public void setRoleId(int roleId) {
-        this.roleId = roleId;
+    public int getId() {
+        return id;
     }
 
-    public String getRoleName() {
-        return roleName;
+    public String getName() {
+        return name;
     }
 
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
     public String toString() {
-        return "Role{" +
-                "roleId=" + roleId +
-                ", roleName='" + roleName + '\'' +
-                '}';
+        return "Role{" + "id=" + id + ", name=" + name + '}';
     }
+
 }
