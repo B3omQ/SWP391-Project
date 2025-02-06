@@ -32,6 +32,19 @@ public class Customer {
     public Customer() {
     }
 
+    public Customer(int id, String image, String email, String firstname, String lastname, String gender, LocalDate dob, String phone, String Address) {
+        this.id = id;
+        this.image = image;
+        this.email = email;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.gender = gender;
+        this.dob = dob;
+        this.phone = phone;
+        this.Address = Address;
+    } //Khởi tạo constructor để dùng cho Staff get list customer với những thông tin này
+    
+    
     public Customer(int id, String username, String password, String image, String email, String firstname, String lastname, String gender, LocalDate dob, String phone, String Address, int failAttempt, LocalDateTime locktime, BigDecimal wallet) {
         this.id = id;
         this.username = username;
