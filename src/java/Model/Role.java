@@ -20,7 +20,10 @@ public class Role {
         this.id = id;
         this.name = name;
     }
-
+public Role(int id) {
+        this.id = id;
+        this.name = null; 
+    }
     public int getId() {
         return id;
     }
