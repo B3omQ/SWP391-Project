@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Customer;
 import model.Role;
+import model.Staff;
 
 /**
  *
@@ -40,6 +41,10 @@ public class StaffDAO extends DBContext {
         }
         return null;
     }
+    
+    public Staff getStaff(String username, String password) {
+        return null;
+    }
 
     public int countTotalRecords() {
         String sql = """
@@ -59,27 +64,35 @@ public class StaffDAO extends DBContext {
 
         return count;
     }
-
+    
     public static void main(String[] args) {
         StaffDAO s = new StaffDAO();
-        List<Customer> list = s.getAllCustomer(0, 10);
-        for (Customer c : list) {
+        String phone = "";
+        List<Customer> list = s.getAllCustomer(0, 10, phone);
+        for(Customer c : list) {
             System.out.println(c);
         }
     }
 
-    public List<Customer> getAllCustomer(int offset, int recordsPerPage) {
+
+
+    public List<Customer> getAllCustomer(int offset, int recordsPerPage, String phone) {
         List<Customer> customerList = new ArrayList<>();
         String sql = """
                      SELECT Id, [Image], Email, FirstName, LastName, Gender, Dob, Phone, Address
                      FROM BankingSystem.dbo.Customer
                      """;
-
+        
+        if (phone != null && !phone.isEmpty()) {
+            sql += " WHERE [Phone] = '" + phone + "'";
+        }
+        
         String pagination = """
                     ORDER BY Id
                     OFFSET ? ROWS
                     FETCH NEXT ? ROWS ONLY;
                     """;
+        
         sql += pagination;
 
         try (PreparedStatement st = connection.prepareStatement(sql)) {

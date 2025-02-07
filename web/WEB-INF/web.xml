@@ -4,8 +4,16 @@
         <servlet-name>CustomerManager</servlet-name>
         <servlet-class>controller.manager.CustomerManager</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ProfileManager</servlet-name>
+        <servlet-class>controller.manager.ProfileManager</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>CustomerManager</servlet-name>
         <url-pattern>/customer-manager</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProfileManager</servlet-name>
+        <url-pattern>/profile-manager</url-pattern>
     </servlet-mapping>
 </web-app>

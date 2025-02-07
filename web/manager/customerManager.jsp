@@ -65,6 +65,28 @@
                                 </nav>
                             </div>
                         </div>
+                        <form id="search" action="customer-manager" method="get" class="container mt-3">                          
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label class="form-label" for="phoneSearch">Enter phone number</label>
+                                    <input 
+                                        value="${currentPhoneSearch}" 
+                                        class="form-control" 
+                                        type="text" 
+                                        placeholder="Search by phone number" 
+                                        id="phoneSearch" 
+                                        name="phoneSearch"
+                                        />
+                                </div>                                
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-6">
+                                    <a href="customer-manager?page=1" class="btn btn-secondary me-2">Reset</a>
+                                    <button class="btn btn-primary" type="submit">Search</button>
+                                </div>
+                            </div>
+                        </form>
+
 
                         <div class="table-responsive">
                             <table class="table table-striped table-bordered table-hover">

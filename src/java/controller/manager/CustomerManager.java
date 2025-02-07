@@ -38,6 +38,7 @@ public class CustomerManager extends HttpServlet {
             throws ServletException, IOException {
         StaffDAO sdao = new StaffDAO();
         String pageParam = request.getParameter("page");
+        String phoneSearch = request.getParameter("phoneSearch");
         try {
             int page = (pageParam == null) ? 1 : Integer.parseInt(pageParam);
             int recordsPerPage = 10;
@@ -45,7 +46,8 @@ public class CustomerManager extends HttpServlet {
             int totalRecords = sdao.countTotalRecords();
             int totalPages = (int) Math.ceil(totalRecords * 1.0 / recordsPerPage);
 
-            List<Customer> customerList = sdao.getAllCustomer(offset, recordsPerPage);
+            List<Customer> customerList = sdao.getAllCustomer(offset, recordsPerPage, phoneSearch);
+            request.setAttribute("currentPhoneSearch", phoneSearch);
             request.setAttribute("customerList", customerList);
             request.setAttribute("currentPage", page);
             request.setAttribute("totalPages", totalPages);
