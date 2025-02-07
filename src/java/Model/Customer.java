@@ -29,6 +29,8 @@ public class Customer {
     private LocalDateTime locktime;
     private BigDecimal wallet;
 
+    
+
     public Customer() {
     }
 
@@ -47,6 +49,18 @@ public class Customer {
         this.failAttempt = failAttempt;
         this.locktime = locktime;
         this.wallet = wallet;
+    }
+    public Customer(String username, String password, String email, String firstname, String lastname, String gender, LocalDate dob, String phone, String Address) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.gender = gender;
+        this.dob = dob;
+        this.phone = phone;
+        this.Address = Address;
+        this.wallet = BigDecimal.valueOf(50000.00);
     }
 
     public int getId() {
