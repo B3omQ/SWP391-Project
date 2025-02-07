@@ -112,12 +112,12 @@
                                         </div>
                                         <div class="container">
                                             <input value="add" type="hidden" name="add">
-<!--                                            <div class="col-md-12">
-                                                <div class="mb-3 mt-4">
-                                                    <label for="otherImage">Image</label>
-                                                    <input type="file" id="otherImage" name="otherImage" class="form-control-file">
-                                                </div>
-                                            </div>-->
+                                            <!--                                            <div class="col-md-12">
+                                                                                            <div class="mb-3 mt-4">
+                                                                                                <label for="otherImage">Image</label>
+                                                                                                <input type="file" id="otherImage" name="otherImage" class="form-control-file">
+                                                                                            </div>
+                                                                                        </div>-->
                                             <div class="col-md-12">
                                                 <div class="mb-3">
                                                     <label class="form-label">Username <span class="text-danger">*</span></label>
@@ -171,8 +171,12 @@
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="mb-3">
-                                                    <label class="form-label">Phone number <span class="text-danger">*</span></label>
-                                                    <input type="tel" class="form-control" placeholder="Phone number" name="phoneNumber" required="">
+                                                    <label class="form-label">Phone Number <span class="text-danger">*</span></label>
+                                                    <input type="tel" class="form-control" id="phoneNumber" name="phone" 
+                                                           placeholder="Enter phone number" required 
+                                                           pattern="0[1-9]\d{7,8}" 
+                                                           title="Vui lòng nhập đúng format số điện thoại(9-10 số và không kí tự đặc biệt)">
+                                                    <small class="text-danger" id="phoneError" style="display: none;">Vui lòng nhập đúng format số điện thoại(9-10 số và không kí tự đặc biệt)</small>
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
@@ -185,6 +189,21 @@
                                 </div>
                             </div>
                         </form>
+                        <script>
+                            document.getElementById("phoneNumber").addEventListener("input", function () {
+                                let phoneInput = this.value;
+                                let phonePattern = /^0[1-9]\d{7,8}$/;
+                                let errorMsg = document.getElementById("phoneError");
+
+                                if (phonePattern.test(phoneInput)) {
+                                    this.setCustomValidity("");
+                                    errorMsg.style.display = "none";
+                                } else {
+                                    this.setCustomValidity("Phone number không đúng format");
+                                    errorMsg.style.display = "block";
+                                }
+                            });
+                        </script>
                         <div class="d-flex justify-content-between mb-3">
                             <!-- Search Box -->
                             <input type="text" id="searchInput" class="form-control w-25" placeholder="Search users...">
@@ -255,11 +274,11 @@
                                                                 </div>
 
                                                                 <div class="mb-2">
-                                                                    <strong>First Name:</strong> ${customer.firstName}
+                                                                    <strong>First Name:</strong> ${customer.firstname}
                                                                 </div>
 
                                                                 <div class="mb-2">
-                                                                    <strong>Last Name:</strong> ${customer.lastName}
+                                                                    <strong>Last Name:</strong> ${customer.lastname}
                                                                 </div>
 
                                                                 <div class="mb-2">
@@ -293,84 +312,83 @@
                                                     </div>
                                                 </div>
                                                 <form action="consultant-customer" method="post" class="mt-4">
-    <div class="modal fade" id="UpdateAccountform" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="addUserModalLabel">Thay đổi thông tin Account</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="container">
-                    <input name="changeinfoId" value="${customer.id}" type="hidden">
-                    <div class="col-md-12">
-                        <div class="mb-3 mt-4">
-                            <label class="form-label">Username <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" value="${customer.username}" name="username" required="">
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="mb-3">                                               
-                            <label class="form-label">First name <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" value="${customer.firstName}" placeholder="First Name" name="firstname" required="">
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="mb-3">                                                 
-                            <label class="form-label">Last name <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" value="${customer.lastName}" placeholder="Last Name" name="lastname" required="">
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="mb-3">
-                            <label class="form-label">Your Email <span class="text-danger">*</span></label>
-                            <input type="email" class="form-control" name="email" value="${customer.email}" required="">
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="mb-3">
-                            <label class="form-label">Day of birth <span class="text-danger">*</span></label>
-                            <input type="date" class="form-control" name="dob" value="${customer.dob}" required="">
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="mb-3">
-                            <label class="form-label">Gender <span class="text-danger">*</span></label>
-                            <select class="form-control" name="gender" required>
-                                <option value="Male" ${customer.gender == 'Male' ? 'selected' : ''}>Male</option>
-                                <option value="Female" ${customer.gender == 'Female' ? 'selected' : ''}>Female</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="mb-3">
-                            <label class="form-label">Address <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" placeholder="Address" value="${customer.address}" name="address" required="">
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="mb-3">
-                            <label class="form-label">Phone number <span class="text-danger">*</span></label>
-                            <input type="tel" class="form-control" placeholder="Phone number" value="${customer.phone}" name="phoneNumber" required="">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <div class="">
-                            <button type="submit" class="btn btn-warning">Edit</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</form>
-
+                                                    <div class="modal fade" id="UpdateAccountform" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h1 class="modal-title fs-5" id="addUserModalLabel">Thay đổi thông tin Account</h1>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="container">
+                                                                    <input name="changeinfoId" value="${customer.id}" type="hidden">
+                                                                    <div class="col-md-12">
+                                                                        <div class="mb-3 mt-4">
+                                                                            <label class="form-label">Username <span class="text-danger">*</span></label>
+                                                                            <input type="text" class="form-control" value="${customer.username}" name="username" required="">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="mb-3">                                               
+                                                                            <label class="form-label">First name <span class="text-danger">*</span></label>
+                                                                            <input type="text" class="form-control" value="${customer.firstname}" placeholder="First Name" name="firstname" required="">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="mb-3">                                                 
+                                                                            <label class="form-label">Last name <span class="text-danger">*</span></label>
+                                                                            <input type="text" class="form-control" value="${customer.lastname}" placeholder="Last Name" name="lastname" required="">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-12">
+                                                                        <div class="mb-3">
+                                                                            <label class="form-label">Your Email <span class="text-danger">*</span></label>
+                                                                            <input type="email" class="form-control" name="email" value="${customer.email}" required="">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-12">
+                                                                        <div class="mb-3">
+                                                                            <label class="form-label">Day of birth <span class="text-danger">*</span></label>
+                                                                            <input type="date" class="form-control" name="dob" value="${customer.dob}" required="">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-12">
+                                                                        <div class="mb-3">
+                                                                            <label class="form-label">Gender <span class="text-danger">*</span></label>
+                                                                            <select class="form-control" name="gender" required>
+                                                                                <option value="Male" ${customer.gender == 'Male' ? 'selected' : ''}>Male</option>
+                                                                                <option value="Female" ${customer.gender == 'Female' ? 'selected' : ''}>Female</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-12">
+                                                                        <div class="mb-3">
+                                                                            <label class="form-label">Address <span class="text-danger">*</span></label>
+                                                                            <input type="text" class="form-control" placeholder="Address" value="${customer.address}" name="address" required="">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-12">
+                                                                        <div class="mb-3">
+                                                                            <label class="form-label">Phone number <span class="text-danger">*</span></label>
+                                                                            <input type="tel" class="form-control" placeholder="Phone number" value="${customer.phone}" name="phoneNumber" required="">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <div class="">
+                                                                            <button type="submit" class="btn btn-warning">Edit</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
                                             </td>
                                         </tr>
                                     </c:forEach>
                                 </tbody>
                             </table>
                         </div>
-<!--                         JavaScript for Search & Sort -->
+                        <!--                         JavaScript for Search & Sort -->
                         <script>
                             document.getElementById("searchInput").addEventListener("keyup", function () {
                                 let input = this.value.toLowerCase();
