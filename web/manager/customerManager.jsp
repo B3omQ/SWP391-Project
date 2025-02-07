@@ -31,7 +31,10 @@
         <link href="<%= request.getContextPath() %>/assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
 
     </head>
+
+
     <body>
+
         <!-- Loader -->
         <div id="preloader">
             <div id="status">
@@ -54,65 +57,98 @@
 
                 <div class="container-fluid">
                     <div class="layout-specing">
-                        <div class="row">
-                            <div class="col-xl-9 col-lg-6 col-md-4">
+                        <!-- Header Section -->
+                        <div class="row align-items-center">
+                            <!-- Title & Breadcrumb -->
+                            <div class="col-md-6">
                                 <h5 class="mb-0">Customer Management</h5>
-                                <nav aria-label="breadcrumb" class="d-inline-block mt-2">
+                                <nav aria-label="breadcrumb" class="mt-2">
                                     <ul class="breadcrumb breadcrumb-muted bg-transparent rounded mb-0 p-0">
-                                        <li class="breadcrumb-item"><a href="index.html">SmartBanking</a></li>
+                                        <li class="breadcrumb-item">
+                                            <a href="index.html" class="text-decoration-none text-danger">SmartBanking</a>
+                                        </li>
                                         <li class="breadcrumb-item active" aria-current="page">Customers</li>
                                     </ul>
                                 </nav>
                             </div>
-                        </div>
-                        <form id="search" action="customer-manager" method="get" class="container mt-3">                          
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label class="form-label" for="phoneSearch">Enter phone number</label>
-                                    <input 
-                                        value="${currentPhoneSearch}" 
-                                        class="form-control" 
-                                        type="text" 
-                                        placeholder="Search by phone number" 
-                                        id="phoneSearch" 
+
+                            <!-- Search form -->
+                            <div class="col-md-6">
+                                <form id="search" action="customer-manager" method="get" class="d-flex">
+                                    <input
+                                        value="${currentPhoneSearch}"
+                                        class="form-control border-danger me-2"
+                                        type="text"
+                                        placeholder="Search by phone number"
+                                        id="phoneSearch"
                                         name="phoneSearch"
                                         />
-                                </div>                                
+                                    <a href="customer-manager?page=1" class="btn btn-outline-danger me-2">Reset</a>
+                                    <button class="btn btn-danger" type="submit">Search</button>
+                                </form>
                             </div>
-                            <div class="row mt-3">
-                                <div class="col-md-6">
-                                    <a href="customer-manager?page=1" class="btn btn-secondary me-2">Reset</a>
-                                    <button class="btn btn-primary" type="submit">Search</button>
-                                </div>
-                            </div>
-                        </form>
+                        </div>
+                        <!-- Customer Table -->
+                        <style>
+                            /* Cố định kích thước hàng */
+                            .table tbody tr {
+                                height: 60px; /* Đặt chiều cao hàng cố định */
+                            }
 
+                            /* Cột có nội dung dài sẽ bị cắt bớt với dấu "..." */
+                            .table tbody td {
+                                white-space: nowrap; /* Không xuống dòng */
+                                overflow: hidden; /* Ẩn phần dư */
+                                text-overflow: ellipsis; /* Hiển thị "..." nếu quá dài */
+                                max-width: 150px; /* Giới hạn độ rộng */
+                            }
 
-                        <div class="table-responsive">
+                            /* Chỉnh lại ô hình ảnh */
+                            .table img {
+                                width: 150px;
+                                height: 150px;
+                                object-fit: cover; /* Giữ tỷ lệ ảnh, không méo */
+                            }
+
+                        </style>
+
+                        <div class="table-responsive mt-4">
                             <table class="table table-striped table-bordered table-hover">
-                                <thead class="thead-dark">
+                                <thead class="thead-dark bg-danger text-white">
                                     <tr>
                                         <th>ID</th>
                                         <th>Image</th>
-                                        <th>Email</th>
                                         <th>First Name</th>
                                         <th>Last Name</th>
+                                        <th>Phone</th>
                                         <th>Gender</th>
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <c:forEach var="customer" items="${customerList}">
                                         <tr>
                                             <td>${customer.id}</td>
-                                            <td><img src="${customer.image}" width="40" height="40" alt="alt" /></td>
-                                            <td>${customer.email}</td>
-                                            <td>${customer.firstname}</td>
-                                            <td>${customer.lastname}</td>
+                                            <td class="text-truncate" style="max-width: 100px;">
+                                                <img src="${customer.image}" alt="Customer Image" />
+                                            </td>
+                                            <td class="text-truncate" style="max-width: 120px;">${customer.firstname}</td>
+                                            <td class="text-truncate" style="max-width: 120px;">${customer.lastname}</td>
+                                            <td class="text-truncate" style="max-width: 120px;">${customer.phone}</td>
                                             <td>${customer.gender}</td>
-                                            <td>           
-                                                <button type="button" class="btn btn-info" data-bs-toggle="modal"
-                                                        data-bs-target="#detailsModal${customer.id}">View</button>
-                                                <button  data-bs-toggle="modal" data-bs-target="#editModal${customer.id}" class="btn btn-primary">Update</button>  
+                                            <td class="text-center align-middle">
+                                                <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
+                                                        data-bs-target="#detailsModal${customer.id}">
+                                                    View
+                                                </button>
+                                                <button data-bs-toggle="modal" data-bs-target="#editModal${customer.id}" 
+                                                        class="btn btn-primary btn-sm">
+                                                    Update
+                                                </button>
+                                                <form onsubmit="deleteAlert(event)" style="display:inline-block" action="customer-manager" method="post">
+                                                    <input name="deleteId" value="${customer.id}" type="hidden">
+                                                    <button class="btn btn-danger btn-sm" type="submit">Delete</button>
+                                                </form>
                                                 <jsp:include page="template/editCustomer.jsp">
                                                     <jsp:param name="id" value="${customer.id}" />
                                                     <jsp:param name="email" value="${customer.email}" />
@@ -123,25 +159,26 @@
                                                     <jsp:param name="phone" value="${customer.phone}" />
                                                     <jsp:param name="address" value="${customer.address}" />
                                                 </jsp:include>
-                                                <form onsubmit="deleteAlert(event)" style="display:inline-block" action ="customer-manager" method="post">
-                                                    <input name="deleteId" value="${customer.id}" type="hidden">
-                                                    <button class="btn btn-danger btn-sm" type ="submit" >Delete</button> 
-                                                </form>
-                                                <jsp:include page="template/editCustomer.jsp"/>
                                             </td>
+
                                         </tr>
+
+                                        <!-- Details Modal -->
                                     <div class="modal fade" id="detailsModal${customer.id}" tabindex="-1"
                                          aria-labelledby="detailsModalLabel${customer.id}" aria-hidden="true">
                                         <div class="modal-dialog modal-xl">
                                             <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h1 class="modal-title fs-5" id="detailsModalLabel${customer.id}">Customer's detail</h1>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                            aria-label="Clcpue"></button>
+                                                <div class="modal-header bg-danger text-white">
+                                                    <h1 class="modal-title fs-5" id="detailsModalLabel${customer.id}">Customer's Detail</h1>
+                                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
                                                     <div class="row">
-                                                        <div class="col-md-6"><img src="${customer.image}" width="500" height="500" alt="alt" /></div>                                                        
+                                                        <div class="col-md-6 text-center">
+                                                            <img src="${customer.image}" width="300" height="300" 
+                                                                 alt="Customer Image" class="img-fluid rounded" />
+                                                        </div>
                                                         <div class="col-md-6">
                                                             <p><strong>Id: </strong>${customer.id}</p>
                                                             <p><strong>Username: </strong>${customer.username}</p>
@@ -149,42 +186,44 @@
                                                             <p><strong>First Name: </strong>${customer.firstname}</p>
                                                             <p><strong>Last Name: </strong>${customer.lastname}</p>
                                                             <p><strong>Address: </strong>${customer.address}</p>
-                                                            <p><strong>Phone: </strong>${customer.phone}</p> 
-                                                            <p><strong>Date of birth: </strong>${customer.dob}</p> 
+                                                            <p><strong>Phone: </strong>${customer.phone}</p>
+                                                            <p><strong>Date of Birth: </strong>${customer.dob}</p>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary"
-                                                            data-bs-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div> 
+                                    </div>
                                 </c:forEach>
                                 </tbody>
                             </table>
                         </div>
+
+
+                        <!-- Pagination -->
+
                     </div>
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination justify-content-center">
-                            <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
-                                <a class="page-link" href="?page=${currentPage - 1}" 
-                                   tabindex="-1">Previous</a>
-                            </li>
-
-                            <c:forEach var="i" begin="1" end="${totalPages}">
-                                <li class="page-item ${i == currentPage ? 'active' : ''}">
-                                    <a class="page-link" href="?page=${i}">${i}</a>
-                                </li>
-                            </c:forEach>
-
-                            <li class="page-item ${currentPage == totalPages ? 'disabled' : ''}">
-                                <a class="page-link" href="?page=${currentPage + 1}">Next</a>
-                            </li>
-                        </ul>
-                    </nav>
                 </div>
+                <nav aria-label="Page navigation" class="mt-4">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
+                            <a class="page-link text-danger" href="?page=${currentPage - 1}" tabindex="-1">Previous</a>
+                        </li>
+
+                        <c:forEach var="i" begin="1" end="${totalPages}">
+                            <li class="page-item ${i == currentPage ? 'active' : ''}">
+                                <a class="page-link bg-danger text-white" href="?page=${i}">${i}</a>
+                            </li>
+                        </c:forEach>
+
+                        <li class="page-item ${currentPage == totalPages ? 'disabled' : ''}">
+                            <a class="page-link text-danger" href="?page=${currentPage + 1}">Next</a>
+                        </li>
+                    </ul>
+                </nav>
 
                 <!-- Footer Start -->
                 <footer class="bg-white shadow py-3">

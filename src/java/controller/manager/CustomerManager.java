@@ -41,7 +41,7 @@ public class CustomerManager extends HttpServlet {
         String phoneSearch = request.getParameter("phoneSearch");
         try {
             int page = (pageParam == null) ? 1 : Integer.parseInt(pageParam);
-            int recordsPerPage = 10;
+            int recordsPerPage = 8;
             int offset = (page - 1) * recordsPerPage;
             int totalRecords = sdao.countTotalRecords();
             int totalPages = (int) Math.ceil(totalRecords * 1.0 / recordsPerPage);
