@@ -109,7 +109,7 @@ public class UpdateInfo extends HttpServlet {
 
             // Cập nhật lại session
             session.setAttribute("account", customer);
-            response.sendRedirect(request.getContextPath() + "/customer/account-profile.jsp?success=ProfileUpdated");
+            response.sendRedirect(request.getContextPath() + "/customer/template/account-profile.jsp?success=ProfileUpdated");
         } else {
             Staff staff = (Staff) user;
             staff.setEmail(email);
@@ -122,7 +122,7 @@ public class UpdateInfo extends HttpServlet {
 
             // Cập nhật lại session
             session.setAttribute("staff", staff);
-            response.sendRedirect(request.getContextPath() + "/staff/staff-profile.jsp?success=ProfileUpdated");
+            response.sendRedirect(request.getContextPath() + "/staff/template/staff-profile.jsp?success=ProfileUpdated");
         }
     }
 

@@ -63,7 +63,13 @@ public class AuthServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        String action = request.getParameter("action");
+
+        if ("logout".equals(action)) {
+            handleLogout(request, response);
+        } else {
+            response.sendRedirect("auth/template/login.jsp");
+        }
     } 
 
     /** 
@@ -114,7 +120,7 @@ public class AuthServlet extends HttpServlet {
         customerDAO.resetFailedLogin(email);
         handleRememberMe(response, email, passWord, rememberMe);
         session.setAttribute("account", customer);
-        response.sendRedirect("customer/Customer.jsp");
+        response.sendRedirect("customer/template/Customer.jsp");
         return;
     }
 
@@ -169,7 +175,7 @@ public class AuthServlet extends HttpServlet {
     }
 
     // Xác định đường dẫn trang profile
-    String profilePage = isCustomer ? "customer/account-profile.jsp" : "staff/staff-profile.jsp";
+    String profilePage = isCustomer ? "customer/template/account-profile.jsp" : "staff/staff-profile.jsp";
 
     // Lấy dữ liệu từ form
     String oldPass = request.getParameter("oldPassword");

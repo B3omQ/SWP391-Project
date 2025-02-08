@@ -1,5 +1,5 @@
   <%@ page contentType="text/html; charset=UTF-8" language="java" %>
-  <%@ page import="Model.Customer" %>
+  <%@ page import="model.Customer" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -315,7 +315,7 @@
 
                                         <div class="flex-1 ms-2">
 <span class="d-block mb-1">
-    ${account.firstName} ${account.lastName}
+    ${account.firstname} ${account.lastname}
 </span>
                                  <small class="text-muted">Khách Hàng</small>
                                         </div>

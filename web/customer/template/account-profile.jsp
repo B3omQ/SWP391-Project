@@ -1,4 +1,4 @@
-<%@ page import="Model.Customer" %>
+<%@ page import="model.Customer" %>
 
 <!DOCTYPE html>
     <html lang="en">
@@ -102,7 +102,7 @@
                                     <img src="<%= imagePath %>" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
                                     <div class="flex-1 ms-2">
 <span class="d-block mb-1">
-    ${account.firstName} ${account.lastName}
+    ${account.firstname} ${account.lastname}
 </span>
        
                                         <small class="text-muted">Customer</small>
@@ -153,7 +153,7 @@
 
                             <div class="text-center avatar-profile margin-nagative mt-n5 position-relative pb-4 border-bottom">
                                 <img src="<%= imagePath %>" class="rounded-circle shadow-md avatar avatar-md-md" alt="">
-                                <h5 class="mt-3 mb-1"> ${account.firstName} ${account.lastName}</h5>
+                                <h5 class="mt-3 mb-1"> ${account.firstname} ${account.lastname}</h5>
 
                                 <p class="text-muted mb-0">Orthopedic</p>
                             </div>
@@ -217,7 +217,7 @@
                 <div class="mb-3">
                     <label for="firstName" class="form-label">First Name</label>
                     <input id="firstName" name="firstName" type="text" class="form-control"
-                           value="${account != null ? account.firstName : ''}" readonly>
+                           value="${account != null ? account.firstname : ''}" readonly>
                 </div>
             </div>
 
@@ -226,7 +226,7 @@
                 <div class="mb-3">
                     <label for="lastName" class="form-label">Last Name</label>
                     <input id="lastName" name="lastName" type="text" class="form-control"
-                           value="${account != null ? account.lastName : ''}" readonly>
+                           value="${account != null ? account.lastname : ''}" readonly>
                 </div>
             </div>
 
