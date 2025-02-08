@@ -10,6 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Customer;
 
 /**
@@ -148,5 +150,22 @@ public class CustomerDAO extends DBContext {
         }
 
         return count;
+    }
+    public boolean isDuplicatedEmail(String email) {
+        String sql = """
+                    SELECT 1 FROM [BankingSystem].[dbo].[Customer] 
+                    WHERE [Email] = ? 
+                 """;
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, email);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return true;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CustomerDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 }
