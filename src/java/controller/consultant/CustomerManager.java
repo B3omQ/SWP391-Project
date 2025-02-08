@@ -88,7 +88,7 @@ public class CustomerManager extends HttpServlet {
         String email = request.getParameter("email");
         String address = request.getParameter("address");
         String gender = request.getParameter("gender");
-        String phoneNumber = request.getParameter("phoneNumber");
+        String phoneNumber = request.getParameter("phone");
         String password = request.getParameter("password");
         String dobStr = request.getParameter("dob");
 //        Part filePart = request.getPart("otherImage");
@@ -104,8 +104,6 @@ public class CustomerManager extends HttpServlet {
 
             } catch (Exception e) {
                 e.printStackTrace();
-                request.setAttribute("error", "Invalid input.");
-                request.getRequestDispatcher("failure.jsp").forward(request, response);
             }
         }
         if (changeinfoId != null) {
