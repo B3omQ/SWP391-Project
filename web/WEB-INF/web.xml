@@ -16,6 +16,7 @@
         <servlet-name>HomeServlet</servlet-name>
         <url-pattern>/home</url-pattern>
     </servlet-mapping>
+    <servlet>
         <servlet-name>AuthServlet</servlet-name>
         <servlet-class>controller.customer.AuthServlet</servlet-class>
     </servlet>

@@ -50,66 +50,72 @@ public class CustomerDAO extends DBContext {
 
             int rowsInserted = stmt.executeUpdate();
             return rowsInserted > 0;
-
-        private AccountValidation av = new AccountValidation();
-
- public static Customer mapResultSetToCustomer(ResultSet rs) throws SQLException {
-    return new Customer(
-        rs.getInt("Id"),
-        rs.getString("Username"),
-        rs.getString("Password"),
-        rs.getString("Image"),
-        rs.getString("Email"),
-        rs.getString("FirstName"),
-        rs.getString("LastName"),
-        rs.getString("Gender"),
-        rs.getDate("Dob") != null ? rs.getDate("Dob").toLocalDate() : null,
-        rs.getString("Phone"),
-        rs.getString("Address"),
-        rs.getInt("failed_attempts"),
-        rs.getTimestamp("lock_time") != null ? rs.getTimestamp("lock_time").toLocalDateTime() : null,
-        rs.getBigDecimal("Wallet")
-    );
-}
-          public void updateCustomer(Customer customer) {
-    String sql = "UPDATE Customer SET email = ?, phone = ?, address = ? WHERE id = ?";
-    try (PreparedStatement p = connection.prepareStatement(sql)) {
-
-        p.setString(1, customer.getEmail());
-        p.setString(2, customer.getPhone());
-        p.setString(3, customer.getAddress());
-        p.setInt(4, customer.getId());
-
-        p.executeUpdate();
-    } catch (SQLException e) {
-        e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
-}
+
+    private AccountValidation av = new AccountValidation();
+
+    public static Customer mapResultSetToCustomer(ResultSet rs) throws SQLException {
+        return new Customer(
+                rs.getInt("Id"),
+                rs.getString("Username"),
+                rs.getString("Password"),
+                rs.getString("Image"),
+                rs.getString("Email"),
+                rs.getString("FirstName"),
+                rs.getString("LastName"),
+                rs.getString("Gender"),
+                rs.getDate("Dob") != null ? rs.getDate("Dob").toLocalDate() : null,
+                rs.getString("Phone"),
+                rs.getString("Address"),
+                rs.getInt("failed_attempts"),
+                rs.getTimestamp("lock_time") != null ? rs.getTimestamp("lock_time").toLocalDateTime() : null,
+                rs.getBigDecimal("Wallet")
+        );
+    }
+
+    public void updateCustomer(Customer customer) {
+        String sql = "UPDATE Customer SET email = ?, phone = ?, address = ? WHERE id = ?";
+        try (PreparedStatement p = connection.prepareStatement(sql)) {
+
+            p.setString(1, customer.getEmail());
+            p.setString(2, customer.getPhone());
+            p.setString(3, customer.getAddress());
+            p.setInt(4, customer.getId());
+
+            p.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public Customer login(String email, String password) {
-    if (isAccountLocked(email)) {
-        return null; 
-    }
-
-    String sql = "SELECT * FROM [dbo].[Customer] WHERE Email = ?";
-    try (PreparedStatement p = connection.prepareStatement(sql)) {
-        p.setString(1, email);
-        try (ResultSet rs = p.executeQuery()) {
-            if (rs.next()) {
-                if (av.checkPassword(password, rs.getString("Password"))) {
-                    resetFailedLogin(email);
-                    return mapResultSetToCustomer(rs);
-                }
-                increaseFailedLogin(email);
-            }
+        if (isAccountLocked(email)) {
+            return null;
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-    return null;
-}
 
-public void updateCustomerImage(int customerId, String imagePath) {
+        String sql = "SELECT * FROM [dbo].[Customer] WHERE Email = ?";
+        try (PreparedStatement p = connection.prepareStatement(sql)) {
+            p.setString(1, email);
+            try (ResultSet rs = p.executeQuery()) {
+                if (rs.next()) {
+                    if (av.checkPassword(password, rs.getString("Password"))) {
+                        resetFailedLogin(email);
+                        return mapResultSetToCustomer(rs);
+                    }
+                    increaseFailedLogin(email);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void updateCustomerImage(int customerId, String imagePath) {
         String sql = "UPDATE Customer SET Image = ? WHERE Id = ?";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -120,7 +126,8 @@ public void updateCustomerImage(int customerId, String imagePath) {
             e.printStackTrace();
         }
     }
- public boolean isAccountLocked(String email) {
+
+    public boolean isAccountLocked(String email) {
         String sql = "SELECT failed_attempts, lock_time FROM Customer WHERE Email = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, email);
@@ -157,7 +164,10 @@ public void updateCustomerImage(int customerId, String imagePath) {
                      """;
         try (PreparedStatement p = connection.prepareStatement(sql)) {
             p.setInt(1, id);
-
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void updatePassword(String newPassword, String email) {
         String sql = "UPDATE Customer SET Password = ? WHERE Email = ?";
@@ -255,6 +265,7 @@ public void updateCustomerImage(int customerId, String imagePath) {
 
         return count;
     }
+
     public boolean isDuplicatedEmail(String email) {
         String sql = """
                     SELECT 1 FROM [BankingSystem].[dbo].[Customer] 
@@ -303,7 +314,7 @@ public void updateCustomerImage(int customerId, String imagePath) {
         return null;
     }
 
-  public void increaseFailedLogin(String email) {
+    public void increaseFailedLogin(String email) {
         String sql = "UPDATE Customer SET failed_attempts = failed_attempts + 1 WHERE Email = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, email);
@@ -327,7 +338,7 @@ public void updateCustomerImage(int customerId, String imagePath) {
         }
     }
 
-  public void lockAccount(String email) {
+    public void lockAccount(String email) {
         String sql = "UPDATE Customer SET lock_time = ? WHERE Email = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now()));
@@ -337,6 +348,7 @@ public void updateCustomerImage(int customerId, String imagePath) {
             e.printStackTrace();
         }
     }
+
     public boolean updatePasswordByEmail(String email, String password) {
         String sql = "UPDATE [dbo].[Customer] SET Password = ? WHERE Email = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -351,8 +363,7 @@ public void updateCustomerImage(int customerId, String imagePath) {
         return false;
     }
 
-
-      public int getFailedAttempts(String email) {
+    public int getFailedAttempts(String email) {
         String sql = "SELECT failed_attempts FROM Customer WHERE Email = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, email);
@@ -367,7 +378,7 @@ public void updateCustomerImage(int customerId, String imagePath) {
         return 0;
     }
 
- public void unlockAccount(String email) {
+    public void unlockAccount(String email) {
         String sql = "UPDATE Customer SET lock_time = NULL WHERE Email = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, email);
