@@ -4,7 +4,7 @@
  */
 package controller.manager;
 
-import dal.StaffDAO;
+import dal.ManagerDAO;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -36,17 +36,17 @@ public class CustomerManager extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        StaffDAO sdao = new StaffDAO();
+        ManagerDAO mdao = new ManagerDAO();
         String pageParam = request.getParameter("page");
         String phoneSearch = request.getParameter("phoneSearch");
         try {
             int page = (pageParam == null) ? 1 : Integer.parseInt(pageParam);
             int recordsPerPage = 8;
             int offset = (page - 1) * recordsPerPage;
-            int totalRecords = sdao.countTotalRecords();
+            int totalRecords = mdao.countTotalRecords();
             int totalPages = (int) Math.ceil(totalRecords * 1.0 / recordsPerPage);
 
-            List<Customer> customerList = sdao.getAllCustomer(offset, recordsPerPage, phoneSearch);
+            List<Customer> customerList = mdao.getAllCustomer(offset, recordsPerPage, phoneSearch);
             request.setAttribute("currentPhoneSearch", phoneSearch);
             request.setAttribute("customerList", customerList);
             request.setAttribute("currentPage", page);
@@ -133,7 +133,7 @@ public class CustomerManager extends HttpServlet {
             throws ServletException, IOException {
         String deleteId = request.getParameter("deleteId");
         String updateId = request.getParameter("updateId");
-        StaffDAO sdao = new StaffDAO();
+        ManagerDAO mdao = new ManagerDAO();
         if (updateId != null) {
             try {
                 int id = Integer.parseInt(updateId);
@@ -148,13 +148,13 @@ public class CustomerManager extends HttpServlet {
                 Part imagePart = request.getPart("newImg");
                 String image = (imagePart != null && imagePart.getSize() > 0 ? getAndSaveImg(imagePart) : null);
                 if (image != null) {
-                    String imgPath = sdao.getCustomerById(id).getImage();
+                    String imgPath = mdao.getCustomerById(id).getImage();
                     deleteFile(imgPath);
                 } else {
-                    image = sdao.getCustomerById(id).getImage();
+                    image = mdao.getCustomerById(id).getImage();
                 }
 
-                sdao.updateInformationCustomer(id, image, email, firstname, lastname, gender, dob, phone, address);
+                mdao.updateInformationCustomer(id, image, email, firstname, lastname, gender, dob, phone, address);
 
                 response.sendRedirect("customer-manager?page=1");
                 return;
@@ -166,14 +166,14 @@ public class CustomerManager extends HttpServlet {
         if (deleteId != null) {
             try {
                 int delId = Integer.parseInt(deleteId);
-                Customer customer = sdao.getCustomerById(delId);
+                Customer customer = mdao.getCustomerById(delId);
 
                 if (customer != null) {
                     String imgPath = customer.getImage();
                     if (imgPath != null) {
                         deleteFile(imgPath);
                     }
-                    sdao.deleteCustomer(delId);
+                    mdao.deleteCustomer(delId);
                 }
 
                 response.sendRedirect("customer-manager?page=1");

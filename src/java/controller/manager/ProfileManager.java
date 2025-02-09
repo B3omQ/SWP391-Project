@@ -4,7 +4,7 @@
  */
 package controller.manager;
 
-import dal.StaffDAO;
+import dal.ManagerDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -108,7 +108,7 @@ public class ProfileManager extends HttpServlet {
         String changeInfo = request.getParameter("changeInfo");
         HttpSession session = request.getSession();
         Staff currentAccount = (Staff) session.getAttribute("user");
-        StaffDAO sdao = new StaffDAO();
+        ManagerDAO mdao = new ManagerDAO();
 //        if (changePwd != null) {
 //            String newPassword = request.getParameter("password");
 //            udao.changePassword(currentAccount.getId(), newPassword);
@@ -130,12 +130,12 @@ public class ProfileManager extends HttpServlet {
                 Part imagePart = request.getPart("newImg");
                 String image = (imagePart != null && imagePart.getSize() > 0 ? getAndSaveImg(imagePart) : null);
                 if (image != null) {
-                    String imgPath = sdao.getStaffById(currentAccount.getId()).getImage();
+                    String imgPath = mdao.getStaffById(currentAccount.getId()).getImage();
                     deleteFile(imgPath);
                 } else {
-                    image = sdao.getStaffById(currentAccount.getId()).getImage();
+                    image = mdao.getStaffById(currentAccount.getId()).getImage();
                 }
-                sdao.updateInformationStaff(currentAccount.getId(), image, firstname, lastname, gender, dob, phone, address);
+                mdao.updateInformationStaff(currentAccount.getId(), image, firstname, lastname, gender, dob, phone, address);
                 
                 return;
             } catch (Exception e) {

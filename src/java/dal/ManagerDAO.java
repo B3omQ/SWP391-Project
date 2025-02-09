@@ -21,7 +21,7 @@ import model.Staff;
  *
  * @author JIGGER
  */
-public class StaffDAO extends DBContext {
+public class ManagerDAO extends DBContext {
 
     public Role getRole(int roleID) {
         String sql = """
@@ -59,14 +59,14 @@ public class StaffDAO extends DBContext {
                 count = rs.getInt(1);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(StaffDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ManagerDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return count;
     }
 
     public static void main(String[] args) {
-        StaffDAO s = new StaffDAO();
+        ManagerDAO s = new ManagerDAO();
         String phone = "";
         List<Customer> list = s.getAllCustomer(0, 10, phone);
         for (Customer c : list) {
@@ -188,7 +188,7 @@ public class StaffDAO extends DBContext {
             st.setInt(9, id);  // Fix: Correct index for id parameter
             st.executeUpdate();
         } catch (SQLException ex) {
-            Logger.getLogger(StaffDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ManagerDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -220,7 +220,7 @@ public class StaffDAO extends DBContext {
             st.setInt(8, id);  // Fix: Correct index for id parameter
             st.executeUpdate();
         } catch (SQLException ex) {
-            Logger.getLogger(StaffDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ManagerDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
