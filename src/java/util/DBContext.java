@@ -27,8 +27,8 @@ public class DBContext {
         //where StudentDBContext is located in dal package, 
         try {
             String user = "sa";
-            String pass = "sa";
-            String url = "jdbc:sqlserver://localhost\\SQLEXPRESS:1433;databaseName=BankVip;trustServerCertificate=true";
+            String pass = "123456";
+            String url = "jdbc:sqlserver://localhost\\SQLEXPRESS:1433;databaseName=BankingSystem;trustServerCertificate=true";
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             connection = DriverManager.getConnection(url, user, pass);
         } catch (ClassNotFoundException | SQLException ex) {

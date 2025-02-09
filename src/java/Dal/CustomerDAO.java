@@ -33,8 +33,8 @@ public class CustomerDAO extends DBContext {
         rs.getDate("Dob") != null ? rs.getDate("Dob").toLocalDate() : null,
         rs.getString("Phone"),
         rs.getString("Address"),
-        rs.getInt("failed_attempts"),
-        rs.getTimestamp("lock_time") != null ? rs.getTimestamp("lock_time").toLocalDateTime() : null,
+        rs.getInt("failAttempts"),
+        rs.getTimestamp("LockTime") != null ? rs.getTimestamp("LockTime").toLocalDateTime() : null,
         rs.getBigDecimal("Wallet")
     );
 }
@@ -88,13 +88,13 @@ public void updateCustomerImage(int customerId, String imagePath) {
         }
     }
  public boolean isAccountLocked(String email) {
-        String sql = "SELECT failed_attempts, lock_time FROM Customer WHERE Email = ?";
+        String sql = "SELECT failAttempts, LockTime FROM Customer WHERE Email = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, email);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    int failedAttempts = rs.getInt("failed_attempts");
-                    Timestamp lockTime = rs.getTimestamp("lock_time");
+                    int failedAttempts = rs.getInt("failAttempts");
+                    Timestamp lockTime = rs.getTimestamp("LockTime");
 
                     if (lockTime != null) {
                         long elapsedTime = System.currentTimeMillis() - lockTime.getTime();
@@ -162,7 +162,7 @@ public void updateCustomerImage(int customerId, String imagePath) {
     }
 
   public void increaseFailedLogin(String email) {
-        String sql = "UPDATE Customer SET failed_attempts = failed_attempts + 1 WHERE Email = ?";
+        String sql = "UPDATE Customer SET failAttempts = failAttempts + 1 WHERE Email = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, email);
             ps.executeUpdate();
@@ -176,7 +176,7 @@ public void updateCustomerImage(int customerId, String imagePath) {
     }
 
     public void resetFailedLogin(String email) {
-        String sql = "UPDATE Customer SET failed_attempts = 0, lock_time = NULL WHERE Email = ?";
+        String sql = "UPDATE Customer SET failAttempts = 0, LockTime = NULL WHERE Email = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, email);
             ps.executeUpdate();
@@ -186,7 +186,7 @@ public void updateCustomerImage(int customerId, String imagePath) {
     }
 
   public void lockAccount(String email) {
-        String sql = "UPDATE Customer SET lock_time = ? WHERE Email = ?";
+        String sql = "UPDATE Customer SET LockTime = ? WHERE Email = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now()));
             ps.setString(2, email);
@@ -211,12 +211,12 @@ public void updateCustomerImage(int customerId, String imagePath) {
 
 
       public int getFailedAttempts(String email) {
-        String sql = "SELECT failed_attempts FROM Customer WHERE Email = ?";
+        String sql = "SELECT failAttempts FROM Customer WHERE Email = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, email);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getInt("failed_attempts");
+                    return rs.getInt("failAttempts");
                 }
             }
         } catch (SQLException e) {
@@ -226,7 +226,7 @@ public void updateCustomerImage(int customerId, String imagePath) {
     }
 
  public void unlockAccount(String email) {
-        String sql = "UPDATE Customer SET lock_time = NULL WHERE Email = ?";
+        String sql = "UPDATE Customer SET LockTime = NULL WHERE Email = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, email);
             ps.executeUpdate();

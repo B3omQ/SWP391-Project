@@ -16,4 +16,67 @@
         <servlet-name>ProfileManager</servlet-name>
         <url-pattern>/profile-manager</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>AuthServlet</servlet-name>
+        <servlet-class>controller.customer.AuthServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateInfo</servlet-name>
+        <servlet-class>controller.customer.UpdateInfo</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UploadImageServlet</servlet-name>
+        <servlet-class>controller.customer.UploadImageServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>requestPassword</servlet-name>
+        <servlet-class>controller.customer.requestPassword</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>resetPassword</servlet-name>
+        <servlet-class>controller.customer.resetPassword</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>VNpayServlet</servlet-name>
+        <servlet-class>controller.customer.VNpayServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AuthServlet</servlet-name>
+        <url-pattern>/AuthServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateInfo</servlet-name>
+        <url-pattern>/UpdateInfo</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UploadImageServlet</servlet-name>
+        <url-pattern>/UploadImageServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>requestPassword</servlet-name>
+        <url-pattern>/requestPassword</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>resetPassword</servlet-name>
+        <url-pattern>/resetPassword</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>VNpayServlet</servlet-name>
+        <url-pattern>/VNpayServlet</url-pattern>
+    </servlet-mapping>
+    <session-config>
+        <session-timeout>1440</session-timeout>
+        <!-- 1440 phút = 24 giờ -->
+        <cookie-config>
+            <http-only>true</http-only>
+            <secure>false</secure>
+            <!-- Đổi thành true nếu dùng HTTPS -->
+        </cookie-config>
+    </session-config>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/error/404.jsp</location>
+    </error-page>
 </web-app>
+    
+
