@@ -102,7 +102,7 @@
 
                     </li>
                     </c:if>
-                    <c:if test="${sessionScope.sustomer != null}">
+                    <c:if test="${sessionScope.customer != null}">
                     <li class="list-inline-item mb-0 ms-1">
                         <div class="dropdown dropdown-primary">
                             <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0"
