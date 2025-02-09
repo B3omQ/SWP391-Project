@@ -14,17 +14,16 @@ public class TokenForgetPassword {
 
     private int id;
     private String token;
-    private LocalDateTime expirytime;
+    private LocalDateTime expiryTime;
     private boolean isUsed;
     private int userId;
 
     public TokenForgetPassword() {
     }
 
-    public TokenForgetPassword(int id, String token, LocalDateTime expirytime, boolean isUsed, int userId) {
-        this.id = id;
+    public TokenForgetPassword(String token, LocalDateTime expirytime, boolean isUsed, int userId) {
         this.token = token;
-        this.expirytime = expirytime;
+        this.expiryTime = expirytime;
         this.isUsed = isUsed;
         this.userId = userId;
     }
@@ -38,7 +37,7 @@ public class TokenForgetPassword {
     }
 
     public LocalDateTime getExpirytime() {
-        return expirytime;
+        return expiryTime;
     }
 
     public boolean isIsUsed() {
@@ -58,7 +57,7 @@ public class TokenForgetPassword {
     }
 
     public void setExpirytime(LocalDateTime expirytime) {
-        this.expirytime = expirytime;
+        this.expiryTime = expirytime;
     }
 
     public void setIsUsed(boolean isUsed) {
@@ -71,7 +70,7 @@ public class TokenForgetPassword {
 
     @Override
     public String toString() {
-        return "TokenForgetPassword{" + "id=" + id + ", token=" + token + ", expirytime=" + expirytime + ", isUsed=" + isUsed + ", userId=" + userId + '}';
+        return "TokenForgetPassword{" + "id=" + id + ", token=" + token + ", expirytime=" + expiryTime + ", isUsed=" + isUsed + ", userId=" + userId + '}';
     }
 
 }
