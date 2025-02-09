@@ -99,14 +99,14 @@ create table LoanServiceUsed (
 
 create table LoanPayment(
 	Id int identity(1,1) primary key,
-	LSUId int references Loan(Id),
+	LSUId int references LoanServiceUsed(Id),
 	PaymentAmount decimal(10,2) not null,
 	PaidDate datetime not null default getdate()
 )
 
 create table LoanHistory (
 	Id int identity(1,1) primary key,
-	LSUId int references Loan(Id),
+	LSUId int references LoanServiceUsed(Id),
 	Discription nvarchar(max) not null
 );
 
