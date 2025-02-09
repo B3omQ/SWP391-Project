@@ -20,6 +20,10 @@
         <servlet-name>resetPassword</servlet-name>
         <servlet-class>controller.customer.resetPassword</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>VNpayServlet</servlet-name>
+        <servlet-class>controller.customer.VNpayServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AuthServlet</servlet-name>
         <url-pattern>/AuthServlet</url-pattern>
@@ -39,6 +43,10 @@
     <servlet-mapping>
         <servlet-name>resetPassword</servlet-name>
         <url-pattern>/resetPassword</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>VNpayServlet</servlet-name>
+        <url-pattern>/VNpayServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>1440</session-timeout>
