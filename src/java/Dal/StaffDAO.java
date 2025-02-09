@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import util.AccountValidation;
+
 /**
  *
  * @author JIGGER
@@ -22,29 +23,31 @@ import util.AccountValidation;
 public class StaffDAO extends DBContext {
 
     private AccountValidation av = new AccountValidation();
-    public static Staff mapResultSetToStaff(ResultSet rs) throws SQLException {
-    LocalDate dob = rs.getDate("Dob") != null ? rs.getDate("Dob").toLocalDate() : null;
-    LocalDateTime lockTime = rs.getTimestamp("lock_time") != null ? rs.getTimestamp("lock_time").toLocalDateTime() : null;
 
-    return new Staff(
-        rs.getInt("Id"),
-        rs.getString("Username"),
-        rs.getString("Password"),
-        rs.getString("Image"),
-        rs.getString("Email"),
-        rs.getString("FirstName"),
-        rs.getString("LastName"),
-        rs.getString("Gender"),
-        dob, // Chuyển thành LocalDate
-        rs.getString("Phone"),
-        rs.getString("Address"),
-        rs.getBigDecimal("Salary"),
-        rs.getInt("failed_attempts"),
-        lockTime,
-        new Role(rs.getInt("RoleId")) // Truyền đối tượng Role
-    );
-}
-  public boolean updatePasswordByEmail(String email, String password) {
+    public static Staff mapResultSetToStaff(ResultSet rs) throws SQLException {
+        LocalDate dob = rs.getDate("Dob") != null ? rs.getDate("Dob").toLocalDate() : null;
+        LocalDateTime lockTime = rs.getTimestamp("LockTime") != null ? rs.getTimestamp("LockTime").toLocalDateTime() : null;
+
+        return new Staff(
+                rs.getInt("Id"),
+                rs.getString("Username"),
+                rs.getString("Password"),
+                rs.getString("Image"),
+                rs.getString("Email"),
+                rs.getString("FirstName"),
+                rs.getString("LastName"),
+                rs.getString("Gender"),
+                dob, // Chuyển thành LocalDate
+                rs.getString("Phone"),
+                rs.getString("Address"),
+                rs.getBigDecimal("Salary"),
+                rs.getInt("failAttempts"),
+                lockTime,
+                new Role(rs.getInt("RoleId")) // Truyền đối tượng Role
+        );
+    }
+
+    public boolean updatePasswordByEmail(String email, String password) {
         String sql = "UPDATE [dbo].[Staff] SET Password = ? WHERE Email = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             String hashedPassword = av.hashPassword(password);  // Mã hóa mật khẩu
@@ -57,143 +60,153 @@ public class StaffDAO extends DBContext {
         }
         return false;
     }
-public int getFailedAttempts(String email) {
-    String sql = "SELECT failed_attempts FROM Staff WHERE Email = ?";
-    try (PreparedStatement ps = connection.prepareStatement(sql)) {
-        ps.setString(1, email);
-        try (ResultSet rs = ps.executeQuery()) {
-            if (rs.next()) {
-                return rs.getInt("failed_attempts");
-            }
-        }
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-    return 0;
-}
-public void unlockAccount(String email) {
-    String sql = "UPDATE Staff SET lock_time = NULL WHERE Email = ?";
-    try (PreparedStatement ps = connection.prepareStatement(sql)) {
-        ps.setString(1, email);
-        ps.executeUpdate();
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-}
-public Staff getStaffByEmail(String email) {
-    String sql = "SELECT * FROM [dbo].[Staff] WHERE Email = ?";
-    try (PreparedStatement p = connection.prepareStatement(sql)) {
-        p.setString(1, email);
-        try (ResultSet rs = p.executeQuery()) {
-            if (rs.next()) {
-                return mapResultSetToStaff(rs);  // Giả sử bạn có phương thức mapResultSetToStaff
-            }
-        }
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-    return null;
-}
-public void increaseFailedLogin(String email) {
-    String sql = "UPDATE Staff SET failed_attempts = failed_attempts + 1 WHERE Email = ?";
-    try (PreparedStatement ps = connection.prepareStatement(sql)) {
-        ps.setString(1, email);
-        ps.executeUpdate();
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
 
-    // Kiểm tra lại số lần nhập sai
-    if (getFailedAttempts(email) >= 6) {
-        lockAccount(email);
-    }
-}
-public void resetFailedLogin(String email) {
-    String sql = "UPDATE Staff SET failed_attempts = 0, lock_time = NULL WHERE Email = ?";
-    try (PreparedStatement ps = connection.prepareStatement(sql)) {
-        ps.setString(1, email);
-        ps.executeUpdate();
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-}
-public void lockAccount(String email) {
-    String sql = "UPDATE Staff SET lock_time = ? WHERE Email = ?";
-    try (PreparedStatement ps = connection.prepareStatement(sql)) {
-        ps.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now()));
-        ps.setString(2, email);
-        ps.executeUpdate();
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-}
-public Staff login(String email, String password) {
-    if (isAccountLocked(email)) {
-        return null; 
-    }
-
-    String sql = "SELECT * FROM [dbo].[Staff] WHERE Email = ?";
-    try (PreparedStatement p = connection.prepareStatement(sql)) {
-        p.setString(1, email);
-        try (ResultSet rs = p.executeQuery()) {
-            if (rs.next()) {
-                if (av.checkPassword(password, rs.getString("Password"))) {
-                    resetFailedLogin(email);
-                    return mapResultSetToStaff(rs); // Giả sử bạn có phương thức mapResultSetToStaff
+    public int getFailedAttempts(String email) {
+        String sql = "SELECT failAttempts FROM Staff WHERE Email = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, email);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("failAttempts");
                 }
-                increaseFailedLogin(email);
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return 0;
     }
-    return null;
-}
-public boolean isAccountLocked(String email) {
-    String sql = "SELECT failed_attempts, lock_time FROM Staff WHERE Email = ?";
-    try (PreparedStatement ps = connection.prepareStatement(sql)) {
-        ps.setString(1, email);
-        try (ResultSet rs = ps.executeQuery()) {
-            if (rs.next()) {
-                int failedAttempts = rs.getInt("failed_attempts");
-                Timestamp lockTime = rs.getTimestamp("lock_time");
 
-                if (lockTime != null) {
-                    long elapsedTime = System.currentTimeMillis() - lockTime.getTime();
-                    if (elapsedTime < 10 * 60 * 1000) { // Chưa qua 10 phút
+    public void unlockAccount(String email) {
+        String sql = "UPDATE Staff SET LockTime = NULL WHERE Email = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, email);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Staff getStaffByEmail(String email) {
+        String sql = "SELECT * FROM [dbo].[Staff] WHERE Email = ?";
+        try (PreparedStatement p = connection.prepareStatement(sql)) {
+            p.setString(1, email);
+            try (ResultSet rs = p.executeQuery()) {
+                if (rs.next()) {
+                    return mapResultSetToStaff(rs);  // Giả sử bạn có phương thức mapResultSetToStaff
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void increaseFailedLogin(String email) {
+        String sql = "UPDATE Staff SET failAttempts = failAttempts + 1 WHERE Email = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, email);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        // Kiểm tra lại số lần nhập sai
+        if (getFailedAttempts(email) >= 6) {
+            lockAccount(email);
+        }
+    }
+
+    public void resetFailedLogin(String email) {
+        String sql = "UPDATE Staff SET failAttempts = 0, LockTime = NULL WHERE Email = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, email);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void lockAccount(String email) {
+        String sql = "UPDATE Staff SET LockTime = ? WHERE Email = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now()));
+            ps.setString(2, email);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Staff login(String email, String password) {
+        if (isAccountLocked(email)) {
+            return null;
+        }
+
+        String sql = "SELECT * FROM [dbo].[Staff] WHERE Email = ?";
+        try (PreparedStatement p = connection.prepareStatement(sql)) {
+            p.setString(1, email);
+            try (ResultSet rs = p.executeQuery()) {
+                if (rs.next()) {
+                    if (av.checkPassword(password, rs.getString("Password"))) {
+                        resetFailedLogin(email);
+                        return mapResultSetToStaff(rs); // Giả sử bạn có phương thức mapResultSetToStaff
+                    }
+                    increaseFailedLogin(email);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public boolean isAccountLocked(String email) {
+        String sql = "SELECT failAttempts, LockTime FROM Staff WHERE Email = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, email);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    int failedAttempts = rs.getInt("failAttempts");
+                    Timestamp lockTime = rs.getTimestamp("LockTime");
+
+                    if (lockTime != null) {
+                        long elapsedTime = System.currentTimeMillis() - lockTime.getTime();
+                        if (elapsedTime < 10 * 60 * 1000) { // Chưa qua 10 phút
+                            return true;
+                        } else {
+                            unlockAccount(email);
+                        }
+                    }
+
+                    // Nếu đã sai 6 lần mà chưa bị khóa, khóa ngay
+                    if (failedAttempts >= 6 && lockTime == null) {
+                        lockAccount(email);
                         return true;
-                    } else {
-                        unlockAccount(email);
                     }
                 }
-
-                // Nếu đã sai 6 lần mà chưa bị khóa, khóa ngay
-                if (failedAttempts >= 6 && lockTime == null) {
-                    lockAccount(email);
-                    return true;
-                }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return false;
     }
-    return false;
-}
- public void updateStaff(Staff staff) {
-    String sql = "UPDATE Staff SET email = ?, phone = ?, address = ? WHERE id = ?";
-    try (PreparedStatement p = connection.prepareStatement(sql)) {
 
-        p.setString(1, staff.getEmail());
-        p.setString(2, staff.getPhone());
-        p.setString(3, staff.getAddress());
-        p.setInt(4, staff.getId());
+    public void updateStaff(Staff staff) {
+        String sql = "UPDATE Staff SET email = ?, phone = ?, address = ? WHERE id = ?";
+        try (PreparedStatement p = connection.prepareStatement(sql)) {
 
-        p.executeUpdate();
-    } catch (SQLException e) {
-        e.printStackTrace();
+            p.setString(1, staff.getEmail());
+            p.setString(2, staff.getPhone());
+            p.setString(3, staff.getAddress());
+            p.setInt(4, staff.getId());
+
+            p.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
-}
-public void updateStaffImage(int staffId, String imagePath) {
+
+    public void updateStaffImage(int staffId, String imagePath) {
         String sql = "UPDATE Staff SET Image = ? WHERE Id = ?";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -204,28 +217,30 @@ public void updateStaffImage(int staffId, String imagePath) {
             e.printStackTrace();
         }
     }
- public void updatePassword(String newPassword, String email) {
-    String sql = "UPDATE Staff SET Password = ? WHERE Email = ?";
-    try (PreparedStatement p = connection.prepareStatement(sql)) {
-        p.setString(1, newPassword);
-        p.setString(2, email);
-        p.executeUpdate();
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-}
- public Staff getStaffById(int id) {
-    String sql = "SELECT * FROM [dbo].[Staff] WHERE Id = ?";
-    try (PreparedStatement ps = connection.prepareStatement(sql)) {
-        ps.setInt(1, id);
-        try (ResultSet rs = ps.executeQuery()) {
-            if (rs.next()) {
-                return mapResultSetToStaff(rs); 
-            }
+
+    public void updatePassword(String newPassword, String email) {
+        String sql = "UPDATE Staff SET Password = ? WHERE Email = ?";
+        try (PreparedStatement p = connection.prepareStatement(sql)) {
+            p.setString(1, newPassword);
+            p.setString(2, email);
+            p.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
     }
-    return null;
-}
+
+    public Staff getStaffById(int id) {
+        String sql = "SELECT * FROM [dbo].[Staff] WHERE Id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return mapResultSetToStaff(rs);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

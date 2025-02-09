@@ -51,42 +51,62 @@ create table DepType (
 	DepType nvarchar(255) not null
 )
 
-create table DepMoney (
+create table DepService (
 	Id int identity(1,1) primary key,
+	Description nvarchar(max) null,
+	MinimumDep decimal(10,2) not null,	
+	DuringTime int null,
+	SavingRate decimal(10,2) null
+)
+
+create table DepServiceUsed (
+	Id int identity(1,1) primary key,	
+	DepId int references DepService(Id),
 	CusId int references Customer(Id),
-	DepAmount decimal(10,2) not null,
+	DepTypeId int references DepType(Id),
+	Amount decimal(10,2) not null,
 	StartDate datetime not null default getdate(),
 	EndDate datetime null,
-	SavingRate decimal(10,2) null,
-	DepTypeId int references DepType(Id)
+	DepStatus nvarchar(255) null
 )
 
 create table DepHistory (
 	Id int identity(1,1) primary key,
-	DepId int references DepMoney(Id),
+	DSUId int references DepServiceUsed(Id),
 	Discription nvarchar(max) not null
 )
 
-create table Loan (
+create table LoanService (
 	Id int identity(1,1) primary key,
+	Description nvarchar(max) null,
+	DuringTime int null,
+	PenaltyRate decimal(10,2) not null,
+	MinimumLoan decimal(10,2) not null,
+	MaximumLoan decimal(10,2) not null
+)
+
+create table LoanServiceUsed (
+	Id int identity(1,1) primary key,
+	LoanId int references LoanService(Id),
 	CusId int references Customer(Id),
+	Amount decimal(10,2) not null,
 	StartDate datetime not null default getdate(),
-	EndDate datetime not null,
-	DateExpired int null,
-	LoanAmount decimal(10,2) not null,
+	EndDate datetime null,
+	DateExpiredCount int null,
+	DebtRepayAmount decimal(10,2) null,
 	LoanStatus nvarchar(255) null
 )
 
 create table LoanPayment(
 	Id int identity(1,1) primary key,
-	LoanId int references Loan(Id),
+	LSUId int references LoanServiceUsed(Id),
 	PaymentAmount decimal(10,2) not null,
 	PaidDate datetime not null default getdate()
 )
 
 create table LoanHistory (
 	Id int identity(1,1) primary key,
-	LoanId int references Loan(Id),
+	LSUId int references LoanServiceUsed(Id),
 	Discription nvarchar(max) not null
 );
 
