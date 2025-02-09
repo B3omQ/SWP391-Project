@@ -1,5 +1,5 @@
   <%@ page contentType="text/html; charset=UTF-8" language="java" %>
-  <%@ page import="Model.Staff" %>
+  <%@ page import="model.Staff" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -37,7 +37,7 @@
    <%
     // Kiểm tra session
     if (session.getAttribute("staff") == null) {
-        response.sendRedirect(request.getContextPath() + "/auth/login.jsp");
+        response.sendRedirect(request.getContextPath() + "/auth/template/login.jsp");
         return; 
     }
 
@@ -315,9 +315,9 @@
 
                                         <div class="flex-1 ms-2">
 <span class="d-block mb-1">
-    ${staff.firstName} ${staff.lastName}
+    ${staff.firstname} ${staff.lastname}
 </span>
-                                 <small class="text-muted">Khách Hàng</small>
+                                 <small class="text-muted">Nhân viên</small>
                                         </div>
                                     </a>
                                     <a class="dropdown-item text-dark" href="index.jsp"><span

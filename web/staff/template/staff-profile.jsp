@@ -1,4 +1,4 @@
-<%@ page import="Model.Staff" %>
+<%@ page import="model.Staff" %>
 
 <!DOCTYPE html>
     <html lang="en">
@@ -28,7 +28,7 @@
    <%
     // Ki?m tra session
     if (session.getAttribute("staff") == null) {
-        response.sendRedirect(request.getContextPath() + "/auth/login.jsp");
+        response.sendRedirect(request.getContextPath() + "/auth/template/login.jsp");
         return; 
     }
 
@@ -103,7 +103,7 @@
                                     <img src="<%= imagePath %>" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
                                     <div class="flex-1 ms-2">
 <span class="d-block mb-1">
-    ${staff.firstName} ${staff.lastName}
+    ${staff.firstname} ${staff.lastname}
 </span>
        
                                         <small class="text-muted">Customer</small>
@@ -154,7 +154,7 @@
 
                             <div class="text-center avatar-profile margin-nagative mt-n5 position-relative pb-4 border-bottom">
                                 <img src="<%= imagePath %>" class="rounded-circle shadow-md avatar avatar-md-md" alt="">
-                                <h5 class="mt-3 mb-1"> ${staff.firstName} ${staff.lastName}</h5>
+                                <h5 class="mt-3 mb-1"> ${staff.firstname} ${staff.lastname}</h5>
 
                                 <p class="text-muted mb-0">Orthopedic</p>
                             </div>
@@ -218,7 +218,7 @@
                 <div class="mb-3">
                     <label for="firstName" class="form-label">First Name</label>
                     <input id="firstName" name="firstName" type="text" class="form-control"
-                           value="${staff != null ? staff.firstName : ''}" readonly>
+                           value="${staff != null ? staff.firstname : ''}" readonly>
                 </div>
             </div>
 
@@ -227,7 +227,7 @@
                 <div class="mb-3">
                     <label for="lastName" class="form-label">Last Name</label>
                     <input id="lastName" name="lastName" type="text" class="form-control"
-                           value="${staff != null ? staff.lastName : ''}" readonly>
+                           value="${staff != null ? staff.lastname : ''}" readonly>
                 </div>
             </div>
 
