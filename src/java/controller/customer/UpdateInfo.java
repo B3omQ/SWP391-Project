@@ -5,7 +5,7 @@
 
 package controller.customer;
 
-import dal.CustomerDAO;
+import dal.ConsultantDAO;
 import dal.StaffDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -104,7 +104,7 @@ public class UpdateInfo extends HttpServlet {
             customer.setAddress(address);
 
             // Cập nhật database
-            CustomerDAO customerDAO = new CustomerDAO();
+            ConsultantDAO customerDAO = new ConsultantDAO();
             customerDAO.updateCustomer(customer);
 
             // Cập nhật lại session

@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
     <servlet>
+        <servlet-name>HomeServlet</servlet-name>
+        <servlet-class>controller.HomeServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ConsultantAddCustomer</servlet-name>
+        <servlet-class>controller.consultant.CustomerManager</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>HomeServlet</servlet-name>
+        <url-pattern>/home</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ConsultantAddCustomer</servlet-name>
+        <url-pattern>/consultant-customer</url-pattern>
+    </servlet-mapping>
+    <servlet>
         <servlet-name>CustomerManager</servlet-name>
         <servlet-class>controller.manager.CustomerManager</servlet-class>
     </servlet>
@@ -78,5 +94,3 @@
         <location>/error/404.jsp</location>
     </error-page>
 </web-app>
-    
-
