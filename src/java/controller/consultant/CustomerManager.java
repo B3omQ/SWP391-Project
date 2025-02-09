@@ -25,7 +25,6 @@ import model.Customer;
  *
  * @author LAPTOP
  */
-@WebServlet(name="CustomerManager", urlPatterns={"/consultant-customer"})
 public class CustomerManager extends HttpServlet {
    
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
