@@ -22,7 +22,7 @@ import util.AccountValidation;
  *
  * @author JIGGER
  */
-public class CustomerDAO extends DBContext {
+public class ConsultantDAO extends DBContext {
 
     public boolean booleanCreateNewAccount(Customer customer) {
         String sql = "INSERT INTO Customer (Username, Password, Image, Email, FirstName, LastName, Gender, Dob, Phone, Address, failAttempts, LockTime, Wallet) "
@@ -279,7 +279,7 @@ public class CustomerDAO extends DBContext {
                 return true;
             }
         } catch (SQLException ex) {
-            Logger.getLogger(CustomerDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ConsultantDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
     }

@@ -5,7 +5,7 @@
 
 package controller.customer;
 
-import dal.CustomerDAO;
+import dal.ConsultantDAO;
 import dal.DAOTokenForget;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -24,7 +24,7 @@ import util.AccountValidation;
  */
 public class resetPassword extends HttpServlet {
      DAOTokenForget DAOToken = new DAOTokenForget();
-    CustomerDAO DAOAccount = new CustomerDAO();
+    ConsultantDAO DAOAccount = new ConsultantDAO();
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request

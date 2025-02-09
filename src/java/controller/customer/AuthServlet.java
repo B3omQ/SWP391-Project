@@ -5,7 +5,7 @@
 
 package controller.customer;
 
-import dal.CustomerDAO;
+import dal.ConsultantDAO;
 import dal.StaffDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -24,7 +24,7 @@ import util.AccountValidation;
  * @author emkob
  */
 public class AuthServlet extends HttpServlet {
-     private CustomerDAO customerDAO = new CustomerDAO();
+     private ConsultantDAO customerDAO = new ConsultantDAO();
     private StaffDAO staffDAO = new StaffDAO();
     private AccountValidation av = new AccountValidation();
 

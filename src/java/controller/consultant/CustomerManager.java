@@ -5,7 +5,7 @@
 
 package controller.consultant;
 
-import dal.CustomerDAO;
+import dal.ConsultantDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -38,7 +38,7 @@ public class CustomerManager extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        CustomerDAO cdao = new CustomerDAO();
+        ConsultantDAO cdao = new ConsultantDAO();
         String pageParam = request.getParameter("page");
         int page = (pageParam == null) ? 1: Integer.parseInt(pageParam);
         int recordsPerPage = 6;
@@ -70,7 +70,7 @@ public class CustomerManager extends HttpServlet {
         String deleteId = request.getParameter("deleteId");
         String add = request.getParameter("add");
         String changeinfoId = request.getParameter("changeinfoId");
-        CustomerDAO cdao = new CustomerDAO();
+        ConsultantDAO cdao = new ConsultantDAO();
         if (deleteId != null) {
             try {
                 int delId = Integer.parseInt(deleteId);

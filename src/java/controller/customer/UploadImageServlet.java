@@ -1,6 +1,6 @@
 package controller.customer;
 
-import dal.CustomerDAO;
+import dal.ConsultantDAO;
 import dal.StaffDAO;
 import model.Customer;
 import model.Staff;
@@ -62,7 +62,7 @@ public class UploadImageServlet extends HttpServlet {
         if (account != null) {  
             Customer customer = (Customer) account;
             customer.setImage(fileName);  
-            CustomerDAO customerDAO = new CustomerDAO();
+            ConsultantDAO customerDAO = new ConsultantDAO();
             customerDAO.updateCustomerImage(customer.getId(), fileName);  
             
             response.sendRedirect(request.getContextPath() + "/customer/template/account-profile.jsp?success=ImageUpdated");
