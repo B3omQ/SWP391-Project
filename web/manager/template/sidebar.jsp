@@ -5,6 +5,25 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<script>
+    function showSection(sectionId) {
+        // Ẩn tất cả các phần
+        document.getElementById('viewAccount').style.display = 'none';
+        document.getElementById('editGmail').style.display = 'none';
+        document.getElementById('editPassword').style.display = 'none';
+
+        // Hiển thị phần được chọn
+        document.getElementById(sectionId).style.display = 'block';
+        
+        // Loại bỏ lớp 'active' từ tất cả các liên kết
+        document.getElementById('viewAccountLink').classList.remove('active');
+        document.getElementById('editGmailLink').classList.remove('active');
+        document.getElementById('editPasswordLink').classList.remove('active');
+
+        // Thêm lớp 'active' vào liên kết được chọn
+        document.getElementById(linkId).classList.add('active');
+    }
+</script>
 <nav id="sidebar" class="sidebar-wrapper">
     <div class="sidebar-content" data-simplebar style="height: calc(100% - 60px);">
         <div class="sidebar-brand">
@@ -21,12 +40,12 @@
             </li>
 
             <li class="sidebar-dropdown">
-                <a href="javascript:void(0)"><i class="uil uil-user me-2 d-inline-block"></i>Customer's Saving List</a>
+                <a href="javascript:void(0)"><i class="uil uil-user me-2 d-inline-block"></i>Account Setting</a>
                 <div class="sidebar-submenu">
                     <ul>
-                        <li><a href="doctors.html">Doctors</a></li>
-                        <li><a href="add-doctor.html">Add Doctor</a></li>
-                        <li><a href="dr-profile.html">Profile</a></li>
+                        <li><a href="profile-manager" id="viewAccountLink" onclick="showSection('viewAccount')">View account</a></li>
+                        <li><a href="profile-manager" id="editGmailLink" onclick="showSection('editGmail')">Edit gmail</a></li>
+                        <li><a href="profile-manager" id="editPasswordLink" onclick="showSection('editPassword')">Edit password</a></li>
                     </ul>
                 </div>
             </li>

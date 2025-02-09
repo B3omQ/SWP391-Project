@@ -154,7 +154,7 @@ public class CustomerManager extends HttpServlet {
                     image = sdao.getCustomerById(id).getImage();
                 }
 
-                sdao.updateInformation(id, image, email, firstname, lastname, gender, dob, phone, address);
+                sdao.updateInformationCustomer(id, image, email, firstname, lastname, gender, dob, phone, address);
 
                 response.sendRedirect("customer-manager?page=1");
                 return;

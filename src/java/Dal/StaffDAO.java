@@ -41,7 +41,7 @@ public class StaffDAO extends DBContext {
         }
         return null;
     }
-    
+
     public Staff getStaff(String username, String password) {
         return null;
     }
@@ -64,17 +64,15 @@ public class StaffDAO extends DBContext {
 
         return count;
     }
-    
+
     public static void main(String[] args) {
         StaffDAO s = new StaffDAO();
         String phone = "";
         List<Customer> list = s.getAllCustomer(0, 10, phone);
-        for(Customer c : list) {
+        for (Customer c : list) {
             System.out.println(c);
         }
     }
-
-
 
     public List<Customer> getAllCustomer(int offset, int recordsPerPage, String phone) {
         List<Customer> customerList = new ArrayList<>();
@@ -82,17 +80,17 @@ public class StaffDAO extends DBContext {
                      SELECT Id, [Image], Email, FirstName, LastName, Gender, Dob, Phone, Address
                      FROM BankingSystem.dbo.Customer
                      """;
-        
+
         if (phone != null && !phone.isEmpty()) {
             sql += " WHERE [Phone] = '" + phone + "'";
         }
-        
+
         String pagination = """
                     ORDER BY Id
                     OFFSET ? ROWS
                     FETCH NEXT ? ROWS ONLY;
                     """;
-        
+
         sql += pagination;
 
         try (PreparedStatement st = connection.prepareStatement(sql)) {
@@ -146,7 +144,33 @@ public class StaffDAO extends DBContext {
         return null;
     }
 
-    public void updateInformation(int id, String img, String email, String firstname, String lastname, String gender, LocalDate dob, String phone, String address) {
+    public Staff getStaffById(int id) {
+        String sql = "SELECT * FROM Staff WHERE Id = ?";
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, id);
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    return new Staff(
+                            rs.getInt("Id"),
+                            rs.getString("Password"),
+                            rs.getString("Image"),
+                            rs.getString("Email"),
+                            rs.getString("FirstName"),
+                            rs.getString("LastName"),
+                            rs.getString("Gender"),
+                            rs.getDate("Dob").toLocalDate(),
+                            rs.getString("Phone"),
+                            rs.getString("Address")
+                    );
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return null;
+    }
+
+    public void updateInformationCustomer(int id, String img, String email, String firstname, String lastname, String gender, LocalDate dob, String phone, String address) {
         String sql = """
                  UPDATE BankingSystem.dbo.Customer
                  SET [Image]=?, Email=?, FirstName=?, LastName=?, Gender=?, Dob=?, Phone=?, Address=? 
@@ -177,6 +201,27 @@ public class StaffDAO extends DBContext {
             System.out.println(ex);
         }
         return false;
+    }
+
+    public void updateInformationStaff(int id, String img, String firstname, String lastname, String gender, LocalDate dob, String phone, String address) {
+        String sql = """
+                 UPDATE BankingSystem.dbo.Staff
+                 SET [Image]=?, FirstName=?, LastName=?, Gender=?, Dob=?, Phone=?, Address=? 
+                 WHERE Id=?;""";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, img);
+            st.setString(2, firstname);
+            st.setString(3, lastname);
+            st.setString(4, gender);  // Fix: Set gender correctly
+            st.setDate(5, java.sql.Date.valueOf(dob));  // Fix: Convert LocalDate to java.sql.Date
+            st.setString(6, phone);
+            st.setString(7, address);
+            st.setInt(8, id);  // Fix: Correct index for id parameter
+            st.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(StaffDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }

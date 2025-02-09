@@ -53,7 +53,7 @@
             <!-- Start Page Content -->
             <main class="page-content bg-light">       
 
-                <jsp:include page="template/headbar.jsp"/>
+                <jsp:include page="template/header.jsp"/>
 
                 <div class="container-fluid">
                     <div class="layout-specing">
@@ -145,10 +145,14 @@
                                                         class="btn btn-primary btn-sm">
                                                     Update
                                                 </button>
-                                                <form onsubmit="deleteAlert(event)" style="display:inline-block" action="customer-manager" method="post">
+                                                <form onsubmit="return confirm('Are you sure you want to delete this customer?');" 
+                                                      style="display:inline-block" 
+                                                      action="customer-manager" 
+                                                      method="post">
                                                     <input name="deleteId" value="${customer.id}" type="hidden">
                                                     <button class="btn btn-danger btn-sm" type="submit">Delete</button>
                                                 </form>
+
                                                 <jsp:include page="template/editCustomer.jsp">
                                                     <jsp:param name="id" value="${customer.id}" />
                                                     <jsp:param name="email" value="${customer.email}" />
@@ -201,12 +205,10 @@
                                 </tbody>
                             </table>
                         </div>
-
-
-                        <!-- Pagination -->
-
                     </div>
                 </div>
+                                        
+                   <!-- Pagination -->                 
                 <nav aria-label="Page navigation" class="mt-4">
                     <ul class="pagination justify-content-center">
                         <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
@@ -226,24 +228,11 @@
                 </nav>
 
                 <!-- Footer Start -->
-                <footer class="bg-white shadow py-3">
-                    <div class="container-fluid">
-                        <div class="row align-items-center">
-                            <div class="col">
-                                <div class="text-sm-start text-center">
-                                    <p class="mb-0 text-muted">
-                                        <script>document.write(new Date().getFullYear())</script> © Doctris. Design with <i
-                                            class="mdi mdi-heart text-danger"></i> by <a href="../../../index.html"
-                                            target="_blank" class="text-reset">Shreethemes</a>.
-                                    </p>
-                                </div>
-                            </div><!--end col-->
-                        </div><!--end row-->
-                    </div><!--end container-->
-                </footer><!--end footer-->
+                <jsp:include page="template/footer.jsp"/>
                 <!-- End -->
             </main>
             <!--End page-content-->
+            
         </div>
 
         <!-- page-wrapper -->
