@@ -12,7 +12,7 @@
         <servlet-name>HomeServlet</servlet-name>
         <url-pattern>/home</url-pattern>
     </servlet-mapping>
-        <servlet-mapping>
+    <servlet-mapping>
         <servlet-name>ConsultantAddCustomer</servlet-name>
         <url-pattern>/consultant-customer</url-pattern>
     </servlet-mapping>
