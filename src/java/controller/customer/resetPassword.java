@@ -4,7 +4,7 @@
  */
 package controller.customer;
 
-import dal.ConsultantDAO;
+import dal.CustomerDAO;
 import dal.DAOTokenForget;
 import java.io.IOException;
 import java.io.PrintWriter;
