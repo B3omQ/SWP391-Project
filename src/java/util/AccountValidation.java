@@ -41,7 +41,6 @@ public class AccountValidation {
         if (password.length() < 8) {
             return false;
         }
-
         boolean hasUppercase = Pattern.compile("[A-Z]").matcher(password).find();
         boolean hasLowercase = Pattern.compile("[a-z]").matcher(password).find();
         boolean hasDigit = Pattern.compile("[0-9]").matcher(password).find();

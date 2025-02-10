@@ -136,7 +136,7 @@ public class AuthServlet extends HttpServlet {
             session.setAttribute("staff", staff);
             session.setAttribute("role", staff.getRoleId().getName());
 
-            response.sendRedirect(staff.getRoleId().getId() == 1 ? "staff/template/Admin.jsp" : "Support.jsp");
+            response.sendRedirect(staff.getRoleId().getId() == 1 ? "staff/template/Admin.jsp" : "profile-manager");
             return;
         }
 

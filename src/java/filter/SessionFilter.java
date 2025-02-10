@@ -111,7 +111,7 @@ public class SessionFilter implements Filter {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
         HttpSession session = httpRequest.getSession(false);
-        if (session == null || (session.getAttribute("customer") == null && session.getAttribute("staff") == null)) {
+        if (session == null || (session.getAttribute("account") == null && session.getAttribute("staff") == null)) {
             // No valid session or role, redirect to login page
             httpResponse.sendRedirect("./auth/template/login.jsp");
             return;
