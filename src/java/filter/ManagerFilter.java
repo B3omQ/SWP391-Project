@@ -25,7 +25,7 @@ import model.Staff;
  *
  * @author Jigger
  */
-@WebFilter(filterName = "ManagerFilter", servletNames = {"CustomerManager", "ProfileManager", "CustomerManager"})
+@WebFilter(filterName = "ManagerFilter", servletNames = {"CustomerManager", "ProfileManager"})
 public class ManagerFilter implements Filter {
 
     private static final boolean debug = true;
@@ -118,23 +118,19 @@ public class ManagerFilter implements Filter {
             httpResponse.sendRedirect("./auth/template/login.jsp");
             return;
         }
-
-//        Staff staff = (Staff) session.getAttribute("staff");
-//        if (staff.getRoleId().getId() != 4 || session.getAttribute("account") != null) {
-//            httpRequest.getRequestDispatcher("denied.jsp").forward(request, response);
-//            return;
-//        }
         if (session.getAttribute("account") != null) {
             httpRequest.getRequestDispatcher("denied.jsp").forward(request, response);
             return;
         }
 
-        if (session.getAttribute("staff") != null) {
+        try {
             Staff staff = (Staff) session.getAttribute("staff");
-            if (staff.getRoleId().getId() != 4) {
+            if (staff.getRoleId().getId() != 4 || session.getAttribute("account") != null) {
                 httpRequest.getRequestDispatcher("denied.jsp").forward(request, response);
                 return;
             }
+        } catch (Exception e) {
+            System.out.println(e);
         }
 
         Throwable problem = null;
