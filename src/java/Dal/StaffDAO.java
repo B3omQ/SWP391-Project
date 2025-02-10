@@ -353,11 +353,29 @@ public class StaffDAO extends DBContext {
         return staffs;
     }
     
+    public List<Role> getAllRoles() {
+        List<Role> roles = new ArrayList<>();
+        String sql = "SELECT * FROM Role";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                roles.add(new Role(rs.getInt("Id"), rs.getString("Name")));
+            }
+        } catch (SQLException e) {
+
+        }
+        return roles;
+    }
+    
     public static void main(String[] args) {
         StaffDAO s = new StaffDAO();
         System.out.println(s.getNumberOfStaff());
         for(Staff x : s.getAllStaffWithPagination(0, 5)) {
             System.out.println(x.toString());
+        }
+        for(Role r : s.getAllRoles()) {
+            System.out.println(r.toString());
         }
     }
 }

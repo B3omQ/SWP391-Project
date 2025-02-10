@@ -16,6 +16,14 @@
         <servlet-name>EditStaffInfo</servlet-name>
         <servlet-class>controller.ceo.EditStaffInfo</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CustomerManagement</servlet-name>
+        <servlet-class>controller.ceo.CustomerManagement</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditCustomerInfo</servlet-name>
+        <servlet-class>controller.ceo.EditCustomerInfo</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>CustomerManager</servlet-name>
         <url-pattern>/customer-manager</url-pattern>
@@ -79,6 +87,14 @@
     <servlet-mapping>
         <servlet-name>EditStaffInfo</servlet-name>
         <url-pattern>/editStaffInfo</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CustomerManagement</servlet-name>
+        <url-pattern>/customerManagement</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditCustomerInfo</servlet-name>
+        <url-pattern>/editCustomerInfo</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>1440</session-timeout>

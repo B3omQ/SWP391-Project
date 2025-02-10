@@ -427,134 +427,111 @@
                                             </div>
                                         </c:if>
 
-                                        <form action="<%= request.getContextPath() %>/editStaffInfo" method="post" class="login-form mt-4">
+                                        <form action="<%= request.getContextPath() %>/editCustomerInfo" method="post" class="login-form mt-4">
                                             <div class="row">
-
                                                 <!-- ID -->
                                                 <div class="col-md-12">
                                                     <div class="mb-3">
                                                         <label>ID</label>
-                                                        <input type="text" class="form-control" name="id" value="${staff.id}" readonly>
+                                                        <input type="text" class="form-control" name="id" value="${customer.id}" readonly>
                                                         <c:if test="${not empty errorID}">
                                                             <span class="text-danger">${errorID}</span>
                                                         </c:if>
                                                     </div>
                                                 </div>
-
                                                 <!-- Username -->
                                                 <div class="col-md-12">
                                                     <div class="mb-3">
                                                         <label>Username</label>
-                                                        <input type="text" class="form-control" name="username" value="${staff.username}">
+                                                        <input type="text" class="form-control" name="username" value="${customer.username}">
                                                         <c:if test="${not empty errorUsername}">
                                                             <span class="text-danger">${errorUsername}</span>
                                                         </c:if>
                                                     </div>
                                                 </div>
-
                                                 <!-- Email -->
                                                 <div class="col-md-12">
                                                     <div class="mb-3">
                                                         <label>Email</label>
-                                                        <input type="email" class="form-control" name="email" value="${staff.email}">
+                                                        <input type="email" class="form-control" name="email" value="${customer.email}">
                                                         <c:if test="${not empty errorEmail}">
                                                             <span class="text-danger">${errorEmail}</span>
                                                         </c:if>
                                                     </div>
                                                 </div>
-
                                                 <!-- First Name -->
                                                 <div class="col-md-12">
                                                     <div class="mb-3">
                                                         <label>First Name</label>
-                                                        <input type="text" class="form-control" name="firstName" value="${staff.firstname}">
+                                                        <input type="text" class="form-control" name="firstName" value="${customer.firstname}">
                                                         <c:if test="${not empty errorFirstName}">
                                                             <span class="text-danger">${errorFirstName}</span>
                                                         </c:if>
                                                     </div>
                                                 </div>
-
                                                 <!-- Last Name -->
                                                 <div class="col-md-12">
                                                     <div class="mb-3">
                                                         <label>Last Name</label>
-                                                        <input type="text" class="form-control" name="lastName" value="${staff.lastname}">
+                                                        <input type="text" class="form-control" name="lastName" value="${customer.lastname}">
                                                         <c:if test="${not empty errorLastName}">
                                                             <span class="text-danger">${errorLastName}</span>
                                                         </c:if>
                                                     </div>
                                                 </div>
-
                                                 <!-- Gender -->
                                                 <div class="col-md-12">
                                                     <div class="mb-3">
                                                         <label>Gender</label>
                                                         <select id="role" class="form-control" name="gender" required>
-                                                            <option value="Male" <c:if test="${staff.gender == 'Male'}">selected</c:if>>Male</option>
-                                                            <option value="Female" <c:if test="${staff.gender == 'Female'}">selected</c:if>>Female</option>
+                                                            <option value="Male" <c:if test="${customer.gender == 'Male'}">selected</c:if>>Male</option>
+                                                            <option value="Female" <c:if test="${customer.gender == 'Female'}">selected</c:if>>Female</option>
                                                             </select>
                                                         </div>
                                                     <c:if test="${not empty errorGender}">
                                                         <span class="text-danger">${errorGender}</span>
                                                     </c:if>
                                                 </div>
-
                                                 <!-- DoB -->
                                                 <div class="col-md-12">
                                                     <div class="mb-3">
                                                         <label for="dob">DoB:</label>
-                                                        <input type="date" id="dob" name="dob" value="${staff.dob}" required />
+                                                        <input type="date" id="dob" name="dob" value="${customer.dob}" required />
                                                     </div>
                                                     <c:if test="${not empty errorDob}">
                                                         <span class="text-danger">${errorDob}</span>
                                                     </c:if>
                                                 </div>
-
                                                 <!-- Phone Number -->
                                                 <div class="col-md-12">
                                                     <div class="mb-3">
                                                         <label>Phone Number</label>
-                                                        <input type="text" class="form-control" name="phone" value="${staff.phone}">
+                                                        <input type="text" class="form-control" name="phone" value="${customer.phone}">
                                                         <c:if test="${not empty errorPhone}">
                                                             <span class="text-danger">${errorPhone}</span>
                                                         </c:if>
                                                     </div>
                                                 </div>
-
                                                 <!-- Address -->
                                                 <div class="col-md-12">
                                                     <div class="mb-3">
                                                         <label>Address</label>
-                                                        <input type="text" class="form-control" name="address" value="${staff.address}">
+                                                        <input type="text" class="form-control" name="address" value="${customer.address}">
                                                         <c:if test="${not empty errorAddress}">
                                                             <span class="text-danger">${errorAddress}</span>
                                                         </c:if>
                                                     </div>
                                                 </div>
-
-                                                <!-- Salary -->
+                                                <!-- Wallet -->
                                                 <div class="col-md-12">
                                                     <div class="mb-3">
-                                                        <label>Salary</label>
-                                                        <input type="number" step="0.01" class="form-control" name="salary" value="${staff.salary}" required>
-                                                        <c:if test="${not empty errorSalary}">
-                                                            <span class="text-danger">${errorSalary}</span>
+                                                        <label>Wallet</label>
+                                                        <input type="number" step="0.01" class="form-control" name="wallet" value="${customer.wallet}" required>
+                                                        <c:if test="${not empty errorWallet}">
+                                                            <span class="text-danger">${errorWallet}</span>
                                                         </c:if>
                                                     </div>
                                                 </div>
-
-                                                <!-- Role -->
-                                                <div class="col-md-12">
-                                                    <div class="mb-3">
-                                                        <label>Role</label>
-                                                        <select id="role" class="form-control" name="role" required>
-                                                            <c:forEach var="r" items="${roles}">
-                                                                <option value="${r.name}" <c:if test="${staff.roleId.id == r.id}">selected</c:if>>${r.name}</option>
-                                                            </c:forEach> 
-                                                            </select>
-                                                        </div>
-                                                    </div>        
-
                                                     <div class="row justify-content-center">
                                                         <div class="col-md-10 text-center">
                                                             <button type="submit" class="btn btn-primary">Confirm</button>

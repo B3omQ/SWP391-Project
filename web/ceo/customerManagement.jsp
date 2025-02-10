@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
     <%@ page contentType="text/html;charset=UTF-8" language="java" %>
     <head>
         <meta charset="utf-8" />
-        <title>Doctris - Doctor Appointment Booking System</title>
+        <title>SmartBanking</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="Premium Bootstrap 4 Landing Page Template" />
         <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health" />
@@ -381,7 +383,7 @@
                                 <nav aria-label="breadcrumb" class="d-inline-block mt-2">
                                     <ul class="breadcrumb breadcrumb-muted bg-transparent rounded mb-0 p-0">
                                         <li class="breadcrumb-item"><a href="index.html">Doctris</a></li>
-                                        <li class="breadcrumb-item active" aria-current="page">User Management</li>
+                                        <li class="breadcrumb-item active" aria-current="page">Appointment</li>
                                     </ul>
                                 </nav>
                             </div><!--end col-->
@@ -402,8 +404,7 @@
 
                                             <div class="col-sm-12 col-md-7 mt-4 mt-sm-0">
                                                 <div class="d-grid">
-                                                    <a href="#" class="btn btn-primary" data-bs-toggle="modal"
-                                                       data-bs-target="#appointmentform">Appointment</a>
+                                                    <a href="addCustomer.jsp" class="btn btn-primary">Add</a>
                                                 </div>
                                             </div><!--end col-->
                                         </div><!--end row-->
@@ -412,186 +413,147 @@
                             </div><!--end col-->
                         </div><!--end row-->
 
+                        <div class="row">
+                            <div class="col-12 mt-4">
+
+                                <form action="<%= request.getContextPath() %>/customerManager" method="get">
+                                    <div class="table-responsive bg-white shadow rounded">
+                                        <table class="table table-bordered table-hover">
+                                            <thead class="thead-dark">
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Username</th>
+                                                    <th>Name</th>
+                                                    <th>Gender</th>
+                                                    <th>DoB</th>
+                                                    <th>Email</th>                                                  
+                                                    <th>Phone</th>
+                                                    <th>Address</th>
+                                                    <th>Wallet</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                <c:if test="${empty customers}">
+                                                    <tr>
+                                                        <td colspan="8" class="text-center">No customers available.</td>
+                                                    </tr>
+                                                </c:if>
 
 
-                        <div class="row justify-content-center">
-                            <div class="col-10 mt-4">
-                                <div class="card login-page bg-white shadow mt-4 rounded border-0">
-                                    <div class="card-body">
-                                        <h4 class="text-center">Edit</h4>
-
-
-                                        <c:if test="${not empty successMessage}">
-                                            <div class="alert alert-success text-center">
-                                                ${successMessage}
-                                            </div>
-                                        </c:if>
-
-                                        <form action="<%= request.getContextPath() %>/editStaffInfo" method="post" class="login-form mt-4">
-                                            <div class="row">
-
-                                                <!-- ID -->
-                                                <div class="col-md-12">
-                                                    <div class="mb-3">
-                                                        <label>ID</label>
-                                                        <input type="text" class="form-control" name="id" value="${staff.id}" readonly>
-                                                        <c:if test="${not empty errorID}">
-                                                            <span class="text-danger">${errorID}</span>
-                                                        </c:if>
-                                                    </div>
-                                                </div>
-
-                                                <!-- Username -->
-                                                <div class="col-md-12">
-                                                    <div class="mb-3">
-                                                        <label>Username</label>
-                                                        <input type="text" class="form-control" name="username" value="${staff.username}">
-                                                        <c:if test="${not empty errorUsername}">
-                                                            <span class="text-danger">${errorUsername}</span>
-                                                        </c:if>
-                                                    </div>
-                                                </div>
-
-                                                <!-- Email -->
-                                                <div class="col-md-12">
-                                                    <div class="mb-3">
-                                                        <label>Email</label>
-                                                        <input type="email" class="form-control" name="email" value="${staff.email}">
-                                                        <c:if test="${not empty errorEmail}">
-                                                            <span class="text-danger">${errorEmail}</span>
-                                                        </c:if>
-                                                    </div>
-                                                </div>
-
-                                                <!-- First Name -->
-                                                <div class="col-md-12">
-                                                    <div class="mb-3">
-                                                        <label>First Name</label>
-                                                        <input type="text" class="form-control" name="firstName" value="${staff.firstname}">
-                                                        <c:if test="${not empty errorFirstName}">
-                                                            <span class="text-danger">${errorFirstName}</span>
-                                                        </c:if>
-                                                    </div>
-                                                </div>
-
-                                                <!-- Last Name -->
-                                                <div class="col-md-12">
-                                                    <div class="mb-3">
-                                                        <label>Last Name</label>
-                                                        <input type="text" class="form-control" name="lastName" value="${staff.lastname}">
-                                                        <c:if test="${not empty errorLastName}">
-                                                            <span class="text-danger">${errorLastName}</span>
-                                                        </c:if>
-                                                    </div>
-                                                </div>
-
-                                                <!-- Gender -->
-                                                <div class="col-md-12">
-                                                    <div class="mb-3">
-                                                        <label>Gender</label>
-                                                        <select id="role" class="form-control" name="gender" required>
-                                                            <option value="Male" <c:if test="${staff.gender == 'Male'}">selected</c:if>>Male</option>
-                                                            <option value="Female" <c:if test="${staff.gender == 'Female'}">selected</c:if>>Female</option>
-                                                            </select>
-                                                        </div>
-                                                    <c:if test="${not empty errorGender}">
-                                                        <span class="text-danger">${errorGender}</span>
-                                                    </c:if>
-                                                </div>
-
-                                                <!-- DoB -->
-                                                <div class="col-md-12">
-                                                    <div class="mb-3">
-                                                        <label for="dob">DoB:</label>
-                                                        <input type="date" id="dob" name="dob" value="${staff.dob}" required />
-                                                    </div>
-                                                    <c:if test="${not empty errorDob}">
-                                                        <span class="text-danger">${errorDob}</span>
-                                                    </c:if>
-                                                </div>
-
-                                                <!-- Phone Number -->
-                                                <div class="col-md-12">
-                                                    <div class="mb-3">
-                                                        <label>Phone Number</label>
-                                                        <input type="text" class="form-control" name="phone" value="${staff.phone}">
-                                                        <c:if test="${not empty errorPhone}">
-                                                            <span class="text-danger">${errorPhone}</span>
-                                                        </c:if>
-                                                    </div>
-                                                </div>
-
-                                                <!-- Address -->
-                                                <div class="col-md-12">
-                                                    <div class="mb-3">
-                                                        <label>Address</label>
-                                                        <input type="text" class="form-control" name="address" value="${staff.address}">
-                                                        <c:if test="${not empty errorAddress}">
-                                                            <span class="text-danger">${errorAddress}</span>
-                                                        </c:if>
-                                                    </div>
-                                                </div>
-
-                                                <!-- Salary -->
-                                                <div class="col-md-12">
-                                                    <div class="mb-3">
-                                                        <label>Salary</label>
-                                                        <input type="number" step="0.01" class="form-control" name="salary" value="${staff.salary}" required>
-                                                        <c:if test="${not empty errorSalary}">
-                                                            <span class="text-danger">${errorSalary}</span>
-                                                        </c:if>
-                                                    </div>
-                                                </div>
-
-                                                <!-- Role -->
-                                                <div class="col-md-12">
-                                                    <div class="mb-3">
-                                                        <label>Role</label>
-                                                        <select id="role" class="form-control" name="role" required>
-                                                            <c:forEach var="r" items="${roles}">
-                                                                <option value="${r.name}" <c:if test="${staff.roleId.id == r.id}">selected</c:if>>${r.name}</option>
-                                                            </c:forEach> 
-                                                            </select>
-                                                        </div>
-                                                    </div>        
-
-                                                    <div class="row justify-content-center">
-                                                        <div class="col-md-10 text-center">
-                                                            <button type="submit" class="btn btn-primary">Confirm</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </form>           
-
-
-                                        </div>
+                                                <c:forEach var="customer" items="${customers}">
+                                                    <tr>
+                                                        <td>${customer.id}</td>
+                                                        <td>${customer.username}</td>
+                                                        <td>${customer.firstname} ${customer.lastname}</td>
+                                                        <td>${customer.gender}</td>
+                                                        <td>
+                                                            <fmt:parseDate  value="${customer.dob}"  type="date" pattern="yyyy-MM-dd" var="parsedDate" />
+                                                            <fmt:formatDate value="${parsedDate}" type="date" pattern="dd/MM/yyyy"  />
+                                                        </td>
+                                                        <td>${customer.email}</td>
+                                                        <td>${customer.phone}</td>                                                       
+                                                        <td>${customer.address}</td>
+                                                        <td>${customer.wallet}</td>                                                        
+                                                        <td>                                                           
+                                                            <button type="button" class="btn btn-warning btn-sm" onclick="editCustomer('${customer.id}')">Edit</button>
+                                                        </td>
+                                                    </tr>
+                                                </c:forEach>
+                                            </tbody>
+                                        </table>
                                     </div>
-                                </div>
+                                </form>
                             </div>
-
                         </div>
-                    </div><!--end container-->
 
-                    <!-- Footer Start -->
-                    <footer class="bg-white shadow py-3">
-                        <div class="container-fluid">
-                            <div class="row align-items-center">
-                                <div class="col">
-                                    <div class="text-sm-start text-center">
-                                        <p class="mb-0 text-muted">
-                                            <script>document.write(new Date().getFullYear())</script> © Doctris. Design with <i
-                                                class="mdi mdi-heart text-danger"></i> by <a href="../../../index.html"
-                                                target="_blank" class="text-reset">Shreethemes</a>.
-                                        </p>
-                                    </div>
-                                </div><!--end col-->
-                            </div><!--end row-->
-                        </div><!--end container-->
-                    </footer><!--end footer-->
-                    <!-- End -->
-                </main>
-                <!--End page-content" -->
-            </div>
+                        <div class="row text-center">
+                            <!-- PAGINATION START -->
+                            <div class="col-12 mt-4">
+                                <div class="d-md-flex align-items-center text-center justify-content-between">
+                                    <span class="text-muted me-3">
+                                        <c:if test="${page == endPage}">
+                                            <c:if test="${(page - 1)* recordsPerPage + 1 == numberOfRecords}">
+                                                Showing ${numberOfRecords} out of ${numberOfRecords}
+                                            </c:if>
+                                            <c:if test="${(page - 1)* recordsPerPage + 1 != numberOfRecords}">
+                                                Showing ${(page - 1)* recordsPerPage + 1} - ${numberOfRecords} out of ${numberOfRecords}
+                                            </c:if>    
+                                        </c:if>
+                                        <c:if test="${page != endPage}">
+                                            Showing ${(page - 1)* recordsPerPage + 1} - ${page * recordsPerPage} out of ${numberOfRecords}
+                                        </c:if>
+                                    </span>                                  
+                                    <span class="mx-3">
+                                        <input type="text" style="text-align: right; max-width: 60px" value="${page}" class="form-control d-inline w-auto"                                               
+                                               onchange="location.href = '${pageContext.request.contextPath}/customerManagement?page=' + this.value">
+                                        / ${endPage}
+                                    </span>
+                                    <ul class="pagination justify-content-center mb-0 mt-3 mt-sm-0">
+                                        <!-- Previous -->
+                                        <c:if test="${page != 1}">
+                                            <li class="page-item"><a class="page-link" href="<%= request.getContextPath() %>/customerManagement?page=${page - 1}" aria-label="Previous">Prev</a></li>
+                                            </c:if>  
+                                        <!-- Current Page -->  
+                                        <!-- Start process -->
+                                        <c:if test="${endPage < 8}">
+                                            <c:forEach var="i" begin="1" end="${endPage}">
+                                                <li class="page-item ${page == i? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/customerManagement?page=${i}" aria-label="Pages">${i}</a></li>
+                                                </c:forEach>
+                                            </c:if>
+                                            <c:if test="${endPage >= 8}">
+                                            <li class="page-item ${page == 1? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/customerManagement?page=1" aria-label="Pages">1</a></li>
+                                                <c:if test="${page < 4 || page > endPage - 3}">
+                                                <li class="page-item ${page == 2? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/customerManagement?page=2" aria-label="Pages">2</a></li>
+                                                <li class="page-item ${page == 3? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/customerManagement?page=3" aria-label="Pages">3</a></li>
+                                                </c:if>
+                                                <c:if test="${page > 3 && page < endPage - 2}">
+                                                <li class="page-item"><span class="page-link" aria-label="Pages">...</span></li>
+                                                <li class="page-item ${page == page - 1 ? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/customerManagement?page=${page - 1}" aria-label="Pages">${page - 1}</a></li>
+                                                <li class="page-item ${page == page? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/customerManagement?page=${page}" aria-label="Pages">${page}</a></li>
+                                                <li class="page-item ${page == page + 1 ? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/customerManagement?page=${page + 1}" aria-label="Pages">${page + 1}</a></li>
+                                                <li class="page-item"><span class="page-link" aria-label="Pages">...</span></li>
+                                                </c:if>
+                                                <c:if test="${page < 4 || page > endPage - 3}">
+                                                <li class="page-item"><span class="page-link" aria-label="Pages">...</span></li>
+                                                <li class="page-item ${page == endPage - 2? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/customerManagement?page=${endPage - 2}" aria-label="Pages">${endPage - 2}</a></li>
+                                                <li class="page-item ${page == endPage - 1? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/customerManagement?page=${endPage - 1}" aria-label="Pages">${endPage - 1}</a></li>
+                                                </c:if> 
+                                            <li class="page-item ${page == endPage? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/customerManagement?page=${endPage}" aria-label="Pages">${endPage}</a></li>
+                                            </c:if>                                              
+                                        <!-- End process -->
+                                        <!-- Next -->
+                                        <c:if test="${page lt endPage}">
+                                            <li class="page-item"><a class="page-link" href="<%= request.getContextPath() %>/customerManagement?page=${page + 1}" aria-label="Next">Next</a></li>
+                                            </c:if>
+                                    </ul>
+                                </div>
+                            </div><!--end col-->
+                            <!-- PAGINATION END -->
+                        </div><!--end row-->
+                    </div>
+                </div><!--end container-->
+
+                <!-- Footer Start -->
+                <footer class="bg-white shadow py-3">
+                    <div class="container-fluid">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <div class="text-sm-start text-center">
+                                    <p class="mb-0 text-muted">
+                                        <script>document.write(new Date().getFullYear())</script> © Doctris. Design with <i
+                                            class="mdi mdi-heart text-danger"></i> by <a href="../../../index.html"
+                                            target="_blank" class="text-reset">Shreethemes</a>.
+                                    </p>
+                                </div>
+                            </div><!--end col-->
+                        </div><!--end row-->
+                    </div><!--end container-->
+                </footer><!--end footer-->
+                <!-- End -->
+            </main>
+            <!--End page-content" -->
         </div>
         <!-- page-wrapper -->
 
@@ -599,23 +561,29 @@
 
         <!-- javascript -->
         <script src="<%= request.getContextPath() %>/assets/js/jquery.min.js"></script>
-    <script src="<%= request.getContextPath() %>/assets/js/bootstrap.bundle.min.js"></script>
-    <!-- simplebar -->
-    <script src="<%= request.getContextPath() %>/assets/js/simplebar.min.js"></script>
-    <!-- Select2 -->
-    <script src="<%= request.getContextPath() %>/assets/js/select2.min.js"></script>
-    <script src="<%= request.getContextPath() %>/assets/js/select2.init.js"></script>
-    <!-- Datepicker -->
-    <script src="<%= request.getContextPath() %>/assets/js/flatpickr.min.js"></script>
-    <script src="<%= request.getContextPath() %>/assets/js/flatpickr.init.js"></script>
-    <!-- Datepicker -->
-    <script src="<%= request.getContextPath() %>/assets/js/jquery.timepicker.min.js"></script>
-    <script src="<%= request.getContextPath() %>/assets/js/timepicker.init.js"></script>
-    <!-- Icons -->
-    <script src="<%= request.getContextPath() %>/assets/js/feather.min.js"></script>
-    <!-- Main Js -->
-    <script src="<%= request.getContextPath() %>/assets/js/app.js"></script>
+        <script src="<%= request.getContextPath() %>/assets/js/bootstrap.bundle.min.js"></script>
+        <!-- simplebar -->
+        <script src="<%= request.getContextPath() %>/assets/js/simplebar.min.js"></script>
+        <!-- Select2 -->
+        <script src="<%= request.getContextPath() %>/assets/js/select2.min.js"></script>
+        <script src="<%= request.getContextPath() %>/assets/js/select2.init.js"></script>
+        <!-- Datepicker -->
+        <script src="<%= request.getContextPath() %>/assets/js/flatpickr.min.js"></script>
+        <script src="<%= request.getContextPath() %>/assets/js/flatpickr.init.js"></script>
+        <!-- Datepicker -->
+        <script src="<%= request.getContextPath() %>/assets/js/jquery.timepicker.min.js"></script>
+        <script src="<%= request.getContextPath() %>/assets/js/timepicker.init.js"></script>
+        <!-- Icons -->
+        <script src="<%= request.getContextPath() %>/assets/js/feather.min.js"></script>
+        <!-- Main Js -->
+        <script src="<%= request.getContextPath() %>/assets/js/app.js"></script>
+        <script>
+                                            function editCustomer(ID) {
+                                                // Chuyển hướng đến trang chỉnh sửa với ID người dùng
+                                                window.location.href = `editCustomerInfo?uid=` + ID;
+                                            }
+        </script>
 
-</body>
+    </body>
 
 </html>

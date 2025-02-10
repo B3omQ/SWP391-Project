@@ -4,9 +4,7 @@
  */
 package controller.ceo;
 
-import dal.StaffDAO;
-import model.Role;
-import model.Staff;
+import dal.CustomerDAO;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -17,13 +15,13 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
+import model.Customer;
 
 /**
  *
  * @author Long
  */
-public class EditStaffInfo extends HttpServlet {
+public class EditCustomerInfo extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,18 +36,16 @@ public class EditStaffInfo extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String acccountId = request.getParameter("uid");
-        StaffDAO aDao = new StaffDAO();
+        CustomerDAO aDao = new CustomerDAO();
         try {
             int uid = Integer.parseInt(acccountId);
-            Staff a = aDao.getStaffById(uid);
-            request.setAttribute("staff", a);
-            List<Role> roles = aDao.getAllRoles();
-            request.setAttribute("roles", roles);
-            request.getRequestDispatcher("ceo/editStaffInfo.jsp").forward(request, response);
+            Customer customer = aDao.getCustomerById(uid);
+            request.setAttribute("customer", customer);
+            request.getRequestDispatcher("ceo/editCustomerInfo.jsp").forward(request, response);
         } catch (NumberFormatException e) {
 
         }
-
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -79,7 +75,7 @@ public class EditStaffInfo extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        StaffDAO aDao = new StaffDAO();
+        CustomerDAO aDao = new CustomerDAO();
         int id = Integer.parseInt(request.getParameter("id"));
         String username = request.getParameter("username");
         String firstName = request.getParameter("firstName");
@@ -87,18 +83,16 @@ public class EditStaffInfo extends HttpServlet {
         String phone = request.getParameter("phone");
         String email = request.getParameter("email");
         String address = request.getParameter("address");
-        String role = request.getParameter("role");
         String gender = request.getParameter("gender");
         String dob = request.getParameter("dob");
-        String salary = request.getParameter("salary");
+        String wallet = request.getParameter("wallet");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate date = LocalDate.parse(dob, formatter);
-        BigDecimal bigDecimalValue = new BigDecimal(salary);
-
-        Staff staff = new Staff(id, username, "", null, email, firstName, lastName, gender, date, phone, address, bigDecimalValue, 
-                id, LocalDateTime.MIN, new Role(aDao.getRoleIdByName(role), role));// Cập nhật thông tin người dùng
-        aDao.updateStaffInfo(staff, id);
-        response.sendRedirect("staffManagement");
+        BigDecimal bigDecimalValue = new BigDecimal(wallet);
+        Customer c = new Customer(id, username, phone, null, email, firstName, lastName, gender, date, phone, address, 0, null, bigDecimalValue);
+        aDao.updateCustomerInfo(c, id);
+        
+        response.sendRedirect("customerManagement");
     }
 
     /**
