@@ -69,6 +69,21 @@
             .mt-3 {
                 margin-top: 1rem !important;
             }
+
+            .mt-2 {
+                margin-top: 0.5rem !important;
+            }
+
+            .container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                /* Full viewport height */
+            }
+
+            .head {
+                font-weight: bold;
+            }
         </style>
     </head>
 
@@ -93,95 +108,169 @@
             <main class="page-content bg-light">       
 
                 <jsp:include page="template/header.jsp"/>
-
+                <c:set value="${sessionScope.staff}" var="staff"/>
                 <div class="container-fluid">
                     <div class="layout-specing">
-                        <div class="row ">
-                            <div class="col-lg-5">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h5>Upload New Photo</h5>
-                                        <form>
-                                            <img src="./assets/images/111117kpbaothanhthien7.jpeg" alt="Image" width="500" height="auto">
-                                            <div class="mb-4">
-                                                <label for="profilePhoto" class="form-label">Upload a new avatar. Larger images will be resized automatically. Maximum upload size is 1 MB.</label>
-                                                <input type="file" class="form-control" id="profilePhoto">
+
+                        <div class="container">
+                            <form action="profile-manager" method="post" enctype="multipart/form-data">
+                                <input name="changeInfo" type="hidden" value="changeInfo" />
+
+                                <div class="row">
+                                    <!-- Image Upload Section -->
+                                    <div class="col-lg-5">
+                                        <div class="card">
+                                            <div class="card-body text-center">
+                                                <h4 class ="card-title" style="background-color: red; color: white; padding: 10px; border-radius: 5px;">
+                                                    Upload New Photo
+                                                </h4>
+
+                                                <img src="${staff.image}" alt="Image" accept=".jpg,.png"
+                                                     style="width: 300px;
+                                                     height: 300px;
+                                                     object-fit: cover;
+                                                     border-radius: 30%;">
+                                                <div class="mb-4 mt-3">
+                                                    <label for="newImg" class="form-label">Upload a new avatar. Larger images will be resized automatically. Maximum upload size is 1 MB.</label>
+                                                    <input type="file" id="newImg" name="newImg" class="form-control-file">
+                                                </div>
+                                                <div class="mb-4">
+                                                    <p class="text-muted">
+                                                        Your email: ${staff.email}
+                                                        <a href="customer-manager" class="ms-2 text-decoration-none text-muted">
+                                                            <i class="fas fa-edit"></i>
+                                                        </a>
+                                                    </p>
+                                                </div>
                                             </div>
-                                            <div class="mb-4">
-                                                <p class="text-muted">Member: Bomnamana</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- User Info Section -->
+                                    <div class="col-lg-7">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="mb-4">
+                                                    <h4 class ="card-title text-center" style="background-color: red; color: white; padding: 10px; border-radius: 5px;">
+                                                        Edit information
+                                                    </h4>
+                                                    <div class="row mt-3">
+                                                        <div class="col-md-6">
+                                                            <label for="newFirstname" class="form-label head">First Name</label>
+                                                            <input value="${staff.firstname}" type="text" id="newFirstname" name="newFirstname" class="form-control">
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label for="newLastname" class="form-label head">Last Name</label>
+                                                            <input value="${staff.lastname}" type="text" id="newLastname" name="newLastname" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mt-3">
+                                                        <div class="col-md-6">
+                                                            <label for="newPhone" class="form-label head">Phone</label>
+                                                            <input value="${staff.phone}" type="text" id="newPhone" name="newPhone" class="form-control">
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label for="newAddress" class="form-label head">Address</label>
+                                                            <input value="${staff.address}" type="text" id="newAddress" name="newAddress" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mt-3">
+                                                        <div class="col-md-6">
+                                                            <label for="newGender" class="form-label head">Gender</label>
+                                                            <select id="newGender" name="newGender" class="form-control">
+                                                                <option value="Male" ${staff.gender == 'Male' ? 'selected' : ''}>Male</option>
+                                                                <option value="Female" ${staff.gender == 'Female' ? 'selected' : ''}>Female</option>
+                                                                <option value="Other" ${staff.gender == 'Other' ? 'selected' : ''}>Other</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label for="newDob" class="form-label head">Date of Birth</label>
+                                                            <input type="date" id="newDob" name="newDob" value="${staff.dob}" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mt-5">
+                                                        <div class="col-md-12 text-center">
+                                                            <button type="submit" class="btn btn-primary">Save</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="text-center">
-                                                <button type="submit" class="btn btn-primary">Update Image</button>
+                                        </div>
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h4 class ="card-title text-center" style="background-color: red; color: white; padding: 10px; border-radius: 5px;">
+                                                    Edit password
+                                                </h4>
+                                                <div class="mb-4">
+                                                    <div class="row mt-3">
+                                                        <div class="col-md-12">
+                                                            <label for="currentPassword" class="head form-label">Current Password</label>
+                                                            <input type="password" id="currentPassword" name="currentPassword" class="form-control" placeholder="Password">
+                                                            <span class="position-absolute top-50 end-0 translate-middle-y pe-3 cursor-pointer" onclick="togglePassword('currentPassword', 'toggleCurrentPasswordIcon')" style="padding-top: 30px;">
+                                                                <i id="toggleCurrentPasswordIcon" class="mdi mdi-eye-outline"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mt-3">
+                                                        <div class="col-md-12">
+                                                            <label for="newPassword" class="head form-label">New Password</label>
+                                                            <input type="password" id="newPassword" name="newPassword" class="form-control" placeholder="New password">
+                                                            <span class="position-absolute top-50 end-0 translate-middle-y pe-3 cursor-pointer" onclick="togglePassword('newPassword', 'toggleNewPasswordIcon')" style="padding-top: 30px;">
+                                                                <i id="toggleNewPasswordIcon" class="mdi mdi-eye-outline"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mt-3">
+                                                        <div class="col-md-12">
+                                                            <label for="confirmPassword" class="head form-label">Confirm Password</label>
+                                                            <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" placeholder="Confirm your password">
+                                                            <span class="position-absolute top-50 end-0 translate-middle-y pe-3 cursor-pointer" onclick="togglePassword('confirmPassword', 'toggleConfirmPasswordIcon')" style="padding-top: 30px;">
+                                                                <i id="toggleConfirmPasswordIcon" class="mdi mdi-eye-outline"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mt-5">
+                                                        <div class="col-md-12 text-center">
+                                                            <button type="submit" class="btn btn-primary">Save</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </form>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div class="col-lg-7">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h4 class="card-title">Edit Profile</h4>
-                                        <form>
-                                            <div class="mb-4">
-                                                <h5>User Info</h5>
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <label for="fullName" class="form-label">First Name</label>
-                                                        <input type="text" class="form-control" id="fullName" value="James Allan">
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <label for="username" class="form-label">Last Name</label>
-                                                        <input type="text" class="form-control" id="username" value="@James">
-                                                    </div>
-                                                </div>
-                                                <div class="row mt-3">
-                                                    <div class="col-md-6">
-                                                        <label for="password" class="form-label">Phone</label>
-                                                        <input type="password" class="form-control" id="password" placeholder="091203765">
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <label for="confirmPassword" class="form-label">Address</label>
-                                                        <input type="password" class="form-control" id="confirmPassword" placeholder="Welcome to the rice filed">
-                                                    </div>
-                                                </div>
-                                                <div class="row mt-3">
-                                                    <div class="col-md-6">
-                                                        <label for="newGender" class="form-label">Gender</label>
-                                                        <select id="newGender" name="newGender" class="form-control">
-                                                            <option value="Male" ${param.gender == 'Male' ? 'selected' : ''}>Male</option>
-                                                            <option value="Female" ${param.gender == 'Female' ? 'selected' : ''}>Female</option>
-                                                            <option value="Other" ${param.gender == 'Other' ? 'selected' : ''}>Other</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <label for="newDob" class="form-label">Date of Birth</label>
-                                                        <input type="date" id="newDob" name="newDob" value="${param.dob}" class="form-control">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="text-center">
-                                                <button type="submit" class="btn btn-primary">Update Info</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
-                </div>
 
-                <!-- Footer Start -->
-                <jsp:include page="template/footer.jsp"/>
-                <!-- End -->
+
+                    <!-- Footer Start -->
+                    <jsp:include page="template/footer.jsp"/>
+                    <!-- End -->
             </main>
 
         </div>
+        <script>
+            function togglePassword(passwordFieldId, iconId) {
+                var passwordField = document.getElementById(passwordFieldId);
+                var toggleIcon = document.getElementById(iconId);
+
+                if (passwordField.type === "password") {
+                    passwordField.type = "text";
+                    toggleIcon.classList.remove("mdi-eye-outline");
+                    toggleIcon.classList.add("mdi-eye-off-outline");
+                } else {
+                    passwordField.type = "password";
+                    toggleIcon.classList.remove("mdi-eye-off-outline");
+                    toggleIcon.classList.add("mdi-eye-outline");
+                }
+            }
+        </script>
 
         <!-- page-wrapper -->
         <script src="<%= request.getContextPath() %>/assets/js/jquery.min.js"></script>
         <script src="<%= request.getContextPath() %>/assets/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"></script>
 
         <!-- simplebar -->
         <script src="<%= request.getContextPath() %>/assets/js/simplebar.min.js"></script>
