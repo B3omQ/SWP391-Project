@@ -1,4 +1,5 @@
 <%@ page import="model.Customer" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -187,28 +188,27 @@
 
                                     <div class="col-lg-5 col-md-12 text-lg-end text-center mt-4 mt-lg-0">
                                         <!-- Form Upload -->
-                                        <form action="<%= request.getContextPath() %>/UploadImageServlet" method="post" enctype="multipart/form-data">
-                                            <input type="file" name="image" accept=".jpg,.png" class="form-control mb-2">
-                                            <button type="submit" class="btn btn-primary">Upload</button>
-                                        </form>
+                             <form action="<%= request.getContextPath() %>/UploadImageServlet" method="post" enctype="multipart/form-data">
+    <input type="file" name="image" accept=".jpg,.png" class="form-control mb-2">
+    <button type="submit" class="btn btn-primary">Upload</button>
+    
+<c:if test="${not empty sessionScope.error2}">
+    <p style="color: red;">${sessionScope.error2}</p>
+    <c:remove var="error2" scope="session"/>
+</c:if>
+
+<c:if test="${not empty sessionScope.success2}">
+    <p style="color: green;">${sessionScope.success2}</p>
+    <c:remove var="success2" scope="session"/>
+</c:if>
+
+</form>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Hi?n th? thông báo khi có l?i -->
-                            <%
-                                String error = request.getParameter("error");
-                                String success = request.getParameter("success");
-                                if (error != null) {
-                            %>
-                            <div class="alert alert-danger"><%= error %></div>
-                            <%
-                                } else if (success != null) {
-                            %>
-                            <div class="alert alert-success"><%= success %></div>
-                            <%
-                                }
-                            %>
+                        
                             <form action="<%= request.getContextPath() %>/UpdateInfo" method="post">
                                 <div class="p-4">
                                     <div class="row">
@@ -285,12 +285,15 @@
                                     </div>
 
                                     <!-- Thông báo thành công / l?i -->
-                                    <c:if test="${not empty error2}">
-                                        <p style="color: red;">${error2}</p>
-                                    </c:if>
-                                    <c:if test="${not empty success2}">
-                                        <p style="color: green;">${success2}</p>
-                                    </c:if>
+                           <c:if test="${not empty sessionScope.error3}">
+    <p style="color: red;">${sessionScope.error3}</p>
+    <c:remove var="error3" scope="session"/>
+</c:if>
+<c:if test="${not empty sessionScope.success3}">
+    <p style="color: green;">${sessionScope.success3}</p>
+    <c:remove var="success3" scope="session"/>
+</c:if>
+
                                 </div>
                             </form>
 

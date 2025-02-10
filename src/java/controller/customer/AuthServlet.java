@@ -101,61 +101,74 @@ public class AuthServlet extends HttpServlet {
         }
     }
 
-    private void handleLogin(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String email = request.getParameter("email");
-        String passWord = request.getParameter("password");
-        String rememberMe = request.getParameter("remember");
+ private void handleLogin(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+    String email = request.getParameter("email");
+    String passWord = request.getParameter("password");
+    String rememberMe = request.getParameter("remember");
 
-        HttpSession session = request.getSession();
+    HttpSession session = request.getSession();
 
-        if (email == null || passWord == null) {
-            session.setAttribute("errorAccount", "Vui lòng nhập email và mật khẩu.");
-            response.sendRedirect("auth/template/login.jsp");
-            return;
-        }
-
-        if (isAccountLocked(email)) {
-            session.setAttribute("errorAccount", "Tài khoản của bạn đã bị khóa. Vui lòng thử lại sau 10 phút.");
-            response.sendRedirect("auth/template/login.jsp");
-            return;
-        }
-
-        Customer customer = customerDAO.login(email, passWord);
-
-        if (customer != null && av.checkPassword(passWord, customer.getPassword())) {
-            customerDAO.resetFailedLogin(email);
-            handleRememberMe(response, email, passWord, rememberMe);
-            session.setAttribute("account", customer);
-            response.sendRedirect("customer/template/Customer.jsp");
-            return;
-        }
-
-        Staff staff = staffDAO.login(email, passWord);
-        if (staff != null && av.checkPassword(passWord, staff.getPassword())) {
-            staffDAO.resetFailedLogin(email);
-            handleRememberMe(response, email, passWord, rememberMe);
-            session.setAttribute("staff", staff);
-            session.setAttribute("role", staff.getRoleId().getName());
-
-            response.sendRedirect(staff.getRoleId().getId() == 1 ? "staff/template/Admin.jsp" : "profile-manager");
-            return;
-        }
-
-        // Nếu không tìm thấy tài khoản hoặc mật khẩu sai
-        int failedAttempts = customerDAO.getFailedAttempts(email);
-        if (failedAttempts == 0) {
-            failedAttempts = staffDAO.getFailedAttempts(email);
-        }
-
-        if (isAccountLocked(email)) {
-            session.setAttribute("errorAccount", "Bạn đã nhập sai mật khẩu quá số lần cho phép. Tài khoản bị khóa trong 10 phút.");
-        } else {
-            int remainingAttempts = 6 - failedAttempts;
-            session.setAttribute("errorAccount", "Sai email hoặc mật khẩu. Bạn còn " + remainingAttempts + " lần thử.");
-        }
+    if (email == null || passWord == null) {
+        session.setAttribute("errorAccount", "Vui lòng nhập email và mật khẩu.");
         response.sendRedirect("auth/template/login.jsp");
+        return;
     }
+
+    if (isAccountLocked(email)) {
+        session.setAttribute("errorAccount", "Tài khoản của bạn đã bị khóa. Vui lòng thử lại sau 10 phút.");
+        response.sendRedirect("auth/template/login.jsp");
+        return;
+    }
+
+
+    boolean emailExists = customerDAO.emailExists(email) || staffDAO.emailExists(email);
+    
+    // Nếu email không tồn tại, báo lỗi ngay
+    if (!emailExists) {
+        session.setAttribute("errorAccount", "Tài khoản không tồn tại.");
+        response.sendRedirect("auth/template/login.jsp");
+        return;
+    }
+
+    Customer customer = customerDAO.login(email, passWord);
+    Staff staff = staffDAO.login(email, passWord);
+
+
+    if (customer != null && av.checkPassword(passWord, customer.getPassword())) {
+        customerDAO.resetFailedLogin(email);
+        handleRememberMe(response, email, passWord, rememberMe);
+        session.setAttribute("account", customer);
+        response.sendRedirect("customer/template/Customer.jsp");
+        return;
+    }
+
+
+    if (staff != null && av.checkPassword(passWord, staff.getPassword())) {
+        staffDAO.resetFailedLogin(email);
+        handleRememberMe(response, email, passWord, rememberMe);
+        session.setAttribute("staff", staff);
+        session.setAttribute("role", staff.getRoleId().getName());
+
+        response.sendRedirect(staff.getRoleId().getId() == 1 ? "staff/template/Admin.jsp" : "profile-manager");
+        return;
+    }
+
+
+    int failedAttempts = customerDAO.getFailedAttempts(email);
+    if (failedAttempts == 0) {
+        failedAttempts = staffDAO.getFailedAttempts(email);
+    }
+
+    if (isAccountLocked(email)) {
+        session.setAttribute("errorAccount", "Bạn đã nhập sai mật khẩu quá số lần cho phép. Tài khoản bị khóa trong 10 phút.");
+    } else {
+        int remainingAttempts = 6 - failedAttempts;
+        session.setAttribute("errorAccount", "Sai mật khẩu. Bạn còn " + remainingAttempts + " lần thử.");
+    }
+    response.sendRedirect("auth/template/login.jsp");
+}
+
 
     private void handleLogout(HttpServletRequest request, HttpServletResponse response)
             throws IOException {

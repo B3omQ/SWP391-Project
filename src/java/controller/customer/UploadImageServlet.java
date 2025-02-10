@@ -36,17 +36,24 @@ public class UploadImageServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/auth/template/login.jsp");
             return;
         }
+        
+        // Xác định trang đích dựa trên loại người dùng (Customer hay Staff)
+        String targetPage = (account != null) 
+                ? "/customer/template/account-profile.jsp" 
+                : "/staff/template/staff-profile.jsp";
 
         Part filePart = request.getPart("image");
         if (filePart == null || filePart.getSize() == 0) {
-            response.sendRedirect(request.getContextPath() + "/customer/template/account-profile.jsp?error=NoFileSelected");
+            session.setAttribute("error2", "Không có file được chọn.");
+            response.sendRedirect(request.getContextPath() + targetPage);
             return;
         }
 
         String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
         String fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
         if (!fileExtension.equals("jpg") && !fileExtension.equals("png")) {
-            response.sendRedirect(request.getContextPath() + "/customer/template/account-profile.jsp?error=InvalidFileType");
+            session.setAttribute("error2", "Loại file không hợp lệ. Chỉ chấp nhận file JPG và PNG.");
+            response.sendRedirect(request.getContextPath() + targetPage);
             return;
         }
 
@@ -65,14 +72,18 @@ public class UploadImageServlet extends HttpServlet {
             ConsultantDAO customerDAO = new ConsultantDAO();
             customerDAO.updateCustomerImage(customer.getId(), fileName);  
             
-            response.sendRedirect(request.getContextPath() + "/customer/template/account-profile.jsp?success=ImageUpdated");
+            session.setAttribute("account", customer);
+            session.setAttribute("success2", "Cập nhật ảnh thành công.");
+            response.sendRedirect(request.getContextPath() + targetPage);
         } else if (staff != null) {  
             Staff staffMember = (Staff) staff;
             staffMember.setImage(fileName);  
             StaffDAO staffDAO = new StaffDAO();
             staffDAO.updateStaffImage(staffMember.getId(), fileName); 
             
-            response.sendRedirect(request.getContextPath() + "/staff/template/staff-profile.jsp?success=ImageUpdated");
+            session.setAttribute("staff", staffMember);
+            session.setAttribute("success2", "Cập nhật ảnh thành công.");
+            response.sendRedirect(request.getContextPath() + targetPage);
         }
     }
 }

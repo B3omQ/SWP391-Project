@@ -243,4 +243,31 @@ public class StaffDAO extends DBContext {
         }
         return null;
     }
+    public boolean emailExists(String email) {
+    String sql = "SELECT 1 FROM [dbo].[Staff] WHERE Email = ?";
+    
+    try (PreparedStatement p = connection.prepareStatement(sql)) {
+        p.setString(1, email);
+        try (ResultSet rs = p.executeQuery()) {
+            return rs.next(); 
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false; 
+}
+    public boolean phoneExists(String phone) {
+    String sql = "SELECT 1 FROM [dbo].[Staff] WHERE Phone = ?";
+    
+    try (PreparedStatement p = connection.prepareStatement(sql)) {
+        p.setString(1, phone);
+        try (ResultSet rs = p.executeQuery()) {
+            return rs.next(); 
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false; 
+}
+
 }
