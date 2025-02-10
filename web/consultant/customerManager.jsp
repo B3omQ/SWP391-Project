@@ -358,7 +358,7 @@
                                                                     </div>
 
                                                                     <div class="mb-2">
-                                                                        <strong>Wallet Balance:</strong> ${customer.wallet}
+                                                                        <strong>Wallet Balance:</strong>
                                                                     </div>
                                                                 </div>
                                                                 <div class="modal-footer">
