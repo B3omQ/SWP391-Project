@@ -5,50 +5,48 @@
         <input name="updateId" type="hidden" value="${param.id}" />
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header bg-danger text-white">
                     <h1 class="modal-title fs-5" id="editModalLabel${param.id}">Update Customer</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label class="form-label" for="newEmail">Email</label>
+                    <div class="row mt-2">
+                        <div class="col-md-12">
+                            <label class="form-label head" for="newEmail">Email</label>
                             <input value="${param.email}" class="form-control" type="text" id="newEmail" name="newEmail">
                         </div>
                     </div>
-
-                    <div class="row">
-                        <div class="col-md-4">
-                            <label for="newFirstname" class="form-label">First Name</label>
-                            <input value="${param.firstname}" type="text" id="newFirstname" name="newFirstname" class="form-control">
-                        </div>
-                        <div class="col-md-4">
-                            <label for="newLastname" class="form-label">Last Name</label>
-                            <input value="${param.lastname}" type="text" id="newLastname" name="newLastname" class="form-control">
-                        </div>
-                        <div class="col-md-4">
-                            <label for="newAddress" class="form-label">Address</label>
-                            <input value="${param.address}" type="text" id="newAddress" name="newAddress" class="form-control">
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label for="newPhone" class="form-label">Phone</label>
-                            <input value="${param.phone}" type="text" id="newPhone" name="newPhone" class="form-control">
-                        </div>
-                    </div>
-                    <div class="row">
+                    <div class="row mt-3">
                         <div class="col-md-12">
-                            <label for="newImg">Image</label>
+                            <label for="newImg" class ="head">Image</label>
                             <input type="file" id="newImg" name="newImg" class="form-control-file">
                         </div>
                     </div>
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <label for="newFirstname" class="form-label head">First Name</label>
+                            <input value="${param.firstname}" type="text" id="newFirstname" name="newFirstname" class="form-control">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="newLastname" class="form-label head">Last Name</label>
+                            <input value="${param.lastname}" type="text" id="newLastname" name="newLastname" class="form-control">
+                        </div>
+                    </div>                        
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <label for="newPhone" class="form-label head">Phone</label>
+                            <input value="${param.phone}" type="text" id="newPhone" name="newPhone" class="form-control">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="newAddress" class="form-label head">Address</label>
+                            <input value="${param.address}" type="text" id="newAddress" name="newAddress" class="form-control">
+                        </div>
+                    </div>                    
 
                     <!-- New fields for gender and date of birth -->
-                    <div class="row">
+                    <div class="row mt-3">
                         <div class="col-md-6">
-                            <label for="newGender" class="form-label">Gender</label>
+                            <label for="newGender" class="form-label head">Gender</label>
                             <select id="newGender" name="newGender" class="form-control">
                                 <option value="Male" ${param.gender == 'Male' ? 'selected' : ''}>Male</option>
                                 <option value="Female" ${param.gender == 'Female' ? 'selected' : ''}>Female</option>
@@ -56,7 +54,7 @@
                             </select>
                         </div>
                         <div class="col-md-6">
-                            <label for="newDob" class="form-label">Date of Birth</label>
+                            <label for="newDob" class="form-label head">Date of Birth</label>
                             <input type="date" id="newDob" name="newDob" value="${param.dob}" class="form-control">
                         </div>
                     </div>
