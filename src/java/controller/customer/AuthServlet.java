@@ -170,7 +170,6 @@ public class AuthServlet extends HttpServlet {
             response.sendRedirect("auth/template/login.jsp");
             return;
         }
-
         // Kiểm tra có account hay staff trong session không
         Customer customer = (Customer) session.getAttribute("account");
         Staff staff = (Staff) session.getAttribute("staff");

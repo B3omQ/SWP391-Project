@@ -5,7 +5,7 @@
 package controller.customer;
 
 import dal.DAOTokenForget;
-import dal.ConsultantDAO;
+import dal.CustomerDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -73,7 +73,7 @@ public class requestPassword extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ConsultantDAO daoUser = new ConsultantDAO();
+        CustomerDAO daoUser = new CustomerDAO();
         String email = request.getParameter("email");
         //email co ton tai trong db
         Customer account = daoUser.getCustomerByEmail(email);
