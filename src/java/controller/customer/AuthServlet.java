@@ -129,7 +129,7 @@ public class AuthServlet extends HttpServlet {
         staffDAO.resetFailedLogin(email);
         handleRememberMe(response, email, passWord, rememberMe);
         session.setAttribute("staff", staff);
-        session.setAttribute("role", "staff");
+        session.setAttribute("role", staff.getRoleId().getName());
 
         response.sendRedirect(staff.getRoleId().getId() == 1 ? "staff/template/Admin.jsp" : "Support.jsp");
         return;
