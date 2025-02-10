@@ -1,6 +1,6 @@
 <%-- 
-    Document   : temp
-    Created on : Feb 6, 2025, 11:32:14 AM
+    Document   : denied
+    Created on : Feb 10, 2025, 5:54:00 PM
     Author     : JIGGER
 --%>
 
@@ -11,7 +11,9 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
     </head>
+    
     <body>
-        <h1>Hello World!</h1>
+        <h1>Hello baby, welcome back to logout</h1>
     </body>
+    
 </html>

@@ -1,7 +1,7 @@
 <%@ page import="model.Customer" %>
 
 <!DOCTYPE html>
-    <html lang="en">
+<html lang="en">
 
     <head>
         <meta charset="utf-8" />
@@ -25,22 +25,22 @@
         <link href="<%= request.getContextPath() %>/assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
 
     </head>
-     <%
-    // Ki?m tra session
-    if (session.getAttribute("account") == null) {
-        response.sendRedirect(request.getContextPath() + "/auth/template/login.jsp");
-        return; 
-    }
+    <%
+   // Ki?m tra session
+   if (session.getAttribute("account") == null) {
+       response.sendRedirect(request.getContextPath() + "/auth/template/login.jsp");
+       return; 
+   }
 
-    Customer account = (Customer) session.getAttribute("account");
-    String imagePath;
+   Customer account = (Customer) session.getAttribute("account");
+   String imagePath;
 
-    if (account != null && account.getImage() != null && !account.getImage().isEmpty()) {
-        imagePath = request.getContextPath() + "/uploads/" + account.getImage();
-    } else {
-        imagePath = request.getContextPath() + "/assets/images/default-avatar.jpg"; // ?nh m?c ??nh
-    }
-%>
+   if (account != null && account.getImage() != null && !account.getImage().isEmpty()) {
+       imagePath = request.getContextPath() + "/uploads/" + account.getImage();
+   } else {
+       imagePath = request.getContextPath() + "/assets/images/default-avatar.jpg"; // ?nh m?c ??nh
+   }
+    %>
 
     <body>
         <!-- Loader -->
@@ -53,7 +53,7 @@
             </div>
         </div>
         <!-- Loader -->
-        
+
         <!-- Navbar STart -->
         <header id="topnav" class="defaultscroll sticky">
             <div class="container">
@@ -63,7 +63,7 @@
                     <img src="<%= request.getContextPath() %>/assets/images/logo-light.png" height="24" class="logo-dark-mode" alt="">
                 </a>                
                 <!-- Logo End -->
-                
+
                 <!-- Start Mobile Toggle -->
                 <div class="menu-extras">
                     <div class="menu-item">
@@ -101,27 +101,27 @@
                                 <a class="dropdown-item d-flex align-items-center text-dark" href="doctor-profile.html">
                                     <img src="<%= imagePath %>" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
                                     <div class="flex-1 ms-2">
-<span class="d-block mb-1">
-    ${account.firstname} ${account.lastname}
-</span>
-       
+                                        <span class="d-block mb-1">
+                                            ${account.firstname} ${account.lastname}
+                                        </span>
+
                                         <small class="text-muted">Customer</small>
                                     </div>
                                 </a>
                                 <a class="dropdown-item text-dark" href="Customer.jsp"><span class="mb-0 d-inline-block me-1"><i class="uil uil-dashboard align-middle h6"></i></span> Dashboard</a>
                                 <a class="dropdown-item text-dark" href="account-profile.jsp"><span class="mb-0 d-inline-block me-1"><i class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
                                 <div class="dropdown-divider border-top"></div>
-<a class="dropdown-item text-dark" href="<%= request.getContextPath() %>/AuthServlet?action=logout">
-    <span class="mb-0 d-inline-block me-1">
-        <i class="uil uil-sign-out-alt align-middle h6"></i>
-    </span> 
-    Logout
-</a>                            </div>
+                                <a class="dropdown-item text-dark" href="<%= request.getContextPath() %>/AuthServlet?action=logout">
+                                    <span class="mb-0 d-inline-block me-1">
+                                        <i class="uil uil-sign-out-alt align-middle h6"></i>
+                                    </span> 
+                                    Logout
+                                </a>                            </div>
                         </div>
                     </li>
                 </ul>
                 <!-- Start Dropdown -->
-        
+
                 <div id="navigation">
                     <!-- Navigation Menu-->   
                     <ul class="navigation-menu nav-left">
@@ -134,7 +134,7 @@
                             </ul>
                         </li>
 
-                      
+
                     </ul><!--end navigation menu-->
                 </div><!--end navigation-->
             </div><!--end container-->
@@ -160,9 +160,9 @@
 
                             <ul class="list-unstyled sidebar-nav mb-0">
                                 <li class="navbar-item"><a href="Customer.jsp" class="navbar-link"><i class="ri-airplay-line align-middle navbar-icon"></i> Dashboard</a></li>
-                                 <li class="navbar-item"><a href="manage-bank.jsp" class="navbar-link"><i class="ri-airplay-line align-middle navbar-icon"></i>Manage Account Bank</a></li>
+                                <li class="navbar-item"><a href="manage-bank.jsp" class="navbar-link"><i class="ri-airplay-line align-middle navbar-icon"></i>Manage Account Bank</a></li>
                                 <li class="navbar-item"><a href="account-profile.jsp" class="navbar-link"><i class="ri-user-settings-line align-middle navbar-icon"></i> Profile Settings</a></li>
-                              
+
                             </ul>
                         </div>
                     </div><!--end col-->
@@ -174,184 +174,184 @@
                                 <h5 class="mb-0">Personal Information :</h5>
                             </div>
 
-                <div class="p-4 border-bottom">
-    <div class="row align-items-center">
-        <div class="col-lg-2 col-md-4">
-            <img src="<%= imagePath %>" class="avatar avatar-md-md rounded-pill shadow mx-auto d-block" alt="User Image">
-        </div>
-
-        <div class="col-lg-5 col-md-8 text-center text-md-start mt-4 mt-sm-0">
-            <h5>Upload your picture</h5>
-            <p class="text-muted mb-0">For best results, use an image at least 256px by 256px in either .jpg or .png format</p>
-        </div>
-
-        <div class="col-lg-5 col-md-12 text-lg-end text-center mt-4 mt-lg-0">
-            <!-- Form Upload -->
-            <form action="<%= request.getContextPath() %>/UploadImageServlet" method="post" enctype="multipart/form-data">
-                <input type="file" name="image" accept=".jpg,.png" class="form-control mb-2">
-                <button type="submit" class="btn btn-primary">Upload</button>
-            </form>
-        </div>
-    </div>
-</div>
-
-<!-- Hi?n th? thông báo khi có l?i -->
-<%
-    String error = request.getParameter("error");
-    String success = request.getParameter("success");
-    if (error != null) {
-%>
-        <div class="alert alert-danger"><%= error %></div>
-<%
-    } else if (success != null) {
-%>
-        <div class="alert alert-success"><%= success %></div>
-<%
-    }
-%>
-        <form action="<%= request.getContextPath() %>/UpdateInfo" method="post">
-    <div class="p-4">
-        <div class="row">
-            <!-- First Name (Không th? ch?nh s?a) -->
-            <div class="col-md-6">
-                <div class="mb-3">
-                    <label for="firstName" class="form-label">First Name</label>
-                    <input id="firstName" name="firstName" type="text" class="form-control"
-                           value="${account != null ? account.firstname : ''}" readonly>
-                </div>
-            </div>
-
-            <!-- Last Name (Không th? ch?nh s?a) -->
-            <div class="col-md-6">
-                <div class="mb-3">
-                    <label for="lastName" class="form-label">Last Name</label>
-                    <input id="lastName" name="lastName" type="text" class="form-control"
-                           value="${account != null ? account.lastname : ''}" readonly>
-                </div>
-            </div>
-
-            <!-- Email (Có th? ch?nh s?a) -->
-            <div class="col-md-6">
-                <div class="mb-3">
-                    <label for="email" class="form-label">Your Email</label>
-                    <input id="email" name="email" type="email" class="form-control"
-                           value="${account != null ? account.email : ''}" required>
-                </div>
-            </div>
-
-            <!-- Phone (Có th? ch?nh s?a) -->
-            <div class="col-md-6">
-                <div class="mb-3">
-                    <label for="phone" class="form-label">Phone Number</label>
-                    <input id="phone" name="phone" type="text" class="form-control"
-                           value="${account != null ? account.phone : ''}" required>
-                </div>
-            </div>
-
-            <!-- Gender (Không th? ch?nh s?a) -->
-            <div class="col-md-6">
-                <div class="mb-3">
-                    <label for="gender" class="form-label">Gender</label>
-                    <input id="gender" name="gender" type="text" class="form-control"
-                           value="${account != null ? account.gender : ''}" readonly>
-                </div>
-            </div>
-
-            <!-- Date of Birth (Không th? ch?nh s?a) -->
-            <div class="col-md-6">
-                <div class="mb-3">
-                    <label for="dob" class="form-label">Date of Birth</label>
-                    <input id="dob" name="dob" type="date" class="form-control"
-                           value="${account != null && account.dob != null ? account.dob : ''}" readonly>
-                </div>
-            </div>
-
-            <!-- Address (Có th? ch?nh s?a) -->
-            <div class="col-md-12">
-                <div class="mb-3">
-                    <label for="address" class="form-label">Address</label>
-                    <input id="address" name="address" type="text" class="form-control"
-                           value="${account != null && account.address != null ? account.address : ''}" required>
-                </div>
-            </div>
-        </div>
-
-        <!-- Nút Save Changes -->
-        <div class="row">
-            <div class="col-12 text-end">
-                <input type="hidden" name="id" value="${account != null ? account.id : ''}">
-                <button type="submit" class="btn btn-primary">Save Changes</button>
-            </div>
-        </div>
-
-        <!-- Thông báo thành công / l?i -->
-        <c:if test="${not empty error2}">
-            <p style="color: red;">${error2}</p>
-        </c:if>
-        <c:if test="${not empty success2}">
-            <p style="color: green;">${success2}</p>
-        </c:if>
-    </div>
-</form>
-
-
-                        <div class="rounded shadow mt-4">
                             <div class="p-4 border-bottom">
-                                <h5 class="mb-0">Change Password :</h5>
+                                <div class="row align-items-center">
+                                    <div class="col-lg-2 col-md-4">
+                                        <img src="<%= imagePath %>" class="avatar avatar-md-md rounded-pill shadow mx-auto d-block" alt="User Image">
+                                    </div>
+
+                                    <div class="col-lg-5 col-md-8 text-center text-md-start mt-4 mt-sm-0">
+                                        <h5>Upload your picture</h5>
+                                        <p class="text-muted mb-0">For best results, use an image at least 256px by 256px in either .jpg or .png format</p>
+                                    </div>
+
+                                    <div class="col-lg-5 col-md-12 text-lg-end text-center mt-4 mt-lg-0">
+                                        <!-- Form Upload -->
+                                        <form action="<%= request.getContextPath() %>/UploadImageServlet" method="post" enctype="multipart/form-data">
+                                            <input type="file" name="image" accept=".jpg,.png" class="form-control mb-2">
+                                            <button type="submit" class="btn btn-primary">Upload</button>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
 
-                            <div class="p-4">
-<form action="<%= request.getContextPath() %>/AuthServlet?action=changePassword" method="POST">
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="mb-3 position-relative">
-                <label class="form-label">Old password :</label>
-                <input type="password" class="form-control" placeholder="Old password" name="oldPassword" id="oldPassword" required>
-                <span class="position-absolute top-50 end-0 translate-middle-y pe-3 cursor-pointer" onclick="togglePassword('oldPassword', 'toggleOldPasswordIcon')" style="padding-top: 30px;">
-                    <i id="toggleOldPasswordIcon" class="mdi mdi-eye-outline"></i>
-                </span>
-            </div>
-        </div><!--end col-->
+                            <!-- Hi?n th? thông báo khi có l?i -->
+                            <%
+                                String error = request.getParameter("error");
+                                String success = request.getParameter("success");
+                                if (error != null) {
+                            %>
+                            <div class="alert alert-danger"><%= error %></div>
+                            <%
+                                } else if (success != null) {
+                            %>
+                            <div class="alert alert-success"><%= success %></div>
+                            <%
+                                }
+                            %>
+                            <form action="<%= request.getContextPath() %>/UpdateInfo" method="post">
+                                <div class="p-4">
+                                    <div class="row">
+                                        <!-- First Name (Không th? ch?nh s?a) -->
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="firstName" class="form-label">First Name</label>
+                                                <input id="firstName" name="firstName" type="text" class="form-control"
+                                                       value="${account != null ? account.firstname : ''}" readonly>
+                                            </div>
+                                        </div>
 
-        <div class="col-lg-12">
-            <div class="mb-3 position-relative">
-                <label class="form-label">New password :</label>
-                <input type="password" class="form-control" placeholder="New password" name="newPassword" id="newPassword" required>
-                <span class="position-absolute top-50 end-0 translate-middle-y pe-3 cursor-pointer" onclick="togglePassword('newPassword', 'toggleNewPasswordIcon')" style="padding-top: 30px;">
-                    <i id="toggleNewPasswordIcon" class="mdi mdi-eye-outline"></i>
-                </span>
-            </div>
-        </div><!--end col-->
+                                        <!-- Last Name (Không th? ch?nh s?a) -->
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="lastName" class="form-label">Last Name</label>
+                                                <input id="lastName" name="lastName" type="text" class="form-control"
+                                                       value="${account != null ? account.lastname : ''}" readonly>
+                                            </div>
+                                        </div>
 
-        <div class="col-lg-12">
-            <div class="mb-3 position-relative">
-                <label class="form-label">Re-type New password :</label>
-                <input type="password" class="form-control" placeholder="Re-type New password" name="retypeNewPassword" id="retypeNewPassword" required>
-                <span class="position-absolute top-50 end-0 translate-middle-y pe-3 cursor-pointer" onclick="togglePassword('retypeNewPassword', 'toggleRetypePasswordIcon')" style="padding-top: 30px;">
-                    <i id="toggleRetypePasswordIcon" class="mdi mdi-eye-outline"></i>
-                </span>
-            </div>
-        </div><!--end col-->
+                                        <!-- Email (Có th? ch?nh s?a) -->
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="email" class="form-label">Your Email</label>
+                                                <input id="email" name="email" type="email" class="form-control"
+                                                       value="${account != null ? account.email : ''}" required>
+                                            </div>
+                                        </div>
 
-        <div class="col-lg-12 mt-2 mb-0">
-            <button class="btn btn-primary">Save password</button>
-        </div><!--end col-->
-    </div><!--end row-->
-</form>
-                                <c:if test="${not empty error}">
-    <p style="color: red;">${error}</p>
-</c:if>
+                                        <!-- Phone (Có th? ch?nh s?a) -->
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="phone" class="form-label">Phone Number</label>
+                                                <input id="phone" name="phone" type="text" class="form-control"
+                                                       value="${account != null ? account.phone : ''}" required>
+                                            </div>
+                                        </div>
 
-<c:if test="${not empty success}">
-    <p style="color: green;">${success}</p>
-</c:if>
+                                        <!-- Gender (Không th? ch?nh s?a) -->
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="gender" class="form-label">Gender</label>
+                                                <input id="gender" name="gender" type="text" class="form-control"
+                                                       value="${account != null ? account.gender : ''}" readonly>
+                                            </div>
+                                        </div>
 
-                            </div>
-                        </div>                                        
-                        
-                    </div><!--end col-->
-                </div><!--end row-->
-            </div><!--end container-->
+                                        <!-- Date of Birth (Không th? ch?nh s?a) -->
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="dob" class="form-label">Date of Birth</label>
+                                                <input id="dob" name="dob" type="date" class="form-control"
+                                                       value="${account != null && account.dob != null ? account.dob : ''}" readonly>
+                                            </div>
+                                        </div>
+
+                                        <!-- Address (Có th? ch?nh s?a) -->
+                                        <div class="col-md-12">
+                                            <div class="mb-3">
+                                                <label for="address" class="form-label">Address</label>
+                                                <input id="address" name="address" type="text" class="form-control"
+                                                       value="${account != null && account.address != null ? account.address : ''}" required>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Nút Save Changes -->
+                                    <div class="row">
+                                        <div class="col-12 text-end">
+                                            <input type="hidden" name="id" value="${account != null ? account.id : ''}">
+                                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Thông báo thành công / l?i -->
+                                    <c:if test="${not empty error2}">
+                                        <p style="color: red;">${error2}</p>
+                                    </c:if>
+                                    <c:if test="${not empty success2}">
+                                        <p style="color: green;">${success2}</p>
+                                    </c:if>
+                                </div>
+                            </form>
+
+
+                            <div class="rounded shadow mt-4">
+                                <div class="p-4 border-bottom">
+                                    <h5 class="mb-0">Change Password :</h5>
+                                </div>
+
+                                <div class="p-4">
+                                    <form action="<%= request.getContextPath() %>/AuthServlet?action=changePassword" method="POST">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="mb-3 position-relative">
+                                                    <label class="form-label">Old password :</label>
+                                                    <input type="password" class="form-control" placeholder="Old password" name="oldPassword" id="oldPassword" required>
+                                                    <span class="position-absolute top-50 end-0 translate-middle-y pe-3 cursor-pointer" onclick="togglePassword('oldPassword', 'toggleOldPasswordIcon')" style="padding-top: 30px;">
+                                                        <i id="toggleOldPasswordIcon" class="mdi mdi-eye-outline"></i>
+                                                    </span>
+                                                </div>
+                                            </div><!--end col-->
+
+                                            <div class="col-lg-12">
+                                                <div class="mb-3 position-relative">
+                                                    <label class="form-label">New password :</label>
+                                                    <input type="password" class="form-control" placeholder="New password" name="newPassword" id="newPassword" required>
+                                                    <span class="position-absolute top-50 end-0 translate-middle-y pe-3 cursor-pointer" onclick="togglePassword('newPassword', 'toggleNewPasswordIcon')" style="padding-top: 30px;">
+                                                        <i id="toggleNewPasswordIcon" class="mdi mdi-eye-outline"></i>
+                                                    </span>
+                                                </div>
+                                            </div><!--end col-->
+
+                                            <div class="col-lg-12">
+                                                <div class="mb-3 position-relative">
+                                                    <label class="form-label">Re-type New password :</label>
+                                                    <input type="password" class="form-control" placeholder="Re-type New password" name="retypeNewPassword" id="retypeNewPassword" required>
+                                                    <span class="position-absolute top-50 end-0 translate-middle-y pe-3 cursor-pointer" onclick="togglePassword('retypeNewPassword', 'toggleRetypePasswordIcon')" style="padding-top: 30px;">
+                                                        <i id="toggleRetypePasswordIcon" class="mdi mdi-eye-outline"></i>
+                                                    </span>
+                                                </div>
+                                            </div><!--end col-->
+
+                                            <div class="col-lg-12 mt-2 mb-0">
+                                                <button class="btn btn-primary">Save password</button>
+                                            </div><!--end col-->
+                                        </div><!--end row-->
+                                    </form>
+                                    <c:if test="${not empty error}">
+                                        <p style="color: red;">${error}</p>
+                                    </c:if>
+
+                                    <c:if test="${not empty success}">
+                                        <p style="color: green;">${success}</p>
+                                    </c:if>
+
+                                </div>
+                            </div>                                        
+
+                        </div><!--end col-->
+                    </div><!--end row-->
+                </div><!--end container-->
         </section><!--end section-->
         <!-- End -->
 
@@ -450,7 +450,7 @@
             </div>
         </div>
         <!-- Offcanvas End -->
-        
+
         <!-- javascript -->
         <script src="<%= request.getContextPath() %>/assets/js/bootstrap.bundle.min.js"></script>
         <!-- Icons -->
@@ -458,20 +458,20 @@
         <!-- Main Js -->
         <script src="<%= request.getContextPath() %>/assets/js/app.js"></script>
     </body>
-<script>
-    function togglePassword(passwordFieldId, iconId) {
-        var passwordField = document.getElementById(passwordFieldId);
-        var toggleIcon = document.getElementById(iconId);
+    <script>
+                                            function togglePassword(passwordFieldId, iconId) {
+                                                var passwordField = document.getElementById(passwordFieldId);
+                                                var toggleIcon = document.getElementById(iconId);
 
-        if (passwordField.type === "password") {
-            passwordField.type = "text";
-            toggleIcon.classList.remove("mdi-eye-outline");
-            toggleIcon.classList.add("mdi-eye-off-outline");
-        } else {
-            passwordField.type = "password";
-            toggleIcon.classList.remove("mdi-eye-off-outline");
-            toggleIcon.classList.add("mdi-eye-outline");
-        }
-    }
-</script>
+                                                if (passwordField.type === "password") {
+                                                    passwordField.type = "text";
+                                                    toggleIcon.classList.remove("mdi-eye-outline");
+                                                    toggleIcon.classList.add("mdi-eye-off-outline");
+                                                } else {
+                                                    passwordField.type = "password";
+                                                    toggleIcon.classList.remove("mdi-eye-off-outline");
+                                                    toggleIcon.classList.add("mdi-eye-outline");
+                                                }
+                                            }
+    </script>
 </html>

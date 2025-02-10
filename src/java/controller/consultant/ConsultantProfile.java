@@ -2,16 +2,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller.manager;
+package controller.consultant;
 
-import dal.ManagerDAO;
+import dal.ConsultantDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import java.io.File;
@@ -20,10 +20,10 @@ import model.Staff;
 
 /**
  *
- * @author JIGGER
+ * @author LAPTOP
  */
 @MultipartConfig
-public class ProfileManager extends HttpServlet {
+public class ConsultantProfile extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -37,7 +37,7 @@ public class ProfileManager extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("./manager/profileManager.jsp").forward(request, response);
+        request.getRequestDispatcher("./consultant/profileConsultant.jsp").forward(request, response);
     }
 
     private String getAndSaveImg(Part filePart) throws IOException {
@@ -104,46 +104,38 @@ public class ProfileManager extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String changePwd = request.getParameter("changePwd");
         String changeInfo = request.getParameter("changeInfo");
         HttpSession session = request.getSession();
         Staff currentAccount = (Staff) session.getAttribute("staff");
-        ManagerDAO mdao = new ManagerDAO();
-//        if (changePwd != null) {
-//            String newPassword = request.getParameter("password");
-//            udao.changePassword(currentAccount.getId(), newPassword);
-//        }
+        ConsultantDAO cdao = new ConsultantDAO();
 
         if (changeInfo != null) {
             try {
-                String firstname = request.getParameter("newFirstname");
-                String lastname = request.getParameter("newLastname");
-                String gender = request.getParameter("newGender");
-                String dobStr = request.getParameter("newDob");
-                String phone = request.getParameter("newPhone");
-                String address = request.getParameter("newAddress");
+                String username = request.getParameter("username");
+                String firstname = request.getParameter("firstname");
+                String lastname = request.getParameter("lastname");
+                String gender = request.getParameter("gender");
+                String dobStr = request.getParameter("dob");
+                String phone = request.getParameter("phoneNumber");
+                String address = request.getParameter("address");
                 LocalDate dob = LocalDate.parse(dobStr);
-                Part imagePart = request.getPart("newImg");
-                String image = (imagePart != null && imagePart.getSize() > 0 ? getAndSaveImg(imagePart) : null);
-                if (image != null) {
-                    String imgPath = mdao.getStaffById(currentAccount.getId()).getImage();
-                    deleteFile(imgPath);
-                } else {
-                    image = mdao.getStaffById(currentAccount.getId()).getImage();
-                }
-                mdao.updateInformationStaff(currentAccount.getId(), image, firstname, lastname, gender, dob, phone, address);
-                currentAccount = mdao.getStaffById(currentAccount.getId());
-                session.setAttribute("staff", currentAccount);
 
-                response.sendRedirect("profile-manager");
+                Part imagePart = request.getPart("otherImage");
+                String image = (imagePart != null && imagePart.getSize() > 0) ? getAndSaveImg(imagePart) : currentAccount.getImage();
 
+                // Update information in the database
+                cdao.updateInformationStaff(currentAccount.getId(), image, username, firstname, lastname, gender, dob, phone, address);
+
+                // Refresh session with updated data
+                Staff updatedAccount = cdao.getStaffById(currentAccount.getId());
+                session.setAttribute("staff", updatedAccount); // Update session with new data
+
+                response.sendRedirect("ConsultantProfile");  // Redirect to refresh the page
                 return;
             } catch (Exception e) {
-                System.out.println(e);
+                e.printStackTrace();
             }
-
         }
-        doGet(request, response);
     }
 
     /**
@@ -155,5 +147,4 @@ public class ProfileManager extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 }

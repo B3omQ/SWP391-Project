@@ -105,10 +105,30 @@
 
                             /* Chỉnh lại ô hình ảnh */
                             .table img {
-                                width: 150px;
-                                height: 150px;
+                                width: 140px;
+                                height: 140px;
                                 object-fit: cover; /* Giữ tỷ lệ ảnh, không méo */
                             }
+                            .modal-body .row div {
+                                text-align: left !important; /* Đưa dữ liệu về căn trái */
+                            }
+
+                            .head {
+                                font-weight: bold;
+                            }
+
+                            .mb-4 {
+                                margin-bottom: 1.5rem !important;
+                            }
+
+                            .mt-3 {
+                                margin-top: 1rem !important;
+                            }
+
+                            .mt-2 {
+                                margin-top: 0.5rem !important;
+                            }
+
 
                         </style>
 
@@ -129,7 +149,7 @@
                                     <c:forEach var="customer" items="${customerList}">
                                         <tr>
                                             <td>${customer.id}</td>
-                                            <td class="text-truncate" style="max-width: 100px;">
+                                            <td class="text-truncate" style="max-width: 50px;">
                                                 <img src="${customer.image}" alt="Customer Image" />
                                             </td>
                                             <td class="text-truncate" style="max-width: 120px;">${customer.firstname}</td>
@@ -137,12 +157,12 @@
                                             <td class="text-truncate" style="max-width: 120px;">${customer.phone}</td>
                                             <td>${customer.gender}</td>
                                             <td class="text-center align-middle">
-                                                <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
+                                                <button type="button" class="btn btn-info btn-md" data-bs-toggle="modal"
                                                         data-bs-target="#detailsModal${customer.id}">
                                                     View
                                                 </button>
                                                 <button data-bs-toggle="modal" data-bs-target="#editModal${customer.id}" 
-                                                        class="btn btn-primary btn-sm">
+                                                        class="btn btn-primary btn-md">
                                                     Update
                                                 </button>
                                                 <form onsubmit="return confirm('Are you sure you want to delete this customer?');" 
@@ -150,9 +170,8 @@
                                                       action="customer-manager" 
                                                       method="post">
                                                     <input name="deleteId" value="${customer.id}" type="hidden">
-                                                    <button class="btn btn-danger btn-sm" type="submit">Delete</button>
+                                                    <button class="btn btn-danger btn-md" type="submit">Delete</button>
                                                 </form>
-
                                                 <jsp:include page="template/editCustomer.jsp">
                                                     <jsp:param name="id" value="${customer.id}" />
                                                     <jsp:param name="email" value="${customer.email}" />
@@ -207,8 +226,8 @@
                         </div>
                     </div>
                 </div>
-                                        
-                   <!-- Pagination -->                 
+
+                <!-- Pagination -->                 
                 <nav aria-label="Page navigation" class="mt-4">
                     <ul class="pagination justify-content-center">
                         <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
@@ -232,7 +251,7 @@
                 <!-- End -->
             </main>
             <!--End page-content-->
-            
+
         </div>
 
         <!-- page-wrapper -->

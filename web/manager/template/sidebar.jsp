@@ -5,25 +5,6 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<script>
-    function showSection(sectionId) {
-        // Ẩn tất cả các phần
-        document.getElementById('viewAccount').style.display = 'none';
-        document.getElementById('editGmail').style.display = 'none';
-        document.getElementById('editPassword').style.display = 'none';
-
-        // Hiển thị phần được chọn
-        document.getElementById(sectionId).style.display = 'block';
-        
-        // Loại bỏ lớp 'active' từ tất cả các liên kết
-        document.getElementById('viewAccountLink').classList.remove('active');
-        document.getElementById('editGmailLink').classList.remove('active');
-        document.getElementById('editPasswordLink').classList.remove('active');
-
-        // Thêm lớp 'active' vào liên kết được chọn
-        document.getElementById(linkId).classList.add('active');
-    }
-</script>
 <nav id="sidebar" class="sidebar-wrapper">
     <div class="sidebar-content" data-simplebar style="height: calc(100% - 60px);">
         <div class="sidebar-brand">
@@ -35,23 +16,26 @@
 
         <ul class="sidebar-menu pt-3">
             <li><a href="index.html"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
+
+            <li><a href="profile-manager"><i class="uil uil-user me-2 d-inline-block"></i>My profile</a></li>
+
             <li><a href="customer-manager">
-                    <i class="uil uil-stethoscope me-2 d-inline-block"></i>Customer list</a>
-            </li>
+                    <i class="uil uil-cube me-2 d-inline-block"></i>Customer list</a>
+            </li>            
 
             <li class="sidebar-dropdown">
-                <a href="javascript:void(0)"><i class="uil uil-user me-2 d-inline-block"></i>Account Setting</a>
+                <a href="javascript:void(0)"><i class="uil uil-file me-2 d-inline-block"></i>Deposite Service</a>
                 <div class="sidebar-submenu">
                     <ul>
-                        <li><a href="profile-manager" id="viewAccountLink" onclick="showSection('viewAccount')">View account</a></li>
-                        <li><a href="profile-manager" id="editGmailLink" onclick="showSection('editGmail')">Edit gmail</a></li>
-                        <li><a href="profile-manager" id="editPasswordLink" onclick="showSection('editPassword')">Edit password</a></li>
+                        <li><a href="#" id="viewAccountLink" >View account</a></li>
+                        <li><a href="#" id="editGmailLink" >Edit gmail</a></li>
+                        <li><a href="#" id="editPasswordLink" >Edit password</a></li>
                     </ul>
                 </div>
             </li>
 
             <li class="sidebar-dropdown">
-                <a href="javascript:void(0)"><i class="uil uil-wheelchair me-2 d-inline-block"></i>Customer's Loan List</a>
+                <a href="javascript:void(0)"><i class="uil uil-file me-2 d-inline-block"></i>Loan Service</a>
                 <div class="sidebar-submenu">
                     <ul>
                         <li><a href="patients.html">All Patients</a></li>
@@ -100,9 +84,7 @@
                         <li><a href="thankyou.html">Thank you...!</a></li>
                     </ul>
                 </div>
-            </li>
-
-            <li><a href="profile-manager"><i class="uil uil-cube me-2 d-inline-block"></i>My profile</a></li>
+            </li>            
 
             <li><a href="../landing/index-two.html" target="_blank"><i
                         class="uil uil-window me-2 d-inline-block"></i>Home page</a></li>
