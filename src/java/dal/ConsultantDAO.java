@@ -417,6 +417,7 @@ public class ConsultantDAO extends DBContext {
                 if (rs.next()) {
                     return new Staff(
                             rs.getInt("Id"),
+                            rs.getString("Username"),
                             rs.getString("Password"),
                             rs.getString("Image"),
                             rs.getString("Email"),

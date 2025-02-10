@@ -103,12 +103,13 @@ public class ConsultantProfile extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-                    throws ServletException, IOException {
-        String changePwd = request.getParameter("changePwd");
+            throws ServletException, IOException {
         String changeInfo = request.getParameter("changeInfo");
         HttpSession session = request.getSession();
         Staff currentAccount = (Staff) session.getAttribute("staff");
         ConsultantDAO cdao = new ConsultantDAO();
+
+        if (changeInfo != null) {
             try {
                 String username = request.getParameter("username");
                 String firstname = request.getParameter("firstname");
@@ -118,22 +119,25 @@ public class ConsultantProfile extends HttpServlet {
                 String phone = request.getParameter("phoneNumber");
                 String address = request.getParameter("address");
                 LocalDate dob = LocalDate.parse(dobStr);
+
                 Part imagePart = request.getPart("otherImage");
-                String image = (imagePart != null && imagePart.getSize() > 0 ? getAndSaveImg(imagePart) : null);
-                if (image != null) {
-                    String imgPath = cdao.getStaffById(currentAccount.getId()).getImage();
-                    deleteFile(imgPath);
-                } else {
-                    image = cdao.getStaffById(currentAccount.getId()).getImage();
-                }
+                String image = (imagePart != null && imagePart.getSize() > 0) ? getAndSaveImg(imagePart) : currentAccount.getImage();
+
+                // Update information in the database
                 cdao.updateInformationStaff(currentAccount.getId(), image, username, firstname, lastname, gender, dob, phone, address);
-                currentAccount = cdao.getStaffById(currentAccount.getId());
-                session.setAttribute("staff", currentAccount);
+
+                // Refresh session with updated data
+                Staff updatedAccount = cdao.getStaffById(currentAccount.getId());
+                session.setAttribute("staff", updatedAccount); // Update session with new data
+
+                response.sendRedirect("ConsultantProfile");  // Redirect to refresh the page
+                return;
             } catch (Exception e) {
-                System.out.println(e);
+                e.printStackTrace();
             }
-        doGet(request, response);
+        }
     }
+
     /**
      * Returns a short description of the servlet.
      *

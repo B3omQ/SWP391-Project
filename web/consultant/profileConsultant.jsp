@@ -38,10 +38,10 @@
         <link href="https://unicons.iconscout.com/release/v3.0.6/css/line.css" rel="stylesheet">
         <!-- Css -->
         <link href="<%= request.getContextPath() %>/assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
-        <!-- DataTables CSS & jQuery -->
+<!--         DataTables CSS & jQuery 
         <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>-->
 
     </head>
 
@@ -534,7 +534,7 @@
                                                 </div><!--end col-->
                                             </div><!--end row-->
                                         </div><!--end teb pane-->
-                                        <c:set value="${sessionScope.staff}" var="staff"/>
+                                        
                                         <div class="tab-pane fade" id="pills-settings" role="tabpanel"
                                              aria-labelledby="settings-tab">
                                             <h5 class="mb-1">Settings</h5>
@@ -544,26 +544,56 @@
                                                         <div class="p-4 border-bottom">
                                                             <h6 class="mb-0">Personal Information :</h6>
                                                         </div>
-
                                                         <div class="p-4">
                                                             <div class="row align-items-center">
                                                                 <div class="col-lg-2 col-md-4">
                                                                     <img src="${staff.image}"
                                                                          class="avatar avatar-md-md rounded-pill shadow mx-auto d-block"
-                                                                         alt="">
+                                                                         alt="Image">
                                                                 </div><!--end col-->
-
                                                                 <div
                                                                     class="col-lg-5 col-md-8 text-center text-md-start mt-4 mt-sm-0">
                                                                     <h6 class="">Upload your picture</h6>
                                                                     <p class="text-muted mb-0">For best results, use an
                                                                         image at least 256px by 256px in either .jpg or
                                                                         .png format</p>
-                                                                </div><!--end col-->
-
+                                                                </div>
+                                                                <!--end col-->
+                                                                <table>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td><strong>Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></td>
+                                                                            <td>${staff.username}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td><strong>First name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></td>
+                                                                            <td>${staff.firstname}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td><strong>Last name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></td>
+                                                                            <td>${staff.lastname}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td><strong>Gender:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></td>
+                                                                            <td>${staff.gender}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td><strong>Email:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></td>
+                                                                            <td>${staff.email}</td>
+                                                                        </tr>  
+                                                                        <tr>
+                                                                            <td><strong>Adress:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></td>
+                                                                            <td>${staff.address}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td><strong>Phone number:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></td>
+                                                                            <td>${staff.phone}</td>
+                                                                        </tr> 
+                                                                    </tbody>
+                                                                </table>
                                                                 <form action="ConsultantProfile" method="post" class="mt-4" enctype="multipart/form-data">
                                                                     <div class="container">
-<!--                                                                        <input name="changeInfo" value="" type="hidden">-->
+                                                                        <input name="changeInfo" value="changeInfo" type="hidden">
                                                                         <div class="col-md-12">
                                                                             <div class="mb-3 mt-4">
                                                                                 <label for="otherImage">Image</label>
@@ -573,7 +603,7 @@
                                                                         <div class="col-md-12">
                                                                             <div class="mb-3 mt-4">
                                                                                 <label class="form-label">Username <span class="text-danger">*</span></label>
-                                                                                <input type="text" class="form-control" value="${staff.username}" name="username" required="">
+                                                                                <input type="text" class="form-control" value="${staff.username}" name="username" placeholder="User Name" required="">
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-md-6">
