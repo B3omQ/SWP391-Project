@@ -8,6 +8,14 @@
         <servlet-name>ProfileManager</servlet-name>
         <servlet-class>controller.manager.ProfileManager</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>StaffManagement</servlet-name>
+        <servlet-class>controller.ceo.StaffManagement</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditStaffInfo</servlet-name>
+        <servlet-class>controller.ceo.EditStaffInfo</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>CustomerManager</servlet-name>
         <url-pattern>/customer-manager</url-pattern>
@@ -64,6 +72,14 @@
         <servlet-name>VNpayServlet</servlet-name>
         <url-pattern>/VNpayServlet</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StaffManagement</servlet-name>
+        <url-pattern>/staffManagement</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditStaffInfo</servlet-name>
+        <url-pattern>/editStaffInfo</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>1440</session-timeout>
         <!-- 1440 phút = 24 giờ -->
@@ -78,5 +94,3 @@
         <location>/error/404.jsp</location>
     </error-page>
 </web-app>
-    
-

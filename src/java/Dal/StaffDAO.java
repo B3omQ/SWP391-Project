@@ -7,6 +7,7 @@ package dal;
 import context.DBContext;
 import model.Staff;
 import com.sun.jdi.connect.spi.Connection;
+import java.sql.Date;
 import model.Role;
 import java.sql.Timestamp;
 import java.sql.PreparedStatement;
@@ -14,6 +15,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import util.AccountValidation;
 
 /**
@@ -242,5 +245,119 @@ public class StaffDAO extends DBContext {
             e.printStackTrace();
         }
         return null;
+    }
+    
+    public static Staff mapResultSetToStaff1(ResultSet rs) throws SQLException {
+        LocalDate dob = rs.getDate("Dob") != null ? rs.getDate("Dob").toLocalDate() : null;
+        LocalDateTime lockTime = rs.getTimestamp("LockTime") != null ? rs.getTimestamp("LockTime").toLocalDateTime() : null;
+
+        return new Staff(
+                rs.getInt("Id"),
+                rs.getString("Username"),
+                rs.getString("Password"),
+                rs.getString("Image"),
+                rs.getString("Email"),
+                rs.getString("FirstName"),
+                rs.getString("LastName"),
+                rs.getString("Gender"),
+                dob, // Chuyển thành LocalDate
+                rs.getString("Phone"),
+                rs.getString("Address"),
+                rs.getBigDecimal("Salary"),
+                rs.getInt("failAttempts"),
+                lockTime,
+                new Role(rs.getInt("RoleId"), rs.getString("RoleName")) // Truyền đối tượng Role
+        );
+    }
+    
+    public int getRoleIdByName(String roleName) {
+        String sql = "SELECT Id FROM Role WHERE Name = ?";
+        try (PreparedStatement p = connection.prepareStatement(sql)) {
+            p.setString(1, roleName);
+            try (ResultSet rs = p.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("Id"); // Return the Role ID
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1; // Return -1 if not found
+    }
+    
+    public void updateStaffInfo(Staff x, int id) {
+        String sql = "UPDATE Staff SET \n"
+                + "	Username = ?,\n"
+                + "	Email = ?,\n"
+                + "	FirstName = ?,\n"
+                + "	LastName = ?,\n"
+                + "	Gender = ?,\n"
+                + "	Dob = ?,\n"
+                + "	Phone = ?,\n"
+                + "	Address = ?,\n"
+                + "	Salary = ?,\n"
+                + "	RoleId = ?\n"
+                + "WHERE Id = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, x.getUsername());
+            ps.setString(2, x.getEmail());
+            ps.setString(3, x.getFirstname());
+            ps.setString(4, x.getLastname());
+            ps.setString(5, x.getGender());
+            ps.setDate(6, Date.valueOf(x.getDob()));
+            ps.setString(7, x.getPhone());
+            ps.setString(8, x.getAddress());
+            ps.setBigDecimal(9, x.getSalary());
+            ps.setInt(10, x.getRoleId().getId());
+            ps.setInt(11, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public int getNumberOfStaff() {
+        int count = 0;
+        String sql = "SELECT COUNT(Id) FROM Staff";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+
+        }
+        return count;
+    }
+    
+    public List<Staff> getAllStaffWithPagination(int offset, int recordsPerPage) {
+        List<Staff> staffs = new ArrayList<>();
+        String sql = "SELECT s.*, r.Name as RoleName from Staff s join Role r on s.RoleId = r.Id \n"
+                + "ORDER BY s.Id \n"
+                + "OFFSET ? ROWS \n"
+                + "FETCH NEXT ? ROWS ONLY";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, offset);
+            ps.setInt(2, recordsPerPage);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {               
+                Staff staff = mapResultSetToStaff1(rs);
+                staffs.add(staff); // Add the staff object to the list
+            }
+        } catch (SQLException e) {
+
+        }
+        return staffs;
+    }
+    
+    public static void main(String[] args) {
+        StaffDAO s = new StaffDAO();
+        System.out.println(s.getNumberOfStaff());
+        for(Staff x : s.getAllStaffWithPagination(0, 5)) {
+            System.out.println(x.toString());
+        }
     }
 }
