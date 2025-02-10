@@ -107,7 +107,7 @@ public class ProfileManager extends HttpServlet {
         String changePwd = request.getParameter("changePwd");
         String changeInfo = request.getParameter("changeInfo");
         HttpSession session = request.getSession();
-        Staff currentAccount = (Staff) session.getAttribute("user");
+        Staff currentAccount = (Staff) session.getAttribute("staff");
         ManagerDAO mdao = new ManagerDAO();
 //        if (changePwd != null) {
 //            String newPassword = request.getParameter("password");
@@ -123,10 +123,6 @@ public class ProfileManager extends HttpServlet {
                 String phone = request.getParameter("newPhone");
                 String address = request.getParameter("newAddress");
                 LocalDate dob = LocalDate.parse(dobStr);
-
-//            currentAccount = udao.getUserByID(currentAccount.getId());
-//            session.setAttribute("user", currentAccount);
-
                 Part imagePart = request.getPart("newImg");
                 String image = (imagePart != null && imagePart.getSize() > 0 ? getAndSaveImg(imagePart) : null);
                 if (image != null) {
@@ -136,14 +132,17 @@ public class ProfileManager extends HttpServlet {
                     image = mdao.getStaffById(currentAccount.getId()).getImage();
                 }
                 mdao.updateInformationStaff(currentAccount.getId(), image, firstname, lastname, gender, dob, phone, address);
-                
+                currentAccount = mdao.getStaffById(currentAccount.getId());
+                session.setAttribute("staff", currentAccount);
+
+                response.sendRedirect("profile-manager");
+
                 return;
             } catch (Exception e) {
                 System.out.println(e);
             }
 
         }
-
         doGet(request, response);
     }
 
