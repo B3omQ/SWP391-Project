@@ -171,7 +171,7 @@
                                                     class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
                                             </c:if>
                                     <div class="dropdown-divider border-top"></div>
-                                    <a class="dropdown-item text-dark" href="login.jsp"><span
+                                    <a class="dropdown-item text-dark" href="AuthServlet" name ="action" value="logout"><span
                                             class="mb-0 d-inline-block me-1"><i
                                                 class="uil uil-sign-out-alt align-middle h6"></i></span> Logout</a>
                                 </div>
