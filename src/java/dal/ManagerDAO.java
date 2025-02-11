@@ -42,8 +42,19 @@ public class ManagerDAO extends DBContext {
         return null;
     }
 
-    public Staff getStaff(String username, String password) {
-        return null;
+    public void updateManagerPassword(int id, String newpassword) {
+        String sql = """
+                 UPDATE BankingSystem.dbo.Staff
+                 SET [Password] = ?
+                 WHERE Id=?;""";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, newpassword);
+            st.setInt(2, id);
+            st.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(ManagerDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public int countTotalRecords() {
@@ -57,9 +68,11 @@ public class ManagerDAO extends DBContext {
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
                 count = rs.getInt(1);
+
             }
         } catch (SQLException ex) {
-            Logger.getLogger(ManagerDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ManagerDAO.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
 
         return count;
@@ -187,8 +200,10 @@ public class ManagerDAO extends DBContext {
             st.setString(8, address);
             st.setInt(9, id);  // Fix: Correct index for id parameter
             st.executeUpdate();
+
         } catch (SQLException ex) {
-            Logger.getLogger(ManagerDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ManagerDAO.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -219,8 +234,10 @@ public class ManagerDAO extends DBContext {
             st.setString(7, address);
             st.setInt(8, id);  // Fix: Correct index for id parameter
             st.executeUpdate();
+
         } catch (SQLException ex) {
-            Logger.getLogger(ManagerDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ManagerDAO.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
 

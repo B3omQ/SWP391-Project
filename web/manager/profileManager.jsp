@@ -113,158 +113,234 @@
                     <div class="layout-specing">
 
                         <div class="container">
-                            <form action="profile-manager" method="post" enctype="multipart/form-data">
-                                <input name="changeInfo" type="hidden" value="changeInfo" />
 
-                                <div class="row">
-                                    <!-- Image Upload Section -->
-                                    <div class="col-lg-5">
-                                        <div class="card">
-                                            <div class="card-body text-center">
-                                                <h4 class ="card-title" style="background-color: red; color: white; padding: 10px; border-radius: 5px;">
-                                                    Upload New Photo
-                                                </h4>
-
-                                                <img src="${staff.image}" alt="Image" accept=".jpg,.png"
-                                                     style="width: 300px;
-                                                     height: 300px;
-                                                     object-fit: cover;
-                                                     border-radius: 30%;">
-                                                <div class="mb-4 mt-3">
-                                                    <label for="newImg" class="form-label">Upload a new avatar. Larger images will be resized automatically. Maximum upload size is 1 MB.</label>
-                                                    <input type="file" id="newImg" name="newImg" class="form-control-file">
-                                                </div>
-                                                <div class="mb-4">
-                                                    <p class="text-muted">
-                                                        Your email: ${staff.email}
-                                                        <a href="customer-manager" class="ms-2 text-decoration-none text-muted">
-                                                            <i class="fas fa-edit"></i>
-                                                        </a>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- User Info Section -->
-                                    <div class="col-lg-7">
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <div class="mb-4">
-                                                    <h4 class ="card-title text-center" style="background-color: red; color: white; padding: 10px; border-radius: 5px;">
-                                                        Edit information
+                            <div class="row">
+                                <form action="profile-manager" method="post" id="profileManagerForm" enctype="multipart/form-data">
+                                    <input name="changeInfo" type="hidden" value="changeInfo" /> 
+                                    <div class="row">
+                                        <!-- Image Upload Section -->
+                                        <div class="col-lg-5">
+                                            <div class="card">
+                                                <div class="card-body text-center">
+                                                    <h4 class ="card-title" style="background-color: red; color: white; padding: 10px; border-radius: 5px;">
+                                                        Upload New Photo
                                                     </h4>
-                                                    <div class="row mt-3">
-                                                        <div class="col-md-6">
-                                                            <label for="newFirstname" class="form-label head">First Name</label>
-                                                            <input value="${staff.firstname}" type="text" id="newFirstname" name="newFirstname" class="form-control">
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <label for="newLastname" class="form-label head">Last Name</label>
-                                                            <input value="${staff.lastname}" type="text" id="newLastname" name="newLastname" class="form-control">
-                                                        </div>
+                                                    <img src="${staff.image}" alt="Image" accept=".jpg,.png"
+                                                         style="width: 205px;
+                                                         height: 205px;
+                                                         object-fit: cover;
+                                                         border-radius: 30%;">
+                                                    <div class="mb-4 mt-3">
+                                                        <label for="newImg" class="form-label">Upload a new avatar. Larger images will be resized automatically. Maximum upload size is 1 MB.</label>
+                                                        <input type="file" id="newImg" name="newImg" class="form-control-file">
                                                     </div>
-                                                    <div class="row mt-3">
-                                                        <div class="col-md-6">
-                                                            <label for="newPhone" class="form-label head">Phone</label>
-                                                            <input value="${staff.phone}" type="text" id="newPhone" name="newPhone" class="form-control">
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <label for="newAddress" class="form-label head">Address</label>
-                                                            <input value="${staff.address}" type="text" id="newAddress" name="newAddress" class="form-control">
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mt-3">
-                                                        <div class="col-md-6">
-                                                            <label for="newGender" class="form-label head">Gender</label>
-                                                            <select id="newGender" name="newGender" class="form-control">
-                                                                <option value="Male" ${staff.gender == 'Male' ? 'selected' : ''}>Male</option>
-                                                                <option value="Female" ${staff.gender == 'Female' ? 'selected' : ''}>Female</option>
-                                                                <option value="Other" ${staff.gender == 'Other' ? 'selected' : ''}>Other</option>
-                                                            </select>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <label for="newDob" class="form-label head">Date of Birth</label>
-                                                            <input type="date" id="newDob" name="newDob" value="${staff.dob}" class="form-control">
-                                                        </div>
-                                                    </div>
-                                                    <div class="row mt-5">
-                                                        <div class="col-md-12 text-center">
-                                                            <button type="submit" class="btn btn-primary">Save</button>
-                                                        </div>
+                                                    <div class="mb-4">
+                                                        <p class="text-muted">
+                                                            Your email: ${staff.email}
+                                                            <a href="customer-manager" class="ms-2 text-decoration-none text-muted">
+                                                                <i class="fas fa-edit"></i>
+                                                            </a>
+                                                        </p>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <h4 class ="card-title text-center" style="background-color: red; color: white; padding: 10px; border-radius: 5px;">
-                                                    Edit password
-                                                </h4>
-                                                <div class="mb-4">
-                                                    <div class="row mt-3">
-                                                        <div class="col-md-12">
-                                                            <label for="currentPassword" class="head form-label">Current Password</label>
-                                                            <input type="password" id="currentPassword" name="currentPassword" class="form-control" placeholder="Password">
-                                                            <span class="position-absolute top-50 end-0 translate-middle-y pe-3 cursor-pointer" onclick="togglePassword('currentPassword', 'toggleCurrentPasswordIcon')" style="padding-top: 30px;">
-                                                                <i id="toggleCurrentPasswordIcon" class="mdi mdi-eye-outline"></i>
-                                                            </span>
+
+                                        <!-- User Info Section -->
+                                        <div class="col-lg-7">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <div class="mb-4">
+                                                        <h4 class ="card-title text-center" style="background-color: red; color: white; padding: 10px; border-radius: 5px;">
+                                                            Edit information
+                                                        </h4>
+                                                        <div class="row mt-3">
+                                                            <div class="col-md-6">
+                                                                <label for="newFirstname" class="form-label head">First Name</label>
+                                                                <input value="${staff.firstname}" type="text" id="newFirstname" name="newFirstname" class="form-control">
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label for="newLastname" class="form-label head">Last Name</label>
+                                                                <input value="${staff.lastname}" type="text" id="newLastname" name="newLastname" class="form-control">
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="row mt-3">
-                                                        <div class="col-md-12">
-                                                            <label for="newPassword" class="head form-label">New Password</label>
-                                                            <input type="password" id="newPassword" name="newPassword" class="form-control" placeholder="New password">
-                                                            <span class="position-absolute top-50 end-0 translate-middle-y pe-3 cursor-pointer" onclick="togglePassword('newPassword', 'toggleNewPasswordIcon')" style="padding-top: 30px;">
-                                                                <i id="toggleNewPasswordIcon" class="mdi mdi-eye-outline"></i>
-                                                            </span>
+                                                        <div class="row mt-3">
+                                                            <div class="col-md-6">
+                                                                <label for="newPhone" class="form-label head">Phone</label>
+                                                                <input value="${staff.phone}" type="text" id="newPhone" name="newPhone" class="form-control">
+                                                                <p class="text-danger">${errorPhoneMess}</p>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label for="newAddress" class="form-label head">Address</label>
+                                                                <input value="${staff.address}" type="text" id="newAddress" name="newAddress" class="form-control">
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="row mt-3">
-                                                        <div class="col-md-12">
-                                                            <label for="confirmPassword" class="head form-label">Confirm Password</label>
-                                                            <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" placeholder="Confirm your password">
-                                                            <span class="position-absolute top-50 end-0 translate-middle-y pe-3 cursor-pointer" onclick="togglePassword('confirmPassword', 'toggleConfirmPasswordIcon')" style="padding-top: 30px;">
-                                                                <i id="toggleConfirmPasswordIcon" class="mdi mdi-eye-outline"></i>
-                                                            </span>
+                                                        <div class="row mt-3">
+                                                            <div class="col-md-6">
+                                                                <label for="newGender" class="form-label head">Gender</label>
+                                                                <select id="newGender" name="newGender" class="form-control">
+                                                                    <option value="Male" ${staff.gender == 'Male' ? 'selected' : ''}>Male</option>
+                                                                    <option value="Female" ${staff.gender == 'Female' ? 'selected' : ''}>Female</option>
+                                                                    <option value="Other" ${staff.gender == 'Other' ? 'selected' : ''}>Other</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label for="newDob" class="form-label head">Date of Birth</label>
+                                                                <input type="date" id="newDob" name="newDob" value="${staff.dob}" class="form-control">
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="row mt-5">
-                                                        <div class="col-md-12 text-center">
-                                                            <button type="submit" class="btn btn-primary">Save</button>
+                                                        <div class="row mt-5">
+                                                            <div class="col-md-12 text-center">
+                                                                <button type="submit" class="btn btn-primary">Save</button>
+                                                            </div>
                                                         </div>
+                                                        <p id="error-message-info" class="text-danger"></p>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </form>
+                                </form>
+
+                                <form action="profile-manager" method="post" id="changePasswordForm">
+                                    <input name="changePwd" type="hidden" value="changePwd" /> 
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h4 class ="card-title text-center" style="background-color: red; color: white; padding: 10px; border-radius: 5px;">
+                                                Edit password
+                                            </h4>
+                                            <div class="mb-4">
+                                                <div class="row mt-3">
+                                                    <div class="col-md-12">
+                                                        <label for="currentPassword" class="head form-label">Current Password</label>
+                                                        <input type="password" id="currentPassword" name="currentPassword" class="form-control" placeholder="Password">
+                                                        <span class="position-absolute top-50 end-0 translate-middle-y pe-3 cursor-pointer" onclick="togglePassword('currentPassword', 'toggleCurrentPasswordIcon')" style="padding-top: 30px;">
+                                                            <i id="toggleCurrentPasswordIcon" class="mdi mdi-eye-outline"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-3">
+                                                    <div class="col-md-12">
+                                                        <label for="newPassword" class="head form-label">New Password</label>
+                                                        <input type="password" id="newPassword" name="newPassword" class="form-control" placeholder="New password">
+                                                        <span class="position-absolute top-50 end-0 translate-middle-y pe-3 cursor-pointer" onclick="togglePassword('newPassword', 'toggleNewPasswordIcon')" style="padding-top: 30px;">
+                                                            <i id="toggleNewPasswordIcon" class="mdi mdi-eye-outline"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-3">
+                                                    <div class="col-md-12">
+                                                        <label for="confirmPassword" class="head form-label">Confirm Password</label>
+                                                        <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" placeholder="Confirm your password">
+                                                        <span class="position-absolute top-50 end-0 translate-middle-y pe-3 cursor-pointer" onclick="togglePassword('confirmPassword', 'toggleConfirmPasswordIcon')" style="padding-top: 30px;">
+                                                            <i id="toggleConfirmPasswordIcon" class="mdi mdi-eye-outline"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-5">
+                                                    <div class="col-md-12 text-center">
+                                                        <button type="submit" class="btn btn-primary">Save</button>
+                                                    </div>
+                                                </div>
+                                                <p id="error-message" class="text-danger"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
-
-
                     <!-- Footer Start -->
                     <jsp:include page="template/footer.jsp"/>
                     <!-- End -->
             </main>
 
         </div>
-        <script>
-            function togglePassword(passwordFieldId, iconId) {
-                var passwordField = document.getElementById(passwordFieldId);
-                var toggleIcon = document.getElementById(iconId);
 
-                if (passwordField.type === "password") {
-                    passwordField.type = "text";
-                    toggleIcon.classList.remove("mdi-eye-outline");
-                    toggleIcon.classList.add("mdi-eye-off-outline");
-                } else {
-                    passwordField.type = "password";
-                    toggleIcon.classList.remove("mdi-eye-off-outline");
-                    toggleIcon.classList.add("mdi-eye-outline");
-                }
-            }
+        <script src ="resources/script/jquery-3.7.1.min.js"></script>
+        <script>
+                                                            $(document).ready(function () {
+                                                                $('#changePasswordForm').on('submit', function (event) {
+                                                                    event.preventDefault();
+                                                                    var currentPassword = $('#currentPassword');
+                                                                    var newPassword = $('#newPassword');
+                                                                    var confirmPassword = $('#confirmPassword');
+                                                                    var formData = {
+                                                                        changePwd: "true",
+                                                                        currentPassword: currentPassword.val(),
+                                                                        newPassword: newPassword.val(),
+                                                                    };
+                                                                    console.log(formData);
+                                                                    if (!currentPassword.val() || !newPassword.val()) {
+                                                                        $('#error-message').text('Please enter all required fields.');
+                                                                        return;
+                                                                    }
+                                                                    if (newPassword.val() !== confirmPassword.val()) {
+                                                                        $('#error-message').text('Your confirm password is incorrect');
+                                                                        newPassword.val("");
+                                                                        confirmPassword.val("");
+                                                                        return;
+                                                                    }
+
+                                                                    $.ajax({
+                                                                        url: 'profile-manager',
+                                                                        type: 'POST',
+                                                                        data: formData,
+                                                                        success: function (response) {
+                                                                            if (response.success) {
+                                                                                alert('Change successful');
+                                                                                window.location.href = "profile-manager";
+                                                                            } else {
+                                                                                $('#error-message').text(response.message);
+                                                                            }
+                                                                        },
+                                                                        error: function () {
+                                                                            alert('Server is busy right now');
+                                                                        }
+                                                                    });
+                                                                }
+                                                                );
+
+                                                                $('#profileManagerForm').on('submit', function (event) {
+                                                                    event.preventDefault();
+                                                                    var formData = new FormData(this); // Lấy dữ liệu từ form (bao gồm cả file ảnh)
+                                                                    formData.append("changeInfo", "true");
+
+                                                                    $.ajax({
+                                                                        url: 'profile-manager',
+                                                                        type: 'POST',
+                                                                        data: formData,
+                                                                        processData: false, // Không xử lý dữ liệu thành query string
+                                                                        contentType: false, // Để trình duyệt tự động set multipart/form-data
+                                                                        success: function (response) {
+                                                                            if (response.success) {
+                                                                                alert('Change successful');
+                                                                                window.location.href = "profile-manager";
+                                                                            } else {
+                                                                                $('#error-message-info').text(response.message);
+                                                                            }
+                                                                        },
+                                                                        error: function () {
+                                                                            alert('Server is busy right now');
+                                                                        }
+                                                                    });
+                                                                });
+                                                            });
+
+                                                            function togglePassword(passwordFieldId, iconId) {
+                                                                var passwordField = document.getElementById(passwordFieldId);
+                                                                var toggleIcon = document.getElementById(iconId);
+
+                                                                if (passwordField.type === "password") {
+                                                                    passwordField.type = "text";
+                                                                    toggleIcon.classList.remove("mdi-eye-outline");
+                                                                    toggleIcon.classList.add("mdi-eye-off-outline");
+                                                                } else {
+                                                                    passwordField.type = "password";
+                                                                    toggleIcon.classList.remove("mdi-eye-off-outline");
+                                                                    toggleIcon.classList.add("mdi-eye-outline");
+                                                                }
+                                                            }
         </script>
 
         <!-- page-wrapper -->

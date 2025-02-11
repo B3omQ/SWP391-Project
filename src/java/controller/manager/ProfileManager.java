@@ -17,6 +17,8 @@ import jakarta.servlet.http.Part;
 import java.io.File;
 import java.time.LocalDate;
 import model.Staff;
+import util.AccountValidation;
+import org.json.JSONObject;
 
 /**
  *
@@ -104,20 +106,55 @@ public class ProfileManager extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        HttpSession session = request.getSession();
+        AccountValidation validator = new AccountValidation();
+        ManagerDAO mdao = new ManagerDAO();
+        JSONObject json = new JSONObject();
         String changePwd = request.getParameter("changePwd");
         String changeInfo = request.getParameter("changeInfo");
-        HttpSession session = request.getSession();
         Staff currentAccount = (Staff) session.getAttribute("staff");
-        ManagerDAO mdao = new ManagerDAO();
-//        if (changePwd != null) {
-//            String newPassword = request.getParameter("password");
-//            udao.changePassword(currentAccount.getId(), newPassword);
-//        }
+        if (changePwd != null) {
+            try {
+                String currentPassword = request.getParameter("currentPassword");
+                String newPassword = request.getParameter("newPassword");
+
+                if (!validator.hashPassword(currentPassword).equals(currentAccount.getPassword())) {
+                    json.put("success", false);
+                    json.put("message", "Your current password is incorrect");
+                    response.getWriter().write(json.toString());
+                    return;
+                }
+                if (!validator.checkHashOfPassword(newPassword)) {
+                    json.put("success", false);
+                    json.put("message", "Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and a special character.");
+                    response.getWriter().write(json.toString());
+                    return;
+                }
+                if (validator.hashPassword(newPassword).equals(currentAccount.getPassword())) {
+                    json.put("success", false);
+                    json.put("message", "Your new password matches your old password");
+                    response.getWriter().write(json.toString());
+                    return;
+                }
+                mdao.updateManagerPassword(currentAccount.getId(), validator.hashPassword(newPassword));
+                currentAccount = mdao.getStaffById(currentAccount.getId());
+                session.setAttribute("staff", currentAccount);
+                json.put("success", true);
+                response.getWriter().write(json.toString());
+            } catch (Exception e) {
+                json.put("success", false);
+                json.put("message", "An error occurred while changing password");
+                response.getWriter().write(json.toString());
+                System.out.println(e);
+            }
+        }
 
         if (changeInfo != null) {
             try {
-                String firstname = request.getParameter("newFirstname");
-                String lastname = request.getParameter("newLastname");
+                String firstname = validator.normalizeInput(request.getParameter("newFirstname"));
+                String lastname = validator.normalizeInput(request.getParameter("newLastname"));
                 String gender = request.getParameter("newGender");
                 String dobStr = request.getParameter("newDob");
                 String phone = request.getParameter("newPhone");
@@ -130,20 +167,26 @@ public class ProfileManager extends HttpServlet {
                     deleteFile(imgPath);
                 } else {
                     image = mdao.getStaffById(currentAccount.getId()).getImage();
+                }  
+                if (!validator.isValidPhone(phone)) {
+                    json.put("success", false);
+                    json.put("message", "Input must be the number and around 10 - 11 digits");
+                    response.getWriter().write(json.toString());
+                    return;
                 }
                 mdao.updateInformationStaff(currentAccount.getId(), image, firstname, lastname, gender, dob, phone, address);
                 currentAccount = mdao.getStaffById(currentAccount.getId());
                 session.setAttribute("staff", currentAccount);
-
-                response.sendRedirect("profile-manager");
-
-                return;
+                json.put("success", true);
+                response.getWriter().write(json.toString());
             } catch (Exception e) {
+                json.put("success", false);
+                json.put("message", "An error occurred while updating information");
+                response.getWriter().write(json.toString());
                 System.out.println(e);
             }
-
         }
-        doGet(request, response);
+
     }
 
     /**
