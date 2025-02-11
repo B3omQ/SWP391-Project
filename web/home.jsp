@@ -161,12 +161,12 @@
                                                     class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
                                             </c:if>
                                             <c:if test="${sessionScope.staff.roleId.id == 3}">
-                                        <a class="dropdown-item text-dark" href="doctor-profile-setting.html"><span
+                                        <a class="dropdown-item text-dark" href="./profile-manager"><span
                                                 class="mb-0 d-inline-block me-1"><i
                                                     class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
                                             </c:if>
                                             <c:if test="${sessionScope.staff.roleId.id == 4}">
-                                        <a class="dropdown-item text-dark" href="doctor-profile-setting.html"><span
+                                        <a class="dropdown-item text-dark" href="./Admin.jsp"><span
                                                 class="mb-0 d-inline-block me-1"><i
                                                     class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
                                             </c:if>
