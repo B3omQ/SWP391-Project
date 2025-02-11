@@ -20,11 +20,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import model.Customer;
-
+import jakarta.servlet.annotation.MultipartConfig;
 /**
  *
  * @author LAPTOP
  */
+@MultipartConfig
 public class CustomerManager extends HttpServlet {
    
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -74,7 +75,7 @@ public class CustomerManager extends HttpServlet {
         if (deleteId != null) {
             try {
                 int delId = Integer.parseInt(deleteId);
-                cdao.deleteAccount(delId);
+                cdao.deleteCustomer(delId);
             } catch (NumberFormatException ex) {
                 System.out.println(ex);
             }

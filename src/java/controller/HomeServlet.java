@@ -37,10 +37,7 @@ public class HomeServlet extends HttpServlet {
         HttpSession session = request.getSession();
         Customer customer = (Customer) session.getAttribute("customer");
         Staff staff = (Staff) session.getAttribute("staff");
-        if (customer == null || staff == null) {
-            request.getRequestDispatcher("home").forward(request, response);
-            return;
-        }
+        request.getRequestDispatcher("home.jsp").forward(request, response);
     } 
 
     /** 
