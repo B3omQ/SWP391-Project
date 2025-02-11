@@ -103,7 +103,7 @@
 
                     <div class="row">
                         <div class="col-12 mt-4">
-                            <form action="consultant-customer" method="post" class="mt-4" enctype="multipart/form-data">
+                            <form action="consultant-customer" method="post" class="mt-4 form-create-account" enctype="multipart/form-data">
                                 <div class="modal fade" id="CreateAccountform" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
@@ -122,72 +122,48 @@
                                                 <div class="col-md-12">
                                                     <div class="mb-3">
                                                         <label class="form-label">Username <span class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control" placeholder="Username" name="username" required="">
-                                                        <small id="usernameError" class="text-danger" style="display: none;">Username must not contain spaces or special characters.</small>
+                                                        <input type="text" class="form-control username" placeholder="Username" name="username" required="">
+                                                        <small class="text-danger usernameError" style="display: none;">Username không được chứa space hoặc kí tự đặc biệt.</small>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="mb-3">                                               
                                                         <label class="form-label">First name <span class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control" placeholder="First Name" name="firstname" required="">
-                                                        <small id="firstnameError" class="text-danger" style="display: none;">First name must only contain letters and should be properly capitalized.</small>
+                                                        <input type="text" class="form-control firstname" placeholder="First Name" name="firstname" required="">
+                                                        <small class="text-danger firstnameError" style="display: none;">First name không được chứa số và kí tự được biệt</small>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <div class="mb-3">                                                
+                                                    <div class="mb-3">                                                 
                                                         <label class="form-label">Last name <span class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control" placeholder="Last Name" name="lastname" required="">
-                                                        <small id="lastnameError" class="text-danger" style="display: none;">Last name must only contain letters and should be properly capitalized.</small>
+                                                        <input type="text" class="form-control lastname" placeholder="Last Name" name="lastname" required="">
+                                                        <small class="text-danger lastnameError" style="display: none;">Last name không được chứa số và kí tự được biệt</small>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12">
                                                     <div class="mb-3">
                                                         <label class="form-label">Your Email <span class="text-danger">*</span></label>
-                                                        <input type="email" id="email" class="form-control" name="email" placeholder="Email" required="">
-                                                        <small class="text-danger" id="emailError" style="display: none;">Email không đúng format</small>
+                                                        <input type="email" id="email" class="form-control email" name="email" placeholder="Email" required="">
+                                                        <small class="text-danger emailError" style="display: none;">Email không đúng format</small>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12">
                                                     <div class="mb-3">
                                                         <label class="form-label">Day of birth <span class="text-danger">*</span></label>
-                                                        <input type="date" class="form-control" name="dob" value="${customer.dob}" required="">
-                                                        <small id="dobError" class="text-danger" style="display: none;">Customer must be at least 18 years old.</small>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <div class="mb-3">
-                                                        <label class="form-label">Gender <span class="text-danger">*</span></label>
-                                                        <select type="text" class="form-control" name="gender" required="">
-                                                            <option value="Male">Male</option>
-                                                            <option value="Female">Female</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <div class="mb-3">
-                                                        <label class="form-label">Password <span class="text-danger">*</span></label>
-                                                        <input type="password" class="form-control" placeholder="Password" name="password" required="">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <div class="mb-3">
-                                                        <label class="form-label">Address <span class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control" placeholder="Address" name="address" required="">
+                                                        <input type="date" class="form-control dob" name="dob" required="">
+                                                        <small class="dobError text-danger" style="display: none;">Customer phải ít nhất 18 tuổi trở lên.</small>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12">
                                                     <div class="mb-3">
                                                         <label class="form-label">Phone Number <span class="text-danger">*</span></label>
-                                                        <input type="tel" class="form-control" id="phoneNumber" name="phone" 
-                                                               placeholder="Enter phone number" required 
-                                                               pattern="0[1-9]\d{7,8}" 
-                                                               title="">
-                                                        <small class="text-danger" id="phoneError" style="display: none;">Vui lòng nhập đúng format số điện thoại(9-10 số và không kí tự đặc biệt)</small>
+                                                        <input type="tel" class="form-control phone" name="phone" placeholder="Enter phone number" required="" pattern="0[1-9]\d{7,8}" title="">
+                                                        <small class="text-danger phoneError" style="display: none;">Vui lòng nhập đúng format số điện thoại (9-10 số và không kí tự đặc biệt)</small>
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <div class="">
-                                                        <button type="submit" class="btn btn-primary w-100 ">CREATE</button>
+                                                        <button type="submit" class="btn btn-primary w-100">CREATE</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -195,121 +171,6 @@
                                     </div>
                                 </div>
                             </form>
-                            <script>
-                                document.getElementById("phoneNumber").addEventListener("input", function () {
-                                    let phoneInput = this.value;
-                                    let phonePattern = /^0[1-9]\d{7,8}$/;
-                                    let errorMsg = document.getElementById("phoneError");
-
-                                    if (phonePattern.test(phoneInput)) {
-                                        this.setCustomValidity("");
-                                        errorMsg.style.display = "none";
-                                    } else {
-                                        this.setCustomValidity("Phone number không đúng format");
-                                        errorMsg.style.display = "block";
-                                    }
-                                });
-                                function capitalize(str) {
-                                    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-                                }
-                                // Add event listener for Username validation
-                                document.querySelector("input[name='username']").addEventListener("input", function () {
-                                    const username = this.value;
-                                    const usernamePattern = /^[\p{L}0-9]+$/u;
-                                    const errorMsg = document.getElementById("usernameError");
-
-                                    if (!usernamePattern.test(username)) {
-                                        errorMsg.style.display = "block";
-                                        this.setCustomValidity("Username must not contain spaces or special characters.");
-                                    } else {
-                                        errorMsg.style.display = "none";
-                                        this.setCustomValidity("");
-                                    }
-                                });
-
-                                // Add event listener for First Name validation
-                                document.querySelector("input[name='firstname']").addEventListener("input", function () {
-                                    const firstname = this.value;
-                                    const namePattern = /^[A-Za-z]+$/;
-                                    const errorMsg = document.getElementById("firstnameError");
-
-                                    if (!namePattern.test(firstname)) {
-                                        errorMsg.style.display = "block";
-                                        this.setCustomValidity("First name must only contain letters and should be properly capitalized.");
-                                    } else {
-                                        errorMsg.style.display = "none";
-                                        this.setCustomValidity("");
-                                        this.value = capitalize(firstname); // Capitalize the first letter
-                                    }
-                                });
-
-                                // Add event listener for Last Name validation
-                                document.querySelector("input[name='lastname']").addEventListener("input", function () {
-                                    const lastname = this.value;
-                                    const namePattern = /^[A-Za-z]+$/;
-                                    const errorMsg = document.getElementById("lastnameError");
-
-                                    if (!namePattern.test(lastname)) {
-                                        errorMsg.style.display = "block";
-                                        this.setCustomValidity("Last name must only contain letters and should be properly capitalized.");
-                                    } else {
-                                        errorMsg.style.display = "none";
-                                        this.setCustomValidity("");
-                                        this.value = capitalize(lastname); // Capitalize the first letter
-                                    }
-                                });
-                                document.querySelector("input[name='dob']").addEventListener("change", function () {
-                                    const dobInput = this.value;
-                                    const dobError = document.getElementById("dobError");
-
-                                    if (dobInput) {
-                                        const dob = new Date(dobInput);
-                                        const today = new Date();
-                                        const age = today.getFullYear() - dob.getFullYear();
-                                        const monthDiff = today.getMonth() - dob.getMonth();
-                                        const dayDiff = today.getDate() - dob.getDate();
-
-                                        // Adjust age if birthday hasn't occurred yet this year
-                                        const actualAge = (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) ? age - 1 : age;
-
-                                        if (actualAge < 18) {
-                                            dobError.style.display = "block";
-                                            this.setCustomValidity("You must be at least 18 years old.");
-                                        } else {
-                                            dobError.style.display = "none";
-                                            this.setCustomValidity("");
-                                        }
-                                    }
-                                });
-                                document.getElementById("email").addEventListener("input", function () {
-                                    let email = this.value;
-                                    let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-                                    let errorMsg = document.getElementById("emailError");
-
-                                    if (emailPattern.test(email)) {
-                                        this.setCustomValidity(""); // ✅ Allow form submission
-                                        errorMsg.style.display = "none"; // ✅ Hide error message
-                                    } else {
-                                        this.setCustomValidity("Email không đúng format"); // ❌ Prevent form submission
-                                        errorMsg.style.display = "block"; // ❌ Show error message
-                                    }
-                                });
-                                document.getElementById("address").addEventListener("input", function () {
-                                    let address = this.value;
-                                    let addressPattern = /^[a-zA-Z0-9\s,.-]+$/; // Allows letters, numbers, spaces, commas, dots, and dashes
-                                    let errorMsg = document.getElementById("addressError");
-
-                                    if (addressPattern.test(address)) {
-                                        this.setCustomValidity(""); // ✅ Allow form submission
-                                        errorMsg.style.display = "none"; // ✅ Hide error message
-                                    } else {
-                                        this.setCustomValidity("Address must not contain special characters."); // ❌ Prevent form submission
-                                        errorMsg.style.display = "block"; // ❌ Show error message
-                                    }
-                                });
-                            </script>
-
-
 
                             <div class="d-flex justify-content-between mb-3">
                                 <!-- Search Box -->
@@ -420,7 +281,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <form action="consultant-customer" method="post" class="mt-4">
+                                                    <form action="consultant-customer" method="post" class="mt-4 form-update-account">
                                                         <div class="modal fade" id="UpdateAccountform" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
                                                             <div class="modal-dialog">
                                                                 <div class="modal-content">
@@ -433,37 +294,42 @@
                                                                         <div class="col-md-12">
                                                                             <div class="mb-3 mt-4">
                                                                                 <label class="form-label">Username <span class="text-danger">*</span></label>
-                                                                                <input type="text" class="form-control" value="${customer.username}" name="username" required="">
+                                                                                <input type="text" class="form-control username" value="${customer.username}" name="username" required="">
+                                                                                <small class="text-danger usernameError" style="display: none;">Username không được chứa space hoặc kí tự đặc biệt.</small>
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-md-6">
                                                                             <div class="mb-3">                                               
                                                                                 <label class="form-label">First name <span class="text-danger">*</span></label>
-                                                                                <input type="text" class="form-control" value="${customer.firstname}" placeholder="First Name" name="firstname" required="">
+                                                                                <input type="text" class="form-control firstname" value="${customer.firstname}" placeholder="First Name" name="firstname" required="">
+                                                                                <small class="text-danger firstnameError" style="display: none;">First name không được chứa số và kí tự được biệt</small>
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-md-6">
                                                                             <div class="mb-3">                                                 
                                                                                 <label class="form-label">Last name <span class="text-danger">*</span></label>
-                                                                                <input type="text" class="form-control" value="${customer.lastname}" placeholder="Last Name" name="lastname" required="">
+                                                                                <input type="text" class="form-control lastname" value="${customer.lastname}" placeholder="Last Name" name="lastname" required="">
+                                                                                <small class="text-danger lastnameError" style="display: none;">Last name không được chứa số và kí tự được biệt</small>
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-md-12">
                                                                             <div class="mb-3">
                                                                                 <label class="form-label">Your Email <span class="text-danger">*</span></label>
-                                                                                <input type="email" class="form-control" name="email" value="${customer.email}" required="">
+                                                                                <input type="email" class="form-control email" name="email" value="${customer.email}" required="">
+                                                                                <small class="text-danger emailError" style="display: none;">Email không đúng format</small>
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-md-12">
                                                                             <div class="mb-3">
                                                                                 <label class="form-label">Day of birth <span class="text-danger">*</span></label>
-                                                                                <input type="date" class="form-control" name="dob" value="${customer.dob}" required="">
+                                                                                <input type="date" class="form-control dob" name="dob" value="${customer.dob}" required="">
+                                                                                <small class="dobError text-danger" style="display: none;">Customer phải ít nhất 18 tuổi trở lên.</small>
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-md-12">
                                                                             <div class="mb-3">
                                                                                 <label class="form-label">Gender <span class="text-danger">*</span></label>
-                                                                                <select class="form-control" name="gender" required>
+                                                                                <select class="form-control gender" name="gender" required>
                                                                                     <option value="Male" ${customer.gender == 'Male' ? 'selected' : ''}>Male</option>
                                                                                     <option value="Female" ${customer.gender == 'Female' ? 'selected' : ''}>Female</option>
                                                                                 </select>
@@ -472,13 +338,14 @@
                                                                         <div class="col-md-12">
                                                                             <div class="mb-3">
                                                                                 <label class="form-label">Address <span class="text-danger">*</span></label>
-                                                                                <input type="text" class="form-control" placeholder="Address" value="${customer.address}" name="address" required="">
+                                                                                <input type="text" class="form-control address" placeholder="Address" value="${customer.address}" name="address" required="">
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-md-12">
                                                                             <div class="mb-3">
                                                                                 <label class="form-label">Phone number <span class="text-danger">*</span></label>
-                                                                                <input type="tel" class="form-control" placeholder="Phone number" value="${customer.phone}" name="phoneNumber" required="">
+                                                                                <input type="tel" class="form-control phone" name="phoneNumber" placeholder="Phone number" value="${customer.phone}" pattern="0[1-9]\d{7,8}" required="">
+                                                                                <small class="text-danger phoneError" style="display: none;">Vui lòng nhập đúng format số điện thoại (9-10 số và không kí tự đặc biệt)</small>
                                                                             </div>
                                                                         </div>
                                                                         <div class="modal-footer">
@@ -491,6 +358,7 @@
                                                             </div>
                                                         </div>
                                                     </form>
+
                                                 </td>
                                             </tr>
                                         </c:forEach>
@@ -523,6 +391,239 @@
                                     sortedRows.forEach(row => table.appendChild(row));
                                 }
                             </script>
+                            <!--                            <script>
+                                                            document.getElementById("phoneNumber").addEventListener("input", function () {
+                                                                let phoneInput = this.value;
+                                                                let phonePattern = /^0[1-9]\d{7,8}$/;
+                                                                let errorMsg = document.getElementById("phoneError");
+                            
+                                                                if (phonePattern.test(phoneInput)) {
+                                                                    this.setCustomValidity("");
+                                                                    errorMsg.style.display = "none";
+                                                                } else {
+                                                                    this.setCustomValidity("Phone number không đúng format");
+                                                                    errorMsg.style.display = "block";
+                                                                }
+                                                            });
+                                                            function capitalize(str) {
+                                                                return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+                                                            }
+                                                            // Add event listener for Username validation
+                                                            document.querySelector("input[name='username']").addEventListener("input", function () {
+                                                                const username = this.value;
+                                                                const usernamePattern = /^[\p{L}0-9]+$/u;
+                                                                const errorMsg = document.getElementById("usernameError");
+                            
+                                                                if (!usernamePattern.test(username)) {
+                                                                    errorMsg.style.display = "block";
+                                                                    this.setCustomValidity("Username must not contain spaces or special characters.");
+                                                                } else {
+                                                                    errorMsg.style.display = "none";
+                                                                    this.setCustomValidity("");
+                                                                }
+                                                            });
+                            
+                                                            // Add event listener for First Name validation
+                                                            document.querySelector("input[name='firstname']").addEventListener("input", function () {
+                                                                const firstname = this.value;
+                                                                const namePattern = /^[A-Za-z]+$/;
+                                                                const errorMsg = document.getElementById("firstnameError");
+                            
+                                                                if (!namePattern.test(firstname)) {
+                                                                    errorMsg.style.display = "block";
+                                                                    this.setCustomValidity("First name must only contain letters and should be properly capitalized.");
+                                                                } else {
+                                                                    errorMsg.style.display = "none";
+                                                                    this.setCustomValidity("");
+                                                                    this.value = capitalize(firstname); // Capitalize the first letter
+                                                                }
+                                                            });
+                            
+                                                            // Add event listener for Last Name validation
+                                                            document.querySelector("input[name='lastname']").addEventListener("input", function () {
+                                                                const lastname = this.value;
+                                                                const namePattern = /^[A-Za-z]+$/;
+                                                                const errorMsg = document.getElementById("lastnameError");
+                            
+                                                                if (!namePattern.test(lastname)) {
+                                                                    errorMsg.style.display = "block";
+                                                                    this.setCustomValidity("Last name must only contain letters and should be properly capitalized.");
+                                                                } else {
+                                                                    errorMsg.style.display = "none";
+                                                                    this.setCustomValidity("");
+                                                                    this.value = capitalize(lastname); // Capitalize the first letter
+                                                                }
+                                                            });
+                                                            document.querySelector("input[name='dob']").addEventListener("change", function () {
+                                                                const dobInput = this.value;
+                                                                const dobError = document.getElementById("dobError");
+                            
+                                                                if (dobInput) {
+                                                                    const dob = new Date(dobInput);
+                                                                    const today = new Date();
+                                                                    const age = today.getFullYear() - dob.getFullYear();
+                                                                    const monthDiff = today.getMonth() - dob.getMonth();
+                                                                    const dayDiff = today.getDate() - dob.getDate();
+                            
+                                                                    // Adjust age if birthday hasn't occurred yet this year
+                                                                    const actualAge = (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) ? age - 1 : age;
+                            
+                                                                    if (actualAge < 18) {
+                                                                        dobError.style.display = "block";
+                                                                        this.setCustomValidity("You must be at least 18 years old.");
+                                                                    } else {
+                                                                        dobError.style.display = "none";
+                                                                        this.setCustomValidity("");
+                                                                    }
+                                                                }
+                                                            });
+                                                            document.getElementById("email").addEventListener("input", function () {
+                                                                let email = this.value;
+                                                                let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                                                                let errorMsg = document.getElementById("emailError");
+                            
+                                                                if (emailPattern.test(email)) {
+                                                                    this.setCustomValidity(""); // ✅ Allow form submission
+                                                                    errorMsg.style.display = "none"; // ✅ Hide error message
+                                                                } else {
+                                                                    this.setCustomValidity("Email không đúng format"); // ❌ Prevent form submission
+                                                                    errorMsg.style.display = "block"; // ❌ Show error message
+                                                                }
+                                                            });
+                                                            document.getElementById("address").addEventListener("input", function () {
+                                                                let address = this.value;
+                                                                let addressPattern = /^[a-zA-Z0-9\s,.-]+$/; // Allows letters, numbers, spaces, commas, dots, and dashes
+                                                                let errorMsg = document.getElementById("addressError");
+                            
+                                                                if (addressPattern.test(address)) {
+                                                                    this.setCustomValidity(""); // ✅ Allow form submission
+                                                                    errorMsg.style.display = "none"; // ✅ Hide error message
+                                                                } else {
+                                                                    this.setCustomValidity("Address must not contain special characters."); // ❌ Prevent form submission
+                                                                    errorMsg.style.display = "block"; // ❌ Show error message
+                                                                }
+                                                            });
+                                                        </script>-->
+                            <script>
+                                document.querySelectorAll(".form-create-account, .form-update-account").forEach(function (form) {
+                                    // Username Validation
+                                    form.querySelectorAll(".username").forEach(function (input) {
+                                        input.addEventListener("input", function () {
+                                            const username = this.value;
+                                            const usernamePattern = /^[\p{L}0-9]+$/u;
+                                            const errorMsg = form.querySelector(".usernameError");
+
+                                            if (!usernamePattern.test(username)) {
+                                                errorMsg.style.display = "block";
+                                                this.setCustomValidity("Username must not contain spaces or special characters.");
+                                            } else {
+                                                errorMsg.style.display = "none";
+                                                this.setCustomValidity("");
+                                            }
+                                        });
+                                    });
+
+                                    // First Name Validation
+                                    form.querySelectorAll(".firstname").forEach(function (input) {
+                                        input.addEventListener("input", function () {
+                                            const firstname = this.value;
+                                            const namePattern = /^[A-Za-z]+$/;
+                                            const errorMsg = form.querySelector(".firstnameError");
+
+                                            if (!namePattern.test(firstname)) {
+                                                errorMsg.style.display = "block";
+                                                this.setCustomValidity("First name must only contain letters.");
+                                            } else {
+                                                errorMsg.style.display = "none";
+                                                this.setCustomValidity("");
+                                                this.value = capitalize(firstname); // Capitalize the first letter
+                                            }
+                                        });
+                                    });
+
+                                    // Last Name Validation
+                                    form.querySelectorAll(".lastname").forEach(function (input) {
+                                        input.addEventListener("input", function () {
+                                            const lastname = this.value;
+                                            const namePattern = /^[A-Za-z]+$/;
+                                            const errorMsg = form.querySelector(".lastnameError");
+
+                                            if (!namePattern.test(lastname)) {
+                                                errorMsg.style.display = "block";
+                                                this.setCustomValidity("Last name must only contain letters.");
+                                            } else {
+                                                errorMsg.style.display = "none";
+                                                this.setCustomValidity("");
+                                                this.value = capitalize(lastname); // Capitalize the first letter
+                                            }
+                                        });
+                                    });
+
+                                    // Phone Validation
+                                    form.querySelectorAll(".phone").forEach(function (input) {
+                                        input.addEventListener("input", function () {
+                                            let phoneInput = this.value;
+                                            let phonePattern = /^0[1-9]\d{7,8}$/;
+                                            let errorMsg = form.querySelector(".phoneError");
+
+                                            if (phonePattern.test(phoneInput)) {
+                                                this.setCustomValidity("");
+                                                errorMsg.style.display = "none";
+                                            } else {
+                                                this.setCustomValidity("Phone number không đúng format");
+                                                errorMsg.style.display = "block";
+                                            }
+                                        });
+                                    });
+
+                                    // Email Validation
+                                    form.querySelectorAll(".email").forEach(function (input) {
+                                        input.addEventListener("input", function () {
+                                            let email = this.value;
+                                            let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                                            let errorMsg = form.querySelector(".emailError");
+
+                                            if (emailPattern.test(email)) {
+                                                this.setCustomValidity(""); // ✅ Allow form submission
+                                                errorMsg.style.display = "none"; // ✅ Hide error message
+                                            } else {
+                                                this.setCustomValidity("Email không đúng format"); // ❌ Prevent form submission
+                                                errorMsg.style.display = "block"; // ❌ Show error message
+                                            }
+                                        });
+                                    });
+
+                                    // Date of Birth Validation (18+)
+                                    form.querySelectorAll(".dob").forEach(function (input) {
+                                        input.addEventListener("change", function () {
+                                            const dobInput = this.value;
+                                            const dobError = form.querySelector(".dobError");
+
+                                            if (dobInput) {
+                                                const dob = new Date(dobInput);
+                                                const today = new Date();
+                                                const age = today.getFullYear() - dob.getFullYear();
+                                                const monthDiff = today.getMonth() - dob.getMonth();
+                                                const dayDiff = today.getDate() - dob.getDate();
+
+                                                const actualAge = (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) ? age - 1 : age;
+
+                                                if (actualAge < 18) {
+                                                    dobError.style.display = "block";
+                                                    this.setCustomValidity("You must be at least 18 years old.");
+                                                } else {
+                                                    dobError.style.display = "none";
+                                                    this.setCustomValidity("");
+                                                }
+                                            }
+                                        });
+                                    });
+                                });
+
+                                function capitalize(str) {
+                                    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+                                }
+                            </script>    
                         </div>
                     </div>
 
