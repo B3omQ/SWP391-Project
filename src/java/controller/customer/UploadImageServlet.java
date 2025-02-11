@@ -48,9 +48,14 @@ public class UploadImageServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + targetPage);
             return;
         }
-
+        
         String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
         String fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
+        if (!fileExtension.equals("jpg") && !fileExtension.equals("png")) {
+            session.setAttribute("error2", "Loại file không hợp lệ. Chỉ chấp nhận file JPG và PNG.");
+            response.sendRedirect(request.getContextPath() + targetPage);
+            return;
+        }
         if (!fileExtension.equals("jpg") && !fileExtension.equals("png")) {
             session.setAttribute("error2", "Loại file không hợp lệ. Chỉ chấp nhận file JPG và PNG.");
             response.sendRedirect(request.getContextPath() + targetPage);
