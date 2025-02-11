@@ -31,7 +31,6 @@ public class ConsultantDAO extends DBContext {
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-
             stmt.setString(1, customer.getUsername());
             stmt.setString(2, customer.getPassword());
             stmt.setString(3, customer.getImage());

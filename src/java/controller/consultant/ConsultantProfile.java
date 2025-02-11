@@ -22,7 +22,7 @@ import model.Staff;
  *
  * @author LAPTOP
  */
-@MultipartConfig
+@MultipartConfig(maxFileSize = 1024 * 1024 * 5)
 public class ConsultantProfile extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -122,15 +122,10 @@ public class ConsultantProfile extends HttpServlet {
 
                 Part imagePart = request.getPart("otherImage");
                 String image = (imagePart != null && imagePart.getSize() > 0) ? getAndSaveImg(imagePart) : currentAccount.getImage();
-
-                // Update information in the database
                 cdao.updateInformationStaff(currentAccount.getId(), image, username, firstname, lastname, gender, dob, phone, address);
-
-                // Refresh session with updated data
                 Staff updatedAccount = cdao.getStaffById(currentAccount.getId());
-                session.setAttribute("staff", updatedAccount); // Update session with new data
-
-                response.sendRedirect("ConsultantProfile");  // Redirect to refresh the page
+                session.setAttribute("staff", updatedAccount);
+                response.sendRedirect("ConsultantProfile");
                 return;
             } catch (Exception e) {
                 e.printStackTrace();

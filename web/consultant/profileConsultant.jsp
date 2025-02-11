@@ -549,7 +549,7 @@
                                                                 <div class="col-lg-2 col-md-4">
                                                                     <img src="${staff.image}"
                                                                          class="avatar avatar-md-md rounded-pill shadow mx-auto d-block"
-                                                                         alt="Image">
+                                                                         alt="Image" accept=".jpg,.png">
                                                                 </div><!--end col-->
                                                                 <div
                                                                     class="col-lg-5 col-md-8 text-center text-md-start mt-4 mt-sm-0">
@@ -597,7 +597,7 @@
                                                                         <div class="col-md-12">
                                                                             <div class="mb-3 mt-4">
                                                                                 <label for="otherImage">Image</label>
-                                                                                <input type="file" id="otherImage" name="otherImage" class="form-control-file">
+                                                                                <input type="file" id="otherImage" name="otherImage" class="form-control-file" accept=".jpg,.png">
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-md-12">

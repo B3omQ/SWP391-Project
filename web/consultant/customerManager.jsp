@@ -103,7 +103,7 @@
 
                     <div class="row">
                         <div class="col-12 mt-4">
-                            <form action="consultant-customer" method="post" class="mt-4">
+                            <form action="consultant-customer" method="post" class="mt-4" enctype="multipart/form-data">
                                 <div class="modal fade" id="CreateAccountform" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
@@ -113,12 +113,12 @@
                                             </div>
                                             <div class="container">
                                                 <input value="add" type="hidden" name="add">
-                                                <!--                                            <div class="col-md-12">
-                                                                                                <div class="mb-3 mt-4">
-                                                                                                    <label for="otherImage">Image</label>
-                                                                                                    <input type="file" id="otherImage" name="otherImage" class="form-control-file">
-                                                                                                </div>
-                                                                                            </div>-->
+                                                <div class="col-md-12">
+                                                    <div class="mb-3 mt-4">
+                                                        <label for="otherImage">Image</label>
+                                                        <input type="file" id="otherImage" name="otherImage" class="form-control-file">
+                                                    </div>
+                                                </div>
                                                 <div class="col-md-12">
                                                     <div class="mb-3">
                                                         <label class="form-label">Username <span class="text-danger">*</span></label>
@@ -143,14 +143,15 @@
                                                 <div class="col-md-12">
                                                     <div class="mb-3">
                                                         <label class="form-label">Your Email <span class="text-danger">*</span></label>
-                                                        <input type="email" class="form-control" name="email" placeholder="Email" required="">
+                                                        <input type="email" id="email" class="form-control" name="email" placeholder="Email" required="">
+                                                        <small class="text-danger" id="emailError" style="display: none;">Email không đúng format</small>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12">
                                                     <div class="mb-3">
                                                         <label class="form-label">Day of birth <span class="text-danger">*</span></label>
                                                         <input type="date" class="form-control" name="dob" value="${customer.dob}" required="">
-                                                        <small id="dobError" class="text-danger" style="display: none;">You must be at least 18 years old.</small>
+                                                        <small id="dobError" class="text-danger" style="display: none;">Customer must be at least 18 years old.</small>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12">
@@ -208,12 +209,13 @@
                                         errorMsg.style.display = "block";
                                     }
                                 });
-                            </script>
-                            <script>
+                                function capitalize(str) {
+                                    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+                                }
                                 // Add event listener for Username validation
                                 document.querySelector("input[name='username']").addEventListener("input", function () {
                                     const username = this.value;
-                                    const usernamePattern = /^[a-zA-ZÀ-ÿ0-9]+$/;
+                                    const usernamePattern = /^[\p{L}0-9]+$/u;
                                     const errorMsg = document.getElementById("usernameError");
 
                                     if (!usernamePattern.test(username)) {
@@ -256,6 +258,55 @@
                                         this.value = capitalize(lastname); // Capitalize the first letter
                                     }
                                 });
+                                document.querySelector("input[name='dob']").addEventListener("change", function () {
+                                    const dobInput = this.value;
+                                    const dobError = document.getElementById("dobError");
+
+                                    if (dobInput) {
+                                        const dob = new Date(dobInput);
+                                        const today = new Date();
+                                        const age = today.getFullYear() - dob.getFullYear();
+                                        const monthDiff = today.getMonth() - dob.getMonth();
+                                        const dayDiff = today.getDate() - dob.getDate();
+
+                                        // Adjust age if birthday hasn't occurred yet this year
+                                        const actualAge = (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) ? age - 1 : age;
+
+                                        if (actualAge < 18) {
+                                            dobError.style.display = "block";
+                                            this.setCustomValidity("You must be at least 18 years old.");
+                                        } else {
+                                            dobError.style.display = "none";
+                                            this.setCustomValidity("");
+                                        }
+                                    }
+                                });
+                                document.getElementById("email").addEventListener("input", function () {
+                                    let email = this.value;
+                                    let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                                    let errorMsg = document.getElementById("emailError");
+
+                                    if (emailPattern.test(email)) {
+                                        this.setCustomValidity(""); // ✅ Allow form submission
+                                        errorMsg.style.display = "none"; // ✅ Hide error message
+                                    } else {
+                                        this.setCustomValidity("Email không đúng format"); // ❌ Prevent form submission
+                                        errorMsg.style.display = "block"; // ❌ Show error message
+                                    }
+                                });
+                                document.getElementById("address").addEventListener("input", function () {
+                                    let address = this.value;
+                                    let addressPattern = /^[a-zA-Z0-9\s,.-]+$/; // Allows letters, numbers, spaces, commas, dots, and dashes
+                                    let errorMsg = document.getElementById("addressError");
+
+                                    if (addressPattern.test(address)) {
+                                        this.setCustomValidity(""); // ✅ Allow form submission
+                                        errorMsg.style.display = "none"; // ✅ Hide error message
+                                    } else {
+                                        this.setCustomValidity("Address must not contain special characters."); // ❌ Prevent form submission
+                                        errorMsg.style.display = "block"; // ❌ Show error message
+                                    }
+                                });
                             </script>
 
 
@@ -278,6 +329,7 @@
                                     <thead class="thead-dark">
                                         <tr>
                                             <th>#</th>
+                                            <th>Image</th>
                                             <th>Name</th>
                                             <th>Email</th>
                                             <th>Address</th>
@@ -298,6 +350,7 @@
                                         <c:forEach var="customer" items="${customers}">
                                             <tr>
                                                 <td>${customer.id}</td>
+                                                <td><img src="${customer.image}" width="100" height="auto" alt="alt" /></td>
                                                 <td>${customer.username}</td>
                                                 <td>${customer.email}</td>
                                                 <td>${customer.address}</td>
@@ -358,7 +411,7 @@
                                                                     </div>
 
                                                                     <div class="mb-2">
-                                                                        <strong>Wallet Balance:</strong>
+                                                                        <strong>Wallet Balance:</strong> ${customer.wallet}
                                                                     </div>
                                                                 </div>
                                                                 <div class="modal-footer">
