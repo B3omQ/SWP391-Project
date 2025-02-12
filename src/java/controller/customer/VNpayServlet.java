@@ -17,7 +17,10 @@ import jakarta.servlet.http.HttpServletResponse;
  * @author emkob
  */
 public class VNpayServlet extends HttpServlet {
-   
+   private static final String VNP_TMN_CODE = "ZEXZKZK8";  // Mã Website của bạn
+    private static final String VNP_HASH_SECRET = "GN5MEE6Q6ZYG941UUB76FYAA786W6NAX"; // Secret Key
+    private static final String VNP_URL = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html"; // URL thanh toán của VNPAY
+    private static final String RETURN_URL = "http://localhost:8080/customer/vnpayReturn.jsp"; // Trang xử lý sau khi thanh toán
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request

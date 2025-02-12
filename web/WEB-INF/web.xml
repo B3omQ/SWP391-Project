@@ -9,6 +9,7 @@
         <servlet-class>controller.consultant.CustomerManager</servlet-class>
     </servlet>
     <servlet>
+
         <servlet-name>Otpservlet</servlet-name>
         <servlet-class>controller.customer.Otpservlet</servlet-class>
     </servlet>
@@ -20,6 +21,16 @@
         <servlet-name>VerifyingOtp</servlet-name>
         <servlet-class>controller.customer.VerifyingOtp</servlet-class>
     </servlet>
+
+
+    <servlet>
+
+        <servlet-name>ConsultantProfile</servlet-name>
+        <servlet-class>controller.consultant.ConsultantProfile</servlet-class>
+    </servlet>
+
+
+
     <servlet-mapping>
         <servlet-name>HomeServlet</servlet-name>
         <url-pattern>/home</url-pattern>
@@ -104,6 +115,11 @@
         <servlet-name>VerifyingOtp</servlet-name>
         <url-pattern>/VerifyingOtp</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ConsultantProfile</servlet-name>
+        <url-pattern>/ConsultantProfile</url-pattern>
+    </servlet-mapping>
+    
     <session-config>
         <session-timeout>1440</session-timeout>
         <!-- 1440 phút = 24 giờ -->
