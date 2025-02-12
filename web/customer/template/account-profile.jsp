@@ -39,7 +39,7 @@
    if (account != null && account.getImage() != null && !account.getImage().isEmpty()) {
        imagePath = request.getContextPath() + "/uploads/" + account.getImage();
    } else {
-       imagePath = request.getContextPath() + "/assets/images/default-avatar.jpg"; // ?nh m?c ??nh
+       imagePath = request.getContextPath() + "/assets/images/default-avatar.jpg";
    }
     %>
 

@@ -8,6 +8,10 @@
         <servlet-name>ConsultantAddCustomer</servlet-name>
         <servlet-class>controller.consultant.CustomerManager</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Otpservlet</servlet-name>
+        <servlet-class>controller.customer.Otpservlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>HomeServlet</servlet-name>
         <url-pattern>/home</url-pattern>
@@ -79,6 +83,10 @@
     <servlet-mapping>
         <servlet-name>VNpayServlet</servlet-name>
         <url-pattern>/VNpayServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Otpservlet</servlet-name>
+        <url-pattern>/Otpservlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>1440</session-timeout>

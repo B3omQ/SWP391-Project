@@ -7,6 +7,7 @@ package controller.customer;
 import dal.ConsultantDAO;
 import dal.CustomerDAO;
 import dal.StaffDAO;
+import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -15,6 +16,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.Random;
 import model.Customer;
 import model.Staff;
 import util.AccountValidation;
@@ -24,7 +26,6 @@ import util.AccountValidation;
  * @author emkob
  */
 public class AuthServlet extends HttpServlet {
-
 
     private CustomerDAO customerDAO = new CustomerDAO();
     private StaffDAO staffDAO = new StaffDAO();
@@ -94,6 +95,9 @@ public class AuthServlet extends HttpServlet {
             handleLogout(request, response);
         } else if ("login".equals(action)) {
             handleLogin(request, response);
+        } else if ("otp".equals(action)) {
+            handleOtp(request, response);
+
         } else if ("changePassword".equals(action)) {
             handleChangePassword(request, response);
         } else {
@@ -101,75 +105,114 @@ public class AuthServlet extends HttpServlet {
         }
     }
 
- private void handleLogin(HttpServletRequest request, HttpServletResponse response)
+    private void handleLogin(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String email = request.getParameter("email");
+        String passWord = request.getParameter("password");
+        String rememberMe = request.getParameter("remember");
+
+        HttpSession session = request.getSession();
+
+        if (email == null || passWord == null) {
+            session.setAttribute("errorAccount", "Vui lòng nhập email và mật khẩu.");
+            response.sendRedirect("auth/template/login.jsp");
+            return;
+        }
+
+        // Kiểm tra xem tài khoản có bị khóa không
+        if (isAccountLocked(email)) {
+            session.setAttribute("errorAccount", "Tài khoản của bạn đã bị khóa. Vui lòng thử lại sau 10 phút.");
+            response.sendRedirect("auth/template/login.jsp");
+            return;
+        }
+
+        // Kiểm tra xem email có tồn tại trong hệ thống không
+        boolean emailExists = customerDAO.emailExists(email) || staffDAO.emailExists(email);
+
+        if (!emailExists) {
+            session.setAttribute("errorAccount", "Tài khoản không tồn tại.");
+            response.sendRedirect("auth/template/login.jsp");
+            return;
+        }
+
+        // Đăng nhập với khách hàng
+        Customer customer = customerDAO.login(email, passWord);
+        // Đăng nhập với nhân viên
+        Staff staff = staffDAO.login(email, passWord);
+
+        if (customer != null && av.checkPassword(passWord, customer.getPassword())) {
+                  session.setAttribute("account", customer); 
+
+
+            String otp = String.format("%06d", new Random().nextInt(999999));
+            session.setAttribute("otp", otp);
+            session.setAttribute("email", email);
+
+            // Gửi OTP qua email
+            resetService resetService = new resetService();
+            String otpMessage = "Mã OTP của bạn là: " + otp + ". OTP có hiệu lực trong 10 phút.";
+            resetService.sendOtpEmail(email, otpMessage, customer.getFirstname());
+
+            // Chuyển hướng đến trang nhập OTP
+            response.sendRedirect("auth/template/otp.jsp");
+            return;
+        }
+
+        if (staff != null && av.checkPassword(passWord, staff.getPassword())) {
+                session.setAttribute("staff", staff); 
+
+            String otp = String.format("%06d", new Random().nextInt(999999));
+            session.setAttribute("otp", otp);
+            session.setAttribute("email", email);
+
+            // Gửi OTP qua email
+            resetService resetService = new resetService();
+            String otpMessage = "Mã OTP của bạn là: " + otp + ". OTP có hiệu lực trong 10 phút.";
+            resetService.sendOtpEmail(email, otpMessage, staff.getFirstname());
+
+            // Chuyển hướng đến trang nhập OTP
+            response.sendRedirect("auth/template/otp.jsp");
+            return;
+        }
+
+        // Kiểm tra số lần nhập sai mật khẩu
+        int failedAttempts = customerDAO.getFailedAttempts(email);
+        if (failedAttempts == 0) {
+            failedAttempts = staffDAO.getFailedAttempts(email);
+        }
+
+        // Kiểm tra nếu tài khoản bị khóa do nhập sai mật khẩu quá nhiều lần
+        if (isAccountLocked(email)) {
+            session.setAttribute("errorAccount", "Bạn đã nhập sai mật khẩu quá số lần cho phép. Tài khoản bị khóa trong 10 phút.");
+        } else {
+            int remainingAttempts = 6 - failedAttempts;
+            session.setAttribute("errorAccount", "Sai mật khẩu. Bạn còn " + remainingAttempts + " lần thử.");
+        }
+        response.sendRedirect("auth/template/login.jsp");
+    }
+private void handleOtp(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-    String email = request.getParameter("email");
-    String passWord = request.getParameter("password");
-    String rememberMe = request.getParameter("remember");
-
+    String userOtp = request.getParameter("otp");
     HttpSession session = request.getSession();
+    String generatedOtp = (String) session.getAttribute("otp");
 
-    if (email == null || passWord == null) {
-        session.setAttribute("errorAccount", "Vui lòng nhập email và mật khẩu.");
+    if (generatedOtp == null) {
+        // Nếu OTP không tồn tại trong session, chuyển về trang login
         response.sendRedirect("auth/template/login.jsp");
         return;
     }
 
-    if (isAccountLocked(email)) {
-        session.setAttribute("errorAccount", "Tài khoản của bạn đã bị khóa. Vui lòng thử lại sau 10 phút.");
-        response.sendRedirect("auth/template/login.jsp");
-        return;
-    }
-
-
-    boolean emailExists = customerDAO.emailExists(email) || staffDAO.emailExists(email);
-    
-    // Nếu email không tồn tại, báo lỗi ngay
-    if (!emailExists) {
-        session.setAttribute("errorAccount", "Tài khoản không tồn tại.");
-        response.sendRedirect("auth/template/login.jsp");
-        return;
-    }
-
-    Customer customer = customerDAO.login(email, passWord);
-    Staff staff = staffDAO.login(email, passWord);
-
-
-    if (customer != null && av.checkPassword(passWord, customer.getPassword())) {
-        customerDAO.resetFailedLogin(email);
-        handleRememberMe(response, email, passWord, rememberMe);
-        session.setAttribute("account", customer);
+    // Kiểm tra OTP
+    if (userOtp != null && userOtp.equals(generatedOtp)) {
+        // Xóa OTP khỏi session sau khi xác thực thành công
+        session.removeAttribute("otp");
         response.sendRedirect("customer/template/Customer.jsp");
-        return;
-    }
-
-
-    if (staff != null && av.checkPassword(passWord, staff.getPassword())) {
-        staffDAO.resetFailedLogin(email);
-        handleRememberMe(response, email, passWord, rememberMe);
-        session.setAttribute("staff", staff);
-        session.setAttribute("role", staff.getRoleId().getName());
-
-        response.sendRedirect(staff.getRoleId().getId() == 1 ? "staff/template/Admin.jsp" : "profile-manager");
-        return;
-    }
-
-
-    int failedAttempts = customerDAO.getFailedAttempts(email);
-    if (failedAttempts == 0) {
-        failedAttempts = staffDAO.getFailedAttempts(email);
-    }
-
-    if (isAccountLocked(email)) {
-        session.setAttribute("errorAccount", "Bạn đã nhập sai mật khẩu quá số lần cho phép. Tài khoản bị khóa trong 10 phút.");
     } else {
-        int remainingAttempts = 6 - failedAttempts;
-        session.setAttribute("errorAccount", "Sai mật khẩu. Bạn còn " + remainingAttempts + " lần thử.");
+        // Nếu mã OTP không đúng, thông báo lỗi và lưu vào session
+        session.setAttribute("otpError", "Mã OTP không đúng, vui lòng thử lại!");
+        response.sendRedirect(request.getContextPath() + "/auth/template/otp.jsp");
     }
-    response.sendRedirect("auth/template/login.jsp");
 }
-
-
     private void handleLogout(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         request.getSession().invalidate();
@@ -259,6 +302,7 @@ public class AuthServlet extends HttpServlet {
         request.setAttribute("success", "Đổi mật khẩu thành công!");
         request.getRequestDispatcher(profilePage).forward(request, response);
     }
+
 
     private void handleRememberMe(HttpServletResponse response, String email, String password, String rememberMe) {
         if (rememberMe != null) {
