@@ -78,7 +78,7 @@ public class VerifyingOtp extends HttpServlet {
        if (userOtp != null && userOtp.equals(generatedOtp)) {
         session.removeAttribute("otp");
         if (session.getAttribute("staff") != null) {
-            response.sendRedirect("staff/template/Admin.jsp"); 
+            response.sendRedirect("profile-manager"); 
         } else {
             response.sendRedirect("customer/template/Customer.jsp"); 
         }
