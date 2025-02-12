@@ -23,6 +23,7 @@ import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import java.io.File;
+import model.Staff;
 import util.AccountValidation;
 
 /**
@@ -30,7 +31,7 @@ import util.AccountValidation;
  * @author LAPTOP
  */
 @MultipartConfig(maxFileSize = 1024 * 1024 * 5)
-public class CustomerManager extends HttpServlet {
+public class ConsultantCustomerManager extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -132,23 +133,6 @@ public class CustomerManager extends HttpServlet {
         String add = request.getParameter("add");
         String changeinfoId = request.getParameter("changeinfoId");
         ConsultantDAO cdao = new ConsultantDAO();
-        HttpSession session = request.getSession(false);
-        if (session == null) {
-            response.sendRedirect(request.getContextPath() + "/auth/template/login.jsp");
-            return;
-        }
-
-        // Xác định người dùng hiện tại: Customer hoặc Staff
-//        Object user = session.getAttribute("account");
-//        boolean isCustomer = true;
-//        if (user == null) {
-//            user = session.getAttribute("staff");
-//            isCustomer = false;
-//        }
-//        if (user == null) {
-//            response.sendRedirect(request.getContextPath() + "/auth/template/login.jsp");
-//            return;
-//        }
         if (deleteId != null) {
             try {
                 int delId = Integer.parseInt(deleteId);
@@ -171,27 +155,19 @@ public class CustomerManager extends HttpServlet {
 //        Part filePart = request.getPart("otherImage");
 //        String image = getAndSaveImg(filePart); 
                 LocalDate dob = null;
-//                if (!validator.isValidEmail(email)) {
-//                    session.setAttribute("error3", "Email không hợp lệ.");
-//                    response.sendRedirect(request.getContextPath() + "/customer/template/account-profile.jsp");
-//                    return;
-//                }
-//                if (!validator.isValidPhone(phoneNumber)) {
-//                    session.setAttribute("error3", "Số điện thoại không hợp lệ.");
-//                    response.sendRedirect(request.getContextPath() + "/customer/template/account-profile.jsp");
-//                    return;
-//                }
-//                if (!validator.isValidAddress(address)) {
-//                    session.setAttribute("error3", "Địa chỉ không hợp lệ.");
-//                    response.sendRedirect(request.getContextPath() + "/customer/template/account-profile.jsp");
-//                    return;
-//                }
+                Part filePart = request.getPart("otherImage");
+                String image = getAndSaveImg(filePart);
+                if (cdao.isDuplicatedEmail(email)) {
+                    response.setContentType("text/plain");
+                    response.getWriter().write("errorEmailexist");
+                    System.out.println("đã block");
+                    return;
+                }
                 if (dobStr != null && !dobStr.isEmpty()) {
                     dob = LocalDate.parse(dobStr, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
                 }
-                Part filePart = request.getPart("otherImage"); // "image" is the name of the input field in the form
-                String image = getAndSaveImg(filePart);
-                Customer customer = new Customer(image,username, password, email, firstname, lastname, gender, dob, phoneNumber, address);
+
+                Customer customer = new Customer(image, username, password, email, firstname, lastname, gender, dob, phoneNumber, address);
 
                 // Add the customer via DAO
                 cdao.booleanCreateNewAccount(customer);
@@ -211,7 +187,19 @@ public class CustomerManager extends HttpServlet {
                 String gender = request.getParameter("gender");
                 String phoneNumber = request.getParameter("phoneNumber");
                 String dobStr = request.getParameter("dob");
+                Part imagePart = request.getPart("newImg");
                 Date dob = null;
+                String image = (imagePart != null && imagePart.getSize() > 0 ? getAndSaveImg(imagePart) : null);
+                if (image != null) {
+                    String imgPath = cdao.getCustomerById(changeId).getImage();
+                    deleteFile(imgPath);
+                }
+                if (cdao.isDuplicatedEmail(email)) {
+                    response.setContentType("text/plain");
+                    response.getWriter().write("errorEmailexist");
+                    System.out.println("đã block");
+                    return;
+                }
                 try {
                     if (dobStr != null && !dobStr.isEmpty()) {
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -223,7 +211,7 @@ public class CustomerManager extends HttpServlet {
                     request.getRequestDispatcher("./consultant/customerManagemer.jsp").forward(request, response);
                     return;
                 }
-                cdao.updateInformation(changeId, address, firstname, lastname, username, phoneNumber, gender, dobStr, email);
+                cdao.updateInformation(changeId, address, firstname, lastname, username, phoneNumber, gender, dobStr, email, image);
 
             } catch (NumberFormatException ex) {
                 System.out.println(ex);

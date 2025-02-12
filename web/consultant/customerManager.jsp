@@ -43,8 +43,7 @@
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
-    </head>
-
+    </head> 
     <body>
         <!-- Loader -->
         <div id="preloader">
@@ -156,6 +155,27 @@
                                                 </div>
                                                 <div class="col-md-12">
                                                     <div class="mb-3">
+                                                        <label class="form-label">Gender <span class="text-danger">*</span></label>
+                                                        <select type="text" class="form-control" name="gender" required="">
+                                                            <option value="Male">Male</option>
+                                                            <option value="Female">Female</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Password <span class="text-danger">*</span></label>
+                                                        <input type="password" class="form-control" placeholder="Password" name="password" required="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Address <span class="text-danger">*</span></label>
+                                                        <input type="text" class="form-control" placeholder="Address" name="address" required="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="mb-3">
                                                         <label class="form-label">Phone Number <span class="text-danger">*</span></label>
                                                         <input type="tel" class="form-control phone" name="phone" placeholder="Enter phone number" required="" pattern="0[1-9]\d{7,8}" title="">
                                                         <small class="text-danger phoneError" style="display: none;">Vui lòng nhập đúng format số điện thoại (9-10 số và không kí tự đặc biệt)</small>
@@ -171,7 +191,6 @@
                                     </div>
                                 </div>
                             </form>
-
                             <div class="d-flex justify-content-between mb-3">
                                 <!-- Search Box -->
                                 <input type="text" id="searchInput" class="form-control w-25" placeholder="Search users...">
@@ -211,7 +230,7 @@
                                         <c:forEach var="customer" items="${customers}">
                                             <tr>
                                                 <td>${customer.id}</td>
-                                                <td><img src="${customer.image}" width="100" height="auto" alt="alt" /></td>
+                                                <td><img src="${customer.image}" width="100" height="100" alt="alt" /></td>
                                                 <td>${customer.username}</td>
                                                 <td>${customer.email}</td>
                                                 <td>${customer.address}</td>
@@ -221,7 +240,7 @@
                                                 <td class="">
                                                     <!-- Edit button -->
                                                     <button type="button" class="btn btn-warning" data-bs-toggle="modal"
-                                                            data-bs-target="#UpdateAccountform">Edit</button>
+                                                            data-bs-target="#UpdateAccountform-${customer.id}">Edit</button>
                                                     <!-- Delete button -->
                                                     <form onsubmit="deleteAlert(event)" action ="consultant-customer" method="post" style ="display:inline-block">
                                                         <input name="deleteId" value="${customer.id}" type="hidden">
@@ -239,6 +258,9 @@
                                                                 </div>
                                                                 <div class="modal-body">
                                                                     <!-- Customer Details -->
+                                                                    <div class="mb-2">
+                                                                        <img src="${customer.image}" width="200" height="auto" alt="alt" />
+                                                                    </div>
                                                                     <div class="mb-2">
                                                                         <strong>Username:</strong> ${customer.username}
                                                                     </div>
@@ -281,16 +303,23 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <form action="consultant-customer" method="post" class="mt-4 form-update-account">
-                                                        <div class="modal fade" id="UpdateAccountform" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+                                                    <form action="consultant-customer" method="post" class="mt-4 form-update-account" enctype="multipart/form-data">
+                                                        <div class="modal fade" id="UpdateAccountform-${customer.id}" tabindex="-1" 
+                                                             aria-labelledby="updateModalLabel-${customer.id}" aria-hidden="true">
                                                             <div class="modal-dialog">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
-                                                                        <h1 class="modal-title fs-5" id="addUserModalLabel">Thay đổi thông tin Account</h1>
+                                                                        <h1 class="modal-title fs-5" id="updateModalLabel-${customer.id}">Thay đổi thông tin Account</h1>
                                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                                     </div>
                                                                     <div class="container">
                                                                         <input name="changeinfoId" value="${customer.id}" type="hidden">
+                                                                        <div class="col-md-12">
+                                                                            <div class="mb-3 mt-4">
+                                                                                <label for="otherImage">Image</label>
+                                                                                <input type="file" id="newImg-${customer.id}" name="newImg" class="form-control-file">
+                                                                            </div>
+                                                                        </div>
                                                                         <div class="col-md-12">
                                                                             <div class="mb-3 mt-4">
                                                                                 <label class="form-label">Username <span class="text-danger">*</span></label>
@@ -339,6 +368,7 @@
                                                                             <div class="mb-3">
                                                                                 <label class="form-label">Address <span class="text-danger">*</span></label>
                                                                                 <input type="text" class="form-control address" placeholder="Address" value="${customer.address}" name="address" required="">
+                                                                                <small class="text-danger addressError" style="display: none;">Address không được chứa kí tự được biệt</small>
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-md-12">
@@ -349,16 +379,13 @@
                                                                             </div>
                                                                         </div>
                                                                         <div class="modal-footer">
-                                                                            <div class="">
-                                                                                <button type="submit" class="btn btn-warning">Edit</button>
-                                                                            </div>
+                                                                            <button type="submit" class="btn btn-warning">Edit</button>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </form>
-
                                                 </td>
                                             </tr>
                                         </c:forEach>
@@ -391,119 +418,6 @@
                                     sortedRows.forEach(row => table.appendChild(row));
                                 }
                             </script>
-                            <!--                            <script>
-                                                            document.getElementById("phoneNumber").addEventListener("input", function () {
-                                                                let phoneInput = this.value;
-                                                                let phonePattern = /^0[1-9]\d{7,8}$/;
-                                                                let errorMsg = document.getElementById("phoneError");
-                            
-                                                                if (phonePattern.test(phoneInput)) {
-                                                                    this.setCustomValidity("");
-                                                                    errorMsg.style.display = "none";
-                                                                } else {
-                                                                    this.setCustomValidity("Phone number không đúng format");
-                                                                    errorMsg.style.display = "block";
-                                                                }
-                                                            });
-                                                            function capitalize(str) {
-                                                                return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-                                                            }
-                                                            // Add event listener for Username validation
-                                                            document.querySelector("input[name='username']").addEventListener("input", function () {
-                                                                const username = this.value;
-                                                                const usernamePattern = /^[\p{L}0-9]+$/u;
-                                                                const errorMsg = document.getElementById("usernameError");
-                            
-                                                                if (!usernamePattern.test(username)) {
-                                                                    errorMsg.style.display = "block";
-                                                                    this.setCustomValidity("Username must not contain spaces or special characters.");
-                                                                } else {
-                                                                    errorMsg.style.display = "none";
-                                                                    this.setCustomValidity("");
-                                                                }
-                                                            });
-                            
-                                                            // Add event listener for First Name validation
-                                                            document.querySelector("input[name='firstname']").addEventListener("input", function () {
-                                                                const firstname = this.value;
-                                                                const namePattern = /^[A-Za-z]+$/;
-                                                                const errorMsg = document.getElementById("firstnameError");
-                            
-                                                                if (!namePattern.test(firstname)) {
-                                                                    errorMsg.style.display = "block";
-                                                                    this.setCustomValidity("First name must only contain letters and should be properly capitalized.");
-                                                                } else {
-                                                                    errorMsg.style.display = "none";
-                                                                    this.setCustomValidity("");
-                                                                    this.value = capitalize(firstname); // Capitalize the first letter
-                                                                }
-                                                            });
-                            
-                                                            // Add event listener for Last Name validation
-                                                            document.querySelector("input[name='lastname']").addEventListener("input", function () {
-                                                                const lastname = this.value;
-                                                                const namePattern = /^[A-Za-z]+$/;
-                                                                const errorMsg = document.getElementById("lastnameError");
-                            
-                                                                if (!namePattern.test(lastname)) {
-                                                                    errorMsg.style.display = "block";
-                                                                    this.setCustomValidity("Last name must only contain letters and should be properly capitalized.");
-                                                                } else {
-                                                                    errorMsg.style.display = "none";
-                                                                    this.setCustomValidity("");
-                                                                    this.value = capitalize(lastname); // Capitalize the first letter
-                                                                }
-                                                            });
-                                                            document.querySelector("input[name='dob']").addEventListener("change", function () {
-                                                                const dobInput = this.value;
-                                                                const dobError = document.getElementById("dobError");
-                            
-                                                                if (dobInput) {
-                                                                    const dob = new Date(dobInput);
-                                                                    const today = new Date();
-                                                                    const age = today.getFullYear() - dob.getFullYear();
-                                                                    const monthDiff = today.getMonth() - dob.getMonth();
-                                                                    const dayDiff = today.getDate() - dob.getDate();
-                            
-                                                                    // Adjust age if birthday hasn't occurred yet this year
-                                                                    const actualAge = (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) ? age - 1 : age;
-                            
-                                                                    if (actualAge < 18) {
-                                                                        dobError.style.display = "block";
-                                                                        this.setCustomValidity("You must be at least 18 years old.");
-                                                                    } else {
-                                                                        dobError.style.display = "none";
-                                                                        this.setCustomValidity("");
-                                                                    }
-                                                                }
-                                                            });
-                                                            document.getElementById("email").addEventListener("input", function () {
-                                                                let email = this.value;
-                                                                let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-                                                                let errorMsg = document.getElementById("emailError");
-                            
-                                                                if (emailPattern.test(email)) {
-                                                                    this.setCustomValidity(""); // ✅ Allow form submission
-                                                                    errorMsg.style.display = "none"; // ✅ Hide error message
-                                                                } else {
-                                                                    this.setCustomValidity("Email không đúng format"); // ❌ Prevent form submission
-                                                                    errorMsg.style.display = "block"; // ❌ Show error message
-                                                                }
-                                                            });
-                                                            document.getElementById("address").addEventListener("input", function () {
-                                                                let address = this.value;
-                                                                let addressPattern = /^[a-zA-Z0-9\s,.-]+$/; // Allows letters, numbers, spaces, commas, dots, and dashes
-                                                                let errorMsg = document.getElementById("addressError");
-                            
-                                                                if (addressPattern.test(address)) {
-                                                                    this.setCustomValidity(""); // ✅ Allow form submission
-                                                                    errorMsg.style.display = "none"; // ✅ Hide error message
-                                                                } else {
-                                                                    this.setCustomValidity("Address must not contain special characters."); // ❌ Prevent form submission
-                                                                    errorMsg.style.display = "block"; // ❌ Show error message
-                                                                }
-                                                            });
-                                                        </script>-->
                             <script>
                                 document.querySelectorAll(".form-create-account, .form-update-account").forEach(function (form) {
                                     // Username Validation
@@ -527,7 +441,7 @@
                                     form.querySelectorAll(".firstname").forEach(function (input) {
                                         input.addEventListener("input", function () {
                                             const firstname = this.value;
-                                            const namePattern = /^[A-Za-z]+$/;
+                                            const namePattern = /^[\p{L}0-9]+$/u;
                                             const errorMsg = form.querySelector(".firstnameError");
 
                                             if (!namePattern.test(firstname)) {
@@ -545,7 +459,7 @@
                                     form.querySelectorAll(".lastname").forEach(function (input) {
                                         input.addEventListener("input", function () {
                                             const lastname = this.value;
-                                            const namePattern = /^[A-Za-z]+$/;
+                                            const namePattern = /^[\p{L}0-9]+$/u;
                                             const errorMsg = form.querySelector(".lastnameError");
 
                                             if (!namePattern.test(lastname)) {
@@ -619,11 +533,63 @@
                                         });
                                     });
                                 });
+                            </script> 
+                            <script>
+                                $(document).ready(function () {
+                                    $(".form-update-account").submit(function (event) {
+                                        event.preventDefault(); // Stop default form submission
 
-                                function capitalize(str) {
-                                    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-                                }
-                            </script>    
+                                        var formData = new FormData(this); // Collect form data
+
+                                        $.ajax({
+                                            url: "consultant-customer", // Servlet URL
+                                            type: "POST",
+                                            data: formData,
+                                            processData: false,
+                                            contentType: false,
+                                            success: function (response) {
+                                                if (response === "errorEmailexist") {
+                                                    alert("Email đã có người sử dụng, vui lòng nhập email khác.");
+                                                } else {
+                                                    alert("Tài khoản đã được tạo thành công!");
+                                                    location.reload();
+                                                }
+                                            },
+                                            error: function () {
+                                                alert("Có lỗi xảy ra, vui lòng thử lại.");
+                                            }
+                                        });
+                                    });
+                                });
+                            </script>
+                            <script>
+                                $(document).ready(function () {
+                                    $(".form-create-account").submit(function (event) {
+                                        event.preventDefault(); // Stop default form submission
+
+                                        var formData = new FormData(this); // Collect form data
+
+                                        $.ajax({
+                                            url: "consultant-customer", // Servlet URL
+                                            type: "POST",
+                                            data: formData,
+                                            processData: false,
+                                            contentType: false,
+                                            success: function (response) {
+                                                if (response === "errorEmailexist") {
+                                                    alert("Email đã có người sử dụng, vui lòng nhập email khác.");
+                                                } else {
+                                                    alert("Tài khoản được edit thành công!");
+                                                    location.reload(); // Reload only if successful
+                                                }
+                                            },
+                                            error: function () {
+                                                alert("Có lỗi xảy ra, vui lòng thử lại.");
+                                            }
+                                        });
+                                    });
+                                });
+                            </script>
                         </div>
                     </div>
 

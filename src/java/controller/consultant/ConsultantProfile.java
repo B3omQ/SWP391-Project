@@ -4,9 +4,9 @@
  */
 package controller.consultant;
 
+import controller.customer.PasswordHasher;
 import dal.ConsultantDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServlet;
@@ -17,6 +17,7 @@ import jakarta.servlet.http.Part;
 import java.io.File;
 import java.time.LocalDate;
 import model.Staff;
+import util.AccountValidation;
 
 /**
  *
@@ -104,7 +105,11 @@ public class ConsultantProfile extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        AccountValidation av = new AccountValidation();
         String changeInfo = request.getParameter("changeInfo");
+        String changePwd = request.getParameter("changePwd");
+        String changeEmail = request.getParameter("changeEmail");
+        String deleteAccount = request.getParameter("deleteAccount");
         HttpSession session = request.getSession();
         Staff currentAccount = (Staff) session.getAttribute("staff");
         ConsultantDAO cdao = new ConsultantDAO();
@@ -131,6 +136,54 @@ public class ConsultantProfile extends HttpServlet {
                 e.printStackTrace();
             }
         }
+        if (changePwd != null) {
+            try {
+                String password = currentAccount.getPassword();
+                String currentpassword = request.getParameter("currentpassword");
+                String newpassword = request.getParameter("newpassword");
+                String confirmpassword = request.getParameter("confirmpassword");
+                if (!av.checkPassword(currentpassword, password)) {
+                    response.setContentType("text/plain");
+                    response.getWriter().write("errorCheckPassword");
+                    System.out.println("password không đúng");
+                    return;
+                }
+                if (!newpassword.equals(confirmpassword)) {
+                    response.setContentType("text/plain");
+                    response.getWriter().write("errorConfirmPassword");
+                    System.out.println("Confirm password không đúng");
+                    return;
+                }
+                cdao.updatePasswordByIdStaff(currentAccount.getId(), newpassword);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        if (changeEmail != null) {
+            try {
+                String updateEmail = request.getParameter("updateEmail");
+                if (cdao.isDuplicatedEmail(updateEmail)) {
+                    response.setContentType("text/plain");
+                    response.getWriter().write("errorEmailexist");
+                    System.out.println("đã block");
+                    return;
+                }
+                cdao.updateEmailStaff(currentAccount.getId(), updateEmail);
+                Staff updatedAccount = cdao.getStaffById(currentAccount.getId());
+                session.setAttribute("staff", updatedAccount);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+        if(deleteAccount != null){
+           try{
+               cdao.deleteStaff(currentAccount.getId());    
+           }catch (Exception e) {
+                e.printStackTrace();
+            } 
+        }
+        doGet(request, response);
     }
 
     /**

@@ -38,10 +38,10 @@
         <link href="https://unicons.iconscout.com/release/v3.0.6/css/line.css" rel="stylesheet">
         <!-- Css -->
         <link href="<%= request.getContextPath() %>/assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
-<!--         DataTables CSS & jQuery 
-        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>-->
+        <!--         DataTables CSS & jQuery 
+                <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>-->
 
     </head>
 
@@ -534,7 +534,7 @@
                                                 </div><!--end col-->
                                             </div><!--end row-->
                                         </div><!--end teb pane-->
-                                        
+
                                         <div class="tab-pane fade" id="pills-settings" role="tabpanel"
                                              aria-labelledby="settings-tab">
                                             <h5 class="mb-1">Settings</h5>
@@ -542,7 +542,7 @@
                                                 <div class="col-lg-6">
                                                     <div class="rounded shadow mt-4">
                                                         <div class="p-4 border-bottom">
-                                                            <h6 class="mb-0">Personal Information :</h6>
+                                                            <strong class="mb-0">Thông tin cá nhân :</strong>
                                                         </div>
                                                         <div class="p-4">
                                                             <div class="row align-items-center">
@@ -576,11 +576,7 @@
                                                                         <tr>
                                                                             <td><strong>Gender:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></td>
                                                                             <td>${staff.gender}</td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td><strong>Email:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></td>
-                                                                            <td>${staff.email}</td>
-                                                                        </tr>  
+                                                                        </tr> 
                                                                         <tr>
                                                                             <td><strong>Adress:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></td>
                                                                             <td>${staff.address}</td>
@@ -588,10 +584,14 @@
                                                                         <tr>
                                                                             <td><strong>Phone number:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></td>
                                                                             <td>${staff.phone}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td><strong>Email:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></td>
+                                                                            <td>${staff.email}</td>
                                                                         </tr> 
                                                                     </tbody>
                                                                 </table>
-                                                                <form action="ConsultantProfile" method="post" class="mt-4" enctype="multipart/form-data">
+                                                                <form action="ConsultantProfile" method="post" class="mt-4 form-update-account" enctype="multipart/form-data">
                                                                     <div class="container">
                                                                         <input name="changeInfo" value="changeInfo" type="hidden">
                                                                         <div class="col-md-12">
@@ -603,25 +603,29 @@
                                                                         <div class="col-md-12">
                                                                             <div class="mb-3 mt-4">
                                                                                 <label class="form-label">Username <span class="text-danger">*</span></label>
-                                                                                <input type="text" class="form-control" value="${staff.username}" name="username" placeholder="User Name" required="">
+                                                                                <input type="text" class="form-control username" value="${staff.username}" name="username" required="">
+                                                                                <small class="text-danger usernameError" style="display: none;">Username không được chứa space hoặc kí tự đặc biệt.</small>
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-md-6">
-                                                                            <div class="mb-3">                                               
-                                                                                <label class="form-label">First name <span class="text-danger">*</span></label>
-                                                                                <input type="text" class="form-control" value="${staff.firstname}" placeholder="First Name" name="firstname" required="">
+                                                                            <div class="mb-3">
+                                                                                <label class="form-label">First Name <span class="text-danger">*</span></label>
+                                                                                <input type="text" class="form-control firstname" value="${staff.firstname}" placeholder="First Name" name="firstname" required="">
+                                                                                <small class="text-danger firstnameError" style="display: none;">First name không được chứa số và kí tự được biệt</small>
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-md-6">
-                                                                            <div class="mb-3">                                                 
-                                                                                <label class="form-label">Last name <span class="text-danger">*</span></label>
-                                                                                <input type="text" class="form-control" value="${staff.lastname}" placeholder="Last Name" name="lastname" required="">
+                                                                            <div class="mb-3">
+                                                                                <label class="form-label">Last Name <span class="text-danger">*</span></label>
+                                                                                <input type="text" class="form-control lastname" value="${staff.lastname}" placeholder="Last Name" name="lastname" required="">
+                                                                                <small class="text-danger lastnameError" style="display: none;">Last name không được chứa số và kí tự được biệt</small>
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-md-12">
                                                                             <div class="mb-3">
                                                                                 <label class="form-label">Day of birth <span class="text-danger">*</span></label>
-                                                                                <input type="date" class="form-control" name="dob" value="${staff.dob}" required="">
+                                                                                <input type="date" class="form-control dob" name="dob" value="${staff.dob}" required="">
+                                                                                <small class="dobError text-danger" style="display: none;">Customer phải ít nhất 18 tuổi trở lên.</small>
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-md-12">
@@ -642,7 +646,8 @@
                                                                         <div class="col-md-12">
                                                                             <div class="mb-3">
                                                                                 <label class="form-label">Phone number <span class="text-danger">*</span></label>
-                                                                                <input type="tel" class="form-control" placeholder="Phone number" value="${staff.phone}" name="phoneNumber" required="">
+                                                                                <input type="tel" class="form-control phone" name="phoneNumber" placeholder="Phone number" value="${staff.phone}" pattern="0[1-9]\d{7,8}" required="">
+                                                                                <small class="text-danger phoneError" style="display: none;">Vui lòng nhập đúng format số điện thoại (9-10 số và không kí tự đặc biệt)</small>
                                                                             </div>
                                                                         </div>
                                                                         <div class="modal-footer">
@@ -654,65 +659,305 @@
                                                                 </form><!--end form-->
                                                             </div>
                                                         </div>
-
-                                                        <div class="rounded shadow mt-4">
-                                                            <div class="p-4 border-bottom">
-                                                                <h6 class="mb-0">Account Notifications :</h6>
-                                                            </div>
-
-                                                            <div class="p-4">
-                                                                <form>
-                                                                    <div class="row">
-                                                                        <div class="col-lg-12">
-                                                                            <div class="mb-3">
-                                                                                <label class="form-label">Old password
-                                                                                    :</label>
-                                                                                <input type="password" class="form-control"
-                                                                                       placeholder="Old password" required="">
-                                                                            </div>
-                                                                        </div><!--end col-->
-
-                                                                        <div class="col-lg-12">
-                                                                            <div class="mb-3">
-                                                                                <label class="form-label">New password
-                                                                                    :</label>
-                                                                                <input type="password" class="form-control"
-                                                                                       placeholder="New password" required="">
-                                                                            </div>
-                                                                        </div><!--end col-->
-
-                                                                        <div class="col-lg-12">
-                                                                            <div class="mb-3">
-                                                                                <label class="form-label">Re-type New
-                                                                                    password :</label>
-                                                                                <input type="password" class="form-control"
-                                                                                       placeholder="Re-type New password"
-                                                                                       required="">
-                                                                            </div>
-                                                                        </div><!--end col-->
-
-                                                                        <div class="col-lg-12 mt-2 mb-0">
-                                                                            <button class="btn btn-primary">Save
-                                                                                password</button>
-                                                                        </div><!--end col-->
-                                                                    </div><!--end row-->
-                                                                </form>
-                                                            </div>
-                                                        </div>
                                                     </div><!--end col-->
-                                                </div><!--end row-->
-                                            </div><!--end teb pane-->
-                                        </div><!--end tab content-->
-                                    </div>
-                                </div><!--end col-->
-                            </div><!--end row-->
-                        </div>
-                    </div>
-                </div><!--end container-->
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="rounded shadow mt-4">
+                                                        <div class="p-4 border-bottom">
+                                                            <strong class="mb-0">Thông tin cá nhân :</strong>
+                                                        </div>
 
-                <!-- Footer Start -->
-                <jsp:include page="template/footer.jsp"/>
-                <!-- End -->
+                                                        <div class="p-4">
+                                                            <form action="ConsultantProfile" method="post" class="form-update-email">
+                                                                <input name="changeEmail" value="changeEmail" type="hidden">
+                                                                <div class="row">
+                                                                    <div class="col-lg-12">
+                                                                        <div class="mb-3">
+                                                                            <label class="form-label"> 
+                                                                                <div><strong>Email:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></div>
+                                                                                <div> ${staff.email} </div>
+                                                                            </label>
+                                                                            <input type="email" class="form-control email"
+                                                                                   placeholder="New Email" name="updateEmail"
+                                                                                   required="">
+                                                                        </div>
+                                                                    </div><!--end col-->
+
+                                                                    <div class="col-lg-12 mt-2 mb-0">
+                                                                        <button class="btn btn-primary">Save
+                                                                            password</button>
+                                                                    </div><!--end col-->
+                                                                </div><!--end row-->
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                    <div class="rounded shadow mt-4">
+                                                        <div class="p-4 border-bottom">
+                                                            <strong class="mb-0">Đăng nhập tài khoản Smartbank :</strong>
+                                                        </div>
+
+                                                        <div class="p-4">
+                                                            <form action="ConsultantProfile" method="post" class="form-update-password">
+                                                                <input name="changePwd" value="changePwd" type="hidden">
+                                                                <div class="row">
+                                                                    <div class="col-lg-12">
+                                                                        <div class="mb-3">
+                                                                            <label class="form-label">Old password
+                                                                                :</label>
+                                                                            <input type="password" class="form-control" name="currentpassword"
+                                                                                   placeholder="Old password" required="">
+                                                                        </div>
+                                                                    </div><!--end col-->
+
+                                                                    <div class="col-lg-12">
+                                                                        <div class="mb-3">
+                                                                            <label class="form-label">New password
+                                                                                :</label>
+                                                                            <input type="password" class="form-control" name="newpassword"
+                                                                                   placeholder="New password" required="">
+                                                                        </div>
+                                                                    </div><!--end col-->
+
+                                                                    <div class="col-lg-12">
+                                                                        <div class="mb-3">
+                                                                            <label class="form-label">Re-type New
+                                                                                password :</label>
+                                                                            <input type="password" class="form-control" name="confirmpassword"
+                                                                                   placeholder="Re-type New password"
+                                                                                   required="">
+                                                                        </div>
+                                                                    </div><!--end col-->
+
+                                                                    <div class="col-lg-12 mt-2 mb-0">
+                                                                        <button class="btn btn-primary">Save
+                                                                            password</button>
+                                                                    </div><!--end col-->
+                                                                </div><!--end row-->
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                    <div class="rounded shadow mt-4">
+                                                        <div class="p-4 border-bottom">
+                                                            <h6 class="mb-0">General Notifications :</h6>
+                                                        </div>
+                                                        <form action="ConsultantProfile" method="post" onsubmit="return confirmDelete()">>
+                                                            <div class="p-4">
+                                                                <div class="p-4 border-bottom">
+                                                                    <h5 class="mb-0 text-danger">Delete Account :</h5>
+                                                                </div>
+
+                                                                <div class="p-4">
+                                                                    <h6 class="mb-0 fw-normal">Do you want to delete the
+                                                                        account? Please press below "Delete" button</h6>
+                                                                    <div class="mt-4">
+                                                                        <button type="submit" class="btn btn-danger">Delete
+                                                                            Account</button>
+                                                                    </div><!--end col-->
+                                                                </div>
+                                                            </div>
+                                                        </form>    
+                                                    </div>
+                                                </div><!--end col-->
+                                            </div><!--end row-->
+                                        </div><!--end teb pane-->
+                                    </div><!--end tab content-->
+                                </div>                                                
+                            </div><!--end col-->
+                        </div><!--end row-->
+                    </div>
+                </div>
+            </div><!--end container-->
+            <script>
+                $(document).ready(function () {
+                    $(".form-update-password").submit(function (event) {
+                        event.preventDefault(); // Stop default form submission
+
+                        var formData = new FormData(this); // Collect form data
+
+                        $.ajax({
+                            url: "ConsultantProfile",
+                            type: "POST",
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            success: function (response) {
+                                console.log("Server Response: " + response); // Debugging response
+                                if (response === "errorCheckPassword") {
+                                    alert("Mật khẩu hiện tại không đúng");
+                                }
+                                if (response === "errorConfirmPassword") {
+                                    alert("Mật khẩu confirm không đúng");
+                                } else {
+                                    alert("Mật khẩu được đổi thành công");
+                                    location.reload();
+                                }
+                            },
+                            error: function () {
+                                alert("Có lỗi xảy ra, vui lòng thử lại.");
+                            }
+                        });
+                    });
+                });
+            </script>
+            <script>
+                $(document).ready(function () {
+                    $(".form-update-email").submit(function (event) {
+                        event.preventDefault(); // Stop default form submission
+
+                        var formData = new FormData(this); // Collect form data
+
+                        $.ajax({
+                            url: "ConsultantProfile",
+                            type: "POST",
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            success: function (response) {
+                                if (response === "errorEmailexist") {
+                                    alert("Email đã có người sử dụng, vui lòng nhập email khác.");
+                                } else {
+                                    alert("Đổi email thành công!");
+                                    location.reload();
+                                }
+                            },
+                            error: function () {
+                                alert("Có lỗi xảy ra, vui lòng thử lại.");
+                            }
+                        });
+                    });
+                });
+            </script>
+            <script>
+                document.querySelectorAll(".form-update-account").forEach(function (form) {
+                    // Username Validation
+                    form.querySelectorAll(".username").forEach(function (input) {
+                        input.addEventListener("input", function () {
+                            const username = this.value;
+                            const usernamePattern = /^[\p{L}0-9]+$/u;
+                            const errorMsg = form.querySelector(".usernameError");
+
+                            if (!usernamePattern.test(username)) {
+                                errorMsg.style.display = "block";
+                                this.setCustomValidity("Username must not contain spaces or special characters.");
+                            } else {
+                                errorMsg.style.display = "none";
+                                this.setCustomValidity("");
+                            }
+                        });
+                    });
+
+                    // First Name Validation
+                    form.querySelectorAll(".firstname").forEach(function (input) {
+                        input.addEventListener("input", function () {
+                            const firstname = this.value;
+                            const namePattern = /^[\p{L}0-9]+$/u;
+                            const errorMsg = form.querySelector(".firstnameError");
+
+                            if (!namePattern.test(firstname)) {
+                                errorMsg.style.display = "block";
+                                this.setCustomValidity("First name must only contain letters.");
+                            } else {
+                                errorMsg.style.display = "none";
+                                this.setCustomValidity("");
+                                this.value = capitalize(firstname); // Capitalize the first letter
+                            }
+                        });
+                    });
+
+                    // Last Name Validation
+                    form.querySelectorAll(".lastname").forEach(function (input) {
+                        input.addEventListener("input", function () {
+                            const lastname = this.value;
+                            const namePattern = /^[\p{L}0-9]+$/u;
+                            const errorMsg = form.querySelector(".lastnameError");
+
+                            if (!namePattern.test(lastname)) {
+                                errorMsg.style.display = "block";
+                                this.setCustomValidity("Last name must only contain letters.");
+                            } else {
+                                errorMsg.style.display = "none";
+                                this.setCustomValidity("");
+                                this.value = capitalize(lastname); // Capitalize the first letter
+                            }
+                        });
+                    });
+
+                    // Phone Validation
+                    form.querySelectorAll(".phone").forEach(function (input) {
+                        input.addEventListener("input", function () {
+                            let phoneInput = this.value;
+                            let phonePattern = /^0[1-9]\d{7,8}$/;
+                            let errorMsg = form.querySelector(".phoneError");
+
+                            if (phonePattern.test(phoneInput)) {
+                                this.setCustomValidity("");
+                                errorMsg.style.display = "none";
+                            } else {
+                                this.setCustomValidity("Phone number không đúng format");
+                                errorMsg.style.display = "block";
+                            }
+                        });
+                    });
+
+                    // Email Validation
+                    form.querySelectorAll(".email").forEach(function (input) {
+                        input.addEventListener("input", function () {
+                            let email = this.value;
+                            let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                            let errorMsg = form.querySelector(".emailError");
+
+                            if (emailPattern.test(email)) {
+                                this.setCustomValidity(""); // ✅ Allow form submission
+                                errorMsg.style.display = "none"; // ✅ Hide error message
+                            } else {
+                                this.setCustomValidity("Email không đúng format"); // ❌ Prevent form submission
+                                errorMsg.style.display = "block"; // ❌ Show error message
+                            }
+                        });
+                    });
+
+                    // Date of Birth Validation (18+)
+                    form.querySelectorAll(".dob").forEach(function (input) {
+                        input.addEventListener("change", function () {
+                            const dobInput = this.value;
+                            const dobError = form.querySelector(".dobError");
+
+                            if (dobInput) {
+                                const dob = new Date(dobInput);
+                                const today = new Date();
+                                const age = today.getFullYear() - dob.getFullYear();
+                                const monthDiff = today.getMonth() - dob.getMonth();
+                                const dayDiff = today.getDate() - dob.getDate();
+
+                                const actualAge = (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) ? age - 1 : age;
+
+                                if (actualAge < 18) {
+                                    dobError.style.display = "block";
+                                    this.setCustomValidity("You must be at least 18 years old.");
+                                } else {
+                                    dobError.style.display = "none";
+                                    this.setCustomValidity("");
+                                }
+                            }
+                        });
+                    });
+                });
+            </script>
+            <script>
+                let confirmed = false;
+
+                function confirmDelete() {
+                    if (!confirmed) {
+                        confirmed = confirm("Bạn có thực sự muốn xóa tài khoản này không?, hành động này không thể hoàn tác.");
+                        return false; // Prevent form submission initially
+                    }
+                    return true; // Allow submission on second click
+                }
+
+            </script>    
+            <!-- Footer Start -->
+            <jsp:include page="template/footer.jsp"/>
+            <!-- End -->
         </main>
         <!--End page-content" -->
     </div>

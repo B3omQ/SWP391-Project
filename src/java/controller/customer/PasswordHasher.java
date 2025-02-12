@@ -25,7 +25,7 @@ public class PasswordHasher {
 
     public static void main(String[] args) {
         PasswordHasher hasher = new PasswordHasher();
-        String password = "Anhdai2004@";
+        String password = "123123";
         String hashedPassword = hasher.hashPassword(password);
         System.out.println("Hashed Password: " + hashedPassword);
     }
