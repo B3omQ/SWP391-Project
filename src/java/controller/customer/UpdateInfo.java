@@ -6,6 +6,7 @@
 package controller.customer;
 
 import dal.ConsultantDAO;
+import dal.CustomerDAO;
 import dal.StaffDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -16,6 +17,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.Customer;
 import model.Staff;
+import util.AccountValidation;
 
 /**
  *
@@ -68,7 +70,7 @@ public class UpdateInfo extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @Override
+  @Override
  protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -78,51 +80,81 @@ public class UpdateInfo extends HttpServlet {
             return;
         }
 
-        // Kiểm tra user hiện tại là Customer hay Staff
-        Object user = session.getAttribute("account"); // Mặc định là Customer
+        // Xác định người dùng hiện tại: Customer hoặc Staff
+        Object user = session.getAttribute("account");
         boolean isCustomer = true;
-
-        if (user == null) { 
-            user = session.getAttribute("staff"); // Nếu null, thử lấy Staff
+        if (user == null) {
+            user = session.getAttribute("staff");
             isCustomer = false;
         }
-
-        if (user == null) { // Không có tài khoản nào
+        if (user == null) {
             response.sendRedirect(request.getContextPath() + "/auth/template/login.jsp");
             return;
         }
 
-        // Lấy thông tin từ form
+        // Lấy dữ liệu từ form
         String email = request.getParameter("email");
         String phone = request.getParameter("phone");
         String address = request.getParameter("address");
 
+        AccountValidation validator = new AccountValidation();
+
+        if (!validator.isValidEmail(email)) {
+            session.setAttribute("error3", "Email không hợp lệ.");
+            response.sendRedirect(request.getContextPath() + "/customer/template/account-profile.jsp");
+            return;
+        }
+        if (!validator.isValidPhone(phone)) {
+            session.setAttribute("error3", "Số điện thoại không hợp lệ.");
+            response.sendRedirect(request.getContextPath() + "/customer/template/account-profile.jsp");
+            return;
+        }
+        if (!validator.isValidAddress(address)) {
+            session.setAttribute("error3", "Địa chỉ không hợp lệ.");
+            response.sendRedirect(request.getContextPath() + "/customer/template/account-profile.jsp");
+            return;
+        }
+
         if (isCustomer) {
             Customer customer = (Customer) user;
+            CustomerDAO customerDAO = new CustomerDAO();
+            if (!email.equalsIgnoreCase(customer.getEmail()) && customerDAO.emailExists(email)) {
+                session.setAttribute("error3", "Email đã được sử dụng bởi người dùng khác.");
+                response.sendRedirect(request.getContextPath() + "/customer/template/account-profile.jsp");
+                return;
+            }
+            if (!phone.equals(customer.getPhone()) && customerDAO.phoneExists(phone)) {
+                session.setAttribute("error3", "Số điện thoại đã được sử dụng bởi người dùng khác.");
+                response.sendRedirect(request.getContextPath() + "/customer/template/account-profile.jsp");
+                return;
+            }
             customer.setEmail(email);
             customer.setPhone(phone);
             customer.setAddress(address);
-
-            // Cập nhật database
-            ConsultantDAO customerDAO = new ConsultantDAO();
             customerDAO.updateCustomer(customer);
-
-            // Cập nhật lại session
             session.setAttribute("account", customer);
-            response.sendRedirect(request.getContextPath() + "/customer/template/account-profile.jsp?success=ProfileUpdated");
+            session.setAttribute("success3", "Cập nhật thông tin thành công.");
+            response.sendRedirect(request.getContextPath() + "/customer/template/account-profile.jsp");
         } else {
             Staff staff = (Staff) user;
+            StaffDAO staffDAO = new StaffDAO();
+            if (!email.equalsIgnoreCase(staff.getEmail()) && staffDAO.emailExists(email)) {
+                session.setAttribute("error3", "Email đã được sử dụng bởi người dùng khác.");
+                response.sendRedirect(request.getContextPath() + "/staff/template/staff-profile.jsp");
+                return;
+            }
+            if (!phone.equals(staff.getPhone()) && staffDAO.phoneExists(phone)) {
+                session.setAttribute("error3", "Số điện thoại đã được sử dụng bởi người dùng khác.");
+                response.sendRedirect(request.getContextPath() + "/staff/template/staff-profile.jsp");
+                return;
+            }
             staff.setEmail(email);
             staff.setPhone(phone);
             staff.setAddress(address);
-
-            // Cập nhật database
-            StaffDAO staffDAO = new StaffDAO();
             staffDAO.updateStaff(staff);
-
-            // Cập nhật lại session
             session.setAttribute("staff", staff);
-            response.sendRedirect(request.getContextPath() + "/staff/template/staff-profile.jsp?success=ProfileUpdated");
+            session.setAttribute("success3", "Cập nhật thông tin thành công.");
+            response.sendRedirect(request.getContextPath() + "/staff/template/staff-profile.jsp");
         }
     }
 

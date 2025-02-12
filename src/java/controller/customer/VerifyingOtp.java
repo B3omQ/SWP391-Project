@@ -11,16 +11,14 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
  * @author emkob
  */
-public class VNpayServlet extends HttpServlet {
-   private static final String VNP_TMN_CODE = "ZEXZKZK8";  // Mã Website của bạn
-    private static final String VNP_HASH_SECRET = "GN5MEE6Q6ZYG941UUB76FYAA786W6NAX"; // Secret Key
-    private static final String VNP_URL = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html"; // URL thanh toán của VNPAY
-    private static final String RETURN_URL = "http://localhost:8080/customer/vnpayReturn.jsp"; // Trang xử lý sau khi thanh toán
+public class VerifyingOtp extends HttpServlet {
+   
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -36,10 +34,10 @@ public class VNpayServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet VNpayServlet</title>");  
+            out.println("<title>Servlet VerifyingOtp</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet VNpayServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet VerifyingOtp at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -66,12 +64,29 @@ public class VNpayServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        processRequest(request, response);
-    }
+     protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        String userOtp = request.getParameter("otp");
+        String generatedOtp = (String) session.getAttribute("otp");
 
+        if (generatedOtp == null) {
+            response.sendRedirect("auth/template/login.jsp");
+            return;
+        }
+
+       if (userOtp != null && userOtp.equals(generatedOtp)) {
+        session.removeAttribute("otp");
+        if (session.getAttribute("staff") != null) {
+            response.sendRedirect("staff/template/Admin.jsp"); 
+        } else {
+            response.sendRedirect("customer/template/Customer.jsp"); 
+        }
+    } else {
+        session.setAttribute("otpError", "Mã OTP không đúng, vui lòng thử lại!");
+        response.sendRedirect(request.getContextPath() + "/auth/template/otp.jsp");
+    }
+    }
     /** 
      * Returns a short description of the servlet.
      * @return a String containing servlet description

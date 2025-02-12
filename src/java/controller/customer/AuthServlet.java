@@ -7,6 +7,7 @@ package controller.customer;
 import dal.ConsultantDAO;
 import dal.CustomerDAO;
 import dal.StaffDAO;
+import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -15,6 +16,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.Random;
 import model.Customer;
 import model.Staff;
 import util.AccountValidation;
@@ -25,10 +27,10 @@ import util.AccountValidation;
  */
 public class AuthServlet extends HttpServlet {
 
-
     private CustomerDAO customerDAO = new CustomerDAO();
     private StaffDAO staffDAO = new StaffDAO();
     private AccountValidation av = new AccountValidation();
+    private resetService resetService = new resetService();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -93,7 +95,7 @@ public class AuthServlet extends HttpServlet {
         if ("logout".equals(action)) {
             handleLogout(request, response);
         } else if ("login".equals(action)) {
-            handleLogin(request, response);
+            handleLogin(request, response);       
         } else if ("changePassword".equals(action)) {
             handleChangePassword(request, response);
         } else {
@@ -121,28 +123,49 @@ public class AuthServlet extends HttpServlet {
             return;
         }
 
-        Customer customer = customerDAO.login(email, passWord);
+        boolean emailExists = customerDAO.emailExists(email) || staffDAO.emailExists(email);
 
-        if (customer != null && av.checkPassword(passWord, customer.getPassword())) {
-            customerDAO.resetFailedLogin(email);
-            handleRememberMe(response, email, passWord, rememberMe);
-            session.setAttribute("account", customer);
-            response.sendRedirect("customer/template/Customer.jsp");
+        if (!emailExists) {
+            session.setAttribute("errorAccount", "Tài khoản không tồn tại.");
+            response.sendRedirect("auth/template/login.jsp");
             return;
         }
 
+        Customer customer = customerDAO.login(email, passWord);
         Staff staff = staffDAO.login(email, passWord);
+
+        if (customer != null && av.checkPassword(passWord, customer.getPassword())) {
+            session.setAttribute("account", customer);
+
+            String otp = String.format("%06d", new Random().nextInt(999999));
+            session.setAttribute("otp", otp);
+            session.setAttribute("email", email);
+
+            // Gửi OTP qua email
+            resetService resetService = new resetService();
+            String otpMessage = "Mã OTP của bạn là: " + otp + ". OTP có hiệu lực trong 10 phút.";
+            resetService.sendOtpEmail(email, otpMessage, customer.getFirstname());
+
+            // Chuyển hướng đến trang nhập OTP
+            response.sendRedirect("auth/template/otp.jsp");
+            return;
+        }
+
         if (staff != null && av.checkPassword(passWord, staff.getPassword())) {
-            staffDAO.resetFailedLogin(email);
-            handleRememberMe(response, email, passWord, rememberMe);
             session.setAttribute("staff", staff);
             session.setAttribute("role", staff.getRoleId().getId());
 
-            response.sendRedirect(staff.getRoleId().getId() == 1 ? "staff/template/Admin.jsp" : "profile-manager");
+            String otp = resetService.generateOTP();
+            session.setAttribute("otp", otp);
+            session.setAttribute("email", email);
+
+            String otpMessage = "Mã OTP của bạn là: " + otp + ". OTP có hiệu lực trong 10 phút.";
+            resetService.sendOtpEmail(email, otpMessage, staff.getFirstname());
+
+            response.sendRedirect("auth/template/otp.jsp");
             return;
         }
 
-        // Nếu không tìm thấy tài khoản hoặc mật khẩu sai
         int failedAttempts = customerDAO.getFailedAttempts(email);
         if (failedAttempts == 0) {
             failedAttempts = staffDAO.getFailedAttempts(email);
@@ -152,11 +175,12 @@ public class AuthServlet extends HttpServlet {
             session.setAttribute("errorAccount", "Bạn đã nhập sai mật khẩu quá số lần cho phép. Tài khoản bị khóa trong 10 phút.");
         } else {
             int remainingAttempts = 6 - failedAttempts;
-            session.setAttribute("errorAccount", "Sai email hoặc mật khẩu. Bạn còn " + remainingAttempts + " lần thử.");
+            session.setAttribute("errorAccount", "Sai mật khẩu. Bạn còn " + remainingAttempts + " lần thử.");
         }
         response.sendRedirect("auth/template/login.jsp");
     }
 
+   
     private void handleLogout(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         request.getSession().invalidate();
@@ -206,12 +230,10 @@ public class AuthServlet extends HttpServlet {
         System.out.println("Hashed Input Password: " + encodedPassword);
         System.out.println("Stored Password in DB: " + storedPassword);
 
-        if (!oldPass.equals("bypass")) {  // Thêm dòng này để kiểm tra tạm thời
-            if (!av.checkPassword(oldPass, storedPassword)) {
-                request.setAttribute("error", "Mật khẩu cũ không đúng!");
-                request.getRequestDispatcher(profilePage).forward(request, response);
-                return;
-            }
+        if (!av.checkPassword(oldPass, storedPassword)) {
+            request.setAttribute("error", "Mật khẩu cũ không đúng!");
+            request.getRequestDispatcher(profilePage).forward(request, response);
+            return;
         }
 
         if (!newPass.trim().equals(retypePass.trim())) {

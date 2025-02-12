@@ -14,8 +14,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Customer;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import model.Customer;
+import model.Staff;
 import util.AccountValidation;
 
 /**
@@ -157,16 +159,15 @@ public class ConsultantDAO extends DBContext {
         return false;
     }
 
-    public void deleteAccount(int id) {
-        String sql = """
-                     DELETE FROM [dbo].[Customer] 
-                     WHERE [Id] = ? 
-                     """;
-        try (PreparedStatement p = connection.prepareStatement(sql)) {
-            p.setInt(1, id);
-        } catch (SQLException e) {
-            e.printStackTrace();
+    public boolean deleteCustomer(int id) {
+        String sql = "DELETE FROM Customer WHERE Id=?";
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, id);
+            return st.executeUpdate() > 0;
+        } catch (SQLException ex) {
+            System.out.println(ex);
         }
+        return false;
     }
 
     public void updatePassword(String newPassword, String email) {
@@ -193,7 +194,7 @@ public class ConsultantDAO extends DBContext {
             stmt.setString(5, address);
             stmt.setString(6, gender);
             stmt.setString(7, phone);
-            stmt.setString(8, dob);
+            stmt.setDate(8, java.sql.Date.valueOf(dob));
             stmt.setInt(9, id);
 
             int rowsUpdated = stmt.executeUpdate();
@@ -386,5 +387,52 @@ public class ConsultantDAO extends DBContext {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    public void updateInformationStaff(int id, String img, String username, String firstname, String lastname, String gender, LocalDate dob, String phone, String address) {
+        String sql = """
+                 UPDATE BankingSystem.dbo.Staff
+                 SET Username=?, [Image]=?, FirstName=?, LastName=?, Gender=?, Dob=?, Phone=?, Address=? 
+                 WHERE Id=?;""";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(2, img);
+            st.setString(3, firstname);
+            st.setString(4, lastname);
+            st.setString(5, gender);  // Fix: Set gender correctly
+            st.setDate(6, java.sql.Date.valueOf(dob));  // Fix: Convert LocalDate to java.sql.Date
+            st.setString(7, phone);
+            st.setString(8, address);
+            st.setInt(9, id);  // Fix: Correct index for id parameter
+            st.setString(1, username);
+            st.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(ManagerDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public Staff getStaffById(int id) {
+        String sql = "SELECT * FROM Staff WHERE Id = ?";
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, id);
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    return new Staff(
+                            rs.getInt("Id"),
+                            rs.getString("Username"),
+                            rs.getString("Password"),
+                            rs.getString("Image"),
+                            rs.getString("Email"),
+                            rs.getString("FirstName"),
+                            rs.getString("LastName"),
+                            rs.getString("Gender"),
+                            rs.getDate("Dob").toLocalDate(),
+                            rs.getString("Phone"),
+                            rs.getString("Address")
+                    );
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return null;
     }
 }

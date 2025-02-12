@@ -1,4 +1,6 @@
 <%@ page import="model.Customer" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -38,7 +40,7 @@
    if (account != null && account.getImage() != null && !account.getImage().isEmpty()) {
        imagePath = request.getContextPath() + "/uploads/" + account.getImage();
    } else {
-       imagePath = request.getContextPath() + "/assets/images/default-avatar.jpg"; // ?nh m?c ??nh
+       imagePath = request.getContextPath() + "/assets/images/default-avatar.jpg";
    }
     %>
 
@@ -187,32 +189,31 @@
 
                                     <div class="col-lg-5 col-md-12 text-lg-end text-center mt-4 mt-lg-0">
                                         <!-- Form Upload -->
-                                        <form action="<%= request.getContextPath() %>/UploadImageServlet" method="post" enctype="multipart/form-data">
-                                            <input type="file" name="image" accept=".jpg,.png" class="form-control mb-2">
-                                            <button type="submit" class="btn btn-primary">Upload</button>
-                                        </form>
+                             <form action="<%= request.getContextPath() %>/UploadImageServlet" method="post" enctype="multipart/form-data">
+    <input type="file" name="image" accept=".jpg,.png" class="form-control mb-2">
+    <button type="submit" class="btn btn-primary">Upload</button>
+    
+<c:if test="${not empty sessionScope.error2}">
+    <p style="color: red;">${sessionScope.error2}</p>
+    <c:remove var="error2" scope="session"/>
+</c:if>
+
+<c:if test="${not empty sessionScope.success2}">
+    <p style="color: green;">${sessionScope.success2}</p>
+    <c:remove var="success2" scope="session"/>
+</c:if>
+
+</form>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Hi?n th? thông báo khi có l?i -->
-                            <%
-                                String error = request.getParameter("error");
-                                String success = request.getParameter("success");
-                                if (error != null) {
-                            %>
-                            <div class="alert alert-danger"><%= error %></div>
-                            <%
-                                } else if (success != null) {
-                            %>
-                            <div class="alert alert-success"><%= success %></div>
-                            <%
-                                }
-                            %>
-                            <form action="<%= request.getContextPath() %>/UpdateInfo" method="post">
+                            <!-- Hi?n th? thÃ´ng bÃ¡o khi cÃ³ l?i -->
+                        
+                            <form action="<%= request.getContextPath() %>/UpdateInfo" method="post" onsubmit="return confirmUpdate()" >
                                 <div class="p-4">
                                     <div class="row">
-                                        <!-- First Name (Không th? ch?nh s?a) -->
+                                        <!-- First Name (KhÃ´ng th? ch?nh s?a) -->
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label for="firstName" class="form-label">First Name</label>
@@ -221,7 +222,7 @@
                                             </div>
                                         </div>
 
-                                        <!-- Last Name (Không th? ch?nh s?a) -->
+                                        <!-- Last Name (KhÃ´ng th? ch?nh s?a) -->
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label for="lastName" class="form-label">Last Name</label>
@@ -230,7 +231,7 @@
                                             </div>
                                         </div>
 
-                                        <!-- Email (Có th? ch?nh s?a) -->
+                                        <!-- Email (CÃ³ th? ch?nh s?a) -->
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label for="email" class="form-label">Your Email</label>
@@ -239,7 +240,7 @@
                                             </div>
                                         </div>
 
-                                        <!-- Phone (Có th? ch?nh s?a) -->
+                                        <!-- Phone (CÃ³ th? ch?nh s?a) -->
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label for="phone" class="form-label">Phone Number</label>
@@ -248,7 +249,7 @@
                                             </div>
                                         </div>
 
-                                        <!-- Gender (Không th? ch?nh s?a) -->
+                                        <!-- Gender (KhÃ´ng th? ch?nh s?a) -->
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label for="gender" class="form-label">Gender</label>
@@ -257,7 +258,7 @@
                                             </div>
                                         </div>
 
-                                        <!-- Date of Birth (Không th? ch?nh s?a) -->
+                                        <!-- Date of Birth (KhÃ´ng th? ch?nh s?a) -->
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label for="dob" class="form-label">Date of Birth</label>
@@ -266,7 +267,7 @@
                                             </div>
                                         </div>
 
-                                        <!-- Address (Có th? ch?nh s?a) -->
+                                        <!-- Address (CÃ³ th? ch?nh s?a) -->
                                         <div class="col-md-12">
                                             <div class="mb-3">
                                                 <label for="address" class="form-label">Address</label>
@@ -276,7 +277,7 @@
                                         </div>
                                     </div>
 
-                                    <!-- Nút Save Changes -->
+                                    <!-- NÃºt Save Changes -->
                                     <div class="row">
                                         <div class="col-12 text-end">
                                             <input type="hidden" name="id" value="${account != null ? account.id : ''}">
@@ -284,13 +285,16 @@
                                         </div>
                                     </div>
 
-                                    <!-- Thông báo thành công / l?i -->
-                                    <c:if test="${not empty error2}">
-                                        <p style="color: red;">${error2}</p>
-                                    </c:if>
-                                    <c:if test="${not empty success2}">
-                                        <p style="color: green;">${success2}</p>
-                                    </c:if>
+                                    <!-- ThÃ´ng bÃ¡o thÃ nh cÃ´ng / l?i -->
+                           <c:if test="${not empty sessionScope.error3}">
+    <p style="color: red;">${sessionScope.error3}</p>
+    <c:remove var="error3" scope="session"/>
+</c:if>
+<c:if test="${not empty sessionScope.success3}">
+    <p style="color: green;">${sessionScope.success3}</p>
+    <c:remove var="success3" scope="session"/>
+</c:if>
+
                                 </div>
                             </form>
 
@@ -361,7 +365,7 @@
                 <div class="row align-items-center">
                     <div class="col-sm-6">
                         <div class="text-sm-start text-center">
-                            <p class="mb-0"><script>document.write(new Date().getFullYear())</script> © Doctris. Design with <i class="mdi mdi-heart text-danger"></i> by <a href="../../../index.jsp" target="_blank" class="text-reset">Shreethemes</a>.</p>
+                            <p class="mb-0"><script>document.write(new Date().getFullYear())</script> Â© Doctris. Design with <i class="mdi mdi-heart text-danger"></i> by <a href="../../../index.jsp" target="_blank" class="text-reset">Shreethemes</a>.</p>
                         </div>
                     </div><!--end col-->
 
@@ -457,6 +461,12 @@
         <script src="<%= request.getContextPath() %>/assets/js/feather.min.js"></script>
         <!-- Main Js -->
         <script src="<%= request.getContextPath() %>/assets/js/app.js"></script>
+        <script>
+    function confirmUpdate() {
+        return confirm("Báº¡n cÃ³ cháº¯c cháº¯n muá»‘n lÆ°u thay Ä‘á»•i khÃ´ng?");
+    }
+</script>
+
     </body>
     <script>
                                             function togglePassword(passwordFieldId, iconId) {

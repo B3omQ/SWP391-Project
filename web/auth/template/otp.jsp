@@ -48,31 +48,31 @@
                     <img src="<%= request.getContextPath() %>/assets/images/logo-dark.png" height="24" class="mx-auto d-block" alt="">
                     <div class="card login-page bg-white shadow mt-4 rounded border-0">
                         <div class="card-body">
-                            <h4 class="text-center">Recover Account</h4>
-                          <form class="login-form mt-4" action="<%= request.getContextPath() %>/requestPassword" method="POST">
+                            <h4 class="text-center">Login</h4>
+                  <form class="login-form mt-4" action="<%= request.getContextPath() %>/VerifyingOtp" method="POST">
 
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <p class="text-muted">Please enter your email address. You will receive a link to create a new password via email.</p>
-                                        <div class="mb-3">
-                                            <label class="form-label">Email address <span class="text-danger">*</span></label>
-                                            <input type="email" class="form-control" placeholder="Enter Your Email Address" name="email" required>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <div class="d-grid">
-                                            <button class="btn btn-primary" type="submit">Send</button>
-                                        </div>
-                                    </div>
-                                    <div class="mx-auto">
-                                        <p class="mb-0 mt-3">
-                                            <small class="text-dark me-2">Remember your password ?</small> 
-                                            <a href="login.jsp" class="text-dark h6 mb-0">Sign in</a>
-                                        </p>
-                                    </div>
-                                    <p class="text-danger text-center">${mess}</p>
-                                </div>
-                            </form>
+    <div class="row">
+        <div class="col-lg-12">
+            <p class="text-muted">Please enter the OTP in the email we sent.</p>
+            <div class="mb-3">
+                <label class="form-label">OTP <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" placeholder="Enter OTP" name="otp" required>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="d-grid">
+                <button class="btn btn-primary" type="submit">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hiển thị thông báo lỗi nếu có -->
+    <c:if test="${not empty sessionScope.otpError}">
+        <p style="color: red;">${sessionScope.otpError}</p>
+        <c:remove var="otpError" scope="session"/>
+    </c:if>
+</form>
+
                         </div>
                     </div>
                 </div> <!--end col-->

@@ -86,81 +86,97 @@
                                                                                class="fea icon-sm"></i></div>
                         </a>
                     </li>
-                    <c:if test="${sessionScope.sustomer == null || sessionScope.staff == null}">
+                    <c:if test="${sessionScope.sustomer == null && sessionScope.staff == null}">
 
-                    <!--                    <li class="list-inline-item mb-0 ms-1">
-                                            <a href="javascript:void(0)" class="btn btn-icon btn-pills btn-primary" data-bs-toggle="offcanvas"
-                                               data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
-                                                <i class="uil uil-search"></i>
-                                            </a>
-                                        </li>-->
-                    <li class="list-inline-item mb-0 ms-1">
-                        <a href="
-                           /login.jsp" class="btn btn-pills btn-soft-primary">
-                            <i class="uil uil-sign-in-alt align-middle h6 me-1"></i> Đăng nhập
-                        </a>
-
-                    </li>
+                        <!--                    <li class="list-inline-item mb-0 ms-1">
+                                                <a href="javascript:void(0)" class="btn btn-icon btn-pills btn-primary" data-bs-toggle="offcanvas"
+                                                   data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
+                                                    <i class="uil uil-search"></i>
+                                                </a>
+                                            </li>-->
+                        <li class="list-inline-item mb-0 ms-1">
+                            <a href="
+                               ${pageContext.request.contextPath}/auth/template/login.jsp"" class="btn btn-pills btn-soft-primary">
+                                <i class="uil uil-sign-in-alt align-middle h6 me-1"></i> Đăng nhập
+                            </a>
+                        </li>
                     </c:if>
                     <c:if test="${sessionScope.customer != null}">
-                    <li class="list-inline-item mb-0 ms-1">
-                        <div class="dropdown dropdown-primary">
-                            <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0"
-                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img
-                                    src="assets/images/doctors/01.jpg" class="avatar avatar-ex-small rounded-circle"
-                                    alt=""></button>
-                            <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3"
-                                 style="min-width: 200px;">
-                                <a class="dropdown-item d-flex align-items-center text-dark" href="">
-                                    <img src="assets/images/doctors/01.jpg"
-                                         class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                    <div class="flex-1 ms-2">
-                                        <span class="d-block mb-1">${Customer.username}</span>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item text-dark" href="doctor-dashboard.html"><span
-                                        class="mb-0 d-inline-block me-1"><i
-                                            class="uil uil-dashboard align-middle h6"></i></span> Dashboard</a>
-                                <a class="dropdown-item text-dark" href="doctor-profile-setting.html"><span
-                                        class="mb-0 d-inline-block me-1"><i
-                                            class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
-                                <div class="dropdown-divider border-top"></div>
-                                <a class="dropdown-item text-dark" href="login.jsp"><span
-                                        class="mb-0 d-inline-block me-1"><i
-                                            class="uil uil-sign-out-alt align-middle h6"></i></span> Logout</a>
+                        <li class="list-inline-item mb-0 ms-1">
+                            <div class="dropdown dropdown-primary">
+                                <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0"
+                                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img
+                                        src="assets/images/doctors/01.jpg" class="avatar avatar-ex-small rounded-circle"
+                                        alt=""></button>
+                                <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3"
+                                     style="min-width: 200px;">
+                                    <a class="dropdown-item d-flex align-items-center text-dark" href="">
+                                        <img src="assets/images/doctors/01.jpg"
+                                             class="avatar avatar-md-sm rounded-circle border shadow" alt="">
+                                        <div class="flex-1 ms-2">
+                                            <span class="d-block mb-1">${Customer.username}</span>
+                                        </div>
+                                    </a>
+                                    <a class="dropdown-item text-dark" href="doctor-dashboard.html"><span
+                                            class="mb-0 d-inline-block me-1"><i
+                                                class="uil uil-dashboard align-middle h6"></i></span> Dashboard</a>
+                                    <a class="dropdown-item text-dark" href="doctor-profile-setting.html"><span
+                                            class="mb-0 d-inline-block me-1"><i
+                                                class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
+                                    <div class="dropdown-divider border-top"></div>
+                                    <a class="dropdown-item text-dark" href="login.jsp"><span
+                                            class="mb-0 d-inline-block me-1"><i
+                                                class="uil uil-sign-out-alt align-middle h6"></i></span> Logout</a>
+                                </div>
                             </div>
-                        </div>
-                    </li>
+                        </li>
                     </c:if>
                     <c:if test="${sessionScope.staff != null}">
-                    <li class="list-inline-item mb-0 ms-1">
-                        <div class="dropdown dropdown-primary">
-                            <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0"
-                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img
-                                    src="assets/images/doctors/01.jpg" class="avatar avatar-ex-small rounded-circle"
-                                    alt=""></button>
-                            <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3"
-                                 style="min-width: 200px;">
-                                <a class="dropdown-item d-flex align-items-center text-dark" href="">
-                                    <img src="assets/images/doctors/01.jpg"
-                                         class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                    <div class="flex-1 ms-2">
-                                        <span class="d-block mb-1">${customer.username}</span>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item text-dark" href="doctor-dashboard.html"><span
-                                        class="mb-0 d-inline-block me-1"><i
-                                            class="uil uil-dashboard align-middle h6"></i></span> Dashboard</a>
-                                <a class="dropdown-item text-dark" href="doctor-profile-setting.html"><span
-                                        class="mb-0 d-inline-block me-1"><i
-                                            class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
-                                <div class="dropdown-divider border-top"></div>
-                                <a class="dropdown-item text-dark" href="login.jsp"><span
-                                        class="mb-0 d-inline-block me-1"><i
-                                            class="uil uil-sign-out-alt align-middle h6"></i></span> Logout</a>
+                        <li class="list-inline-item mb-0 ms-1">
+                            <div class="dropdown dropdown-primary">
+                                <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0"
+                                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img
+                                        src="assets/images/doctors/01.jpg" class="avatar avatar-ex-small rounded-circle"
+                                        alt=""></button>
+                                <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3"
+                                     style="min-width: 200px;">
+                                    <a class="dropdown-item d-flex align-items-center text-dark" href="">
+                                        <img src="assets/images/doctors/01.jpg"
+                                             class="avatar avatar-md-sm rounded-circle border shadow" alt="">
+                                        <div class="flex-1 ms-2">
+                                            <span class="d-block mb-1">${customer.username}</span>
+                                        </div>
+                                    </a>
+                                    <a class="dropdown-item text-dark" href="doctor-dashboard.html"><span
+                                            class="mb-0 d-inline-block me-1"><i
+                                                class="uil uil-dashboard align-middle h6"></i></span> Dashboard</a>
+                                            <c:if test="${sessionScope.staff.roleId.id == 1}">
+                                        <a class="dropdown-item text-dark" href="doctor-profile-setting.html"><span
+                                                class="mb-0 d-inline-block me-1"><i
+                                                    class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
+                                            </c:if>
+                                            <c:if test="${sessionScope.staff.roleId.id == 2}">
+                                        <a class="dropdown-item text-dark" href="./consultant-customer"><span
+                                                class="mb-0 d-inline-block me-1"><i
+                                                    class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
+                                            </c:if>
+                                            <c:if test="${sessionScope.staff.roleId.id == 3}">
+                                        <a class="dropdown-item text-dark" href="doctor-profile-setting.html"><span
+                                                class="mb-0 d-inline-block me-1"><i
+                                                    class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
+                                            </c:if>
+                                            <c:if test="${sessionScope.staff.roleId.id == 4}">
+                                        <a class="dropdown-item text-dark" href="doctor-profile-setting.html"><span
+                                                class="mb-0 d-inline-block me-1"><i
+                                                    class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
+                                            </c:if>
+                                    <div class="dropdown-divider border-top"></div>
+                                    <a class="dropdown-item text-dark" href="AuthServlet" name ="action" value="logout"><span
+                                            class="mb-0 d-inline-block me-1"><i
+                                                class="uil uil-sign-out-alt align-middle h6"></i></span> Logout</a>
+                                </div>
                             </div>
-                        </div>
-                    </li>
+                        </li>
                     </c:if>
                 </ul>
                 <!-- Start Dropdown -->
@@ -238,9 +254,9 @@
                                     <a href="javascript:void(0)" class="menu-item"> Các loại bảng tính </a><span
                                         class="submenu-arrow"></span>
                                     <ul class="submenu">
-                                        <li><a href="blogs.html" class="sub-menu-item">Bảng tính lãi suất vay</a></li>
-                                        <li><a href="blog-detail.html" class="sub-menu-item">Bảng tính quyền lợi bảo hiểm</a></li>
-                                        <li><a href="blog-detail.html" class="sub-menu-item">Bảng tính lãi suất tiết kiệm</a></li>
+                                        <li><a href="./public/LoanInterestRateTool.jsp" class="sub-menu-item">Bảng tính lãi suất vay</a></li>
+                                        <li><a href="./public/InsuranceBenefitsTool.jsp" class="sub-menu-item">Bảng tính quyền lợi bảo hiểm</a></li>
+                                        <li><a href="./public/SaveInterestTool.jsp" class="sub-menu-item">Bảng tính lãi suất tiết kiệm</a></li>
                                     </ul>
                                 </li>
                                 <li class="has-submenu parent-menu-item">

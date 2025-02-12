@@ -75,6 +75,32 @@ public class CustomerDAO extends DBContext {
     }
     return null;
 }
+public boolean emailExists(String email) {
+    String sql = "SELECT 1 FROM [dbo].[Customer] WHERE Email = ?";
+    
+    try (PreparedStatement p = connection.prepareStatement(sql)) {
+        p.setString(1, email);
+        try (ResultSet rs = p.executeQuery()) {
+            return rs.next(); 
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false; 
+}
+public boolean phoneExists(String phone) {
+    String sql = "SELECT 1 FROM [dbo].[Customer] WHERE Phone = ?";
+    
+    try (PreparedStatement p = connection.prepareStatement(sql)) {
+        p.setString(1, phone);
+        try (ResultSet rs = p.executeQuery()) {
+            return rs.next(); 
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false; 
+}
 
 public void updateCustomerImage(int customerId, String imagePath) {
         String sql = "UPDATE Customer SET Image = ? WHERE Id = ?";

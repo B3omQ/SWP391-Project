@@ -5,6 +5,7 @@
 package controller.customer;
 
 import dal.DAOTokenForget;
+import dal.ConsultantDAO;
 import dal.CustomerDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -85,7 +86,7 @@ public class requestPassword extends HttpServlet {
         resetService service = new resetService();
         String token = service.generateToken();
 
-        String linkReset = "http://localhost:9999/BankingSystem/resetPassword?token=" + token;
+        String linkReset = "http://localhost:8080/BankingSystem/resetPassword?token=" + token;
 
         TokenForgetPassword newTokenForget = new TokenForgetPassword(
                 token,
