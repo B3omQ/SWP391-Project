@@ -176,12 +176,12 @@ public class CustomerManager extends HttpServlet {
                     image = mdao.getCustomerById(id).getImage();
                 }
 
-//                if (mdao.isDuplicatedEmail(email)) {
-//                    json.put("success", false);
-//                    json.put("message", "Email already existed");
-//                    response.getWriter().write(json.toString());
-//                    return;
-//                }
+                if (mdao.isDuplicatedEmail(email) && !email.equals(mdao.getCustomerById(id).getEmail())) {
+                    json.put("success", false);
+                    json.put("message", "Email already existed");
+                    response.getWriter().write(json.toString());
+                    return;
+                }
 
                 if (!validator.isAlphabetic(firstname)) {
                     json.put("success", false);

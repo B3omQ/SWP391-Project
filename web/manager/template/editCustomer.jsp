@@ -13,7 +13,7 @@
                     <div class="row mt-2">
                         <div class="col-md-12">
                             <label class="form-label head" for="newEmail">Email</label>
-                            <input value="${param.email}" class="form-control" type="text" id="newEmail" name="newEmail">
+                            <input value="${param.email}" class="form-control" type="email" id="newEmail" name="newEmail" required>
                         </div>
                     </div>
                     <div class="row mt-3">
