@@ -254,9 +254,9 @@
                                     <a href="javascript:void(0)" class="menu-item"> Các loại bảng tính </a><span
                                         class="submenu-arrow"></span>
                                     <ul class="submenu">
-                                        <li><a href="blogs.html" class="sub-menu-item">Bảng tính lãi suất vay</a></li>
-                                        <li><a href="blog-detail.html" class="sub-menu-item">Bảng tính quyền lợi bảo hiểm</a></li>
-                                        <li><a href="blog-detail.html" class="sub-menu-item">Bảng tính lãi suất tiết kiệm</a></li>
+                                        <li><a href="./public/LoanInterestRateTool.jsp" class="sub-menu-item">Bảng tính lãi suất vay</a></li>
+                                        <li><a href="./public/InsuranceBenefitsTool.jsp" class="sub-menu-item">Bảng tính quyền lợi bảo hiểm</a></li>
+                                        <li><a href="./public/SaveInterestTool.jsp" class="sub-menu-item">Bảng tính lãi suất tiết kiệm</a></li>
                                     </ul>
                                 </li>
                                 <li class="has-submenu parent-menu-item">

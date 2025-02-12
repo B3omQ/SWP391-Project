@@ -23,7 +23,7 @@ import jakarta.servlet.http.HttpSession;
  *
  * @author Jigger
  */
-@WebFilter(filterName = "SessionFilter", servletNames = {"CustomerManager", "ProfileManager", "CustomerManager"})
+@WebFilter(filterName = "SessionFilter", servletNames = {"CustomerManager", "ProfileManager"})
 public class SessionFilter implements Filter {
 
     private static final boolean debug = true;

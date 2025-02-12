@@ -2,25 +2,22 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller.customer;
+package controller;
 
-import dal.DAOTokenForget;
-import dal.ConsultantDAO;
-import dal.CustomerDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model.Customer;
-import model.TokenForgetPassword;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
- * @author emkob
+ * @author JIGGER
  */
-public class requestPassword extends HttpServlet {
+public class LoginServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,10 +36,10 @@ public class requestPassword extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet requestPassword</title>");
+            out.println("<title>Servlet LoginServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet requestPassword at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet LoginServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -60,7 +57,8 @@ public class requestPassword extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+
+        response.sendRedirect("./auth/template/login.jsp"); // Chuyển hướng về trang login
     }
 
     /**
@@ -74,42 +72,7 @@ public class requestPassword extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        CustomerDAO daoUser = new CustomerDAO();
-        String email = request.getParameter("email");
-        //email co ton tai trong db
-        Customer account = daoUser.getCustomerByEmail(email);
-        if (account == null) {
-            request.setAttribute("mess", "email khong ton tai");
-            request.getRequestDispatcher("auth/template/requestPassword.jsp").forward(request, response);
-            return;
-        }
-        resetService service = new resetService();
-        String token = service.generateToken();
-
-        String linkReset = "http://localhost:9999/BankingSystem/resetPassword?token=" + token;
-
-        TokenForgetPassword newTokenForget = new TokenForgetPassword(
-                token,
-                service.expireDateTime(),
-                false,
-                account.getId());
-
-        //send link to this email
-        DAOTokenForget daoToken = new DAOTokenForget();
-        boolean isInsert = daoToken.insertTokenForget(newTokenForget);
-        if (!isInsert) {
-            request.setAttribute("mess", "have error in server");
-            request.getRequestDispatcher("auth/template/requestPassword.jsp").forward(request, response);
-            return;
-        }
-        boolean isSend = service.sendEmail(email, linkReset, account.getFirstname());
-        if (!isSend) {
-            request.setAttribute("mess", "can not send request");
-            request.getRequestDispatcher("auth/template/requestPassword.jsp").forward(request, response);
-            return;
-        }
-        request.setAttribute("mess", "send request success");
-        request.getRequestDispatcher("auth/template/requestPassword.jsp").forward(request, response);
+        processRequest(request, response);
     }
 
     /**

@@ -15,12 +15,13 @@ import java.util.regex.Pattern;
  * @author emkob
  */
 public class AccountValidation {
-    private static final Pattern EMAIL_PATTERN = 
-        Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
 
-    private static final Pattern PHONE_PATTERN = 
-        Pattern.compile("^0\\d{9}$"); 
-    
+    private static final Pattern EMAIL_PATTERN
+            = Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
+
+    private static final Pattern PHONE_PATTERN
+            = Pattern.compile("^0\\d{9}$");
+
     public boolean checkMatching(String password, String cPassword) {
         return password.equals(cPassword);
     }
@@ -33,8 +34,36 @@ public class AccountValidation {
         return phone != null && PHONE_PATTERN.matcher(phone).matches();
     }
 
+    public boolean isAlphabetic(String input) {
+        // Regular expression that matches letters, both uppercase and lowercase, including Vietnamese characters
+        String regex = "^[a-zA-ZàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ\\s]+$";
+        return Pattern.matches(regex, input);
+    }
+
+    public static boolean isValidPhoneNumber(String phone) {
+        return phone != null && phone.matches("^\\d{10,11}$");
+    }
+
     public boolean isValidAddress(String address) {
         return address != null && !address.trim().isEmpty();
+    }
+
+    public static String normalizeInput(String input) {
+        if (input == null) {
+            return "";
+        }
+        String result = input.trim().replaceAll("\\s+", " ");
+        if (result.equals(" ")) {
+            return "";
+        }
+        String[] words = result.split(" ");
+        StringBuilder capitalized = new StringBuilder();
+        for (String word : words) {
+            if (word.length() > 0) {
+                capitalized.append(Character.toUpperCase(word.charAt(0))).append(word.substring(1).toLowerCase()).append(" ");
+            }
+        }
+        return capitalized.toString().trim();
     }
 
     public boolean checkHashOfPassword(String password) {
