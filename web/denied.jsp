@@ -13,7 +13,7 @@
     </head>
     
     <body>
-        <h1>Hello baby, welcome back to logout</h1>
+        <h1>You are not allowed here</h1>
     </body>
     
 </html>

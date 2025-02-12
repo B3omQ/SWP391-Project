@@ -21,6 +21,7 @@ public class Customer {
     private String email;
     private String firstname;
     private String lastname;
+    private String fullname;
     private String gender;
     private LocalDate dob;
     private String phone;
@@ -76,6 +77,16 @@ public class Customer {
         this.Address = Address;
         this.wallet = BigDecimal.valueOf(50000.00);
     }
+
+    public String getFullname() {
+        return lastname + " " + firstname;
+    }
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
+    }
+    
+    
 
     public int getId() {
         return id;

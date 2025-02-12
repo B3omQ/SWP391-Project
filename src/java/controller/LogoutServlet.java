@@ -3,11 +3,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package controller.customer;
+package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -15,9 +16,9 @@ import jakarta.servlet.http.HttpSession;
 
 /**
  *
- * @author emkob
+ * @author JIGGER
  */
-public class VerifyingOtp extends HttpServlet {
+public class LogoutServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -34,10 +35,10 @@ public class VerifyingOtp extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet VerifyingOtp</title>");  
+            out.println("<title>Servlet LogoutServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet VerifyingOtp at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet LogoutServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -53,10 +54,22 @@ public class VerifyingOtp extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        processRequest(request, response);
-    } 
-
+            throws ServletException, IOException {
+        HttpSession session = request.getSession(false); // Không tạo mới session nếu chưa có
+        if (session != null) {
+            session.invalidate(); // Xóa toàn bộ session
+        }
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                cookie.setValue("");
+                cookie.setPath("/");
+                cookie.setMaxAge(0);
+                response.addCookie(cookie);
+            }
+        }
+        response.sendRedirect("./auth/template/login.jsp"); // Chuyển hướng về trang login
+    }
     /** 
      * Handles the HTTP <code>POST</code> method.
      * @param request servlet request
@@ -64,29 +77,12 @@ public class VerifyingOtp extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        String userOtp = request.getParameter("otp");
-        String generatedOtp = (String) session.getAttribute("otp");
-
-        if (generatedOtp == null) {
-            response.sendRedirect("auth/template/login.jsp");
-            return;
-        }
-
-       if (userOtp != null && userOtp.equals(generatedOtp)) {
-        session.removeAttribute("otp");
-        if (session.getAttribute("staff") != null) {
-            response.sendRedirect("profile-manager"); 
-        } else {
-            response.sendRedirect("customer/template/Customer.jsp"); 
-        }
-    } else {
-        session.setAttribute("otpError", "Mã OTP không đúng, vui lòng thử lại!");
-        response.sendRedirect(request.getContextPath() + "/auth/template/otp.jsp");
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
+        processRequest(request, response);
     }
-    }
+
     /** 
      * Returns a short description of the servlet.
      * @return a String containing servlet description

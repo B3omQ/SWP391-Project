@@ -153,6 +153,7 @@ public class AuthServlet extends HttpServlet {
 
         if (staff != null && av.checkPassword(passWord, staff.getPassword())) {
             session.setAttribute("staff", staff);
+            session.setAttribute("role", staff.getRoleId().getId());
 
             String otp = resetService.generateOTP();
             session.setAttribute("otp", otp);
@@ -193,7 +194,6 @@ public class AuthServlet extends HttpServlet {
             response.sendRedirect("auth/template/login.jsp");
             return;
         }
-
         // Kiểm tra có account hay staff trong session không
         Customer customer = (Customer) session.getAttribute("account");
         Staff staff = (Staff) session.getAttribute("staff");
