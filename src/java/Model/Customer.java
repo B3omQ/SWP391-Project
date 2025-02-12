@@ -44,7 +44,8 @@ public class Customer {
         this.dob = dob;
         this.phone = phone;
         this.Address = Address;
-    } //Khởi tạo constructor để dùng cho Staff get list customer với những thông tin này
+    } 
+    
     
     
     public Customer(int id, String username, String password, String image, String email, String firstname, String lastname, String gender, LocalDate dob, String phone, String Address, int failAttempt, LocalDateTime locktime, BigDecimal wallet) {
