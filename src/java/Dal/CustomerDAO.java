@@ -62,38 +62,6 @@ public class CustomerDAO extends DBContext {
         if (isAccountLocked(email)) {
             return null;
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-    return null;
-}
-public boolean emailExists(String email) {
-    String sql = "SELECT 1 FROM [dbo].[Customer] WHERE Email = ?";
-    
-    try (PreparedStatement p = connection.prepareStatement(sql)) {
-        p.setString(1, email);
-        try (ResultSet rs = p.executeQuery()) {
-            return rs.next(); 
-        }
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-    return false; 
-}
-public boolean phoneExists(String phone) {
-    String sql = "SELECT 1 FROM [dbo].[Customer] WHERE Phone = ?";
-    
-    try (PreparedStatement p = connection.prepareStatement(sql)) {
-        p.setString(1, phone);
-        try (ResultSet rs = p.executeQuery()) {
-            return rs.next(); 
-        }
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-    return false; 
-}
-
         String sql = "SELECT * FROM [dbo].[Customer] WHERE Email = ?";
         try (PreparedStatement p = connection.prepareStatement(sql)) {
             p.setString(1, email);
@@ -110,6 +78,34 @@ public boolean phoneExists(String phone) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public boolean emailExists(String email) {
+        String sql = "SELECT 1 FROM [dbo].[Customer] WHERE Email = ?";
+
+        try (PreparedStatement p = connection.prepareStatement(sql)) {
+            p.setString(1, email);
+            try (ResultSet rs = p.executeQuery()) {
+                return rs.next();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean phoneExists(String phone) {
+        String sql = "SELECT 1 FROM [dbo].[Customer] WHERE Phone = ?";
+
+        try (PreparedStatement p = connection.prepareStatement(sql)) {
+            p.setString(1, phone);
+            try (ResultSet rs = p.executeQuery()) {
+                return rs.next();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public void updateCustomerImage(int customerId, String imagePath) {
