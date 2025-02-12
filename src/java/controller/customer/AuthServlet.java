@@ -95,10 +95,7 @@ public class AuthServlet extends HttpServlet {
         if ("logout".equals(action)) {
             handleLogout(request, response);
         } else if ("login".equals(action)) {
-            handleLogin(request, response);
-        } else if ("otp".equals(action)) {
-            handleOtp(request, response);
-
+            handleLogin(request, response);       
         } else if ("changePassword".equals(action)) {
             handleChangePassword(request, response);
         } else {
@@ -182,27 +179,7 @@ public class AuthServlet extends HttpServlet {
         response.sendRedirect("auth/template/login.jsp");
     }
 
-    private void handleOtp(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String userOtp = request.getParameter("otp");
-        HttpSession session = request.getSession();
-        String generatedOtp = (String) session.getAttribute("otp");
-
-        if (generatedOtp == null) {
-            // Nếu OTP không tồn tại trong session, chuyển về trang login
-            response.sendRedirect("auth/template/login.jsp");
-            return;
-        }
-
-        if (userOtp != null && userOtp.equals(generatedOtp)) {
-            session.removeAttribute("otp");
-            response.sendRedirect("customer/template/Customer.jsp");
-        } else {
-            session.setAttribute("otpError", "Mã OTP không đúng, vui lòng thử lại!");
-            response.sendRedirect(request.getContextPath() + "/auth/template/otp.jsp");
-        }
-    }
-
+   
     private void handleLogout(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         request.getSession().invalidate();

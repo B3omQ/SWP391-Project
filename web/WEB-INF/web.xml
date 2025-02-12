@@ -16,6 +16,10 @@
         <servlet-name>FinancialChartServlet</servlet-name>
         <servlet-class>controller.customer.FinancialChartServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>VerifyingOtp</servlet-name>
+        <servlet-class>controller.customer.VerifyingOtp</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>HomeServlet</servlet-name>
         <url-pattern>/home</url-pattern>
@@ -95,6 +99,10 @@
     <servlet-mapping>
         <servlet-name>FinancialChartServlet</servlet-name>
         <url-pattern>/FinancialChartServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>VerifyingOtp</servlet-name>
+        <url-pattern>/VerifyingOtp</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>1440</session-timeout>
