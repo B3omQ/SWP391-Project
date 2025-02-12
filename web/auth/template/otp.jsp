@@ -37,7 +37,7 @@
     <!-- Loader -->
 
     <div class="back-to-home rounded d-none d-sm-block">
-        <a href="index.jsp" class="btn btn-icon btn-primary"><i data-feather="home" class="icons"></i></a>
+        <a href="/BankingSystem/index.jsp" class="btn btn-icon btn-primary"><i data-feather="home" class="icons"></i></a>
     </div>
 
     <!-- Hero Start -->
