@@ -21,6 +21,7 @@ public class Staff {
     private String email;
     private String firstname;
     private String lastname;
+    private String fullname;
     private String gender;
     private LocalDate dob;
     private String phone;
@@ -33,8 +34,22 @@ public class Staff {
     public Staff() {
     }
 
-    public Staff(int id, String password, String image, String email, String firstname, String lastname, String gender, LocalDate dob, String phone, String Address) {
+//    public Staff(int id, String password, String image, String email, String firstname, String lastname, String gender, LocalDate dob, String phone, String Address) {
+//        this.id = id;
+//        this.password = password;
+//        this.image = image;
+//        this.email = email;
+//        this.firstname = firstname;
+//        this.lastname = lastname;
+//        this.gender = gender;
+//        this.dob = dob;
+//        this.phone = phone;
+//        this.Address = Address;
+//    }
+
+    public Staff(int id, String username, String password, String image, String email, String firstname, String lastname, String gender, LocalDate dob, String phone, String Address, Role roleId) {
         this.id = id;
+        this.username = username;
         this.password = password;
         this.image = image;
         this.email = email;
@@ -44,9 +59,8 @@ public class Staff {
         this.dob = dob;
         this.phone = phone;
         this.Address = Address;
-    }
-
-    
+        this.roleId = roleId;
+    }  
     
     public Staff(int id, String username, String password, String image, String email, String firstname, String lastname, String gender, LocalDate dob, String phone, String Address, BigDecimal salary, int failAttempt, LocalDateTime locktime, Role roleId) {
         this.id = id;
@@ -65,6 +79,14 @@ public class Staff {
         this.locktime = locktime;
         this.roleId = roleId;
     }
+
+    public String getFullname() {
+        return lastname + " " + firstname;
+    }
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
+    }  
 
     public int getId() {
         return id;

@@ -1,7 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<form style="display:inline-block" action="customer-manager" method="post" enctype="multipart/form-data">
-    <div class="modal fade" id="editModal${param.id}" tabindex="-1" aria-labelledby="editModalLabel${param.id}" aria-hidden="true">
+<form style="display:inline-block" action="customer-manager" method="post" enctype="multipart/form-data" id="editCustomer-${param.id}">
+    <div class="modal fade" tabindex="-1" id="editModal${param.id}" aria-labelledby="editModalLabel${param.id}" aria-hidden="true">
         <input name="updateId" type="hidden" value="${param.id}" />
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
@@ -19,7 +19,7 @@
                     <div class="row mt-3">
                         <div class="col-md-12">
                             <label for="newImg" class ="head">Image</label>
-                            <input type="file" id="newImg" name="newImg" class="form-control-file">
+                            <input type="file" id="newImg" accept=".jpg,.png,.jpeg" name="newImg" class="form-control-file">
                         </div>
                     </div>
                     <div class="row mt-3">
@@ -60,6 +60,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <p id="error-message-${param.id}" class="text-danger"></p>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Save</button>
                 </div>
@@ -67,3 +68,4 @@
         </div>
     </div>    
 </form>
+

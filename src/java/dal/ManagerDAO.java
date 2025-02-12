@@ -23,6 +23,24 @@ import model.Staff;
  */
 public class ManagerDAO extends DBContext {
 
+    public boolean isDuplicatedEmail(String email) {
+        String sql = """
+                    SELECT 1 FROM [BankingSystem].[dbo].[Customer] 
+                    WHERE [Email] = ? 
+                 """;
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, email);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return true;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ConsultantDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
     public Role getRole(int roleID) {
         String sql = """
                     SELECT [Id], [Name]
@@ -165,6 +183,7 @@ public class ManagerDAO extends DBContext {
                 if (rs.next()) {
                     return new Staff(
                             rs.getInt("Id"),
+                            rs.getString("username"),
                             rs.getString("Password"),
                             rs.getString("Image"),
                             rs.getString("Email"),
@@ -173,7 +192,8 @@ public class ManagerDAO extends DBContext {
                             rs.getString("Gender"),
                             rs.getDate("Dob").toLocalDate(),
                             rs.getString("Phone"),
-                            rs.getString("Address")
+                            rs.getString("Address"),
+                            new Role(rs.getInt("RoleId"))
                     );
                 }
             }
@@ -221,7 +241,7 @@ public class ManagerDAO extends DBContext {
     public void updateInformationStaff(int id, String img, String firstname, String lastname, String gender, LocalDate dob, String phone, String address) {
         String sql = """
                  UPDATE BankingSystem.dbo.Staff
-                 SET [Image]=?, FirstName=?, LastName=?, Gender=?, Dob=?, Phone=?, Address=? 
+                 SET [Image] = ?, FirstName = ?, LastName = ?, Gender = ?, Dob = ?, Phone = ?, Address = ? 
                  WHERE Id=?;""";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -234,7 +254,6 @@ public class ManagerDAO extends DBContext {
             st.setString(7, address);
             st.setInt(8, id);  // Fix: Correct index for id parameter
             st.executeUpdate();
-
         } catch (SQLException ex) {
             Logger.getLogger(ManagerDAO.class
                     .getName()).log(Level.SEVERE, null, ex);

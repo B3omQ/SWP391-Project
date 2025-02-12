@@ -36,7 +36,7 @@ public class AccountValidation {
 
     public boolean isAlphabetic(String input) {
         // Regular expression that matches letters, both uppercase and lowercase, including Vietnamese characters
-        String regex = "^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẮẰẲẴẶẲẴẮẰẢÁÀÃẠẬẤẦẨẪẬĂẶẮẰẲẴẸẺẼỀỀỆỂỄỈỊÓÒÔỐỒỔỖỘƠỚỜỞỠỢỤỦỨỪỬỮỰýỳỵỷỹ]+$";
+        String regex = "^[a-zA-ZàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ\\s]+$";
         return Pattern.matches(regex, input);
     }
 

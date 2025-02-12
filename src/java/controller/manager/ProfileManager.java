@@ -161,19 +161,52 @@ public class ProfileManager extends HttpServlet {
                 String address = request.getParameter("newAddress");
                 LocalDate dob = LocalDate.parse(dobStr);
                 Part imagePart = request.getPart("newImg");
+                String fileType = imagePart.getContentType(); 
+
+//                if (!fileType.equals("image/png") && !fileType.equals("image/jpeg") && !fileType.equals("image/jpg")) {
+//                    json.put("success", false);
+//                    json.put("message", "Only accept jpg, jpeg, png file");
+//                    response.getWriter().write(json.toString());
+//                    return;
+//                }
+
+                if (imagePart.getSize() > 1024 * 1024 * 5) {
+                    json.put("success", false);
+                    json.put("message", "Your file import is too big, please choose file size < 5mbs");
+                    response.getWriter().write(json.toString());
+                    return;
+                }
+                
                 String image = (imagePart != null && imagePart.getSize() > 0 ? getAndSaveImg(imagePart) : null);
+
                 if (image != null) {
                     String imgPath = mdao.getStaffById(currentAccount.getId()).getImage();
                     deleteFile(imgPath);
                 } else {
                     image = mdao.getStaffById(currentAccount.getId()).getImage();
-                }  
+                }
+
+                if (!(validator.isAlphabetic(firstname))) {
+                    json.put("success", false);
+                    json.put("message", "Invalid first name characters");
+                    response.getWriter().write(json.toString());
+                    return;
+                }
+
+                if (!(validator.isAlphabetic(lastname))) {
+                    json.put("success", false);
+                    json.put("message", "Invalid last name characters");
+                    response.getWriter().write(json.toString());
+                    return;
+                }
+
                 if (!validator.isValidPhone(phone)) {
                     json.put("success", false);
                     json.put("message", "Input must be the number and around 10 - 11 digits");
                     response.getWriter().write(json.toString());
                     return;
                 }
+
                 mdao.updateInformationStaff(currentAccount.getId(), image, firstname, lastname, gender, dob, phone, address);
                 currentAccount = mdao.getStaffById(currentAccount.getId());
                 session.setAttribute("staff", currentAccount);

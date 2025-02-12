@@ -16,6 +16,8 @@ import java.io.File;
 import java.time.LocalDate;
 import java.util.List;
 import model.Customer;
+import util.AccountValidation;
+import org.json.JSONObject;
 
 /**
  *
@@ -131,21 +133,41 @@ public class CustomerManager extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
         String deleteId = request.getParameter("deleteId");
         String updateId = request.getParameter("updateId");
         ManagerDAO mdao = new ManagerDAO();
+        JSONObject json = new JSONObject();
+        AccountValidation validator = new AccountValidation();
         if (updateId != null) {
             try {
                 int id = Integer.parseInt(updateId);
                 String email = request.getParameter("newEmail");
-                String firstname = request.getParameter("newFirstname");
-                String lastname = request.getParameter("newLastname");
+                String firstname = validator.normalizeInput(request.getParameter("newFirstname"));
+                String lastname = validator.normalizeInput(request.getParameter("newLastname"));
                 String gender = request.getParameter("newGender");
                 String dobStr = request.getParameter("newDob");
                 String phone = request.getParameter("newPhone");
                 String address = request.getParameter("newAddress");
                 LocalDate dob = LocalDate.parse(dobStr);
                 Part imagePart = request.getPart("newImg");
+                String fileType = imagePart.getContentType();
+                
+//                if (!fileType.equals("image/png") && !fileType.equals("image/jpeg") && !fileType.equals("image/jpg")) {
+//                    json.put("success", false);
+//                    json.put("message", "Only accept jpg, jpeg, png file");
+//                    response.getWriter().write(json.toString());
+//                    return;
+//                }
+
+                if (imagePart.getSize() > 1024 * 1024 * 5) {
+                    json.put("success", false);
+                    json.put("message", "Your file import is too big, please choose file size < 5mbs");
+                    response.getWriter().write(json.toString());
+                    return;
+                }
+
                 String image = (imagePart != null && imagePart.getSize() > 0 ? getAndSaveImg(imagePart) : null);
                 if (image != null) {
                     String imgPath = mdao.getCustomerById(id).getImage();
@@ -154,9 +176,37 @@ public class CustomerManager extends HttpServlet {
                     image = mdao.getCustomerById(id).getImage();
                 }
 
-                mdao.updateInformationCustomer(id, image, email, firstname, lastname, gender, dob, phone, address);
+//                if (mdao.isDuplicatedEmail(email)) {
+//                    json.put("success", false);
+//                    json.put("message", "Email already existed");
+//                    response.getWriter().write(json.toString());
+//                    return;
+//                }
 
-                response.sendRedirect("customer-manager?page=1");
+                if (!validator.isAlphabetic(firstname)) {
+                    json.put("success", false);
+                    json.put("message", "Invalid firstname characters");
+                    response.getWriter().write(json.toString());
+                    return;
+                }
+
+                if (!validator.isAlphabetic(lastname)) {
+                    json.put("success", false);
+                    json.put("message", "Invalid lastname characters");
+                    response.getWriter().write(json.toString());
+                    return;
+                }
+
+                if (!validator.isValidPhoneNumber(phone)) {
+                    json.put("success", false);
+                    json.put("message", "Invalid phone number");
+                    response.getWriter().write(json.toString());
+                    return;
+                }
+
+                mdao.updateInformationCustomer(id, image, email, firstname, lastname, gender, dob, phone, address);
+                json.put("success", true);
+                response.getWriter().write(json.toString());
                 return;
             } catch (NumberFormatException ex) {
                 ex.printStackTrace();
@@ -174,16 +224,17 @@ public class CustomerManager extends HttpServlet {
                         deleteFile(imgPath);
                     }
                     mdao.deleteCustomer(delId);
+                    json.put("success", true);
+                    response.getWriter().write(json.toString());
+                    return;
                 }
-
-                response.sendRedirect("customer-manager?page=1");
-                return;
-            } catch (NumberFormatException ex) {
-                ex.printStackTrace();
+            } catch (Exception ex) {
+                json.put("success", false);
+                json.put("message", "An error occurred while trying to delete customer");
+                response.getWriter().write(json.toString());
+                System.out.println(ex);
             }
         }
-
-        doGet(request, response);
     }
 
     @Override

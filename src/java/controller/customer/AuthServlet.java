@@ -136,7 +136,7 @@ public class AuthServlet extends HttpServlet {
             staffDAO.resetFailedLogin(email);
             handleRememberMe(response, email, passWord, rememberMe);
             session.setAttribute("staff", staff);
-            session.setAttribute("role", staff.getRoleId().getName());
+            session.setAttribute("role", staff.getRoleId().getId());
 
             response.sendRedirect(staff.getRoleId().getId() == 1 ? "staff/template/Admin.jsp" : "profile-manager");
             return;
