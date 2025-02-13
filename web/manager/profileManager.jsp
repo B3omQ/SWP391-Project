@@ -154,22 +154,22 @@
                                                         <div class="row mt-3">
                                                             <div class="col-md-6">
                                                                 <label for="newFirstname" class="form-label head">First Name</label>
-                                                                <input value="${staff.firstname}" type="text" id="newFirstname" name="newFirstname" class="form-control">
+                                                                <input value="${staff.firstname}" type="text" id="newFirstname" name="newFirstname" class="form-control" required>
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <label for="newLastname" class="form-label head">Last Name</label>
-                                                                <input value="${staff.lastname}" type="text" id="newLastname" name="newLastname" class="form-control">
+                                                                <input value="${staff.lastname}" type="text" id="newLastname" name="newLastname" class="form-control" required>
                                                             </div>
                                                         </div>
                                                         <div class="row mt-3">
                                                             <div class="col-md-6">
                                                                 <label for="newPhone" class="form-label head">Phone</label>
-                                                                <input value="${staff.phone}" type="text" id="newPhone" name="newPhone" class="form-control">
+                                                                <input value="${staff.phone}" type="text" id="newPhone" name="newPhone" class="form-control" required>
                                                                 <p class="text-danger">${errorPhoneMess}</p>
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <label for="newAddress" class="form-label head">Address</label>
-                                                                <input value="${staff.address}" type="text" id="newAddress" name="newAddress" class="form-control">
+                                                                <input value="${staff.address}" type="text" id="newAddress" name="newAddress" class="form-control" required>
                                                             </div>
                                                         </div>
                                                         <div class="row mt-3">
@@ -213,7 +213,7 @@
                                                     <div class="row mt-3">
                                                         <div class="col-md-12">
                                                             <label for="currentPassword" class="head form-label">Current Password</label>
-                                                            <input type="password" id="currentPassword" name="currentPassword" class="form-control" placeholder="Password">
+                                                            <input type="password" id="currentPassword" name="currentPassword" class="form-control" placeholder="Current Password" required>
                                                             <span class="position-absolute top-50 end-0 translate-middle-y pe-3 cursor-pointer" onclick="togglePassword('currentPassword', 'toggleCurrentPasswordIcon')" style="padding-top: 30px;">
                                                                 <i id="toggleCurrentPasswordIcon" class="mdi mdi-eye-outline"></i>
                                                             </span>
@@ -222,7 +222,7 @@
                                                     <div class="row mt-3">
                                                         <div class="col-md-12">
                                                             <label for="newPassword" class="head form-label">New Password</label>
-                                                            <input type="password" id="newPassword" name="newPassword" class="form-control" placeholder="New password">
+                                                            <input type="password" id="newPassword" name="newPassword" class="form-control" placeholder="New password" required>
                                                             <span class="position-absolute top-50 end-0 translate-middle-y pe-3 cursor-pointer" onclick="togglePassword('newPassword', 'toggleNewPasswordIcon')" style="padding-top: 30px;">
                                                                 <i id="toggleNewPasswordIcon" class="mdi mdi-eye-outline"></i>
                                                             </span>
@@ -231,7 +231,7 @@
                                                     <div class="row mt-3">
                                                         <div class="col-md-12">
                                                             <label for="confirmPassword" class="head form-label">Confirm Password</label>
-                                                            <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" placeholder="Confirm your password">
+                                                            <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" placeholder="Confirm your password" required>
                                                             <span class="position-absolute top-50 end-0 translate-middle-y pe-3 cursor-pointer" onclick="togglePassword('confirmPassword', 'toggleConfirmPasswordIcon')" style="padding-top: 30px;">
                                                                 <i id="toggleConfirmPasswordIcon" class="mdi mdi-eye-outline"></i>
                                                             </span>

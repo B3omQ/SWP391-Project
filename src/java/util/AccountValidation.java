@@ -16,6 +16,10 @@ import java.util.regex.Pattern;
  */
 public class AccountValidation {
 
+    public AccountValidation() {
+        
+    }       
+
     private static final Pattern EMAIL_PATTERN
             = Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
 
@@ -38,6 +42,14 @@ public class AccountValidation {
         // Regular expression that matches letters, both uppercase and lowercase, including Vietnamese characters
         String regex = "^[a-zA-ZàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ\\s]+$";
         return Pattern.matches(regex, input);
+    }
+
+    public boolean isValidImagePath(String filePath) {
+        // Lấy phần tên file từ đường dẫn
+        String fileName = filePath.substring(filePath.lastIndexOf("/") + 1);
+
+        // Regex kiểm tra định dạng file (.jpg, .jpeg, .png)
+        return fileName.matches("(?i)^.*\\.(jpg|jpeg|png)$");
     }
 
     public static boolean isValidPhoneNumber(String phone) {

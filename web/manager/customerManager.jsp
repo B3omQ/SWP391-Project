@@ -98,7 +98,7 @@
                             .table {
                                 border-collapse: separate; /* Để box-shadow hiển thị đúng */
                                 border-spacing: 0; /* Loại bỏ khoảng cách giữa các ô */
-                                border-radius: 30px; /* Bo góc */
+                                border-radius: 20px; /* Bo góc */
                                 overflow: hidden; /* Đảm bảo góc bo tròn không bị mất */
                                 background: white; /* Đảm bảo bảng có màu nền để bóng đẹp hơn */
                                 box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.15),

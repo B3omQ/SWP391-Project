@@ -25,21 +25,21 @@
                     <div class="row mt-3">
                         <div class="col-md-6">
                             <label for="newFirstname" class="form-label head">First Name</label>
-                            <input value="${param.firstname}" type="text" id="newFirstname" name="newFirstname" class="form-control">
+                            <input value="${param.firstname}" type="text" id="newFirstname" name="newFirstname" class="form-control" required>
                         </div>
                         <div class="col-md-6">
                             <label for="newLastname" class="form-label head">Last Name</label>
-                            <input value="${param.lastname}" type="text" id="newLastname" name="newLastname" class="form-control">
+                            <input value="${param.lastname}" type="text" id="newLastname" name="newLastname" class="form-control" required>
                         </div>
                     </div>                        
                     <div class="row mt-3">
                         <div class="col-md-6">
                             <label for="newPhone" class="form-label head">Phone</label>
-                            <input value="${param.phone}" type="text" id="newPhone" name="newPhone" class="form-control">
+                            <input value="${param.phone}" type="text" id="newPhone" name="newPhone" class="form-control" required>
                         </div>
                         <div class="col-md-6">
                             <label for="newAddress" class="form-label head">Address</label>
-                            <input value="${param.address}" type="text" id="newAddress" name="newAddress" class="form-control">
+                            <input value="${param.address}" type="text" id="newAddress" name="newAddress" class="form-control" required>
                         </div>
                     </div>                    
 
