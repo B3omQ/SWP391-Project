@@ -6,7 +6,7 @@
     </servlet>
     <servlet>
         <servlet-name>ConsultantAddCustomer</servlet-name>
-        <servlet-class>controller.consultant.CustomerManager</servlet-class>
+        <servlet-class>controller.consultant.ConsultantCustomerManager</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>LoginServlet</servlet-name>

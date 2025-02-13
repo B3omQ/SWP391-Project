@@ -183,17 +183,16 @@
                         <div class="dropdown dropdown-primary">
                             <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0"
                                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img
-                                    src="<%= request.getContextPath() %>/assets/images/doctors/01.jpg"
+                                    src=${staff.image}
                                     class="avatar avatar-ex-small rounded-circle" alt=""></button>
                             <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3"
                                  style="min-width: 200px;">
                                 <a class="dropdown-item d-flex align-items-center text-dark"
                                    href="https://shreethemes.in/doctris/layouts/admin/profile.html">
-                                    <img src="<%= request.getContextPath() %>/assets/images/doctors/01.jpg"
+                                    <img src=${staff.image}
                                          class="avatar avatar-md-sm rounded-circle border shadow" alt="">
                                     <div class="flex-1 ms-2">
-                                        <span class="d-block mb-1">Calvin Carlo</span>
-                                        <small class="text-muted">Orthopedic</small>
+                                        <span class="d-block mb-1">${staff.username}</span>
                                     </div>
                                 </a>
                                 <a class="dropdown-item text-dark" href="index.html"><span
