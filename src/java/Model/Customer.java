@@ -65,8 +65,7 @@ public class Customer {
         this.locktime = locktime;
         this.wallet = wallet;
     }
-    public Customer(String image,String username, String password, String email, String firstname, String lastname, String gender, LocalDate dob, String phone, String Address) {
-        this.image = image;
+    public Customer(String username, String password, String email, String firstname, String lastname, String gender, LocalDate dob, String phone, String Address) {
         this.username = username;
         this.password = password;
         this.email = email;

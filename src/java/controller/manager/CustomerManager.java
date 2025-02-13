@@ -124,6 +124,7 @@ public class CustomerManager extends HttpServlet {
             return false;
         }
     }
+
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -154,7 +155,15 @@ public class CustomerManager extends HttpServlet {
                 String address = request.getParameter("newAddress");
                 LocalDate dob = LocalDate.parse(dobStr);
                 Part imagePart = request.getPart("newImg");
+                String fileType = imagePart.getContentType();
                 
+//                if (!fileType.equals("image/png") && !fileType.equals("image/jpeg") && !fileType.equals("image/jpg")) {
+//                    json.put("success", false);
+//                    json.put("message", "Only accept jpg, jpeg, png file");
+//                    response.getWriter().write(json.toString());
+//                    return;
+//                }
+
                 if (imagePart.getSize() > 1024 * 1024 * 5) {
                     json.put("success", false);
                     json.put("message", "Your file import is too big, please choose file size < 5mbs");
@@ -163,14 +172,6 @@ public class CustomerManager extends HttpServlet {
                 }
 
                 String image = (imagePart != null && imagePart.getSize() > 0 ? getAndSaveImg(imagePart) : null);
-                
-//                if (!validator.isValidImagePath(image)) {
-//                    json.put("success", false);
-//                    json.put("message", "Only accept file .jpg, .png, .jpeg");
-//                    response.getWriter().write(json.toString());
-//                    return;
-//                }
-//                
                 if (image != null) {
                     String imgPath = mdao.getCustomerById(id).getImage();
                     deleteFile(imgPath);

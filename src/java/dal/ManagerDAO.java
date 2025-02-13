@@ -4,7 +4,7 @@
  */
 package dal;
 
-import util.DBContext;
+import context.DBContext;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;

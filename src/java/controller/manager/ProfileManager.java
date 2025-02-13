@@ -161,23 +161,24 @@ public class ProfileManager extends HttpServlet {
                 String address = request.getParameter("newAddress");
                 LocalDate dob = LocalDate.parse(dobStr);
                 Part imagePart = request.getPart("newImg");
+                String fileType = imagePart.getContentType(); 
 
-                if (imagePart.getSize() > 1024 * 1024 * 1) {
+//                if (!fileType.equals("image/png") && !fileType.equals("image/jpeg") && !fileType.equals("image/jpg")) {
+//                    json.put("success", false);
+//                    json.put("message", "Only accept jpg, jpeg, png file");
+//                    response.getWriter().write(json.toString());
+//                    return;
+//                }
+
+                if (imagePart.getSize() > 1024 * 1024 * 5) {
                     json.put("success", false);
                     json.put("message", "Your file import is too big, please choose file size < 5mbs");
                     response.getWriter().write(json.toString());
                     return;
                 }
-
-                String image = (imagePart != null && imagePart.getSize() > 0 ? getAndSaveImg(imagePart) : null);
                 
-//                if (!validator.isValidImagePath(image)) {
-//                    json.put("success", false);
-//                    json.put("message", "Only accept file .jpg, .png, .jpeg");
-//                    response.getWriter().write(json.toString());
-//                    return;
-//                }
-//                
+                String image = (imagePart != null && imagePart.getSize() > 0 ? getAndSaveImg(imagePart) : null);
+
                 if (image != null) {
                     String imgPath = mdao.getStaffById(currentAccount.getId()).getImage();
                     deleteFile(imgPath);
