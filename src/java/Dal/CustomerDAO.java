@@ -311,6 +311,7 @@ public class CustomerDAO extends DBContext {
                 + "	Dob = ?,\n"
                 + "	Phone = ?,\n"
                 + "	Address = ?,\n"
+                + "	Image = ?,\n"
                 + "	Wallet = ? \n"
                 + "WHERE Id = ?";
         try {
@@ -323,8 +324,9 @@ public class CustomerDAO extends DBContext {
             ps.setDate(6, Date.valueOf(x.getDob()));
             ps.setString(7, x.getPhone());
             ps.setString(8, x.getAddress());
-            ps.setBigDecimal(9, x.getWallet());
-            ps.setInt(10, id);
+            ps.setString(9, x.getImage());
+            ps.setBigDecimal(10, x.getWallet());
+            ps.setInt(11, id);
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

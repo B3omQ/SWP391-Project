@@ -295,7 +295,7 @@
                                 </nav>
                             </div><!--end col-->
 
-                            
+
                         </div><!--end row-->
 
 
@@ -313,7 +313,7 @@
                                             </div>
                                         </c:if>
 
-                                        <form action="<%= request.getContextPath() %>/editCustomerInfo" method="post" class="login-form mt-4">
+                                        <form action="<%= request.getContextPath() %>/editCustomerInfo" method="post" enctype="multipart/form-data" class="login-form mt-4">
                                             <div class="row">
                                                 <!-- ID -->
                                                 <div class="col-md-12">
@@ -323,6 +323,18 @@
                                                         <c:if test="${not empty errorID}">
                                                             <span class="text-danger">${errorID}</span>
                                                         </c:if>
+                                                    </div>
+                                                </div>
+                                                <!-- Image -->
+                                                <div class="col-md-12">
+                                                    <div class="mb-3">
+                                                        <label>Image</label>
+                                                        <div>
+                                                            <img src="<%= request.getContextPath() %>/${customer.image}" width="100" height="" alt=""/>
+                                                        </div>
+                                                        <div class="md-5" style="padding-top: 10px">
+                                                            <input type="file" class="form-control-file" name="image" accept=".jpg,.png,.jpeg"> 
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <!-- Username -->
@@ -418,50 +430,50 @@
                                                         </c:if>
                                                     </div>
                                                 </div>
-                                                    <div class="row justify-content-center">
-                                                        <div class="col-md-10 text-center">
-                                                            <button type="submit" class="btn btn-primary">Confirm</button>
-                                                        </div>
+                                                <div class="row justify-content-center">
+                                                    <div class="col-md-10 text-center">
+                                                        <button type="submit" class="btn btn-primary">Confirm</button>
                                                     </div>
                                                 </div>
-                                            </form>           
+                                            </div>
+                                        </form>           
 
 
-                                        </div>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
+
+                    </div>
+                </div><!--end container-->
+
+                <!-- Footer Start -->
+                <footer class="bg-white shadow py-3">
+                    <div class="container-fluid">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <div class="text-sm-start text-center">
+                                    <p class="mb-0 text-muted">
+                                        <script>document.write(new Date().getFullYear())</script> © Doctris. Design with <i
+                                            class="mdi mdi-heart text-danger"></i> by <a href="../../../index.html"
+                                            target="_blank" class="text-reset">Shreethemes</a>.
+                                    </p>
+                                </div>
+                            </div><!--end col-->
+                        </div><!--end row-->
                     </div><!--end container-->
-
-                    <!-- Footer Start -->
-                    <footer class="bg-white shadow py-3">
-                        <div class="container-fluid">
-                            <div class="row align-items-center">
-                                <div class="col">
-                                    <div class="text-sm-start text-center">
-                                        <p class="mb-0 text-muted">
-                                            <script>document.write(new Date().getFullYear())</script> © Doctris. Design with <i
-                                                class="mdi mdi-heart text-danger"></i> by <a href="../../../index.html"
-                                                target="_blank" class="text-reset">Shreethemes</a>.
-                                        </p>
-                                    </div>
-                                </div><!--end col-->
-                            </div><!--end row-->
-                        </div><!--end container-->
-                    </footer><!--end footer-->
-                    <!-- End -->
-                </main>
-                <!--End page-content" -->
-            </div>
+                </footer><!--end footer-->
+                <!-- End -->
+            </main>
+            <!--End page-content" -->
         </div>
-        <!-- page-wrapper -->
+    </div>
+    <!-- page-wrapper -->
 
-        <!-- Offcanvas Start -->
+    <!-- Offcanvas Start -->
 
-        <!-- javascript -->
-        <script src="<%= request.getContextPath() %>/assets/js/jquery.min.js"></script>
+    <!-- javascript -->
+    <script src="<%= request.getContextPath() %>/assets/js/jquery.min.js"></script>
     <script src="<%= request.getContextPath() %>/assets/js/bootstrap.bundle.min.js"></script>
     <!-- simplebar -->
     <script src="<%= request.getContextPath() %>/assets/js/simplebar.min.js"></script>
