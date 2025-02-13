@@ -188,6 +188,7 @@
                                     <c:choose>
                                         <c:when test="${empty customerList}">
                                             <tr>
+                                                <td class = "error text-danger" name="errorMessage" value="errorMessage"></td>
                                                 <td colspan="100%" class="text-center text-muted fw-bold">Search list is empty</td>
                                             </tr>
                                         </c:when>

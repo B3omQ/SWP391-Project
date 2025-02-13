@@ -41,13 +41,16 @@ public class CustomerManager extends HttpServlet {
         ManagerDAO mdao = new ManagerDAO();
         String pageParam = request.getParameter("page");
         String phoneSearch = request.getParameter("phoneSearch");
+        AccountValidation validate = new AccountValidation();
+        
         try {
             int page = (pageParam == null) ? 1 : Integer.parseInt(pageParam);
             int recordsPerPage = 8;
             int offset = (page - 1) * recordsPerPage;
             int totalRecords = mdao.countTotalRecords();
             int totalPages = (int) Math.ceil(totalRecords * 1.0 / recordsPerPage);
-
+            
+            
             List<Customer> customerList = mdao.getAllCustomer(offset, recordsPerPage, phoneSearch);
             request.setAttribute("currentPhoneSearch", phoneSearch);
             request.setAttribute("customerList", customerList);
