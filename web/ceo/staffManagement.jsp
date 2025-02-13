@@ -56,102 +56,11 @@
                     </div>
 
                     <ul class="sidebar-menu pt-3">
-                        <li><a href="index.html"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
                         <li><a href="<%= request.getContextPath() %>/staffManagement"><i
                                     class="uil uil-stethoscope me-2 d-inline-block"></i>Staff Management</a></li>
                         <li><a href="<%= request.getContextPath() %>/customerManagement"><i
                                     class="uil uil-stethoscope me-2 d-inline-block"></i>Customer Management</a></li>
 
-                        <li class="sidebar-dropdown">
-                            <a href="javascript:void(0)"><i class="uil uil-user me-2 d-inline-block"></i>Doctors</a>
-                            <div class="sidebar-submenu">
-                                <ul>
-                                    <li><a href="doctors.html">Doctors</a></li>
-                                    <li><a href="add-doctor.html">Add Doctor</a></li>
-                                    <li><a href="dr-profile.html">Profile</a></li>
-                                </ul>
-                            </div>
-                        </li>
-
-                        <li class="sidebar-dropdown">
-                            <a href="javascript:void(0)"><i class="uil uil-wheelchair me-2 d-inline-block"></i>Patients</a>
-                            <div class="sidebar-submenu">
-                                <ul>
-                                    <li><a href="patients.html">All Patients</a></li>
-                                    <li><a href="add-patient.html">Add Patients</a></li>
-                                    <li><a href="patient-profile.html">Profile</a></li>
-                                </ul>
-                            </div>
-                        </li>
-
-                        <li class="sidebar-dropdown">
-                            <a href="javascript:void(0)"><i class="uil uil-apps me-2 d-inline-block"></i>Apps</a>
-                            <div class="sidebar-submenu">
-                                <ul>
-                                    <li><a href="chat.html">Chat</a></li>
-                                    <li><a href="email.html">Email</a></li>
-                                    <li><a href="calendar.html">Calendar</a></li>
-                                </ul>
-                            </div>
-                        </li>
-
-                        <li class="sidebar-dropdown">
-                            <a href="javascript:void(0)"><i
-                                    class="uil uil-shopping-cart me-2 d-inline-block"></i>Pharmacy</a>
-                            <div class="sidebar-submenu">
-                                <ul>
-                                    <li><a href="shop.html">Shop</a></li>
-                                    <li><a href="product-detail.html">Shop Detail</a></li>
-                                    <li><a href="shopcart.html">Shopcart</a></li>
-                                    <li><a href="checkout.html">Checkout</a></li>
-                                </ul>
-                            </div>
-                        </li>
-
-                        <li class="sidebar-dropdown">
-                            <a href="javascript:void(0)"><i class="uil uil-flip-h me-2 d-inline-block"></i>Blogs</a>
-                            <div class="sidebar-submenu">
-                                <ul>
-                                    <li><a href="blogs.html">Blogs</a></li>
-                                    <li><a href="blog-detail.html">Blog Detail</a></li>
-                                </ul>
-                            </div>
-                        </li>
-
-                        <li class="sidebar-dropdown">
-                            <a href="javascript:void(0)"><i class="uil uil-file me-2 d-inline-block"></i>Pages</a>
-                            <div class="sidebar-submenu">
-                                <ul>
-                                    <li><a href="faqs.html">FAQs</a></li>
-                                    <li><a href="review.html">Reviews</a></li>
-                                    <li><a href="invoice-list.html">Invoice List</a></li>
-                                    <li><a href="invoice.html">Invoice</a></li>
-                                    <li><a href="terms.html">Terms & Policy</a></li>
-                                    <li><a href="privacy.html">Privacy Policy</a></li>
-                                    <li><a href="error.html">404 !</a></li>
-                                    <li><a href="blank-page.html">Blank Page</a></li>
-                                </ul>
-                            </div>
-                        </li>
-
-                        <li class="sidebar-dropdown">
-                            <a href="javascript:void(0)"><i
-                                    class="uil uil-sign-in-alt me-2 d-inline-block"></i>Authentication</a>
-                            <div class="sidebar-submenu">
-                                <ul>
-                                    <li><a href="login.html">Login</a></li>
-                                    <li><a href="signup.html">Signup</a></li>
-                                    <li><a href="forgot-password.html">Forgot Password</a></li>
-                                    <li><a href="lock-screen.html">Lock Screen</a></li>
-                                    <li><a href="thankyou.html">Thank you...!</a></li>
-                                </ul>
-                            </div>
-                        </li>
-
-                        <li><a href="components.html"><i class="uil uil-cube me-2 d-inline-block"></i>Components</a></li>
-
-                        <li><a href="../landing/index-two.html" target="_blank"><i
-                                    class="uil uil-window me-2 d-inline-block"></i>Landing page</a></li>
                     </ul>
                     <!-- sidebar-menu  -->
                 </div>
@@ -378,32 +287,27 @@
                     <div class="layout-specing">
                         <div class="row">
                             <div class="col-xl-9 col-lg-6 col-md-4">
-                                <h5 class="mb-0">Appointment</h5>
+                                <h5 class="mb-0">BankingSystem</h5>
                                 <nav aria-label="breadcrumb" class="d-inline-block mt-2">
                                     <ul class="breadcrumb breadcrumb-muted bg-transparent rounded mb-0 p-0">
-                                        <li class="breadcrumb-item"><a href="index.html">Doctris</a></li>
-                                        <li class="breadcrumb-item active" aria-current="page">Appointment</li>
+                                        <li class="breadcrumb-item"><a href="index.html">Ceo</a></li>
+                                        <li class="breadcrumb-item active" aria-current="page">Staff Management</li>
                                     </ul>
                                 </nav>
                             </div><!--end col-->
 
                             <div class="col-xl-3 col-lg-6 col-md-8 mt-4 mt-md-0">
                                 <div class="justify-content-md-end">
-                                    <form>
+                                    <form action="<%= request.getContextPath() %>/staffManagement" method="get" id="RoleFilterList">
                                         <div class="row justify-content-between align-items-center">
-                                            <div class="col-sm-12 col-md-5">
+                                            <div class="col-sm-12 col-md-8">
                                                 <div class="mb-0 position-relative">
-                                                    <select class="form-control time-during select2input">
-                                                        <option value="EY">Today</option>
-                                                        <option value="GY">Tomorrow</option>
-                                                        <option value="PS">Yesterday</option>
+                                                    <select name="role" class="form-control" onchange="document.getElementById('RoleFilterList').submit()">
+                                                        <option value="" <c:if test="${role == ''}">selected</c:if>>All roles</option>
+                                                        <c:forEach var="r" items="${roles}">
+                                                            <option value="${r.name}" <c:if test="${role == r.name}">selected</c:if>>${r.name}</option>
+                                                        </c:forEach>
                                                     </select>
-                                                </div>
-                                            </div><!--end col-->
-
-                                            <div class="col-sm-12 col-md-7 mt-4 mt-sm-0">
-                                                <div class="d-grid">
-                                                    <a href="ceo/addStaff.jsp" class="btn btn-primary">Add</a>
                                                 </div>
                                             </div><!--end col-->
                                         </div><!--end row-->
@@ -445,7 +349,12 @@
                                                 <c:forEach var="staff" items="${staffs}">
                                                     <tr>
                                                         <td>${staff.id}</td>
-                                                        <td>${staff.username}</td>
+                                                        <td>
+                                                            <div class="d-flex align-items-center">
+                                                                <img src="${staff.image}" width="40" height="" alt="alt"/>
+                                                                <span class="ms-2">${staff.username}</span>
+                                                            </div>
+                                                        </td>
                                                         <td>${staff.firstname} ${staff.lastname}</td>
                                                         <td>${staff.gender}</td>
                                                         <td>
@@ -473,59 +382,49 @@
                             <div class="col-12 mt-4">
                                 <div class="d-md-flex align-items-center text-center justify-content-between">
                                     <span class="text-muted me-3">
-                                        <c:if test="${page == endPage}">
-                                            <c:if test="${(page - 1)* recordsPerPage + 1 == numberOfRecords}">
-                                                Showing ${numberOfRecords} out of ${numberOfRecords}
-                                            </c:if>
-                                            <c:if test="${(page - 1)* recordsPerPage + 1 != numberOfRecords}">
-                                                Showing ${(page - 1)* recordsPerPage + 1} - ${numberOfRecords} out of ${numberOfRecords}
-                                            </c:if>    
-                                        </c:if>
-                                        <c:if test="${page != endPage}">
-                                            Showing ${(page - 1)* recordsPerPage + 1} - ${page * recordsPerPage} out of ${numberOfRecords}
-                                        </c:if>
+                                        Total: ${numberOfRecords}
                                     </span>                                  
                                     <span class="mx-3">
                                         <input type="text" style="text-align: right; max-width: 60px" value="${page}" class="form-control d-inline w-auto"                                               
-                                               onchange="location.href = '${pageContext.request.contextPath}/staffManagement?page=' + this.value">
+                                               onchange="location.href = '${pageContext.request.contextPath}/staffManagement?role=${role}&&page=' + this.value">
                                         / ${endPage}
                                     </span>
                                     <ul class="pagination justify-content-center mb-0 mt-3 mt-sm-0">
                                         <!-- Previous -->
                                         <c:if test="${page != 1}">
-                                            <li class="page-item"><a class="page-link" href="<%= request.getContextPath() %>/staffManagement?page=${page - 1}" aria-label="Previous">Prev</a></li>
+                                            <li class="page-item"><a class="page-link" href="<%= request.getContextPath() %>/staffManagement?role=${role}&&page=${page - 1}" aria-label="Previous">Prev</a></li>
                                             </c:if>  
                                         <!-- Current Page -->  
                                         <!-- Start process -->
                                         <c:if test="${endPage < 8}">
                                             <c:forEach var="i" begin="1" end="${endPage}">
-                                                <li class="page-item ${page == i? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/staffManagement?page=${i}" aria-label="Pages">${i}</a></li>
+                                                <li class="page-item ${page == i? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/staffManagement?role=${role}&&page=${i}" aria-label="Pages">${i}</a></li>
                                                 </c:forEach>
                                             </c:if>
                                             <c:if test="${endPage >= 8}">
-                                            <li class="page-item ${page == 1? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/staffManagement?page=1" aria-label="Pages">1</a></li>
+                                            <li class="page-item ${page == 1? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/staffManagement?role=${role}&&page=1" aria-label="Pages">1</a></li>
                                                 <c:if test="${page < 4 || page > endPage - 3}">
-                                                <li class="page-item ${page == 2? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/staffManagement?page=2" aria-label="Pages">2</a></li>
-                                                <li class="page-item ${page == 3? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/staffManagement?page=3" aria-label="Pages">3</a></li>
+                                                <li class="page-item ${page == 2? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/staffManagement?role=${role}&&page=2" aria-label="Pages">2</a></li>
+                                                <li class="page-item ${page == 3? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/staffManagement?role=${role}&&page=3" aria-label="Pages">3</a></li>
                                                 </c:if>
                                                 <c:if test="${page > 3 && page < endPage - 2}">
                                                 <li class="page-item"><span class="page-link" aria-label="Pages">...</span></li>
-                                                <li class="page-item ${page == page - 1 ? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/staffManagement?page=${page - 1}" aria-label="Pages">${page - 1}</a></li>
-                                                <li class="page-item ${page == page? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/staffManagement?page=${page}" aria-label="Pages">${page}</a></li>
-                                                <li class="page-item ${page == page + 1 ? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/staffManagement?page=${page + 1}" aria-label="Pages">${page + 1}</a></li>
+                                                <li class="page-item ${page == page - 1 ? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/staffManagement?role=${role}&&page=${page - 1}" aria-label="Pages">${page - 1}</a></li>
+                                                <li class="page-item ${page == page? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/staffManagement?role=${role}&&page=${page}" aria-label="Pages">${page}</a></li>
+                                                <li class="page-item ${page == page + 1 ? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/staffManagement?role=${role}&&page=${page + 1}" aria-label="Pages">${page + 1}</a></li>
                                                 <li class="page-item"><span class="page-link" aria-label="Pages">...</span></li>
                                                 </c:if>
                                                 <c:if test="${page < 4 || page > endPage - 3}">
                                                 <li class="page-item"><span class="page-link" aria-label="Pages">...</span></li>
-                                                <li class="page-item ${page == endPage - 2? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/staffManagement?page=${endPage - 2}" aria-label="Pages">${endPage - 2}</a></li>
-                                                <li class="page-item ${page == endPage - 1? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/staffManagement?page=${endPage - 1}" aria-label="Pages">${endPage - 1}</a></li>
+                                                <li class="page-item ${page == endPage - 2? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/staffManagement?role=${role}&&page=${endPage - 2}" aria-label="Pages">${endPage - 2}</a></li>
+                                                <li class="page-item ${page == endPage - 1? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/staffManagement?role=${role}&&page=${endPage - 1}" aria-label="Pages">${endPage - 1}</a></li>
                                                 </c:if> 
-                                            <li class="page-item ${page == endPage? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/staffManagement?page=${endPage}" aria-label="Pages">${endPage}</a></li>
+                                            <li class="page-item ${page == endPage? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/staffManagement?role=${role}&&page=${endPage}" aria-label="Pages">${endPage}</a></li>
                                             </c:if>                                              
                                         <!-- End process -->
                                         <!-- Next -->
                                         <c:if test="${page lt endPage}">
-                                            <li class="page-item"><a class="page-link" href="<%= request.getContextPath() %>/staffManagement?page=${page + 1}" aria-label="Next">Next</a></li>
+                                            <li class="page-item"><a class="page-link" href="<%= request.getContextPath() %>/staffManagement?role=${role}&&page=${page + 1}" aria-label="Next">Next</a></li>
                                             </c:if>
                                     </ul>
                                 </div>

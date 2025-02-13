@@ -246,34 +246,35 @@ public class StaffDAO extends DBContext {
         }
         return null;
     }
-    public boolean emailExists(String email) {
-    String sql = "SELECT 1 FROM [dbo].[Staff] WHERE Email = ?";
-    
-    try (PreparedStatement p = connection.prepareStatement(sql)) {
-        p.setString(1, email);
-        try (ResultSet rs = p.executeQuery()) {
-            return rs.next(); 
-        }
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-    return false; 
-}
-    public boolean phoneExists(String phone) {
-    String sql = "SELECT 1 FROM [dbo].[Staff] WHERE Phone = ?";
-    
-    try (PreparedStatement p = connection.prepareStatement(sql)) {
-        p.setString(1, phone);
-        try (ResultSet rs = p.executeQuery()) {
-            return rs.next(); 
-        }
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-    return false; 
-}
 
-    
+    public boolean emailExists(String email) {
+        String sql = "SELECT 1 FROM [dbo].[Staff] WHERE Email = ?";
+
+        try (PreparedStatement p = connection.prepareStatement(sql)) {
+            p.setString(1, email);
+            try (ResultSet rs = p.executeQuery()) {
+                return rs.next();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean phoneExists(String phone) {
+        String sql = "SELECT 1 FROM [dbo].[Staff] WHERE Phone = ?";
+
+        try (PreparedStatement p = connection.prepareStatement(sql)) {
+            p.setString(1, phone);
+            try (ResultSet rs = p.executeQuery()) {
+                return rs.next();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public static Staff mapResultSetToStaff1(ResultSet rs) throws SQLException {
         LocalDate dob = rs.getDate("Dob") != null ? rs.getDate("Dob").toLocalDate() : null;
         LocalDateTime lockTime = rs.getTimestamp("LockTime") != null ? rs.getTimestamp("LockTime").toLocalDateTime() : null;
@@ -296,7 +297,7 @@ public class StaffDAO extends DBContext {
                 new Role(rs.getInt("RoleId"), rs.getString("RoleName")) // Truyền đối tượng Role
         );
     }
-    
+
     public int getRoleIdByName(String roleName) {
         String sql = "SELECT Id FROM Role WHERE Name = ?";
         try (PreparedStatement p = connection.prepareStatement(sql)) {
@@ -311,7 +312,7 @@ public class StaffDAO extends DBContext {
         }
         return -1; // Return -1 if not found
     }
-    
+
     public void updateStaffInfo(Staff x, int id) {
         String sql = "UPDATE Staff SET \n"
                 + "	Username = ?,\n"
@@ -323,7 +324,8 @@ public class StaffDAO extends DBContext {
                 + "	Phone = ?,\n"
                 + "	Address = ?,\n"
                 + "	Salary = ?,\n"
-                + "	RoleId = ?\n"
+                + "	RoleId = ?, \n"
+                + "	Image = ? \n"
                 + "WHERE Id = ?";
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
@@ -337,18 +339,31 @@ public class StaffDAO extends DBContext {
             ps.setString(8, x.getAddress());
             ps.setBigDecimal(9, x.getSalary());
             ps.setInt(10, x.getRoleId().getId());
-            ps.setInt(11, id);
+            ps.setString(11, x.getImage());
+            ps.setInt(12, id);
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-    
-    public int getNumberOfStaff() {
+
+    public int getNumberOfStaff(String role) {
         int count = 0;
+        if (getRoleIdByName(role.trim()) == -1) {
+            role = "";
+        }
+        role = role.trim();
         String sql = "SELECT COUNT(Id) FROM Staff";
+        if (!role.isEmpty()) {
+            sql += " WHERE RoleId = (SELECT Id from Role WHERE Name = ?) \n";
+        }
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
+            int c = 1;
+            if (!role.isEmpty()) {
+                ps.setString(c, role);
+                c++;
+            }
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 count = rs.getInt(1);
@@ -358,19 +373,31 @@ public class StaffDAO extends DBContext {
         }
         return count;
     }
-    
-    public List<Staff> getAllStaffWithPagination(int offset, int recordsPerPage) {
+
+    public List<Staff> getAllStaffWithPagination(int offset, int recordsPerPage, String role) {
         List<Staff> staffs = new ArrayList<>();
-        String sql = "SELECT s.*, r.Name as RoleName from Staff s join Role r on s.RoleId = r.Id \n"
-                + "ORDER BY s.Id \n"
+        if (getRoleIdByName(role.trim()) == -1) {
+            role = "";
+        }
+        role = role.trim();
+        String sql = "SELECT s.*, r.Name as RoleName from Staff s join Role r on s.RoleId = r.Id \n";
+        if (!role.isEmpty()) {
+            sql += "where r.Name = ? \n";
+        }
+        sql += "ORDER BY s.Id \n"
                 + "OFFSET ? ROWS \n"
                 + "FETCH NEXT ? ROWS ONLY";
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setInt(1, offset);
-            ps.setInt(2, recordsPerPage);
+            int count = 1;
+            if (!role.isEmpty()) {
+                ps.setString(count, role);
+                count++;
+            }
+            ps.setInt(count, offset);
+            ps.setInt(count + 1, recordsPerPage);
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) {               
+            while (rs.next()) {
                 Staff staff = mapResultSetToStaff1(rs);
                 staffs.add(staff); // Add the staff object to the list
             }
@@ -379,7 +406,7 @@ public class StaffDAO extends DBContext {
         }
         return staffs;
     }
-    
+
     public List<Role> getAllRoles() {
         List<Role> roles = new ArrayList<>();
         String sql = "SELECT * FROM Role";
@@ -394,14 +421,14 @@ public class StaffDAO extends DBContext {
         }
         return roles;
     }
-    
+
     public static void main(String[] args) {
         StaffDAO s = new StaffDAO();
-        System.out.println(s.getNumberOfStaff());
-        for(Staff x : s.getAllStaffWithPagination(0, 5)) {
+        System.out.println(s.getNumberOfStaff("Accountant"));
+        for (Staff x : s.getAllStaffWithPagination(0, 5, "Accountant")) {
             System.out.println(x.toString());
         }
-        for(Role r : s.getAllRoles()) {
+        for (Role r : s.getAllRoles()) {
             System.out.println(r.toString());
         }
     }

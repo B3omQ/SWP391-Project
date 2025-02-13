@@ -9,10 +9,13 @@ import model.Role;
 import model.Staff;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
+import java.io.File;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -23,7 +26,61 @@ import java.util.List;
  *
  * @author Long
  */
+@MultipartConfig
 public class EditStaffInfo extends HttpServlet {
+
+    private boolean deleteFile(String relativeFilePath) {
+        try {
+            // Get the absolute path to the project directory
+            String uploadPath = getServletContext().getRealPath("");  // Root of the web application
+            String projectRoot = uploadPath.replace("build" + File.separator + "web", ""); // Adjust to get to project root
+
+            // Combine the project root and the relative file path to get the absolute file path
+            String absoluteFilePath = projectRoot + "web" + File.separator + relativeFilePath.replace("/", File.separator);
+
+            // Create a File object for the file to be deleted
+            File file = new File(absoluteFilePath);
+
+            // Check if the file exists and delete it
+            if (file.exists()) {
+                return file.delete(); // Returns true if the file was successfully deleted
+            } else {
+                System.out.println("File not found: " + absoluteFilePath);
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    private String getAndSaveImg(Part filePart) throws IOException {
+        // Define the path relative to the project
+        String relativePath = "assets/images/";
+
+        // Get the absolute path to the project directory
+        String uploadPath = getServletContext().getRealPath("");  // Root of the web application
+        String projectRoot = uploadPath.replace("build" + File.separator + "web", ""); // Adjust to get to project root
+
+        // Full path to the images folder inside web/resources/images/
+        String fileSavePath = projectRoot + "web" + File.separator + relativePath;
+
+        // Create the directory if it doesn't exist
+        File uploadDir = new File(fileSavePath);
+        if (!uploadDir.exists()) {
+            uploadDir.mkdirs();
+        }
+
+        // Get the uploaded file name
+        String fileName = filePart.getSubmittedFileName();
+        // Combine the path and the file name
+        String filePath = fileSavePath + File.separator + fileName;
+        // Write the file to the specified path
+        filePart.write(filePath);
+
+        // Return the relative path for storing in the database
+        return relativePath + fileName;
+    }
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -94,8 +151,21 @@ public class EditStaffInfo extends HttpServlet {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate date = LocalDate.parse(dob, formatter);
         BigDecimal bigDecimalValue = new BigDecimal(salary);
+        Part imagePart = request.getPart("image");
+        String fileType = imagePart.getContentType();
 
-        Staff staff = new Staff(id, username, "", null, email, firstName, lastName, gender, date, phone, address, bigDecimalValue, 
+        String image = (imagePart != null && imagePart.getSize() > 0 ? getAndSaveImg(imagePart) : null);
+
+        if (image != null) {
+            String imgPath = aDao.getStaffById(id).getImage();
+            if (!imgPath.equals("assets/images/default.jpg")) {
+                deleteFile(imgPath);
+            }
+        } else {
+            image = aDao.getStaffById(id).getImage();
+        }
+
+        Staff staff = new Staff(id, username, "", image, email, firstName, lastName, gender, date, phone, address, bigDecimalValue,
                 id, LocalDateTime.MIN, new Role(aDao.getRoleIdByName(role), role));// Cập nhật thông tin người dùng
         aDao.updateStaffInfo(staff, id);
         response.sendRedirect("staffManagement");
