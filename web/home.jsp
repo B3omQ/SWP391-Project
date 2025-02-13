@@ -106,7 +106,7 @@
                             <div class="dropdown dropdown-primary">
                                 <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0"
                                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img
-                                        src="assets/images/doctors/01.jpg" class="avatar avatar-ex-small rounded-circle"
+                                        src={customer.image} class="avatar avatar-ex-small rounded-circle"
                                         alt=""></button>
                                 <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3"
                                      style="min-width: 200px;">
@@ -297,7 +297,7 @@
                         <div class="heading-title">
                             <img src="assets/images/logo-icon2.png" height="50" alt="">
                             <h4 class="display-4 fw-bold text-white title-dark mt-3 mb-4">
-                                Trao niềm tin <br>Nhận tài Lộc Bank88</h4>
+                                Trao niềm tin <br>Nhận tài Lộc SmartBank</h4>
                             <p class="para-desc text-white-50 mb-0">
                                 Dịch vụ tuyệt vời nếu bạn cần một đối tác ngân hàng
                                 đáng tin cậy để được hỗ trợ tài chính ngay lập tức,

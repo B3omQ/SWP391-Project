@@ -165,7 +165,8 @@
                                                 <div class="col-md-12">
                                                     <div class="mb-3">
                                                         <label class="form-label">Password <span class="text-danger">*</span></label>
-                                                        <input type="password" class="form-control" placeholder="Password" name="password" required="">
+                                                        <input type="password" class="form-control password" placeholder="Password" name="password" required="">
+                                                        <small class="passwordError text-danger" style="display: none;">Password phải có ít nhất 8 kí tự, chữ cái in hoa, số và 1 kí tự đặc biệt</small>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12">
@@ -392,32 +393,6 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <!--                         JavaScript for Search & Sort -->
-                            <script>
-                                document.getElementById("searchInput").addEventListener("keyup", function () {
-                                    let input = this.value.toLowerCase();
-                                    let rows = document.querySelectorAll("tbody tr");
-
-                                    rows.forEach(row => {
-                                        let text = row.innerText.toLowerCase();
-                                        row.style.display = text.includes(input) ? "" : "none";
-                                    });
-                                });
-
-                                function sortTable(columnIndex) {
-                                    let table = document.querySelector(".table tbody");
-                                    let rows = Array.from(table.rows);
-
-                                    let sortedRows = rows.sort((a, b) => {
-                                        let aText = a.cells[columnIndex].textContent.trim().toLowerCase();
-                                        let bText = b.cells[columnIndex].textContent.trim().toLowerCase();
-
-                                        return isNaN(aText) || isNaN(bText) ? aText.localeCompare(bText) : aText - bText;
-                                    });
-
-                                    sortedRows.forEach(row => table.appendChild(row));
-                                }
-                            </script>
                             <script>
                                 document.querySelectorAll(".form-create-account, .form-update-account").forEach(function (form) {
                                     // Username Validation
@@ -531,6 +506,21 @@
                                                 }
                                             }
                                         });
+                                    });
+                                });
+                                form.querySelectorAll(".password").forEach(function (input) {
+                                    input.addEventListener("input", function () {
+                                        const password = this.value;
+                                        const passwordPattern = /^[A-Z](?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{7,}$/;
+                                        const errorMsg = form.querySelector(".passwordError");
+
+                                        if (passwordPattern.test(password)) {
+                                            this.setCustomValidity("");
+                                            errorMsg.style.display = "none";
+                                        } else {
+                                            this.setCustomValidity("Password must be at least 8 characters long, start with an uppercase letter, include at least one number, and one special character.");
+                                            errorMsg.style.display = "block";
+                                        }
                                     });
                                 });
                             </script> 

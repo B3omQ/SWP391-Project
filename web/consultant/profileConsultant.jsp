@@ -706,6 +706,10 @@
                                                                                 :</label>
                                                                             <input type="password" class="form-control" name="currentpassword"
                                                                                    placeholder="Old password" required="">
+                                                                            <span class="position-absolute top-50 end-0 translate-middle-y pe-3 cursor-pointer" onclick="togglePassword('oldPassword', 'toggleOldPasswordIcon')" style="padding-top: 30px;">
+                                                                                <i id="toggleOldPasswordIcon" class="mdi mdi-eye-outline"></i>
+                                                                            </span>
+                                                                            <small class="passwordError text-danger" style="display: none;">Password phải có ít nhất 8 kí tự, chữ cái in hoa, số và 1 kí tự đặc biệt</small>
                                                                         </div>
                                                                     </div><!--end col-->
 
@@ -715,6 +719,10 @@
                                                                                 :</label>
                                                                             <input type="password" class="form-control" name="newpassword"
                                                                                    placeholder="New password" required="">
+                                                                            <span class="position-absolute top-50 end-0 translate-middle-y pe-3 cursor-pointer" onclick="togglePassword('newPassword', 'toggleNewPasswordIcon')" style="padding-top: 30px;">
+                                                                                <i id="toggleNewPasswordIcon" class="mdi mdi-eye-outline"></i>
+                                                                            </span>
+                                                                            <small class="passwordError text-danger" style="display: none;">Password phải có ít nhất 8 kí tự, chữ cái in hoa, số và 1 kí tự đặc biệt</small>
                                                                         </div>
                                                                     </div><!--end col-->
 
@@ -725,6 +733,10 @@
                                                                             <input type="password" class="form-control" name="confirmpassword"
                                                                                    placeholder="Re-type New password"
                                                                                    required="">
+                                                                            <span class="position-absolute top-50 end-0 translate-middle-y pe-3 cursor-pointer" onclick="togglePassword('retypeNewPassword', 'toggleRetypePasswordIcon')" style="padding-top: 30px;">
+                                                                                <i id="toggleRetypePasswordIcon" class="mdi mdi-eye-outline"></i>
+                                                                            </span>
+                                                                            <small class="passwordError text-danger" style="display: none;">Password phải có ít nhất 8 kí tự, chữ cái in hoa, số và 1 kí tự đặc biệt</small>
                                                                         </div>
                                                                     </div><!--end col-->
 
@@ -942,6 +954,21 @@
                         });
                     });
                 });
+                form.querySelectorAll(".password").forEach(function (input) {
+                                    input.addEventListener("input", function () {
+                                        const password = this.value;
+                                        const passwordPattern = /^[A-Z](?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{7,}$/;
+                                        const errorMsg = form.querySelector(".passwordError");
+
+                                        if (passwordPattern.test(password)) {
+                                            this.setCustomValidity("");
+                                            errorMsg.style.display = "none";
+                                        } else {
+                                            this.setCustomValidity("Password must be at least 8 characters long, start with an uppercase letter, include at least one number, and one special character.");
+                                            errorMsg.style.display = "block";
+                                        }
+                                    });
+                                });
             </script>
             <script>
                 let confirmed = false;
@@ -954,7 +981,23 @@
                     return true; // Allow submission on second click
                 }
 
-            </script>    
+            </script>
+            <script>
+                function togglePassword(passwordFieldId, iconId) {
+                    var passwordField = document.getElementById(passwordFieldId);
+                    var toggleIcon = document.getElementById(iconId);
+
+                    if (passwordField.type === "password") {
+                        passwordField.type = "text";
+                        toggleIcon.classList.remove("mdi-eye-outline");
+                        toggleIcon.classList.add("mdi-eye-off-outline");
+                    } else {
+                        passwordField.type = "password";
+                        toggleIcon.classList.remove("mdi-eye-off-outline");
+                        toggleIcon.classList.add("mdi-eye-outline");
+                    }
+                }
+            </script>
             <!-- Footer Start -->
             <jsp:include page="template/footer.jsp"/>
             <!-- End -->
