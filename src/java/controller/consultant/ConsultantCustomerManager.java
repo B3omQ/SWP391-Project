@@ -4,18 +4,25 @@
  */
 package controller.consultant;
 
-import controller.customer.PasswordHasher;
 import dal.ConsultantDAO;
 import java.io.IOException;
+import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.List;
+import model.Customer;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import java.io.File;
-import java.time.LocalDate;
 import model.Staff;
 import util.AccountValidation;
 
@@ -24,7 +31,7 @@ import util.AccountValidation;
  * @author LAPTOP
  */
 @MultipartConfig(maxFileSize = 1024 * 1024 * 5)
-public class ConsultantProfile extends HttpServlet {
+public class ConsultantCustomerManager extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -38,7 +45,23 @@ public class ConsultantProfile extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("./consultant/profileConsultant.jsp").forward(request, response);
+        ConsultantDAO cdao = new ConsultantDAO();
+        String pageParam = request.getParameter("page");
+        int page = (pageParam == null) ? 1 : Integer.parseInt(pageParam);
+        int recordsPerPage = 6;
+        int offset = (page - 1) * recordsPerPage;
+        try {
+            List<Customer> customers = cdao.getCustomerList(offset, recordsPerPage);
+            int totalRecords = cdao.totalAccount();
+            int totalPages = (int) Math.ceil(totalRecords * 1.0 / recordsPerPage);
+            request.setAttribute("currentPage", page);
+            request.setAttribute("totalPages", totalPages);
+            request.setAttribute("customers", customers);
+            System.out.println("Customer list size:" + customers.size());
+        } catch (NumberFormatException ex) {
+            System.out.println(ex);
+        }
+        request.getRequestDispatcher("./consultant/customerManager.jsp").forward(request, response);
     }
 
     private String getAndSaveImg(Part filePart) throws IOException {
@@ -105,83 +128,94 @@ public class ConsultantProfile extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        AccountValidation av = new AccountValidation();
-        String changeInfo = request.getParameter("changeInfo");
-        String changePwd = request.getParameter("changePwd");
-        String changeEmail = request.getParameter("changeEmail");
-        String deleteAccount = request.getParameter("deleteAccount");
-        HttpSession session = request.getSession();
-        Staff currentAccount = (Staff) session.getAttribute("staff");
+        AccountValidation validator = new AccountValidation();
+        String deleteId = request.getParameter("deleteId");
+        String add = request.getParameter("add");
+        String changeinfoId = request.getParameter("changeinfoId");
         ConsultantDAO cdao = new ConsultantDAO();
-
-        if (changeInfo != null) {
+        if (deleteId != null) {
+            try {
+                int delId = Integer.parseInt(deleteId);
+                cdao.deleteCustomer(delId);
+            } catch (NumberFormatException ex) {
+                System.out.println(ex);
+            }
+        }
+        if (add != null) {
             try {
                 String username = request.getParameter("username");
                 String firstname = request.getParameter("firstname");
                 String lastname = request.getParameter("lastname");
-                String gender = request.getParameter("gender");
-                String dobStr = request.getParameter("dob");
-                String phone = request.getParameter("phoneNumber");
+                String email = request.getParameter("email");
                 String address = request.getParameter("address");
-                LocalDate dob = LocalDate.parse(dobStr);
-
-                Part imagePart = request.getPart("otherImage");
-                String image = (imagePart != null && imagePart.getSize() > 0) ? getAndSaveImg(imagePart) : currentAccount.getImage();
-                cdao.updateInformationStaff(currentAccount.getId(), image, username, firstname, lastname, gender, dob, phone, address);
-                Staff updatedAccount = cdao.getStaffById(currentAccount.getId());
-                session.setAttribute("staff", updatedAccount);
-                response.sendRedirect("ConsultantProfile");
-                return;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        if (changePwd != null) {
-            try {
-                String password = currentAccount.getPassword();
-                String currentpassword = request.getParameter("currentpassword");
-                String newpassword = request.getParameter("newpassword");
-                String confirmpassword = request.getParameter("confirmpassword");
-                if (!av.checkPassword(currentpassword, password)) {
-                    response.setContentType("text/plain");
-                    response.getWriter().write("errorCheckPassword");
-                    System.out.println("password không đúng");
-                    return;
-                }
-                if (!newpassword.equals(confirmpassword)) {
-                    response.setContentType("text/plain");
-                    response.getWriter().write("errorConfirmPassword");
-                    System.out.println("Confirm password không đúng");
-                    return;
-                }
-                cdao.updatePasswordByIdStaff(currentAccount.getId(), newpassword);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        if (changeEmail != null) {
-            try {
-                String updateEmail = request.getParameter("updateEmail");
-                if (cdao.isDuplicatedEmail(updateEmail)) {
+                String gender = request.getParameter("gender");
+                String phoneNumber = request.getParameter("phone");
+                String password = request.getParameter("password");
+                String dobStr = request.getParameter("dob");
+//        Part filePart = request.getPart("otherImage");
+//        String image = getAndSaveImg(filePart); 
+                LocalDate dob = null;
+                Part filePart = request.getPart("otherImage");
+                String image = getAndSaveImg(filePart);
+                if (cdao.isDuplicatedEmail(email)) {
                     response.setContentType("text/plain");
                     response.getWriter().write("errorEmailexist");
                     System.out.println("đã block");
                     return;
                 }
-                cdao.updateEmailStaff(currentAccount.getId(), updateEmail);
-                Staff updatedAccount = cdao.getStaffById(currentAccount.getId());
-                session.setAttribute("staff", updatedAccount);
+                if (dobStr != null && !dobStr.isEmpty()) {
+                    dob = LocalDate.parse(dobStr, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                }
+
+                Customer customer = new Customer(image, username, password, email, firstname, lastname, gender, dob, phoneNumber, address);
+
+                // Add the customer via DAO
+                cdao.booleanCreateNewAccount(customer);
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
         }
-        if(deleteAccount != null){
-           try{
-               cdao.deleteStaff(currentAccount.getId());    
-           }catch (Exception e) {
-                e.printStackTrace();
-            } 
+        if (changeinfoId != null) {
+            try {
+                int changeId = Integer.parseInt(changeinfoId);
+                String username = request.getParameter("username");
+                String firstname = request.getParameter("firstname");
+                String lastname = request.getParameter("lastname");
+                String email = request.getParameter("email");
+                String address = request.getParameter("address");
+                String gender = request.getParameter("gender");
+                String phoneNumber = request.getParameter("phoneNumber");
+                String dobStr = request.getParameter("dob");
+                Part imagePart = request.getPart("newImg");
+                Date dob = null;
+                String image = (imagePart != null && imagePart.getSize() > 0 ? getAndSaveImg(imagePart) : null);
+                if (image != null) {
+                    String imgPath = cdao.getCustomerById(changeId).getImage();
+                    deleteFile(imgPath);
+                }
+                if (cdao.isDuplicatedEmail(email)) {
+                    response.setContentType("text/plain");
+                    response.getWriter().write("errorEmailexist");
+                    System.out.println("đã block");
+                    return;
+                }
+                try {
+                    if (dobStr != null && !dobStr.isEmpty()) {
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                        dob = sdf.parse(dobStr);
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    request.setAttribute("error", "Invalid date format. Please use YYYY-MM-DD.");
+                    request.getRequestDispatcher("./consultant/customerManagemer.jsp").forward(request, response);
+                    return;
+                }
+                cdao.updateInformation(changeId, address, firstname, lastname, username, phoneNumber, gender, dobStr, email, image);
+
+            } catch (NumberFormatException ex) {
+                System.out.println(ex);
+            }
         }
         doGet(request, response);
     }
@@ -195,4 +229,5 @@ public class ConsultantProfile extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
 }

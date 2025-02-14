@@ -4,10 +4,9 @@
  */
 package dal;
 
-import context.DBContext;
+import util.DBContext;
 import model.Staff;
 import com.sun.jdi.connect.spi.Connection;
-import java.sql.Date;
 import model.Role;
 import java.sql.Timestamp;
 import java.sql.PreparedStatement;
@@ -15,8 +14,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import util.AccountValidation;
 
 /**
@@ -246,190 +243,31 @@ public class StaffDAO extends DBContext {
         }
         return null;
     }
-
     public boolean emailExists(String email) {
-        String sql = "SELECT 1 FROM [dbo].[Staff] WHERE Email = ?";
-
-        try (PreparedStatement p = connection.prepareStatement(sql)) {
-            p.setString(1, email);
-            try (ResultSet rs = p.executeQuery()) {
-                return rs.next();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+    String sql = "SELECT 1 FROM [dbo].[Staff] WHERE Email = ?";
+    
+    try (PreparedStatement p = connection.prepareStatement(sql)) {
+        p.setString(1, email);
+        try (ResultSet rs = p.executeQuery()) {
+            return rs.next(); 
         }
-        return false;
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
-
+    return false; 
+}
     public boolean phoneExists(String phone) {
-        String sql = "SELECT 1 FROM [dbo].[Staff] WHERE Phone = ?";
-
-        try (PreparedStatement p = connection.prepareStatement(sql)) {
-            p.setString(1, phone);
-            try (ResultSet rs = p.executeQuery()) {
-                return rs.next();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+    String sql = "SELECT 1 FROM [dbo].[Staff] WHERE Phone = ?";
+    
+    try (PreparedStatement p = connection.prepareStatement(sql)) {
+        p.setString(1, phone);
+        try (ResultSet rs = p.executeQuery()) {
+            return rs.next(); 
         }
-        return false;
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+    return false; 
+}
 
-    public static Staff mapResultSetToStaff1(ResultSet rs) throws SQLException {
-        LocalDate dob = rs.getDate("Dob") != null ? rs.getDate("Dob").toLocalDate() : null;
-        LocalDateTime lockTime = rs.getTimestamp("LockTime") != null ? rs.getTimestamp("LockTime").toLocalDateTime() : null;
-
-        return new Staff(
-                rs.getInt("Id"),
-                rs.getString("Username"),
-                rs.getString("Password"),
-                rs.getString("Image"),
-                rs.getString("Email"),
-                rs.getString("FirstName"),
-                rs.getString("LastName"),
-                rs.getString("Gender"),
-                dob, // Chuyển thành LocalDate
-                rs.getString("Phone"),
-                rs.getString("Address"),
-                rs.getBigDecimal("Salary"),
-                rs.getInt("failAttempts"),
-                lockTime,
-                new Role(rs.getInt("RoleId"), rs.getString("RoleName")) // Truyền đối tượng Role
-        );
-    }
-
-    public int getRoleIdByName(String roleName) {
-        String sql = "SELECT Id FROM Role WHERE Name = ?";
-        try (PreparedStatement p = connection.prepareStatement(sql)) {
-            p.setString(1, roleName);
-            try (ResultSet rs = p.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt("Id"); // Return the Role ID
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return -1; // Return -1 if not found
-    }
-
-    public void updateStaffInfo(Staff x, int id) {
-        String sql = "UPDATE Staff SET \n"
-                + "	Username = ?,\n"
-                + "	Email = ?,\n"
-                + "	FirstName = ?,\n"
-                + "	LastName = ?,\n"
-                + "	Gender = ?,\n"
-                + "	Dob = ?,\n"
-                + "	Phone = ?,\n"
-                + "	Address = ?,\n"
-                + "	Salary = ?,\n"
-                + "	RoleId = ?, \n"
-                + "	Image = ? \n"
-                + "WHERE Id = ?";
-        try {
-            PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setString(1, x.getUsername());
-            ps.setString(2, x.getEmail());
-            ps.setString(3, x.getFirstname());
-            ps.setString(4, x.getLastname());
-            ps.setString(5, x.getGender());
-            ps.setDate(6, Date.valueOf(x.getDob()));
-            ps.setString(7, x.getPhone());
-            ps.setString(8, x.getAddress());
-            ps.setBigDecimal(9, x.getSalary());
-            ps.setInt(10, x.getRoleId().getId());
-            ps.setString(11, x.getImage());
-            ps.setInt(12, id);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public int getNumberOfStaff(String role) {
-        int count = 0;
-        if (getRoleIdByName(role.trim()) == -1) {
-            role = "";
-        }
-        role = role.trim();
-        String sql = "SELECT COUNT(Id) FROM Staff";
-        if (!role.isEmpty()) {
-            sql += " WHERE RoleId = (SELECT Id from Role WHERE Name = ?) \n";
-        }
-        try {
-            PreparedStatement ps = connection.prepareStatement(sql);
-            int c = 1;
-            if (!role.isEmpty()) {
-                ps.setString(c, role);
-                c++;
-            }
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                count = rs.getInt(1);
-            }
-        } catch (SQLException e) {
-
-        }
-        return count;
-    }
-
-    public List<Staff> getAllStaffWithPagination(int offset, int recordsPerPage, String role) {
-        List<Staff> staffs = new ArrayList<>();
-        if (getRoleIdByName(role.trim()) == -1) {
-            role = "";
-        }
-        role = role.trim();
-        String sql = "SELECT s.*, r.Name as RoleName from Staff s join Role r on s.RoleId = r.Id \n";
-        if (!role.isEmpty()) {
-            sql += "where r.Name = ? \n";
-        }
-        sql += "ORDER BY s.Id \n"
-                + "OFFSET ? ROWS \n"
-                + "FETCH NEXT ? ROWS ONLY";
-        try {
-            PreparedStatement ps = connection.prepareStatement(sql);
-            int count = 1;
-            if (!role.isEmpty()) {
-                ps.setString(count, role);
-                count++;
-            }
-            ps.setInt(count, offset);
-            ps.setInt(count + 1, recordsPerPage);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                Staff staff = mapResultSetToStaff1(rs);
-                staffs.add(staff); // Add the staff object to the list
-            }
-        } catch (SQLException e) {
-
-        }
-        return staffs;
-    }
-
-    public List<Role> getAllRoles() {
-        List<Role> roles = new ArrayList<>();
-        String sql = "SELECT * FROM Role";
-        try {
-            PreparedStatement ps = connection.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                roles.add(new Role(rs.getInt("Id"), rs.getString("Name")));
-            }
-        } catch (SQLException e) {
-
-        }
-        return roles;
-    }
-
-    public static void main(String[] args) {
-        StaffDAO s = new StaffDAO();
-        System.out.println(s.getNumberOfStaff("Accountant"));
-        for (Staff x : s.getAllStaffWithPagination(0, 5, "Accountant")) {
-            System.out.println(x.toString());
-        }
-        for (Role r : s.getAllRoles()) {
-            System.out.println(r.toString());
-        }
-    }
 }

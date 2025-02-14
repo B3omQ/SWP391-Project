@@ -4,7 +4,7 @@
  */
 package dal;
 
-import context.DBContext;
+import util.DBContext;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,7 +31,6 @@ public class ConsultantDAO extends DBContext {
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-
             stmt.setString(1, customer.getUsername());
             stmt.setString(2, customer.getPassword());
             stmt.setString(3, customer.getImage());
@@ -73,8 +72,8 @@ public class ConsultantDAO extends DBContext {
                 rs.getDate("Dob") != null ? rs.getDate("Dob").toLocalDate() : null,
                 rs.getString("Phone"),
                 rs.getString("Address"),
-                rs.getInt("failed_attempts"),
-                rs.getTimestamp("lock_time") != null ? rs.getTimestamp("lock_time").toLocalDateTime() : null,
+                rs.getInt("failAttempts"),
+                rs.getTimestamp("lockTime") != null ? rs.getTimestamp("lockTime").toLocalDateTime() : null,
                 rs.getBigDecimal("Wallet")
         );
     }
@@ -94,29 +93,6 @@ public class ConsultantDAO extends DBContext {
         }
     }
 
-    public Customer login(String email, String password) {
-        if (isAccountLocked(email)) {
-            return null;
-        }
-
-        String sql = "SELECT * FROM [dbo].[Customer] WHERE Email = ?";
-        try (PreparedStatement p = connection.prepareStatement(sql)) {
-            p.setString(1, email);
-            try (ResultSet rs = p.executeQuery()) {
-                if (rs.next()) {
-                    if (av.checkPassword(password, rs.getString("Password"))) {
-                        resetFailedLogin(email);
-                        return mapResultSetToCustomer(rs);
-                    }
-                    increaseFailedLogin(email);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     public void updateCustomerImage(int customerId, String imagePath) {
         String sql = "UPDATE Customer SET Image = ? WHERE Id = ?";
 
@@ -129,38 +105,18 @@ public class ConsultantDAO extends DBContext {
         }
     }
 
-    public boolean isAccountLocked(String email) {
-        String sql = "SELECT failed_attempts, lock_time FROM Customer WHERE Email = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, email);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    int failedAttempts = rs.getInt("failed_attempts");
-                    Timestamp lockTime = rs.getTimestamp("lock_time");
-
-                    if (lockTime != null) {
-                        long elapsedTime = System.currentTimeMillis() - lockTime.getTime();
-                        if (elapsedTime < 10 * 60 * 1000) {
-                            return true;
-                        } else {
-                            unlockAccount(email);
-                        }
-                    }
-
-                    if (failedAttempts >= 6 && lockTime == null) {
-                        lockAccount(email);
-                        return true;
-                    }
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+    public boolean deleteCustomer(int id) {
+        String sql = "DELETE FROM Customer WHERE Id=?";
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, id);
+            return st.executeUpdate() > 0;
+        } catch (SQLException ex) {
+            System.out.println(ex);
         }
         return false;
     }
-
-    public boolean deleteCustomer(int id) {
-        String sql = "DELETE FROM Customer WHERE Id=?";
+    public boolean deleteStaff(int id) {
+        String sql = "DELETE FROM Staff WHERE Id=?";
         try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setInt(1, id);
             return st.executeUpdate() > 0;
@@ -183,9 +139,9 @@ public class ConsultantDAO extends DBContext {
 
     public boolean updateInformation(int id, String address, String firstName, String lastName,
             String username, String phone, String gender,
-            String dob, String email) {
+            String dob, String email, String image) {
         String sql = "UPDATE Customer SET Username = ?, FirstName = ?, LastName = ?, Email = ?, "
-                + "Address = ?, Gender = ?, Phone = ?, Dob = ? WHERE Id = ?";
+                + "Address = ?, Gender = ?, Phone = ?, Dob = ?, [Image] = ? WHERE Id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, username);
             stmt.setString(2, firstName);
@@ -195,7 +151,8 @@ public class ConsultantDAO extends DBContext {
             stmt.setString(6, gender);
             stmt.setString(7, phone);
             stmt.setDate(8, java.sql.Date.valueOf(dob));
-            stmt.setInt(9, id);
+            stmt.setString(9, image);
+            stmt.setInt(10, id);
 
             int rowsUpdated = stmt.executeUpdate();
             return rowsUpdated > 0;
@@ -315,40 +272,6 @@ public class ConsultantDAO extends DBContext {
         return null;
     }
 
-    public void increaseFailedLogin(String email) {
-        String sql = "UPDATE Customer SET failed_attempts = failed_attempts + 1 WHERE Email = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, email);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        if (getFailedAttempts(email) >= 6) {
-            lockAccount(email);
-        }
-    }
-
-    public void resetFailedLogin(String email) {
-        String sql = "UPDATE Customer SET failed_attempts = 0, lock_time = NULL WHERE Email = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, email);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void lockAccount(String email) {
-        String sql = "UPDATE Customer SET lock_time = ? WHERE Email = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now()));
-            ps.setString(2, email);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
     public boolean updatePasswordByEmail(String email, String password) {
         String sql = "UPDATE [dbo].[Customer] SET Password = ? WHERE Email = ?";
@@ -362,21 +285,6 @@ public class ConsultantDAO extends DBContext {
             e.printStackTrace();
         }
         return false;
-    }
-
-    public int getFailedAttempts(String email) {
-        String sql = "SELECT failed_attempts FROM Customer WHERE Email = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, email);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt("failed_attempts");
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return 0;
     }
 
     public void unlockAccount(String email) {
@@ -408,6 +316,36 @@ public class ConsultantDAO extends DBContext {
         } catch (SQLException ex) {
             Logger.getLogger(ManagerDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+public boolean updatePasswordByIdStaff(int id, String password) {
+        String sql = "UPDATE [dbo].[Staff] SET Password = ? WHERE Id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            String hashedPassword = av.hashPassword(password);
+            ps.setString(1, hashedPassword);
+            ps.setInt(2, id);
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    public boolean updateEmailStaff(int id, String email) {
+        String sql = """
+                     UPDATE BankingSystem.dbo.Staff 
+                     SET Email = ? 
+                     WHERE Id = ? 
+                     """;
+        try{
+          PreparedStatement st = connection.prepareStatement(sql);
+          st.setString(1, email);
+          st.setInt(2, id);
+          int rowsAffected = st.executeUpdate();
+            return rowsAffected > 0;
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
     public Staff getStaffById(int id) {
         String sql = "SELECT * FROM Staff WHERE Id = ?";
