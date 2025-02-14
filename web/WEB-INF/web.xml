@@ -32,6 +32,14 @@
         <servlet-name>ConsultantProfile</servlet-name>
         <servlet-class>controller.consultant.ConsultantProfile</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>LoanOptionService</servlet-name>
+        <servlet-class>controller.manager.LoanOptionService</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DepOptionService</servlet-name>
+        <servlet-class>controller.manager.DepOptionService</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>HomeServlet</servlet-name>
         <url-pattern>/home</url-pattern>
@@ -128,7 +136,14 @@
         <servlet-name>ConsultantProfile</servlet-name>
         <url-pattern>/ConsultantProfile</url-pattern>
     </servlet-mapping>
-    
+    <servlet-mapping>
+        <servlet-name>LoanOptionService</servlet-name>
+        <url-pattern>/Loan-Option-Service</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DepOptionService</servlet-name>
+        <url-pattern>/Dep-Option-Service</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>1440</session-timeout>
         <!-- 1440 phút = 24 giờ -->

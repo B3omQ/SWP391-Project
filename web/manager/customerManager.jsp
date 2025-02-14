@@ -30,7 +30,7 @@
         <!-- Css -->
         <link href="<%= request.getContextPath() %>/assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
 
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
 
     </head>
@@ -55,7 +55,7 @@
 
             <!-- Start Page Content -->
             <main class="page-content bg-light">   
-                
+
                 <c:set value="${sessionScope.staff}" var="staff"/>
                 <jsp:include page="template/header.jsp"/>
 
@@ -307,6 +307,8 @@
         <script src ="resources/script/jquery-3.7.1.min.js"></script>
         <script>
             $(document).ready(function () {
+                showToastrAfterReload();
+                
                 $('form[id^="deleteCustomer-"]').on('submit', function (event) {
                     event.preventDefault();
 
@@ -319,11 +321,15 @@
                             type: 'POST',
                             data: {deleteId: customerId},
                             success: function (response) {
-                                alert('Delete successful');
-                                window.location.reload(); // Tải lại trang sau khi xóa thành công
+                                if (response.success) {
+                                    showSuccessMessage("Success", "Deleted!");
+                                    form.closest('tr').remove();
+                                } else {
+                                    showErrorMessage("Error", "Something wrong here");
+                                }
                             },
                             error: function () {
-                                alert('Server is busy right now. Please try again later.');
+                                showErrorMessage("Error", "Server is busy right now. Please try again later.");
                             }
                         });
                     }
@@ -345,14 +351,13 @@
                             contentType: false, // Để browser tự động chọn content type
                             success: function (response) {
                                 if (response.success) {
-                                    alert("Update successful");
-                                    location.reload(); // Tải lại trang sau khi update thành công
+                                    reloadWithMessage("success", "Success", "Edit successful");
                                 } else {
-                                    $('#error-message-' + customerId).text(response.message);
+                                    showErrorMessage("Error", response.message);
                                 }
                             },
                             error: function () {
-                                alert("Server is busy. Please try again later.");
+                                showErrorMessage("Error", "Server is busy right now. Please try again later.");
                             }
                         });
                     }
@@ -360,6 +365,8 @@
             });
         </script>
 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+        <script src="./resources/script/script.js"></script>
         <!-- page-wrapper -->
         <script src="<%= request.getContextPath() %>/assets/js/jquery.min.js"></script>
         <script src="<%= request.getContextPath() %>/assets/js/bootstrap.bundle.min.js"></script>

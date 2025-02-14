@@ -25,6 +25,7 @@
         <link href="<%= request.getContextPath() %>/assets/css/materialdesignicons.min.css" rel="stylesheet" type="text/css" />
         <link href="<%= request.getContextPath() %>/assets/css/remixicon.css" rel="stylesheet" type="text/css" />
         <link href="https://unicons.iconscout.com/release/v3.0.6/css/line.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
         <!-- SLIDER -->
         <link href="<%= request.getContextPath() %>/assets/css/tiny-slider.css" rel="stylesheet" />
         <!-- Css -->
@@ -265,6 +266,7 @@
 
         <script>
                                                                 $(document).ready(function () {
+                                                                    showToastrAfterReload();
                                                                     $('#changePasswordForm').on('submit', function (event) {
                                                                         event.preventDefault();
                                                                         var currentPassword = $('#currentPassword');
@@ -276,12 +278,8 @@
                                                                             newPassword: newPassword.val(),
                                                                         };
                                                                         console.log(formData);
-                                                                        if (!currentPassword.val() || !newPassword.val()) {
-                                                                            $('#error-message').text('Please enter all required fields.');
-                                                                            return;
-                                                                        }
                                                                         if (newPassword.val() !== confirmPassword.val()) {
-                                                                            $('#error-message').text('Your confirm password is incorrect');
+                                                                            showErrorMessage("Error", "Your confirm password is incorrect");
                                                                             newPassword.val("");
                                                                             confirmPassword.val("");
                                                                             return;
@@ -293,20 +291,13 @@
                                                                             data: formData,
                                                                             success: function (response) {
                                                                                 if (response.success) {
-                                                                                    Swal.fire({
-                                                                                        title: "Success!",
-                                                                                        text: "Password changed successfully.",
-                                                                                        icon: "success",
-                                                                                        confirmButtonText: "OK"
-                                                                                    }).then(() => {
-                                                                                        location.reload();
-                                                                                    });
+                                                                                    reloadWithMessage("success", "Success", "Change successful");
                                                                                 } else {
-                                                                                    $('#error-message').text(response.message);
+                                                                                    showErrorMessage("Error", response.message);
                                                                                 }
                                                                             },
                                                                             error: function () {
-                                                                                alert('Server is busy right now');
+                                                                                showErrorMessage("Error", "Server is busy right now, try again");
                                                                             }
                                                                         });
                                                                     }
@@ -325,20 +316,13 @@
                                                                             contentType: false, // Để trình duyệt tự động set multipart/form-data
                                                                             success: function (response) {
                                                                                 if (response.success) {
-                                                                                    Swal.fire({
-                                                                                        title: "Success!",
-                                                                                        text: "Password changed successfully.",
-                                                                                        icon: "success",
-                                                                                        confirmButtonText: "OK"
-                                                                                    }).then(() => {
-                                                                                        location.reload();
-                                                                                    });
+                                                                                    reloadWithMessage("success", "Success", "Update successful");
                                                                                 } else {
-                                                                                    $('#error-message-info').text(response.message);
+                                                                                    showErrorMessage("Error", esponse.message);
                                                                                 }
                                                                             },
                                                                             error: function () {
-                                                                                alert('Server is busy right now');
+                                                                                showErrorMessage("Error", "Server is busy right now, try again");
                                                                             }
                                                                         });
                                                                     });
@@ -359,7 +343,8 @@
                                                                     }
                                                                 }
         </script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+        <script src="./resources/script/script.js"></script>
 
         <!-- page-wrapper -->
         <script src="<%= request.getContextPath() %>/assets/js/jquery.min.js"></script>
