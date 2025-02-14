@@ -96,7 +96,7 @@ public class UpdateInfo extends HttpServlet {
         String email = request.getParameter("email");
         String phone = request.getParameter("phone");
         String address = request.getParameter("address");
-
+        String firstname = request.getParameter("firstname");
         AccountValidation validator = new AccountValidation();
 
         if (!validator.isValidEmail(email)) {
@@ -111,6 +111,11 @@ public class UpdateInfo extends HttpServlet {
         }
         if (!validator.isValidAddress(address)) {
             session.setAttribute("error3", "Địa chỉ không hợp lệ.");
+            response.sendRedirect(request.getContextPath() + "/customer/template/account-profile.jsp");
+            return;
+        }
+       if (!validator.isValidAddress(firstname)) {
+            session.setAttribute("error3", "Tên không hợp lệ.");
             response.sendRedirect(request.getContextPath() + "/customer/template/account-profile.jsp");
             return;
         }
@@ -131,6 +136,7 @@ public class UpdateInfo extends HttpServlet {
             customer.setEmail(email);
             customer.setPhone(phone);
             customer.setAddress(address);
+            customer.setFirstname(firstname);
             customerDAO.updateCustomer(customer);
             session.setAttribute("account", customer);
             session.setAttribute("success3", "Cập nhật thông tin thành công.");
@@ -151,6 +157,7 @@ public class UpdateInfo extends HttpServlet {
             staff.setEmail(email);
             staff.setPhone(phone);
             staff.setAddress(address);
+            
             staffDAO.updateStaff(staff);
             session.setAttribute("staff", staff);
             session.setAttribute("success3", "Cập nhật thông tin thành công.");
