@@ -218,7 +218,7 @@
                                             <div class="mb-3">
                                                 <label for="firstName" class="form-label">First Name</label>
                                                 <input id="firstName" name="firstName" type="text" class="form-control"
-                                                       value="${account != null ? account.firstname : ''}" >
+                                                       value="${account != null ? account.firstname : ''}" readonly>
                                             </div>
                                         </div>
 
