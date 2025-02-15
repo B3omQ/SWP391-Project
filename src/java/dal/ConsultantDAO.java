@@ -115,6 +115,7 @@ public class ConsultantDAO extends DBContext {
         }
         return false;
     }
+
     public boolean deleteStaff(int id) {
         String sql = "DELETE FROM Staff WHERE Id=?";
         try (PreparedStatement st = connection.prepareStatement(sql)) {
@@ -162,18 +163,26 @@ public class ConsultantDAO extends DBContext {
         }
     }
 
-    public List<Customer> getCustomerList(int offset, int recordsPerPage) {
+    public List<Customer> getAllCustomer(int offset, int recordsPerPage, String phone) {
         List<Customer> customerList = new ArrayList<>();
         String sql = """
-                 SELECT Id, Username, [Password], [Image], Email, FirstName, LastName, Gender, Dob, Phone, [Address], failAttempts, LockTime, Wallet
-                 FROM [BankingSystem].[dbo].[Customer] 
-                 ORDER BY Id
-                 OFFSET ? ROWS
-                 FETCH NEXT ? ROWS ONLY
-                 """;
+                     SELECT Id, Username, [Password], [Image], Email, FirstName, LastName, Gender, Dob, Phone, [Address], failAttempts, LockTime, Wallet
+                                      FROM [BankingSystem].[dbo].[Customer] 
+                     """;
+
+        if (phone != null && !phone.isEmpty()) {
+            sql += " WHERE [Phone] = '" + phone + "'";
+        }
+
+        String pagination = """
+                    ORDER BY Id
+                    OFFSET ? ROWS
+                    FETCH NEXT ? ROWS ONLY;
+                    """;
+
+        sql += pagination;
 
         try (PreparedStatement st = connection.prepareStatement(sql)) {
-            // Set pagination parameters
             st.setInt(1, offset);
             st.setInt(2, recordsPerPage);
 
@@ -199,30 +208,39 @@ public class ConsultantDAO extends DBContext {
                 }
             }
         } catch (SQLException ex) {
-            System.err.println("SQL Error: " + ex.getMessage());
+            System.out.println(ex);
         }
-
         return customerList;
     }
 
-    public int totalAccount() {
-        String sql = """
-                 SELECT COUNT(*) 
-                 FROM [dbo].[Customer] 
-                 WHERE 1=1
-                 """;
-        int count = 0;
+    public int totalAccount(String phone) {
+    String sql = "SELECT COUNT(*) FROM [dbo].[Customer]";
+    
+    boolean hasPhone = (phone != null && !phone.trim().isEmpty());
 
-        try (PreparedStatement st = connection.prepareStatement(sql); ResultSet rs = st.executeQuery()) {
+    if (hasPhone) {
+        sql += " WHERE Phone = ?";
+    }
+
+    int count = 0;
+
+    try (PreparedStatement st = connection.prepareStatement(sql)) {
+        if (hasPhone) {
+            st.setString(1, phone);
+        }
+
+        try (ResultSet rs = st.executeQuery()) {
             if (rs.next()) {
                 count = rs.getInt(1);
             }
-        } catch (SQLException ex) {
-            System.out.println("SQL Error: " + ex.getMessage());
         }
-
-        return count;
+    } catch (SQLException ex) {
+        System.out.println("SQL Error: " + ex.getMessage());
     }
+
+    return count;
+}
+
 
     public boolean isDuplicatedEmail(String email) {
         String sql = """
@@ -232,6 +250,23 @@ public class ConsultantDAO extends DBContext {
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, email);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return true;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ConsultantDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+    public boolean isDuplicatedPhoneNumber(String phone) {
+        String sql = """
+                    SELECT 1 FROM [BankingSystem].[dbo].[Customer] 
+                    WHERE [Phone] = ? 
+                 """;
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, phone);
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
                 return true;
@@ -272,7 +307,6 @@ public class ConsultantDAO extends DBContext {
         return null;
     }
 
-
     public boolean updatePasswordByEmail(String email, String password) {
         String sql = "UPDATE [dbo].[Customer] SET Password = ? WHERE Email = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -296,6 +330,7 @@ public class ConsultantDAO extends DBContext {
             e.printStackTrace();
         }
     }
+
     public void updateInformationStaff(int id, String img, String username, String firstname, String lastname, String gender, LocalDate dob, String phone, String address) {
         String sql = """
                  UPDATE BankingSystem.dbo.Staff
@@ -317,7 +352,8 @@ public class ConsultantDAO extends DBContext {
             Logger.getLogger(ManagerDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-public boolean updatePasswordByIdStaff(int id, String password) {
+
+    public boolean updatePasswordByIdStaff(int id, String password) {
         String sql = "UPDATE [dbo].[Staff] SET Password = ? WHERE Id = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             String hashedPassword = av.hashPassword(password);
@@ -330,23 +366,25 @@ public boolean updatePasswordByIdStaff(int id, String password) {
         }
         return false;
     }
+
     public boolean updateEmailStaff(int id, String email) {
         String sql = """
                      UPDATE BankingSystem.dbo.Staff 
                      SET Email = ? 
                      WHERE Id = ? 
                      """;
-        try{
-          PreparedStatement st = connection.prepareStatement(sql);
-          st.setString(1, email);
-          st.setInt(2, id);
-          int rowsAffected = st.executeUpdate();
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, email);
+            st.setInt(2, id);
+            int rowsAffected = st.executeUpdate();
             return rowsAffected > 0;
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
     }
+
     public Staff getStaffById(int id) {
         String sql = "SELECT * FROM Staff WHERE Id = ?";
         try (PreparedStatement st = connection.prepareStatement(sql)) {
