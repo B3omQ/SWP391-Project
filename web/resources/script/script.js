@@ -3,6 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/JavaScript.js to edit this template
  */
 
+/* global toastr */
+
 //function validatePassword() {
 //    // Get password and confirm password values
 //    const password = document.getElementById('password').value;

@@ -188,8 +188,7 @@
                                     <tr>
                                         <th>ID</th>
                                         <th>Image</th>
-                                        <th>Firstname</th>
-                                        <th>Lastname</th>
+                                        <th>Fullname</th>
                                         <th>Phone</th>
                                         <th>Gender</th>
                                         <th>Actions</th>
@@ -211,8 +210,7 @@
                                                             <img src="${customer.image}" class="photo" alt="Customer Image" />
                                                         </div>
                                                     </td>
-                                                    <td class="text-truncate" style="max-width: 120px;">${customer.firstname}</td>
-                                                    <td class="text-truncate" style="max-width: 120px;">${customer.lastname}</td>
+                                                    <td class="text-truncate" style="max-width: 120px;">${customer.fullname}</td>
                                                     <td class="text-truncate" style="max-width: 120px;">${customer.phone}</td>
                                                     <td>${customer.gender}</td>
                                                     <td class="text-center align-middle">
