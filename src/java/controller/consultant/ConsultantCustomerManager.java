@@ -30,7 +30,7 @@ import util.AccountValidation;
  *
  * @author LAPTOP
  */
-@MultipartConfig(maxFileSize = 1024 * 1024 * 5)
+@MultipartConfig
 public class ConsultantCustomerManager extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -46,20 +46,45 @@ public class ConsultantCustomerManager extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         ConsultantDAO cdao = new ConsultantDAO();
+        AccountValidation validator = new AccountValidation();
         String pageParam = request.getParameter("page");
+        String phoneSearch = request.getParameter("phoneSearch");
+        String recordsPerPage = request.getParameter("recordPerPage");
         int page = (pageParam == null) ? 1 : Integer.parseInt(pageParam);
-        int recordsPerPage = 6;
-        int offset = (page - 1) * recordsPerPage;
+        int recordsPerPageInt = 8;
+        if (pageParam != null) {
+            try {
+                page = Integer.parseInt(pageParam);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid page number: " + pageParam);
+            }
+        }
+        if (recordsPerPage != null) {
+            try {
+                recordsPerPageInt = Integer.parseInt(recordsPerPage);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid recordsPerPage value: " + recordsPerPage);
+            }
+        }
+        int offset = (page - 1) * recordsPerPageInt;
         try {
-            List<Customer> customers = cdao.getCustomerList(offset, recordsPerPage);
-            int totalRecords = cdao.totalAccount();
-            int totalPages = (int) Math.ceil(totalRecords * 1.0 / recordsPerPage);
+            List<Customer> customers = cdao.getAllCustomer(offset, recordsPerPageInt, phoneSearch);
+            int totalRecords = cdao.totalAccount(phoneSearch);
+            int totalPages = (int) Math.ceil(totalRecords * 1.0 / recordsPerPageInt);
+            for (Customer customer : customers) {
+            if (validator.checkHashOfPassword(customer.getPassword())) {
+                customer.setPassword(null); // Hide hashed passwords
+                System.out.println("hided");
+            }
+        }
             request.setAttribute("currentPage", page);
             request.setAttribute("totalPages", totalPages);
             request.setAttribute("customers", customers);
-            System.out.println("Customer list size:" + customers.size());
-        } catch (NumberFormatException ex) {
-            System.out.println(ex);
+            request.setAttribute("recordPerPage", recordsPerPageInt);
+            System.out.println("Customer list size: " + customers.size());
+        } catch (Exception ex) {
+            System.out.println("Error retrieving customers: " + ex.getMessage());
+            ex.printStackTrace();
         }
         request.getRequestDispatcher("./consultant/customerManager.jsp").forward(request, response);
     }
@@ -150,22 +175,40 @@ public class ConsultantCustomerManager extends HttpServlet {
                 String address = request.getParameter("address");
                 String gender = request.getParameter("gender");
                 String phoneNumber = request.getParameter("phone");
-                String password = request.getParameter("password");
                 String dobStr = request.getParameter("dob");
 //        Part filePart = request.getPart("otherImage");
 //        String image = getAndSaveImg(filePart); 
                 LocalDate dob = null;
                 Part filePart = request.getPart("otherImage");
                 String image = getAndSaveImg(filePart);
+                if (filePart.getSize() > 1024 * 1024 * 5) {
+                    response.setContentType("text/plain");
+                    response.getWriter().write("errorImageSize");
+                    System.out.println("đã block image trên 5mb");
+                    return;
+                }
+                if (!validator.isValidImagePath(image)) {
+                    response.setContentType("text/plain");
+                    response.getWriter().write("errorImageType");
+                    System.out.println("đã block image do không đúng định dạng");
+                    return;
+                }
                 if (cdao.isDuplicatedEmail(email)) {
                     response.setContentType("text/plain");
                     response.getWriter().write("errorEmailexist");
-                    System.out.println("đã block");
+                    System.out.println("đã block email");
+                    return;
+                }
+                if (cdao.isDuplicatedPhoneNumber(phoneNumber)) {
+                    response.setContentType("text/plain");
+                    response.getWriter().write("errorPhoneExist");
+                    System.out.println("đã block phone");
                     return;
                 }
                 if (dobStr != null && !dobStr.isEmpty()) {
                     dob = LocalDate.parse(dobStr, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
                 }
+                String  password = validator.generateRandomPassword(10);
 
                 Customer customer = new Customer(image, username, password, email, firstname, lastname, gender, dob, phoneNumber, address);
 
@@ -194,10 +237,28 @@ public class ConsultantCustomerManager extends HttpServlet {
                     String imgPath = cdao.getCustomerById(changeId).getImage();
                     deleteFile(imgPath);
                 }
+                if (imagePart.getSize() > 1024 * 1024 * 5) {
+                    response.setContentType("text/plain");
+                    response.getWriter().write("errorImageSize");
+                    System.out.println("đã block image trên 5mb");
+                    return;
+                }
+                if (!validator.isValidImagePath(image)) {
+                    response.setContentType("text/plain");
+                    response.getWriter().write("errorImageType");
+                    System.out.println("đã block image do không đúng định dạng");
+                    return;
+                }
                 if (cdao.isDuplicatedEmail(email)) {
                     response.setContentType("text/plain");
                     response.getWriter().write("errorEmailexist");
                     System.out.println("đã block");
+                    return;
+                }
+                if (cdao.isDuplicatedPhoneNumber(phoneNumber)) {
+                    response.setContentType("text/plain");
+                    response.getWriter().write("errorPhoneExist");
+                    System.out.println("đã block phone");
                     return;
                 }
                 try {

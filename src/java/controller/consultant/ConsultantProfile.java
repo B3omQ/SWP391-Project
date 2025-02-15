@@ -105,6 +105,7 @@ public class ConsultantProfile extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        AccountValidation validator = new AccountValidation();
         AccountValidation av = new AccountValidation();
         String changeInfo = request.getParameter("changeInfo");
         String changePwd = request.getParameter("changePwd");
@@ -124,9 +125,29 @@ public class ConsultantProfile extends HttpServlet {
                 String phone = request.getParameter("phoneNumber");
                 String address = request.getParameter("address");
                 LocalDate dob = LocalDate.parse(dobStr);
-
+                
+                
+                if (phone != null && !phone.isEmpty() && cdao.isDuplicatedPhoneNumber(phone)) {
+                    response.setContentType("text/plain");
+                    response.getWriter().write("errorPhoneExist");
+                    System.out.println("đã block phone");
+                    return;
+                }
+                
                 Part imagePart = request.getPart("otherImage");
                 String image = (imagePart != null && imagePart.getSize() > 0) ? getAndSaveImg(imagePart) : currentAccount.getImage();
+                if (imagePart.getSize() > 1024 * 1024 * 5) {
+                    response.setContentType("text/plain");
+                    response.getWriter().write("errorImageSize");
+                    System.out.println("đã block image do quá dung lượng cho phép");
+                    return;
+                }
+                if (!validator.isValidImagePath(image)) {
+                    response.setContentType("text/plain");
+                    response.getWriter().write("errorImageType");
+                    System.out.println("đã block image do không đúng định dạng");
+                    return;
+                }
                 cdao.updateInformationStaff(currentAccount.getId(), image, username, firstname, lastname, gender, dob, phone, address);
                 Staff updatedAccount = cdao.getStaffById(currentAccount.getId());
                 session.setAttribute("staff", updatedAccount);
@@ -176,12 +197,12 @@ public class ConsultantProfile extends HttpServlet {
             }
 
         }
-        if(deleteAccount != null){
-           try{
-               cdao.deleteStaff(currentAccount.getId());    
-           }catch (Exception e) {
+        if (deleteAccount != null) {
+            try {
+                cdao.deleteStaff(currentAccount.getId());
+            } catch (Exception e) {
                 e.printStackTrace();
-            } 
+            }
         }
         doGet(request, response);
     }
