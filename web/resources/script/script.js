@@ -91,3 +91,49 @@ function showToastrAfterReload() {
         localStorage.removeItem("toastMessage");
     }
 }
+
+
+//// validate name: nếu có 2 dấu cách trở lên giữa 2 chữ thì báo lỗi, có dấu cách cuối tên báo lỗi
+//function validateName(name) {
+//    const doubleSpace = /\s{2,}/;
+//    const trailingSpace = /\s$/;
+//    const specialCharacters = /[^a-zA-Z\s]/;
+//    if (doubleSpace.test(name)) {
+//        showErrorMessage("Error", "Tên của bạn không hợp lệ");
+//    }
+//    if (trailingSpace.test(name)) {
+//        showErrorMessage("Error", "Tên của bạn không hợp lệ");
+//    }
+//    if (specialCharacters.test(name)) {
+//        showErrorMessage("Error", "Tên của bạn không hợp lệ");
+//    }
+//    return true;
+//}
+//
+//// validate phone number: chỉ gồm các con số từ 10-11
+//function validatePhoneNumber(phoneNumber) {
+//    const phonePattern = /^\d{10,11}$/;
+//    if (!phonePattern.test(phoneNumber)) {
+//        showErrorMessage("Error", "Số điện thoại không hợp lệ");
+//    }
+//    return true;
+//}
+//
+//// validate image: chỉ nhận các file có đuôi .jpg, .jpeg, .png
+//function validateImage(file) {
+//    const validExtensions = [".jpg", ".jpeg", ".png"];
+//    const fileExtension = file.name.slice(file.name.lastIndexOf('.')).toLowerCase();
+//    if (!validExtensions.includes(fileExtension)) {
+//        showErrorMessage("Error", "Chỉ chấp nhận các file có đuôi jpg, jpeg, png");
+//    }
+//    return true;
+//}
+//
+//// validate email: chuẩn theo quy định của email
+//function validateEmail(email) {
+//    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+//    if (!emailPattern.test(email)) {
+//        showErrorMessage("Error", "Email không hợp lệ");
+//    }
+//    return true;
+//}

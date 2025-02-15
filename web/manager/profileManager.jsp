@@ -140,7 +140,7 @@
                                                              style="width: 205px; height: 205px; object-fit: cover; border-radius: 30%;">
                                                         <div class="mb-4 mt-3">
                                                             <label for="newImg" class="form-label text-muted">Upload a new avatar. Larger images will be resized automatically. Maximum upload size is 5 MB.</label>
-                                                            <input type="file" id="newImg" accept=".jpg,.png,.jpeg" name="newImg" class="form-control-file">
+                                                            <input type="file" id="newImg" accept=".jpg,.png,.jpeg,.gif" name="newImg" class="form-control-file">
                                                         </div>
                                                         <div class="mb-4">
                                                             <p class="text-muted">Your email: ${staff.email}
@@ -318,7 +318,7 @@
                                                                                 if (response.success) {
                                                                                     reloadWithMessage("success", "Success", "Update successful");
                                                                                 } else {
-                                                                                    showErrorMessage("Error", esponse.message);
+                                                                                    showErrorMessage("Error", response.message);
                                                                                 }
                                                                             },
                                                                             error: function () {

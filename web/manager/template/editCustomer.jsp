@@ -19,7 +19,7 @@
                     <div class="row mt-3">
                         <div class="col-md-12">
                             <label for="newImg" class ="head">Image</label>
-                            <input type="file" id="newImg" accept=".jpg,.png,.jpeg" name="newImg" class="form-control-file">
+                            <input type="file" id="newImg" accept=".jpg,.png,.jpeg,.gif" name="newImg" class="form-control-file">
                         </div>
                     </div>
                     <div class="row mt-3">

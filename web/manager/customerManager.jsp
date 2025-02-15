@@ -31,6 +31,8 @@
         <link href="<%= request.getContextPath() %>/assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
 
 
     </head>
@@ -87,6 +89,14 @@
                                         id="phoneSearch"
                                         name="phoneSearch"
                                         />
+                                    <select class="btn border-dark me-2" name="recordsPerPage" onchange="onChangeSubmit('search')" >
+                                        <option value="3" ${currentRecords == 3 ? 'selected' : ''}>3</option>
+                                        <option value="5" ${currentRecords == 5 ? 'selected' : ''}>5</option>
+                                        <option value="8" ${currentRecords == 8 ? 'selected' : ''}>8</option>
+                                        <option value="10" ${currentRecords == 10 ? 'selected' : ''}>10</option>
+                                        <option value="12" ${currentRecords == 12 ? 'selected' : ''}>12</option>
+                                        <option value="15" ${currentRecords == 15 ? 'selected' : ''}>15</option>
+                                    </select>
                                     <a href="customer-manager?page=1" class="btn border-dark me-2">Reset</a>
                                     <button class="btn btn-danger" type="submit">Search</button>
                                 </form>
@@ -281,19 +291,54 @@
                 <nav aria-label="Page navigation" class="mt-4">
                     <ul class="pagination justify-content-center">
                         <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
-                            <a class="page-link text-danger" href="?page=${currentPage - 1}" tabindex="-1">Previous</a>
+                            <a class="page-link text-danger" href="?page=1&phoneSearch=${currentPhoneSearch}&recordsPerPage=${currentRecords}">First</a>
                         </li>
+                        <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
+                            <a class="page-link text-danger" href="?page=${currentPage - 1}&phoneSearch=${currentPhoneSearch}&recordsPerPage=${currentRecords}">Previous</a>
+                        </li>
+                        <c:choose>
+                            <c:when test="${totalPages > 10}">
+                                <c:forEach var="i" begin="1" end="3">
+                                    <li class="page-item ${i == currentPage ? 'active' : ''}">
+                                        <a class="page-link text-red" href="?page=${i}&phoneSearch=${currentPhoneSearch}&recordsPerPage=${currentRecords}">${i}</a>
+                                    </li>
+                                </c:forEach>
 
-                        <c:forEach var="i" begin="1" end="${totalPages}">
-                            <li class="page-item ${i == currentPage ? 'active' : ''}">
-                                <a class="page-link text-red" href="?page=${i}">${i}</a>
-                            </li>
-                        </c:forEach>
+                                <li class="page-item disabled"><a class="page-link">...</a></li>
 
+                                <c:forEach var="i" begin="${totalPages - 2}" end="${totalPages}">
+                                    <li class="page-item ${i == currentPage ? 'active' : ''}">
+                                        <a class="page-link text-red" href="?page=${i}&phoneSearch=${currentPhoneSearch}&recordsPerPage=${currentRecords}">${i}</a>
+                                    </li>
+                                </c:forEach>
+                            </c:when>
+                            <c:otherwise>
+                                <c:forEach var="i" begin="1" end="${totalPages}">
+                                    <li class="page-item ${i == currentPage ? 'active' : ''}">
+                                        <a class="page-link text-red" href="?page=${i}&phoneSearch=${currentPhoneSearch}&recordsPerPage=${currentRecords}">${i}</a>
+                                    </li>
+                                </c:forEach>
+                            </c:otherwise>
+                        </c:choose>
                         <li class="page-item ${currentPage == totalPages ? 'disabled' : ''}">
-                            <a class="page-link text-danger" href="?page=${currentPage + 1}">Next</a>
+                            <a class="page-link text-danger" href="?page=${currentPage + 1}&phoneSearch=${currentPhoneSearch}&recordsPerPage=${currentRecords}">Next</a>
+                        </li>
+                        <li class="page-item ${currentPage == totalPages ? 'disabled' : ''}">
+                            <a class="page-link text-danger" href="?page=${totalPages}&phoneSearch=${currentPhoneSearch}&recordsPerPage=${currentRecords}">Last</a>
                         </li>
                     </ul>
+                    <c:choose>
+                        <c:when test="${totalPages > 10}">
+                            <form method="get" action="customer-manager" class="d-flex justify-content-center mt-2">
+                                <input type="hidden" name="phoneSearch" value="${currentPhoneSearch}">
+                                <input type="hidden" name="recordsPerPage" value="${currentRecords}">
+                                <input type="number" name="page" min="1" max="${totalPages}" 
+                                       placeholder="Page" 
+                                       class="form-control w-auto text-center px-2">
+                                <button type="submit" class="btn btn-primary ms-2">Go</button>
+                            </form>
+                        </c:when>
+                    </c:choose>                
                 </nav>
 
                 <!-- Footer Start -->
@@ -306,63 +351,93 @@
 
         <script src ="resources/script/jquery-3.7.1.min.js"></script>
         <script>
-            $(document).ready(function () {
-                showToastrAfterReload();
-                
-                $('form[id^="deleteCustomer-"]').on('submit', function (event) {
-                    event.preventDefault();
 
-                    let form = $(this);
-                    let customerId = form.find('input[name="deleteId"]').val();
+                                        function validatePhoneSearch() {
+                                            var phoneInput = document.getElementById("phoneSearch");
+                                            var phoneValue = phoneInput.value.trim();
+                                            var phonePattern = /^\d{10,11}$/; // Chỉ chứa 10-11 số
 
-                    if (confirm("Are you sure you want to delete this customer?")) {
-                        $.ajax({
-                            url: 'customer-manager',
-                            type: 'POST',
-                            data: {deleteId: customerId},
-                            success: function (response) {
-                                if (response.success) {
-                                    showSuccessMessage("Success", "Deleted!");
-                                    form.closest('tr').remove();
-                                } else {
-                                    showErrorMessage("Error", "Something wrong here");
-                                }
-                            },
-                            error: function () {
-                                showErrorMessage("Error", "Server is busy right now. Please try again later.");
-                            }
-                        });
-                    }
-                });
+                                            if (!phonePattern.test(phoneValue)) {
+                                                showErrorMessage("Error", "Invalid phone number")
+                                                phoneInput.focus();
+                                                return false;
+                                            }
+                                            return true;
+                                        }
 
-                $('form[id^="editCustomer-"]').on('submit', function (event) {
-                    event.preventDefault(); // Chặn form submit mặc định
+                                        document.getElementById("search").addEventListener("submit", function (event) {
+                                            if (!validatePhoneSearch()) {
+                                                event.preventDefault(); // Ngăn chặn form submit nếu không hợp lệ
+                                            }
+                                        });
+                                        
+                                        $(document).ready(function () {
+                                            showToastrAfterReload();
 
-                    let form = $(this);
-                    let customerId = form.find('input[name="updateId"]').val(); // Lấy ID từ input hidden
-                    let formData = new FormData(this); // Lấy dữ liệu form (bao gồm file)
+                                            $('form[id^="deleteCustomer-"]').on('submit', function (event) {
+                                                event.preventDefault();
 
-                    if (confirm("Are you sure you want to update this customer?")) {
-                        $.ajax({
-                            url: form.attr('action'), // Lấy URL action từ form
-                            type: form.attr('method'), // Lấy method từ form
-                            data: formData,
-                            processData: false, // Không xử lý dữ liệu (FormData sẽ làm việc này)
-                            contentType: false, // Để browser tự động chọn content type
-                            success: function (response) {
-                                if (response.success) {
-                                    reloadWithMessage("success", "Success", "Edit successful");
-                                } else {
-                                    showErrorMessage("Error", response.message);
-                                }
-                            },
-                            error: function () {
-                                showErrorMessage("Error", "Server is busy right now. Please try again later.");
-                            }
-                        });
-                    }
-                });
-            });
+                                                let form = $(this);
+                                                let customerId = form.find('input[name="deleteId"]').val();
+
+                                                if (confirm("Are you sure you want to delete this customer?")) {
+                                                    $.ajax({
+                                                        url: 'customer-manager',
+                                                        type: 'POST',
+                                                        data: {deleteId: customerId},
+                                                        success: function (response) {
+                                                            if (response.success) {
+                                                                showSuccessMessage("Success", "Deleted!");
+                                                                form.closest('tr').remove();
+                                                            } else {
+                                                                showErrorMessage("Error", "Something wrong here");
+                                                            }
+                                                        },
+                                                        error: function () {
+                                                            showErrorMessage("Error", "Server is busy right now. Please try again later.");
+                                                        }
+                                                    });
+                                                }
+                                            });
+
+                                            $('form[id^="editCustomer-"]').on('submit', function (event) {
+                                                event.preventDefault(); // Chặn form submit mặc định
+
+                                                let form = $(this);
+                                                let customerId = form.find('input[name="updateId"]').val(); // Lấy ID từ input hidden
+                                                let formData = new FormData(this); // Lấy dữ liệu form (bao gồm file)
+
+                                                if (confirm("Are you sure you want to update this customer?")) {
+                                                    $.ajax({
+                                                        url: form.attr('action'), // Lấy URL action từ form
+                                                        type: form.attr('method'), // Lấy method từ form
+                                                        data: formData,
+                                                        processData: false, // Không xử lý dữ liệu (FormData sẽ làm việc này)
+                                                        contentType: false, // Để browser tự động chọn content type
+                                                        success: function (response) {
+                                                            if (response.success) {
+                                                                reloadWithMessage("success", "Success", "Edit successful");
+                                                            } else {
+                                                                showErrorMessage("Error", response.message);
+                                                            }
+                                                        },
+                                                        error: function () {
+                                                            showErrorMessage("Error", "Server is busy right now. Please try again later.");
+                                                        }
+                                                    });
+                                                }
+                                            });
+
+                                            function validatePhoneSearch() {
+                                                var phoneInput = document.getElementById("phoneSearch").value.trim();
+                                                var phoneRegex = /^(\+?\d{1,3}[- ]?)?\d{10,11}$/;
+                                                if (phoneInput !== "" && !phoneRegex.test(phoneInput)) {
+                                                    showErrorMessage("Error", "Invalid phone search");
+                                                    return false;
+                                                }
+                                                return true;
+                                            }
+                                        });
         </script>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>

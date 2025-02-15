@@ -17,6 +17,7 @@ import jakarta.servlet.http.Part;
 import java.io.File;
 import java.time.LocalDate;
 import model.Staff;
+import org.json.JSONException;
 import util.AccountValidation;
 import org.json.JSONObject;
 
@@ -128,7 +129,7 @@ public class ProfileManager extends HttpServlet {
                 }
                 if (!validator.checkHashOfPassword(newPassword)) {
                     json.put("success", false);
-                    json.put("message", "Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and a special character.");
+                    json.put("message", "Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, a special character and not contains space characters.");
                     response.getWriter().write(json.toString());
                     return;
                 }
@@ -143,7 +144,7 @@ public class ProfileManager extends HttpServlet {
                 session.setAttribute("staff", currentAccount);
                 json.put("success", true);
                 response.getWriter().write(json.toString());
-            } catch (Exception e) {
+            } catch (IOException | JSONException e) {
                 json.put("success", false);
                 json.put("message", "An error occurred while changing password");
                 response.getWriter().write(json.toString());
@@ -162,7 +163,7 @@ public class ProfileManager extends HttpServlet {
                 LocalDate dob = LocalDate.parse(dobStr);
                 Part imagePart = request.getPart("newImg");
 
-                if (imagePart.getSize() > 1024 * 1024 * 1) {
+                if (imagePart.getSize() > 1024 * 1024 * 5) {
                     json.put("success", false);
                     json.put("message", "Your file import is too big, please choose file size < 5mbs");
                     response.getWriter().write(json.toString());
@@ -170,14 +171,14 @@ public class ProfileManager extends HttpServlet {
                 }
 
                 String image = (imagePart != null && imagePart.getSize() > 0 ? getAndSaveImg(imagePart) : null);
-                
-//                if (!validator.isValidImagePath(image)) {
-//                    json.put("success", false);
-//                    json.put("message", "Only accept file .jpg, .png, .jpeg");
-//                    response.getWriter().write(json.toString());
-//                    return;
-//                }
-//                
+
+                if (image != null && !validator.isValidateImage(image)) {
+                    json.put("success", false);
+                    json.put("message", "Only accept file .jpg, .jpeg, .png, .gif");
+                    response.getWriter().write(json.toString());
+                    return;
+                }
+
                 if (image != null) {
                     String imgPath = mdao.getStaffById(currentAccount.getId()).getImage();
                     deleteFile(imgPath);
@@ -211,7 +212,7 @@ public class ProfileManager extends HttpServlet {
                 session.setAttribute("staff", currentAccount);
                 json.put("success", true);
                 response.getWriter().write(json.toString());
-            } catch (Exception e) {
+            } catch (ServletException | IOException | JSONException e) {
                 json.put("success", false);
                 json.put("message", "An error occurred while updating information");
                 response.getWriter().write(json.toString());

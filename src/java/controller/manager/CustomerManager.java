@@ -16,6 +16,7 @@ import java.io.File;
 import java.time.LocalDate;
 import java.util.List;
 import model.Customer;
+import org.json.JSONException;
 import util.AccountValidation;
 import org.json.JSONObject;
 
@@ -41,9 +42,10 @@ public class CustomerManager extends HttpServlet {
         ManagerDAO mdao = new ManagerDAO();
         String pageParam = request.getParameter("page");
         String phoneSearch = request.getParameter("phoneSearch");
+        String recordsEntries = request.getParameter("recordsPerPage");
         try {
             int page = (pageParam == null) ? 1 : Integer.parseInt(pageParam);
-            int recordsPerPage = 8;
+            int recordsPerPage = (recordsEntries == null) ? 8 : Integer.parseInt(recordsEntries);
             int offset = (page - 1) * recordsPerPage;
             int totalRecords = mdao.countTotalRecords();
             int totalPages = (int) Math.ceil(totalRecords * 1.0 / recordsPerPage);
@@ -53,9 +55,9 @@ public class CustomerManager extends HttpServlet {
             request.setAttribute("customerList", customerList);
             request.setAttribute("currentPage", page);
             request.setAttribute("totalPages", totalPages);
+            request.setAttribute("currentRecords", recordsPerPage);
 
         } catch (NumberFormatException ex) {
-            ex.printStackTrace();
         }
 
         request.getRequestDispatcher("./manager/customerManager.jsp").forward(request, response);
@@ -161,13 +163,13 @@ public class CustomerManager extends HttpServlet {
                 }
 
                 String image = (imagePart != null && imagePart.getSize() > 0 ? getAndSaveImg(imagePart) : null);
-//                String imageExtension = image.substring(image.lastIndexOf(".") + 1).toLowerCase();
-//
-//                if (!imageExtension.equals("jpg") && !imageExtension.equals("png") && !imageExtension.equals("jpeg")) {
-//                    json.put("success", false);
-//                    json.put("message", "Only accept jpg, png, jpeg file");
-//                    return;
-//                }
+
+                if (image != null && !validator.isValidateImage(image)) {
+                    json.put("success", false);
+                    json.put("message", "Only accept file .jpg, .jpeg, .png, .gif");
+                    response.getWriter().write(json.toString());
+                    return;
+                }
 
                 if (image != null) {
                     String imgPath = mdao.getCustomerById(id).getImage();
@@ -208,8 +210,11 @@ public class CustomerManager extends HttpServlet {
                 json.put("success", true);
                 response.getWriter().write(json.toString());
                 return;
-            } catch (NumberFormatException ex) {
-                ex.printStackTrace();
+            } catch (ServletException | IOException | NumberFormatException | JSONException ex) {
+                json.put("success", false);
+                json.put("message", "An error occurred while updating information");
+                response.getWriter().write(json.toString());
+                System.out.println(ex);
             }
         }
 
@@ -226,9 +231,8 @@ public class CustomerManager extends HttpServlet {
                     mdao.deleteCustomer(delId);
                     json.put("success", true);
                     response.getWriter().write(json.toString());
-                    return;
                 }
-            } catch (Exception ex) {
+            } catch (IOException | NumberFormatException | JSONException ex) {
                 json.put("success", false);
                 json.put("message", "An error occurred while trying to delete customer");
                 response.getWriter().write(json.toString());
