@@ -1,3 +1,17 @@
 10/2:
 -Thêm filter session
 -Chỉnh frontend cho manager site trang customer-manager, profile-manager
+
+15/2:
+Hoàn thiện It1:
+- Tối ưu hóa validate backend
+- Tối ưu hóa validate phần thanh search
+- Thêm validate loại ảnh
+- Tối ưu hóa phần phân trang (thêm tùy chọn hiển thị Entries, tùy chọn số trang bạn muốn hiển thị)
+- Tối ưu hóa hiển thị lỗi khi sai validate
+
+Tối ưu hóa phần hiển thị nội dung cần validate cho người dùng
+
+16/2:
+
+17/2:
