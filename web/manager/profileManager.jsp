@@ -30,6 +30,7 @@
         <link href="<%= request.getContextPath() %>/assets/css/tiny-slider.css" rel="stylesheet" />
         <!-- Css -->
         <link href="<%= request.getContextPath() %>/assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
+        <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css">
 
         <style>
             .card-title {
@@ -139,7 +140,7 @@
                                                         <img src="${staff.image}" alt="Image"
                                                              style="width: 205px; height: 205px; object-fit: cover; border-radius: 30%;">
                                                         <div class="mb-4 mt-3">
-                                                            <label for="newImg" class="form-label text-muted">Upload a new avatar. Larger images will be resized automatically. Maximum upload size is 5 MB.</label>
+                                                            <label for="newImg" class="form-label text-muted">Upload a new avatar. Larger images will be resized automatically. Maximum upload size is 5 MB. Only accept jpg, jpeg, png, gif file</label>
                                                             <input type="file" id="newImg" accept=".jpg,.png,.jpeg,.gif" name="newImg" class="form-control-file">
                                                         </div>
                                                         <div class="mb-4">
@@ -263,8 +264,36 @@
         </div>
 
         <script src ="resources/script/jquery-3.7.1.min.js"></script>
+        <script src="https://unpkg.com/@popperjs/core@2"></script>
+        <script src="https://unpkg.com/tippy.js@6"></script>
 
         <script>
+                                                                document.addEventListener("DOMContentLoaded", function () {
+                                                                    tippy('#newPassword', {
+                                                                        content: "Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, a special character and not contains space characters.",
+                                                                        animation: 'fade',
+                                                                        duration: [300, 300],
+                                                                        placement: 'top',
+                                                                        theme: 'light-border'
+                                                                    });
+
+                                                                    tippy('#confirmPassword', {
+                                                                        content: "Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, a special character and not contains space characters.",
+                                                                        animation: 'fade',
+                                                                        duration: [300, 300],
+                                                                        placement: 'top',
+                                                                        theme: 'light-border'
+                                                                    });
+
+                                                                    tippy('#newPhone', {
+                                                                        content: "Phone must be 10 - 11 digits number",
+                                                                        animation: 'fade',
+                                                                        duration: [300, 300],
+                                                                        placement: 'top',
+                                                                        theme: 'light-border'
+                                                                    });
+                                                                });
+
                                                                 $(document).ready(function () {
                                                                     showToastrAfterReload();
                                                                     $('#changePasswordForm').on('submit', function (event) {

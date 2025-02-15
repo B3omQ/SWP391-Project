@@ -11,17 +11,15 @@
                 </div>
                 <div class="modal-body">
                     <div class="row mt-2">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <label class="form-label head" for="newEmail">Email</label>
                             <input value="${param.email}" class="form-control" type="email" id="newEmail" name="newEmail" required>
                         </div>
-                    </div>
-                    <div class="row mt-3">
-                        <div class="col-md-12">
+                        <div class="col-md-6" style="margin-top : 35px">
                             <label for="newImg" class ="head">Image</label>
                             <input type="file" id="newImg" accept=".jpg,.png,.jpeg,.gif" name="newImg" class="form-control-file">
                         </div>
-                    </div>
+                    </div>                    
                     <div class="row mt-3">
                         <div class="col-md-6">
                             <label for="newFirstname" class="form-label head">First Name</label>

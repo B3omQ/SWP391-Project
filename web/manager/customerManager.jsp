@@ -32,6 +32,7 @@
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css">
 
 
 
@@ -89,7 +90,7 @@
                                         id="phoneSearch"
                                         name="phoneSearch"
                                         />
-                                    <select class="btn border-dark me-2" name="recordsPerPage" onchange="onChangeSubmit('search')" >
+                                    <select class="btn border-dark me-2" name="recordsPerPage" onchange="onChangeSubmit('search')" id="entries">
                                         <option value="3" ${currentRecords == 3 ? 'selected' : ''}>3</option>
                                         <option value="5" ${currentRecords == 5 ? 'selected' : ''}>5</option>
                                         <option value="8" ${currentRecords == 8 ? 'selected' : ''}>8</option>
@@ -97,7 +98,7 @@
                                         <option value="12" ${currentRecords == 12 ? 'selected' : ''}>12</option>
                                         <option value="15" ${currentRecords == 15 ? 'selected' : ''}>15</option>
                                     </select>
-                                    <a href="customer-manager?page=1" class="btn border-dark me-2">Reset</a>
+                                    <a href="?page=1&phoneSearch=&recordsPerPage=${currentRecords}" class="btn border-dark me-2">Reset</a>
                                     <button class="btn btn-danger" type="submit">Search</button>
                                 </form>
                             </div>
@@ -351,6 +352,31 @@
 
         <script src ="resources/script/jquery-3.7.1.min.js"></script>
         <script>
+                                        document.addEventListener("DOMContentLoaded", function () {
+                                            tippy('#entries', {
+                                                content: "Entries",
+                                                animation: 'fade',
+                                                duration: [300, 300],
+                                                placement: 'top',
+                                                theme: 'light-border'
+                                            });
+
+                                            tippy('#newImg', {
+                                                content: "Only accept file jpg, jpeg, png, gif and size smaller than 5mbs",
+                                                animation: 'fade',
+                                                duration: [300, 300],
+                                                placement: 'top',
+                                                theme: 'light-border'
+                                            });
+
+                                            tippy('#newPhone', {
+                                                content: "Phone must be 10 - 11 digits number",
+                                                animation: 'fade',
+                                                duration: [300, 300],
+                                                placement: 'top',
+                                                theme: 'light-border'
+                                            });
+                                        });
 
                                         function validatePhoneSearch() {
                                             var phoneInput = document.getElementById("phoneSearch");
@@ -370,7 +396,7 @@
                                                 event.preventDefault(); // Ngăn chặn form submit nếu không hợp lệ
                                             }
                                         });
-                                        
+
                                         $(document).ready(function () {
                                             showToastrAfterReload();
 
@@ -427,20 +453,12 @@
                                                     });
                                                 }
                                             });
-
-                                            function validatePhoneSearch() {
-                                                var phoneInput = document.getElementById("phoneSearch").value.trim();
-                                                var phoneRegex = /^(\+?\d{1,3}[- ]?)?\d{10,11}$/;
-                                                if (phoneInput !== "" && !phoneRegex.test(phoneInput)) {
-                                                    showErrorMessage("Error", "Invalid phone search");
-                                                    return false;
-                                                }
-                                                return true;
-                                            }
                                         });
         </script>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+        <script src="https://unpkg.com/@popperjs/core@2"></script>
+        <script src="https://unpkg.com/tippy.js@6"></script>
         <script src="./resources/script/script.js"></script>
         <!-- page-wrapper -->
         <script src="<%= request.getContextPath() %>/assets/js/jquery.min.js"></script>
