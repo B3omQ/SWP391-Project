@@ -1,5 +1,5 @@
 
-///Jigger///
+///Jigger/// (Manager site)
 
 10/2:
 -Thêm filter session
@@ -15,6 +15,9 @@ Hoàn thiện It1:
 
 Tối ưu hóa phần hiển thị nội dung cần validate cho người dùng
 
-16/2:
-
 17/2:
+-Thêm trang quản lí về các khoản gửi tiết kiệm:
+	+ Tạo các khoản gửi tiết kiệm
+	+ View các khoản gửi tiết kiệm
+	+ Xóa các khoản gửi tiết kiệm
+	+ Lên trang tổng quát về khoản gửi tiết kiệm cho ngân hàng

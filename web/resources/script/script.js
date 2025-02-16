@@ -139,3 +139,7 @@ function showToastrAfterReload() {
 //    }
 //    return true;
 //}
+
+// For TinyMCE editor
+
+
