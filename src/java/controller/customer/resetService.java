@@ -37,11 +37,13 @@ public class resetService {
     public boolean isExpireTime(LocalDateTime time) {
         return LocalDateTime.now().isAfter(time);
     }
-public String generateOTP() {
+
+    public String generateOTP() {
         Random rand = new Random();
         int otp = rand.nextInt(999999);
-        return String.format("%06d", otp);  
+        return String.format("%06d", otp);
     }
+
     public boolean sendEmail(String to, String link, String name) {
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");
@@ -99,7 +101,8 @@ public String generateOTP() {
             return false;
         }
     }
-     public boolean sendOtpEmail(String to, String otp, String name) {
+
+    public boolean sendOtpEmail(String to, String otp, String name) {
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.port", "587");

@@ -6,6 +6,7 @@ package controller.customer;
 
 import dal.ConsultantDAO;
 import dal.CustomerDAO;
+import dal.ManagerDAO;
 import dal.StaffDAO;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
@@ -95,12 +96,34 @@ public class AuthServlet extends HttpServlet {
         if ("logout".equals(action)) {
             handleLogout(request, response);
         } else if ("login".equals(action)) {
-            handleLogin(request, response);       
+            handleLogin(request, response);
         } else if ("changePassword".equals(action)) {
             handleChangePassword(request, response);
+        } else if ("sendOtp".equals(action)) {
+            handleOtp(request, response);
         } else {
             response.sendRedirect("auth/template/login.jsp");
         }
+    }
+
+    private void handleOtp(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        Staff staff = (Staff) session.getAttribute("staff");
+
+        try {
+
+            String otp = resetService.generateOTP();
+            session.setAttribute("otp", otp);
+
+            String otpMessage = "Mã OTP của bạn là: " + otp + ". OTP có hiệu lực trong 10 phút.";
+            resetService.sendOtpEmail(staff.getEmail(), otpMessage, staff.getFirstname());
+
+            response.sendRedirect("otpEmail.jsp");
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
     }
 
     private void handleLogin(HttpServletRequest request, HttpServletResponse response)
@@ -180,7 +203,6 @@ public class AuthServlet extends HttpServlet {
         response.sendRedirect("auth/template/login.jsp");
     }
 
-   
     private void handleLogout(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         request.getSession().invalidate();

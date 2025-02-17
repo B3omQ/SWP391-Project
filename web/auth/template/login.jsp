@@ -79,7 +79,7 @@
                                                 <span class="position-absolute top-50 end-0 translate-middle-y pe-3 cursor-pointer" onclick="togglePassword()" style="padding-top: 30px;">
                                                     <i id="togglePasswordIcon" class="mdi mdi-eye-outline"></i>
                                                 </span>
-                                            </div
+                                            </div>
                                         </div>
                                         <div class="col-lg-12">
                                             <div class="d-flex justify-content-between">

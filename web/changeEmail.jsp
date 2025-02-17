@@ -48,20 +48,19 @@
                         <img src="<%= request.getContextPath() %>/assets/images/logo-dark.png" height="24" class="mx-auto d-block" alt="">
                         <div class="card login-page bg-white shadow mt-4 rounded border-0">
                             <div class="card-body">
-                                <h4 class="text-center">Login</h4>
-                                <form class="login-form mt-4" action="<%= request.getContextPath() %>/VerifyingOtp" method="POST">
-
+                                <h4 class="text-center">Change your Email</h4>
+                                <form class="login-form mt-4" action="change-pass" method="POST"> 
                                     <div class="row">
                                         <div class="col-lg-12">
-                                            <p class="text-muted">Please enter the OTP in the email we sent.</p>
+                                            <p class="text-muted">Enter your new email</p>
                                             <div class="mb-3">
-                                                <label class="form-label">OTP <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" placeholder="Enter OTP" name="otp" required>
+                                                <label class="form-label">New Email <span class="text-danger">*</span></label>
+                                                <input type="email" class="form-control" placeholder="Enter email" name="newEmail" required>
                                             </div>
                                         </div>
                                         <div class="col-lg-12">
                                             <div class="d-grid">
-                                                <button class="btn btn-primary" type="submit">Send</button>
+                                                <button class="btn btn-primary" type="submit">Change</button>
                                             </div>
                                         </div>
                                     </div>

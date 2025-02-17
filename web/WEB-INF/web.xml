@@ -44,6 +44,10 @@
         <servlet-name>ViewDepOption</servlet-name>
         <servlet-class>controller.manager.ViewDepOption</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>changePass</servlet-name>
+        <servlet-class>controller.changePass</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>HomeServlet</servlet-name>
         <url-pattern>/home</url-pattern>
@@ -151,6 +155,10 @@
     <servlet-mapping>
         <servlet-name>ViewDepOption</servlet-name>
         <url-pattern>/view-dep-option</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>changePass</servlet-name>
+        <url-pattern>/change-pass</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>1440</session-timeout>

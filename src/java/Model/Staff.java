@@ -47,6 +47,15 @@ public class Staff {
 //        this.Address = Address;
 //    }
 
+    public Staff(int id, String email, String phone, String Address) {
+        this.id = id;
+        this.email = email;
+        this.phone = phone;
+        this.Address = Address;
+    }
+    
+    
+
     public Staff(int id, String username, String password, String image, String email, String firstname, String lastname, String gender, LocalDate dob, String phone, String Address, Role roleId) {
         this.id = id;
         this.username = username;

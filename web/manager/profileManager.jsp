@@ -143,12 +143,13 @@
                                                             <label for="newImg" class="form-label text-muted">Upload a new avatar. Larger images will be resized automatically. Maximum upload size is 5 MB. Only accept jpg, jpeg, png, gif file</label>
                                                             <input type="file" id="newImg" accept=".jpg,.png,.jpeg,.gif" name="newImg" class="form-control-file">
                                                         </div>
+
                                                         <div class="mb-4">
                                                             <p class="text-muted">Your email: ${staff.email}
-                                                                <a href="customer-manager" class="ms-2 text-decoration-none">
-                                                                    <i class="fas fa-edit"></i>
-                                                                </a>
-                                                            </p>
+                                                                <button type="button" id="sendOtpBtn" class="ms-2 text-decoration-none">
+                                                                    <i class="fas fa-edit"></i> 
+                                                                </button>  
+                                                            </p>                                                          
                                                         </div>
                                                     </div>
                                                     <!-- User Info Section -->
@@ -352,6 +353,20 @@
                                                                             },
                                                                             error: function () {
                                                                                 showErrorMessage("Error", "Server is busy right now, try again");
+                                                                            }
+                                                                        });
+                                                                    });
+                                                                    $('#sendOtpBtn').click(function () {
+                                                                        event.preventDefault();
+                                                                        $.ajax({
+                                                                            url: 'AuthServlet',
+                                                                            type: 'POST',
+                                                                            data: {action: 'sendOtp'},
+                                                                            success: function (response) {
+                                                                                window.location.href = "otpEmail.jsp";
+                                                                            },
+                                                                            error: function () {
+                                                                                showErrorMessage("Error", "Something wrong");
                                                                             }
                                                                         });
                                                                     });

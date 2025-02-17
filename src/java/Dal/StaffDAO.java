@@ -206,6 +206,12 @@ public class StaffDAO extends DBContext {
         }
     }
 
+    public static void main(String[] args) {
+        StaffDAO dao = new StaffDAO();
+        Staff staff = new Staff(2, "phamtiendung508@gmail.com", "0988103972", "HN");
+        dao.updateStaff(staff);
+    }
+
     public void updateStaffImage(int staffId, String imagePath) {
         String sql = "UPDATE Staff SET Image = ? WHERE Id = ?";
 
@@ -229,6 +235,17 @@ public class StaffDAO extends DBContext {
         }
     }
 
+    public void updateEmail(String newEmail, int id) {
+        String sql = "UPDATE Staff SET Email = ? WHERE Id = ?";
+        try (PreparedStatement p = connection.prepareStatement(sql)) {
+            p.setString(1, newEmail);
+            p.setInt(2, id);
+            p.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public Staff getStaffById(int id) {
         String sql = "SELECT * FROM [dbo].[Staff] WHERE Id = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -243,31 +260,33 @@ public class StaffDAO extends DBContext {
         }
         return null;
     }
+
     public boolean emailExists(String email) {
-    String sql = "SELECT 1 FROM [dbo].[Staff] WHERE Email = ?";
-    
-    try (PreparedStatement p = connection.prepareStatement(sql)) {
-        p.setString(1, email);
-        try (ResultSet rs = p.executeQuery()) {
-            return rs.next(); 
+        String sql = "SELECT 1 FROM [dbo].[Staff] WHERE Email = ?";
+
+        try (PreparedStatement p = connection.prepareStatement(sql)) {
+            p.setString(1, email);
+            try (ResultSet rs = p.executeQuery()) {
+                return rs.next();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return false;
     }
-    return false; 
-}
+
     public boolean phoneExists(String phone) {
-    String sql = "SELECT 1 FROM [dbo].[Staff] WHERE Phone = ?";
-    
-    try (PreparedStatement p = connection.prepareStatement(sql)) {
-        p.setString(1, phone);
-        try (ResultSet rs = p.executeQuery()) {
-            return rs.next(); 
+        String sql = "SELECT 1 FROM [dbo].[Staff] WHERE Phone = ?";
+
+        try (PreparedStatement p = connection.prepareStatement(sql)) {
+            p.setString(1, phone);
+            try (ResultSet rs = p.executeQuery()) {
+                return rs.next();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return false;
     }
-    return false; 
-}
 
 }
