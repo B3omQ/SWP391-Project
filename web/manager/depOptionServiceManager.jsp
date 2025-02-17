@@ -37,7 +37,9 @@
 
 
     </head>
+    <style>
 
+    </style>
 
     <body>
 
@@ -62,6 +64,112 @@
                 <c:set value="${sessionScope.staff}" var="staff"/>
                 <jsp:include page="template/header.jsp"/>
 
+                <div class="container-fluid">
+                    <div class="layout-specing">
+                        <!-- Header Section -->
+                        <div class="row align-items-center">
+                            <!-- Title & Breadcrumb -->
+                            <div class="row justify-content-center">
+                                <div class="col-auto">
+                                    <button data-bs-toggle="modal" data-bs-target="#addDepositeModal" 
+                                            class="btn btn-primary btn-md">
+                                        <a>ADD</a>
+                                    </button>
+                                </div>
+
+                            </div>
+                            <jsp:include page="template/addDepOptionService.jsp"/>
+
+                        </div>
+                        <!-- Customer Table -->
+
+                        <style>
+                            .table {
+                                border-collapse: collapse; /* Đảm bảo viền không bị gãy */
+                                width: 100%;
+                                border: 1px solid black; /* Viền bên ngoài */
+                                background-color: white; /* Nền trắng */
+                                border-collapse: separate; /* Để box-shadow hiển thị đúng */
+                                border-spacing: 0; /* Loại bỏ khoảng cách giữa các ô */
+                                border-radius: 10px; /* Bo góc */
+                                overflow: hidden; /* Đảm bảo góc bo tròn không bị mất */
+                                background: white; /* Đảm bảo bảng có màu nền để bóng đẹp hơn */
+                                box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.15),
+                                    0px 0px 8px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng xung quanh */
+                            }
+
+                            .table th, .table td {
+                                border: 1px solid black; /* Viền bên trong */
+                                color: black; /* Màu chữ đen */
+                                padding: 10px; /* Khoảng cách trong các ô */
+                                text-align: center; /* Căn giữa chữ */
+                            }
+
+                            .table th {
+                                background-color: white; /* Nền trắng cho header */
+                                font-weight: bold; /* Chữ in đậm cho tiêu đề */
+                            }
+
+                            .table tbody tr:hover {
+                                background-color: #f2f2f2; /* Nền màu khi hover */
+                            }
+
+                            .thead-dark {
+                                background-color: white; /* Đảm bảo màu nền header là trắng */
+                                color: black; /* Màu chữ header là đen */
+                            }
+
+                            .table td, .table th {
+                                vertical-align: middle; /* Căn giữa theo chiều dọc */
+                            }
+                        </style>
+
+
+                        <div class="table-responsive mt-4">
+                            <table class="table table-striped table-bordered table-hover">
+                                <thead class="thead-dark bg-dark text-black" style ="text-align:center">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Deposite Minimum</th>
+                                        <th>During Time (Months)</th>
+                                        <th>Saving Rate (%)</th>
+                                        <th>Saving Rate Minimum (%)</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <c:choose>
+                                        <c:when test="${empty depOptionServiceList}">
+                                            <tr>
+                                                <td colspan="100%" class="text-center text-muted fw-bold">Search list is empty</td>
+                                            </tr>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <c:forEach var="dep" items="${depOptionServiceList}">
+                                                <tr>
+                                                    <td>${dep.id}</td>
+                                                    <td>${dep.minimumDep}</td>
+                                                    <td>${dep.duringTime}</td>
+                                                    <td>${dep.savingRate}</td>
+                                                    <td>${dep.savingRateMinimum}</td>
+                                                    <td class="text-center align-middle">
+                                                        <div class="col-auto">
+                                                            <a href="view-dep-option?depId=${dep.id}" class="btn btn-info btn-md">
+                                                                <i class="fas fa-eye"></i>
+                                                            </a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </c:otherwise>
+                                    </c:choose>
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
 
 
 
@@ -75,6 +183,7 @@
         </div>
 
         <script src ="resources/script/jquery-3.7.1.min.js"></script>
+        <script src="./assets/tinymce/tinymce.min.js"></script>
         <script src="./resources/script/tinymceConfig.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
         <script src="https://unpkg.com/@popperjs/core@2"></script>

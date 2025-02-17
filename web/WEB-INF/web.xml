@@ -40,6 +40,10 @@
         <servlet-name>DepOptionService</servlet-name>
         <servlet-class>controller.manager.DepOptionService</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ViewDepOption</servlet-name>
+        <servlet-class>controller.manager.ViewDepOption</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>HomeServlet</servlet-name>
         <url-pattern>/home</url-pattern>
@@ -142,7 +146,11 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>DepOptionService</servlet-name>
-        <url-pattern>/Dep-Option-Service</url-pattern>
+        <url-pattern>/dep-option-service</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewDepOption</servlet-name>
+        <url-pattern>/view-dep-option</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>1440</session-timeout>

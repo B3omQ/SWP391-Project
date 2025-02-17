@@ -19,31 +19,11 @@
 
             <li><a href="profile-manager"><i class="uil uil-user me-2 d-inline-block"></i>My profile</a></li>
 
-            <li><a href="customer-manager">
-                    <i class="uil uil-cube me-2 d-inline-block"></i>Customer list</a>
-            </li>            
+            <li><a href="customer-manager"><i class="uil uil-cube me-2 d-inline-block"></i>Customer list</a></li>            
 
-            <li class="sidebar-dropdown">
-                <a href="javascript:void(0)"><i class="uil uil-file me-2 d-inline-block"></i>Deposite Service</a>
-                <div class="sidebar-submenu">
-                    <ul>
-                        <li><a href="#" id="viewAccountLink" >View account</a></li>
-                        <li><a href="#" id="editGmailLink" >Edit gmail</a></li>
-                        <li><a href="#" id="editPasswordLink" >Edit password</a></li>
-                    </ul>
-                </div>
-            </li>
+            <li><a href="dep-option-service"><i class="uil uil-file me-2 d-inline-block"></i>Deposite Service</a></li>
 
-            <li class="sidebar-dropdown">
-                <a href="javascript:void(0)"><i class="uil uil-file me-2 d-inline-block"></i>Loan Service</a>
-                <div class="sidebar-submenu">
-                    <ul>
-                        <li><a href="patients.html">All Patients</a></li>
-                        <li><a href="add-patient.html">Add Patients</a></li>
-                        <li><a href="patient-profile.html">Profile</a></li>
-                    </ul>
-                </div>
-            </li>
+            <li><a href="javascript:void(0)"><i class="uil uil-file me-2 d-inline-block"></i>Loan Service</a></li>
 
             <li class="sidebar-dropdown">
                 <a href="javascript:void(0)"><i class="uil uil-apps me-2 d-inline-block"></i>Apps</a>
@@ -86,7 +66,7 @@
                 </div>
             </li>            
 
-            <li><a href="../landing/index-two.html" target="_blank"><i
+            <li><a href="home.jsp"><i
                         class="uil uil-window me-2 d-inline-block"></i>Home page</a></li>
         </ul>
         <!-- sidebar-menu  -->
