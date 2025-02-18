@@ -290,28 +290,61 @@
                 <!-- Pagination -->                 
                 <nav aria-label="Page navigation" class="mt-4">
                     <ul class="pagination justify-content-center">
+                        <!-- Nút First và Previous -->
                         <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
                             <a class="page-link text-danger" href="?page=1&phoneSearch=${currentPhoneSearch}&recordsPerPage=${currentRecords}">First</a>
                         </li>
                         <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
                             <a class="page-link text-danger" href="?page=${currentPage - 1}&phoneSearch=${currentPhoneSearch}&recordsPerPage=${currentRecords}">Previous</a>
                         </li>
+
                         <c:choose>
                             <c:when test="${totalPages > 10}">
-                                <c:forEach var="i" begin="1" end="3">
-                                    <li class="page-item ${i == currentPage ? 'active' : ''}">
-                                        <a class="page-link text-red" href="?page=${i}&phoneSearch=${currentPhoneSearch}&recordsPerPage=${currentRecords}">${i}</a>
-                                    </li>
-                                </c:forEach>
+                                <c:choose>
+                                    <c:when test="${currentPage <= 3}">
+                                        <c:forEach var="i" begin="1" end="4">
+                                            <li class="page-item ${i == currentPage ? 'active' : ''}">
+                                                <a class="page-link text-red" href="?page=${i}&phoneSearch=${currentPhoneSearch}&recordsPerPage=${currentRecords}">${i}</a>
+                                            </li>
+                                        </c:forEach>
+                                        <li class="page-item disabled"><a class="page-link">...</a></li>
+                                        <li class="page-item">
+                                            <a class="page-link text-red" href="?page=${totalPages}&phoneSearch=${currentPhoneSearch}&recordsPerPage=${currentRecords}">${totalPages}</a>
+                                        </li>
+                                    </c:when>
 
-                                <li class="page-item disabled"><a class="page-link">...</a></li>
+                                    <c:when test="${currentPage >= totalPages - 3}">
+                                        <li class="page-item">
+                                            <a class="page-link text-red" href="?page=1&phoneSearch=${currentPhoneSearch}&recordsPerPage=${currentRecords}">1</a>
+                                        </li>
+                                        <li class="page-item disabled"><a class="page-link">...</a></li>
+                                            <c:forEach var="i" begin="${totalPages - 3}" end="${totalPages}">
+                                            <li class="page-item ${i == currentPage ? 'active' : ''}">
+                                                <a class="page-link text-red" href="?page=${i}&phoneSearch=${currentPhoneSearch}&recordsPerPage=${currentRecords}">${i}</a>
+                                            </li>
+                                        </c:forEach>
+                                    </c:when>
 
-                                <c:forEach var="i" begin="${totalPages - 2}" end="${totalPages}">
-                                    <li class="page-item ${i == currentPage ? 'active' : ''}">
-                                        <a class="page-link text-red" href="?page=${i}&phoneSearch=${currentPhoneSearch}&recordsPerPage=${currentRecords}">${i}</a>
-                                    </li>
-                                </c:forEach>
+                                    <c:otherwise>
+                                        <li class="page-item">
+                                            <a class="page-link text-red" href="?page=1&phoneSearch=${currentPhoneSearch}&recordsPerPage=${currentRecords}">1</a>
+                                        </li>
+                                        <li class="page-item disabled"><a class="page-link">...</a></li>
+
+                                        <c:forEach var="i" begin="${currentPage - 2}" end="${currentPage + 2}">
+                                            <li class="page-item ${i == currentPage ? 'active' : ''}">
+                                                <a class="page-link text-red" href="?page=${i}&phoneSearch=${currentPhoneSearch}&recordsPerPage=${currentRecords}">${i}</a>
+                                            </li>
+                                        </c:forEach>
+
+                                        <li class="page-item disabled"><a class="page-link">...</a></li>
+                                        <li class="page-item">
+                                            <a class="page-link text-red" href="?page=${totalPages}&phoneSearch=${currentPhoneSearch}&recordsPerPage=${currentRecords}">${totalPages}</a>
+                                        </li>
+                                    </c:otherwise>
+                                </c:choose>
                             </c:when>
+
                             <c:otherwise>
                                 <c:forEach var="i" begin="1" end="${totalPages}">
                                     <li class="page-item ${i == currentPage ? 'active' : ''}">
@@ -320,6 +353,8 @@
                                 </c:forEach>
                             </c:otherwise>
                         </c:choose>
+
+                        <!-- Nút Next và Last -->
                         <li class="page-item ${currentPage == totalPages ? 'disabled' : ''}">
                             <a class="page-link text-danger" href="?page=${currentPage + 1}&phoneSearch=${currentPhoneSearch}&recordsPerPage=${currentRecords}">Next</a>
                         </li>
@@ -340,6 +375,7 @@
                         </c:when>
                     </c:choose>                
                 </nav>
+
 
                 <!-- Footer Start -->
                 <jsp:include page="template/footer.jsp"/>
