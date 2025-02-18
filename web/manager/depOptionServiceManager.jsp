@@ -158,6 +158,14 @@
                                                                 <i class="fas fa-eye"></i>
                                                             </a>
                                                         </div>
+                                                        <div class="col-auto">
+                                                            <form action="dep-option-service" method="post" id="deleteDepOptionService-${dep.id}">
+                                                                <input name="delete" value="${dep.id}" type="hidden">
+                                                                <button class="btn btn-danger btn-md" type="submit">
+                                                                    <i class="fas fa-trash-alt"></i>
+                                                                </button>
+                                                            </form>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             </c:forEach>
@@ -181,7 +189,6 @@
             <!--End page-content-->
 
         </div>
-
         <script src ="resources/script/jquery-3.7.1.min.js"></script>
         <script src="./assets/tinymce/tinymce.min.js"></script>
         <script src="./resources/script/tinymceConfig.js"></script>
@@ -189,6 +196,40 @@
         <script src="https://unpkg.com/@popperjs/core@2"></script>
         <script src="https://unpkg.com/tippy.js@6"></script>
         <script src="./resources/script/script.js"></script>
+
+        <script>
+            $(document).ready(function () {
+
+                $('form[id^="deleteDepOptionService-"]').on('submit', function (event) {
+                    event.preventDefault();
+
+                    let form = $(this);
+                    let depId = form.find('input[name="delete"]').val();
+
+                    if (confirm("Are you sure you want to delete this option?")) {
+                        $.ajax({
+                            url: 'dep-option-service',
+                            type: 'POST',
+                            data: {delete: depId},
+                            success: function (response) {
+                                if (response.success) {
+                                    showSuccessMessage("Success", "Deleted!");
+                                    form.closest('tr').remove();
+                                } else {
+                                    showErrorMessage("Error", "Something wrong here");
+                                }
+                            },
+                            error: function () {
+                                showErrorMessage("Error", "Server is busy right now. Please try again later.");
+                            }
+                        });
+                    }
+                });
+            });
+
+        </script>
+
+
         <!-- page-wrapper -->
         <script src="<%= request.getContextPath() %>/assets/js/jquery.min.js"></script>
         <script src="<%= request.getContextPath() %>/assets/js/bootstrap.bundle.min.js"></script>

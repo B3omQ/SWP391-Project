@@ -14,7 +14,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.util.List;
+import model.Customer;
 import model.DepService;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -78,6 +80,23 @@ public class DepOptionService extends HttpServlet {
                 depdao.createDepService(description, minimumDep, duringTime, savingRate, savingRateMinimum);
             } catch (Exception e) {
 
+            }
+        }
+
+        if (delete != null) {
+            try {
+                int delId = Integer.parseInt(delete);
+                DepServiceDAO ddao = new DepServiceDAO();
+                ddao.deleteDep(delId);
+                json.put("success", true);
+                response.getWriter().write(json.toString());
+                return;
+
+            } catch (IOException | NumberFormatException | JSONException ex) {
+                json.put("success", false);
+                json.put("message", "An error occurred while trying to delete customer");
+                response.getWriter().write(json.toString());
+                System.out.println(ex);
             }
         }
         doGet(request, response);

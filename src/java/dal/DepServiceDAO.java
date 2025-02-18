@@ -48,6 +48,17 @@ public class DepServiceDAO extends DBContext {
         return list;
     }
 
+    public boolean deleteDep(int id) {
+        String sql = "DELETE FROM DepService WHERE Id=?";
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, id);
+            return st.executeUpdate() > 0;
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return false;
+    }
+
     public DepService getDepServiceById(int id) {
         String sql = """
                      SELECT * 
@@ -84,7 +95,7 @@ public class DepServiceDAO extends DBContext {
             st.setBigDecimal(2, minimumDep);
             st.setInt(3, duringTime);
             st.setDouble(4, savingRate);
-            st.setDouble(5, savingRateMinimum);            
+            st.setDouble(5, savingRateMinimum);
             int rowsInserted = st.executeUpdate();
             if (rowsInserted > 0) {
                 System.out.println("Inserted successfully!");

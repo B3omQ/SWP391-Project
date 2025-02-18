@@ -4,6 +4,7 @@
  */
 package controller;
 
+import dal.ManagerDAO;
 import dal.StaffDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,7 +19,7 @@ import model.Staff;
  *
  * @author JIGGER
  */
-public class changePass extends HttpServlet {
+public class changeEmail extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -55,6 +56,12 @@ public class changePass extends HttpServlet {
         }
         try {
             String newEmail = request.getParameter("newEmail");
+            ManagerDAO mdao = new ManagerDAO();
+            if (mdao.isDuplicatedEmailStaff(newEmail) && !newEmail.equals(staff.getEmail())) {
+                session.setAttribute("errorDuplicate", "Email does existed, try again");
+                response.sendRedirect("change-email");
+                return;
+            }
             sdao.updateEmail(newEmail, staff.getId());
             staff.setEmail(newEmail);
             session.setAttribute("staff", staff);

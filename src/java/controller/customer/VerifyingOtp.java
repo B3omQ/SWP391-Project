@@ -77,7 +77,7 @@ public class VerifyingOtp extends HttpServlet {
             if (otpChangePass != null) {
                 if (userOtp != null && userOtp.equals(generatedOtp)) {
                     session.removeAttribute("otp");
-                    response.sendRedirect("change-pass");
+                    response.sendRedirect("change-email");
                     return;
                 } else {
                     session.setAttribute("otpError", "Mã OTP không đúng, vui lòng thử lại!");

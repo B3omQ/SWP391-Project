@@ -1,4 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -49,7 +50,7 @@
                         <div class="card login-page bg-white shadow mt-4 rounded border-0">
                             <div class="card-body">
                                 <h4 class="text-center">Change your Email</h4>
-                                <form class="login-form mt-4" action="change-pass" method="POST"> 
+                                <form class="login-form mt-4" action="change-email" method="POST"> 
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <p class="text-muted">Enter your new email</p>
@@ -63,6 +64,10 @@
                                                 <button class="btn btn-primary" type="submit">Change</button>
                                             </div>
                                         </div>
+                                        <c:if test="${not empty sessionScope.errorDuplicate}">
+                                            <p style="color: red;">${sessionScope.errorDuplicate}</p>
+                                            <c:remove var="errorDuplicate" scope="session"/>
+                                        </c:if>
                                     </div>
 
                                     <!-- Hiển thị thông báo lỗi nếu có -->
