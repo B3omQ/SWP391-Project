@@ -20,4 +20,22 @@ Tối ưu hóa phần hiển thị nội dung cần validate cho người dùng
 	+ Tạo các khoản gửi tiết kiệm
 	+ View các khoản gửi tiết kiệm
 	+ Xóa các khoản gửi tiết kiệm
-	+ Lên trang tổng quát về khoản gửi tiết kiệm cho ngân hàng
+	+ Lên trang tổng quát về khoản gửi tiết kiệm cho ngân hàng (pending)
+
+18/2: 
+- Thêm tính năng đổi email thông qua gửi Otp để xác minh người dùng
+- Hoàn thiện nốt todolist 17/2
+
+19/2:
+- Cập nhật template frontend của các site liên quan đến gửi tiết kiệm
+- Tối ưu validate cho deposite site bên manager
+
+20/2:
+- Thêm trang quản lí về các khoản vay cho người dùng:
+	+ CRUD
+	+ Lên trang tổng quát về option khoản vay cho ngân hàng
+21/2:
+- Xử lý logic luồng khi người dùng lựa chọn option khoản gửi tiết kiệm
+
+22/2:
+- 
