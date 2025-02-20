@@ -4,6 +4,7 @@
  */
 package dal;
 
+import java.math.BigDecimal;
 import util.DBContext;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -38,6 +39,54 @@ public class CustomerDAO extends DBContext {
         rs.getBigDecimal("Wallet")
     );
 }
+ 
+    public Customer getCustomerById(int id) {
+        String sql = "SELECT * FROM Customer WHERE Id = ?";
+        try (PreparedStatement p = connection.prepareStatement(sql)) {
+            p.setInt(1, id);
+            try (ResultSet rs = p.executeQuery()) {
+                if (rs.next()) {
+                    return mapResultSetToCustomer(rs);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+     public BigDecimal getWalletByCustomerId(int customerId) {
+        String sql = "SELECT Wallet FROM Customer WHERE Id = ?";
+        try (PreparedStatement p = connection.prepareStatement(sql)) {
+            p.setInt(1, customerId);
+            try (ResultSet rs = p.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getBigDecimal("Wallet");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return BigDecimal.ZERO;
+    }
+
+public boolean updateWallet(int customerId, BigDecimal newBalance) {
+    String sql = "UPDATE Customer SET Wallet = ? WHERE Id = ?";
+    try (PreparedStatement p = connection.prepareStatement(sql)) {
+        p.setBigDecimal(1, newBalance);
+        p.setInt(2, customerId);
+        int rowsAffected = p.executeUpdate();
+        
+        System.out.println("Cập nhật số dư: " + newBalance + " cho userId: " + customerId);
+        System.out.println("Số dòng bị ảnh hưởng: " + rowsAffected);
+
+        return rowsAffected > 0;
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
+    }
+}
+
+
           public void updateCustomer(Customer customer) {
     String sql = "UPDATE Customer SET email = ?, phone = ?, address = ? WHERE id = ?";
     try (PreparedStatement p = connection.prepareStatement(sql)) {
@@ -157,20 +206,7 @@ public void updateCustomerImage(int customerId, String imagePath) {
     }
 
 
-    public Customer getCustomerById(int id) {
-        String sql = "SELECT * FROM [dbo].[Customer] WHERE Id = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, id);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return mapResultSetToCustomer(rs);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+  
 
     public Customer getCustomerByEmail(String email) {
         String sql = "SELECT * FROM [dbo].[Customer] WHERE Email = ?";
@@ -260,4 +296,5 @@ public void updateCustomerImage(int customerId, String imagePath) {
             e.printStackTrace();
         }
     }
+ 
 }

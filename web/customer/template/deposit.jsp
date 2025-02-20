@@ -1,4 +1,6 @@
  <%@ page contentType="text/html; charset=UTF-8" language="java" %>
+ <%@ page import="model.Customer" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,6 +31,7 @@
     <link href="<%= request.getContextPath() %>/assets/css/tiny-slider.css" rel="stylesheet" />
     <!-- Css -->
     <link href="<%= request.getContextPath() %>/assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
+    <link href="<%= request.getContextPath() %>/assets/css/deposit.css" rel="stylesheet" type="text/css" />
 
 </head>
 
@@ -312,9 +315,9 @@
                                         <img src="<%= request.getContextPath() %>/assets/images/doctors/01.jpg"
                                             class="avatar avatar-md-sm rounded-circle border shadow" alt="">
                                         <div class="flex-1 ms-2">
-<jsp:useBean id="account" type="Model.Customer" scope="session" />
+
 <span class="d-block mb-1">
-    ${account.firstName} ${account.lastName}
+    ${account.firstname} ${account.lastname}
 </span>
                                  <small class="text-muted">Khách Hàng</small>
                                         </div>
@@ -344,7 +347,7 @@
     <div class="layout-specing">
         <div class="deposit-container">
             <div class="deposit-header">Nạp Tiền</div>
-            <form action="<%= request.getContextPath() %>/VNPAYservlet" method="POST">
+            <form action="<%= request.getContextPath() %>/VNpayServlet" method="post">
                 
                 <!-- Nhập số tiền -->
                 <div class="mb-3">

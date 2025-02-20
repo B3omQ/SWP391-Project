@@ -64,48 +64,58 @@
                                 %>
 
                                 <!-- Login Form -->
-                                <form action="<%= request.getContextPath() %>/AuthServlet?action=login" method="POST" class="login-form mt-4">
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <div class="mb-3">
-                                                <label class="form-label">Your Email <span class="text-danger">*</span></label>
-                                                <input type="email" class="form-control" placeholder="Email" name="email" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-12">
-                                            <div class="mb-3 position-relative">
-                                                <label class="form-label">Password <span class="text-danger">*</span></label>
-                                                <input type="password" class="form-control" placeholder="Password" name="password" id="password" required>
-                                                <span class="position-absolute top-50 end-0 translate-middle-y pe-3 cursor-pointer" onclick="togglePassword()" style="padding-top: 30px;">
-                                                    <i id="togglePasswordIcon" class="mdi mdi-eye-outline"></i>
-                                                </span>
-                                            </div
-                                        </div>
-                                        <div class="col-lg-12">
-                                            <div class="d-flex justify-content-between">
-                                                <div class="mb-3">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input align-middle" type="checkbox" value="on" name="remember" id="remember-check">
-                                                        <label class="form-check-label" for="remember-check">Remember me</label>
-                                                    </div>
-                                                </div>
-                                                <a href="<%= request.getContextPath() %>/auth/template/requestPassword.jsp" class="text-dark h6 mb-0">Forgot password?</a>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-12 mb-0">
-                                            <div class="d-grid">
-                                                <button class="btn btn-primary" type="submit">Login</button>
-                                            </div>
-                                        </div>
-                                        <!--                                    <div class="col-12 text-center">
-                                                                                <p class="mb-0 mt-3">
-                                                                                    <small class="text-dark me-2">Don't have an account?</small>
-                                                                                    <a href="<%= request.getContextPath() %>/signup.jsp" class="text-dark fw-bold">Sign up</a>
-                                                                                </p>
-                                                                            </div>-->
-                                    </div>
-                                </form>
-                            </div>
+                 <form action="<%= request.getContextPath() %>/AuthServlet?action=login" method="POST" class="login-form mt-4">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="mb-3">
+                <label class="form-label">Your Email <span class="text-danger">*</span></label>
+                <input type="email" class="form-control" placeholder="Email" name="email" required>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="mb-3 position-relative">
+                <label class="form-label">Password <span class="text-danger">*</span></label>
+                <input type="password" class="form-control" placeholder="Password" name="password" id="password" required>
+                <span class="position-absolute top-50 end-0 translate-middle-y pe-3 cursor-pointer" onclick="togglePassword()" style="padding-top: 30px;">
+                    <i id="togglePasswordIcon" class="mdi mdi-eye-outline"></i>
+                </span>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="d-flex justify-content-between">
+                <div class="mb-3">
+                    <div class="form-check">
+                        <input class="form-check-input align-middle" type="checkbox" value="on" name="remember" id="remember-check">
+                        <label class="form-check-label" for="remember-check">Remember me</label>
+                    </div>
+                </div>
+                <a href="<%= request.getContextPath() %>/auth/template/requestPassword.jsp" class="text-dark h6 mb-0">Forgot password?</a>
+            </div>
+        </div>
+        <div class="col-lg-12 mb-0">
+            <div class="d-grid">
+                <button class="btn btn-primary" type="submit">Login</button>
+            </div>
+        </div>
+
+        <div class="col-lg-12 mt-3 text-center">
+            <h6 class="text-muted">Or</h6>
+        </div>  
+        <div class="col-12 mt-3">
+            <div class="d-grid">
+                <!-- Ch?nh s?a ???ng d?n Google OAuth -->
+                <a href="https://accounts.google.com/o/oauth2/auth?scope=email+profile+openid&redirect_uri=http://localhost:8080/BankingSystem/AuthServlet?action=loginGG&response_type=code&client_id=392132792045-5118009rsft2t9rc2q71n9b45pvh0gg0.apps.googleusercontent.com&approval_prompt=force
+" class="btn btn-lg btn-danger">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-google" viewBox="0 0 16 16">
+                        <path d="M15.545 6.558a9.42 9.42 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.689 7.689 0 0 1 5.352 2.082l-2.284 2.284A4.347 4.347 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.792 4.792 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.702 3.702 0 0 0 1.599-2.431H8v-3.08h7.545z" />
+                    </svg>
+                    <span class="ms-2 fs-6">Sign in with Google</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</form>
+
                         </div>
                     </div>
                 </div>
