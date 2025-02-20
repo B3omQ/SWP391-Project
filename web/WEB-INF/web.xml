@@ -36,6 +36,10 @@
         <servlet-name>VNpayReturn</servlet-name>
         <servlet-class>controller.customer.VNpayReturn</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Transfer</servlet-name>
+        <servlet-class>controller.customer.Transfer</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>HomeServlet</servlet-name>
         <url-pattern>/home</url-pattern>
@@ -135,6 +139,10 @@
     <servlet-mapping>
         <servlet-name>VNpayReturn</servlet-name>
         <url-pattern>/VNpayReturn</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Transfer</servlet-name>
+        <url-pattern>/Transfer</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>1440</session-timeout>
