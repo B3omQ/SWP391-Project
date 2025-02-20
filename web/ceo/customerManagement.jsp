@@ -394,6 +394,9 @@
                                                             <!-- Các nút khác -->
                                                             <!-- Các nút khác -->
                                                             <a href="editCustomerInfo?uid=${customer.id}" class="btn btn-icon btn-pills btn-soft-success"><i class="uil uil-pen"></i></a>
+                                                            <button type="button" class="btn btn-icon btn-pills btn-soft-danger" onclick="deleteCustomer('${customer.id}')">
+                                                                <i class="uil uil-trash"></i>
+                                                            </button>
                                                         </td>
                                                     </tr>
                                                 </c:forEach>

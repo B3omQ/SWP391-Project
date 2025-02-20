@@ -410,6 +410,9 @@
                                                             <!-- Các nút khác -->
                                                             <!-- Các nút khác -->
                                                             <a href="editStaffInfo?uid=${staff.id}" class="btn btn-icon btn-pills btn-soft-success"><i class="uil uil-pen"></i></a>
+                                                            <button type="button" class="btn btn-icon btn-pills btn-soft-danger" onclick="deleteStaff('${staff.id}')">
+                                                                <i class="uil uil-trash"></i>
+                                                            </button>
                                                         </td>
                                                     </tr>
                                                 </c:forEach>
@@ -625,7 +628,7 @@
         <script>
             function deleteStaff(Id) {
                 if (confirm("Are you sure to delete staff with id = " + Id)) {
-                    const url = "<%= request.getContextPath() %>/staffManagement?deleteId=" + Id;
+                    const url = "staffManagement?deleteId=" + Id;
                     console.log("Redirecting to:", url);
                     window.location = url;
                 } else {

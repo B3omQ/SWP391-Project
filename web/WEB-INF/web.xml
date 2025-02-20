@@ -39,6 +39,8 @@
     <servlet>
         <servlet-name>Transfer</servlet-name>
         <servlet-class>controller.customer.Transfer</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>CustomerManagement</servlet-name>
         <servlet-class>controller.ceo.CustomerManagement</servlet-class>
     </servlet>
@@ -157,6 +159,8 @@
     <servlet-mapping>
         <servlet-name>Transfer</servlet-name>
         <url-pattern>/Transfer</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>CustomerManagement</servlet-name>
         <url-pattern>/customerManagement</url-pattern>
     </servlet-mapping>
