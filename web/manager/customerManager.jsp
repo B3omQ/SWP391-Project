@@ -313,12 +313,37 @@
                                         </li>
                                     </c:when>
 
-                                    <c:when test="${currentPage >= totalPages - 3}">
+                                    <c:when test="${currentPage == 4}">
+                                        <c:forEach var="i" begin="1" end="5">
+                                            <li class="page-item ${i == currentPage ? 'active' : ''}">
+                                                <a class="page-link text-red" href="?page=${i}&phoneSearch=${currentPhoneSearch}&recordsPerPage=${currentRecords}">${i}</a>
+                                            </li>
+                                        </c:forEach>
+                                        <li class="page-item disabled"><a class="page-link">...</a></li>
+                                        <li class="page-item">
+                                            <a class="page-link text-red" href="?page=${totalPages}&phoneSearch=${currentPhoneSearch}&recordsPerPage=${currentRecords}">${totalPages}</a>
+                                        </li>
+                                    </c:when>
+
+
+                                    <c:when test="${currentPage > totalPages - 3}">
                                         <li class="page-item">
                                             <a class="page-link text-red" href="?page=1&phoneSearch=${currentPhoneSearch}&recordsPerPage=${currentRecords}">1</a>
                                         </li>
                                         <li class="page-item disabled"><a class="page-link">...</a></li>
                                             <c:forEach var="i" begin="${totalPages - 3}" end="${totalPages}">
+                                            <li class="page-item ${i == currentPage ? 'active' : ''}">
+                                                <a class="page-link text-red" href="?page=${i}&phoneSearch=${currentPhoneSearch}&recordsPerPage=${currentRecords}">${i}</a>
+                                            </li>
+                                        </c:forEach>
+                                    </c:when>
+
+                                    <c:when test="${currentPage == totalPages - 3}">
+                                        <li class="page-item">
+                                            <a class="page-link text-red" href="?page=1&phoneSearch=${currentPhoneSearch}&recordsPerPage=${currentRecords}">1</a>
+                                        </li>
+                                        <li class="page-item disabled"><a class="page-link">...</a></li>
+                                            <c:forEach var="i" begin="${totalPages - 4}" end="${totalPages}">
                                             <li class="page-item ${i == currentPage ? 'active' : ''}">
                                                 <a class="page-link text-red" href="?page=${i}&phoneSearch=${currentPhoneSearch}&recordsPerPage=${currentRecords}">${i}</a>
                                             </li>
@@ -331,7 +356,7 @@
                                         </li>
                                         <li class="page-item disabled"><a class="page-link">...</a></li>
 
-                                        <c:forEach var="i" begin="${currentPage - 2}" end="${currentPage + 2}">
+                                        <c:forEach var="i" begin="${currentPage - 1}" end="${currentPage + 1}">
                                             <li class="page-item ${i == currentPage ? 'active' : ''}">
                                                 <a class="page-link text-red" href="?page=${i}&phoneSearch=${currentPhoneSearch}&recordsPerPage=${currentRecords}">${i}</a>
                                             </li>

@@ -152,7 +152,7 @@
                                                     <td>${dep.duringTime}</td>
                                                     <td>${dep.savingRate}</td>
                                                     <td>${dep.savingRateMinimum}</td>
-                                                    <td class="text-center align-middle">
+                                                    <td class="text-center align-middle" style="display:flex">
                                                         <div class="col-auto">
                                                             <a href="view-dep-option?depId=${dep.id}" class="btn btn-info btn-md">
                                                                 <i class="fas fa-eye"></i>

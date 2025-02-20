@@ -58,7 +58,7 @@ public class changeEmail extends HttpServlet {
             String newEmail = request.getParameter("newEmail");
             ManagerDAO mdao = new ManagerDAO();
             if (mdao.isDuplicatedEmailStaff(newEmail) && !newEmail.equals(staff.getEmail())) {
-                session.setAttribute("errorDuplicate", "Email does existed, try again");
+                session.setAttribute("errorDuplicate", "Email existed, try again");
                 response.sendRedirect("change-email");
                 return;
             }
