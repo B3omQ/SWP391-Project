@@ -4,7 +4,7 @@
  */
 package dal;
 
-import context.DBContext;
+import util.DBContext;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
