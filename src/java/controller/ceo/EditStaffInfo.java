@@ -22,6 +22,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import util.AccountValidation;
 
 /**
  *
@@ -138,13 +139,14 @@ public class EditStaffInfo extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         CeoDAO aDao = new CeoDAO();
+        AccountValidation validate = new AccountValidation();
         int id = Integer.parseInt(request.getParameter("id"));
-        String username = request.getParameter("username");
-        String firstName = request.getParameter("firstName");
-        String lastName = request.getParameter("lastName");
-        String phone = request.getParameter("phone");
-        String email = request.getParameter("email");
-        String address = request.getParameter("address");
+        String username = validate.normalizeInput(request.getParameter("username"));
+        String firstName = validate.normalizeInput(request.getParameter("firstName"));
+        String lastName = validate.normalizeInput(request.getParameter("lastName"));
+        String phone = request.getParameter("phone").trim();
+        String email = request.getParameter("email").trim();
+        String address = validate.normalizeInput(request.getParameter("address"));
         String role = request.getParameter("role");
         String gender = request.getParameter("gender");
         String dob = request.getParameter("dob");
@@ -157,36 +159,49 @@ public class EditStaffInfo extends HttpServlet {
         List<String> errorMessages = new ArrayList<>();
 
         // Xác thực dữ liệu
-        if (username == null || username.isEmpty()) {
+        // Xác thực dữ liệu
+        if (validate.normalizeInput(username).isEmpty()) {
             errorMessages.add("Username is required.");
         }
 
-        if (email == null || !email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+        if (!validate.isValidEmail(email)) {
             errorMessages.add("Invalid email format.");
         }
 
-        if (firstName == null || firstName.isEmpty()) {
-            errorMessages.add("First Name is required.");
+        if (aDao.getStaffByEmail(email) != null && id != aDao.getStaffByEmail(email).getId()) {
+            errorMessages.add("Duplicate email.");
         }
 
-        if (lastName == null || lastName.isEmpty()) {
-            errorMessages.add("Last Name is required.");
+        if (!validate.isAlphabetic(validate.normalizeInput(firstName))) {
+            errorMessages.add("Invalid first name");
         }
 
-        if (gender == null || (!gender.equals("Male") && !gender.equals("Female"))) {
-            errorMessages.add("Gender is required.");
+        if (!validate.isAlphabetic(validate.normalizeInput(lastName))) {
+            errorMessages.add("Invalid last name");
         }
 
         if (dob == null || dob.isEmpty()) {
             errorMessages.add("Date of Birth is required.");
+        } else {
+            try {
+                // 2. Kiểm tra định dạng và ngày hợp lệ
+                LocalDate dateOfBirth = LocalDate.parse(dob, formatter);
+                LocalDate today = LocalDate.now();
+
+                // 3. Ngày không được ở tương lai
+                if (dateOfBirth.isAfter(today)) {
+                    errorMessages.add("Date of Birth cannot be in the future.");
+                }
+            } catch (Exception e) {
+                errorMessages.add("Invalid date.");
+            }
         }
 
-        if (phone == null || phone.isEmpty() || !phone.matches("\\d{10}")) {
-            errorMessages.add("Phone Number must be 10 digits.");
+        if (!validate.isValidPhone(phone)) {
+            errorMessages.add("Invalid phone number.");
         }
-
-        if (address == null || address.isEmpty()) {
-            errorMessages.add("Address is required.");
+        if (aDao.getStaffByPhone(phone) != null && id != aDao.getStaffByPhone(phone).getId()) {
+            errorMessages.add("Duplicate phone number.");
         }
 
         double w = 0;
@@ -199,12 +214,18 @@ public class EditStaffInfo extends HttpServlet {
             errorMessages.add("Salary must be a valid number.");
         }
         String image = (imagePart != null && imagePart.getSize() > 0 ? getAndSaveImg(imagePart) : null);
+        if (!validate.isValidEmail(image)) {
+            errorMessages.add("Invalid image path.");
+        }
+        if (imagePart.getSize() > 1024 * 1024 * 5) {
+            errorMessages.add("Image must be < 5mb");
+        }
 
         // Nếu có lỗi, trả về trang trước đó với thông báo lỗi
         if (!errorMessages.isEmpty()) {
             request.setAttribute("errorMessages", errorMessages);
             request.setAttribute("staff", new Staff(id, username, "", image, email, firstName, lastName, gender, date, phone, address, bigDecimalValue,
-                id, LocalDateTime.MIN, new Role(aDao.getRoleIdByName(role), role)));
+                    id, LocalDateTime.MIN, new Role(aDao.getRoleIdByName(role), role)));
             request.getRequestDispatcher("ceo/editStaffInfo.jsp").forward(request, response);
             return;
         }

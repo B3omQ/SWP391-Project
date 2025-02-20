@@ -26,6 +26,20 @@ import util.DBContext;
 public class CeoDAO extends DBContext{
     private AccountValidation av = new AccountValidation();
 
+    public String getRoleNameById(int roleId) {
+        String sql = "SELECT Name FROM Role WHERE Id = ?";
+        try (PreparedStatement p = connection.prepareStatement(sql)) {
+            p.setInt(1, roleId);
+            try (ResultSet rs = p.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("Name"); // Return the Role Name
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     public static Customer mapResultSetToCustomer(ResultSet rs) throws SQLException {
         return new Customer(
                 rs.getInt("Id"),
@@ -49,7 +63,7 @@ public class CeoDAO extends DBContext{
     public static Staff mapResultSetToStaff1(ResultSet rs) throws SQLException {
         LocalDate dob = rs.getDate("Dob") != null ? rs.getDate("Dob").toLocalDate() : null;
         LocalDateTime lockTime = rs.getTimestamp("LockTime") != null ? rs.getTimestamp("LockTime").toLocalDateTime() : null;
-
+        CeoDAO c = new CeoDAO();
         return new Staff(
                 rs.getInt("Id"),
                 rs.getString("Username"),
@@ -65,7 +79,7 @@ public class CeoDAO extends DBContext{
                 rs.getBigDecimal("Salary"),
                 rs.getInt("failAttempts"),
                 lockTime,
-                new Role(rs.getInt("RoleId"), rs.getString("RoleName")) // Truyền đối tượng Role
+                new Role(rs.getInt("RoleId"),c.getRoleNameById(rs.getInt("RoleId"))) // Truyền đối tượng Role
         );
     }
     public List<Customer> searchCustomers(String searchTerm, int page, int pageSize) {
@@ -138,7 +152,7 @@ public class CeoDAO extends DBContext{
             String likeTerm = "%" + searchTerm + "%";
             Collections.addAll(params, likeTerm, likeTerm, likeTerm, likeTerm);
         }
-
+        
         // Thêm điều kiện role
         if (role != null && !role.trim().isEmpty()) {
             sql += "AND r.Name = ? ";
@@ -217,6 +231,36 @@ public class CeoDAO extends DBContext{
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return mapResultSetToCustomer(rs);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    public Customer getCustomerByEmail(String email) {
+        String sql = "SELECT * FROM [dbo].[Customer] WHERE Email = ?";
+        try (PreparedStatement p = connection.prepareStatement(sql)) {
+            p.setString(1, email);
+            try (ResultSet rs = p.executeQuery()) {
+                if (rs.next()) {
+                    return mapResultSetToCustomer(rs);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    public Customer getCustomerByPhone(String phone) {
+        String sql = "SELECT * FROM [dbo].[Customer] WHERE Phone = ?";
+        try (PreparedStatement p = connection.prepareStatement(sql)) {
+            p.setString(1, phone);
+            try (ResultSet rs = p.executeQuery()) {
                 if (rs.next()) {
                     return mapResultSetToCustomer(rs);
                 }
@@ -321,5 +365,64 @@ public class CeoDAO extends DBContext{
             e.printStackTrace();
         }
         return null;
+    }
+    
+    public Staff getStaffByEmail(String email) {
+        String sql = "SELECT * FROM [dbo].[Staff] WHERE Email = ?";
+        try (PreparedStatement p = connection.prepareStatement(sql)) {
+            p.setString(1, email);
+            try (ResultSet rs = p.executeQuery()) {
+                if (rs.next()) {
+                    return mapResultSetToStaff1(rs);  // Giả sử bạn có phương thức mapResultSetToStaff
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    public Staff getStaffByPhone(String phone) {
+        String sql = "SELECT * FROM [dbo].[Staff] WHERE Phone = ?";
+        try (PreparedStatement p = connection.prepareStatement(sql)) {
+            p.setString(1, phone);
+            try (ResultSet rs = p.executeQuery()) {
+                if (rs.next()) {
+                    return mapResultSetToStaff1(rs);  // Giả sử bạn có phương thức mapResultSetToStaff
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public boolean deleteCustomer(int id) {
+        String sql = "DELETE FROM Customer WHERE Id=?";
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, id);
+            return st.executeUpdate() > 0;
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return false;
+    }
+    
+    public boolean deleteStaff(int id) {
+        String sql = "DELETE FROM Staff WHERE Id=?";
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, id);
+            return st.executeUpdate() > 0;
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return false;
+    }
+    
+    public static void main(String[] args) {
+        CeoDAO c = new CeoDAO();
+        c.deleteStaff(40);
+        for(Staff x : c.searchStaffs("", "", 1, 5)) {
+            System.out.println(x.toString());
+        }
     }
 }

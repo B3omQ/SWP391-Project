@@ -288,7 +288,7 @@
                 <div class="container-fluid">
                     <div class="layout-specing">
                         <div class="row">
-                            <div class="col-xl-9 col-lg-6 col-md-4">
+                            <div class="col-xl-6 col-lg-6 col-md-4">
                                 <h5 class="mb-0">Banking System</h5>
                                 <nav aria-label="breadcrumb" class="d-inline-block mt-2">
                                     <ul class="breadcrumb breadcrumb-muted bg-transparent rounded mb-0 p-0">
@@ -297,9 +297,9 @@
                                     </ul>
                                 </nav>
                             </div><!--end col-->
-                            <div class="col-xl-3 col-lg-6 col-md-8 mt-4 mt-md-0">
+                            <div class="col-xl-6 col-lg-6 col-md-8 mt-4 mt-md-0">
                                 <div class="justify-content-md-end">
-                                    <form action="<%= request.getContextPath() %>/customerManagement" method="get">
+                                    <form action="<%= request.getContextPath() %>/customerManagement" method="get" id="RoleFilterList">
                                         <div class="row g-3 justify-content-between align-items-center">
                                             <!-- Search Input -->
                                             <div class="col-md-12 col-sm-12">
@@ -307,14 +307,28 @@
                                                     <input type="text" 
                                                            name="search" 
                                                            class="form-control" 
-                                                           placeholder="Search name/email"
+                                                           placeholder="Search name/email/phone"
                                                            value="${searchValue}">
                                                     <button type="submit" class="btn btn-primary">
                                                         <i class="uil uil-search"></i>
                                                     </button>
                                                 </div>
                                             </div>
-
+                                            <!-- Pagination Input -->
+                                            <div class="col-md-6">
+                                                <div class="mb-0 position-relative d-flex align-items-center justify-content-center">
+                                                    <label class="form-label me-2 mb-0">Items/page:</label>
+                                                    <div class="position-relative">
+                                                        <input type="number" 
+                                                               name="perPage" 
+                                                               value="${perPage}"
+                                                               class="form-control border-primary rounded-pill"
+                                                               min="1"
+                                                               step="1"
+                                                               onchange="document.getElementById('RoleFilterList').submit()">
+                                                    </div>
+                                                </div>
+                                            </div>
 
                                         </div>
                                     </form>
@@ -380,7 +394,6 @@
                                                             <!-- Các nút khác -->
                                                             <!-- Các nút khác -->
                                                             <a href="editCustomerInfo?uid=${customer.id}" class="btn btn-icon btn-pills btn-soft-success"><i class="uil uil-pen"></i></a>
-                                                            <a href="#" class="btn btn-icon btn-pills btn-soft-danger"><i class="uil uil-trash"></i></a>
                                                         </td>
                                                     </tr>
                                                 </c:forEach>
@@ -600,7 +613,13 @@
                                                 modal.find('#viewWallet').text(customerData.wallet);
                                             });
         </script>
-
+        <script>
+            function deleteCustomer(Id) {
+                if (confirm("Are you sure to delete customer with id = " + Id)) {
+                    window.location = "customerManagement?deleteId=" + Id;
+                }
+            }
+        </script>
     </body>
 
 </html>

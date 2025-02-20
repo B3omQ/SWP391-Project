@@ -63,25 +63,54 @@ public class StaffManagement extends HttpServlet {
         HttpSession session = request.getSession();
         CeoDAO sdao = new CeoDAO();
         String currentPage = request.getParameter("page");
+        String deleteId = request.getParameter("deleteId");
         int page;
-        int recordsPerPage = 6;
+        int DEFAULT_PER_PAGE = 5;
+        int recordsPerPage = 5;
+        String perPageParam = request.getParameter("perPage");
+        try {
+            if (perPageParam == null) {
+                recordsPerPage = (Integer) session.getAttribute("perPageSession");
+            } else {
+                int perPage = Integer.parseInt(perPageParam);
+                if (perPage < 1 || perPage > Integer.MAX_VALUE) {
+                    throw new Exception();
+                }
+                session.setAttribute("perPageSession", perPage);
+                recordsPerPage = perPage;
+            }
+        } catch (Exception e) {
+            recordsPerPage = DEFAULT_PER_PAGE;
+        }
         String role = request.getParameter("role");
         if (role == null) {
-            role = (String)session.getAttribute("roleSession"); 
-            if(role == null) {
+            role = (String) session.getAttribute("roleSession");
+            if (role == null) {
                 role = "";
             }
         } else {
             session.setAttribute("roleSession", role);
         }
         String search = request.getParameter("search");
+        if (search != null) {
+            // Loại bỏ khoảng trắng đầu cuối và thay thế nhiều khoảng trắng bằng 1 khoảng
+            search = search.trim().replaceAll("\\s+", " ");
+        }
         if (search == null) {
-            search = (String)session.getAttribute("searchSession"); 
-            if(search == null) {
+            search = (String) session.getAttribute("searchSession");
+            if (search == null) {
                 search = "";
             }
         } else {
             session.setAttribute("searchSession", search);
+        }
+        if(deleteId != null) {
+             try {
+                int delId = Integer.parseInt(deleteId);
+                sdao.deleteStaff(delId);
+            } catch (NumberFormatException ex) {
+                System.out.println(ex);
+            }
         }
         int numberOfRecords = sdao.getTotalRecords(search, role);
         role = role.trim();
@@ -104,6 +133,7 @@ public class StaffManagement extends HttpServlet {
         request.setAttribute("roles", roles);
         request.setAttribute("role", role);
         request.setAttribute("searchValue", search);
+        request.setAttribute("perPage", recordsPerPage);
         request.getRequestDispatcher("./ceo/staffManagement.jsp").forward(request, response);
     }
 
