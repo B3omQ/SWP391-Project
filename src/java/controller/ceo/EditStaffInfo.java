@@ -157,6 +157,8 @@ public class EditStaffInfo extends HttpServlet {
         Part imagePart = request.getPart("image");
         String fileType = imagePart.getContentType();
         List<String> errorMessages = new ArrayList<>();
+        List<Role> roles = aDao.getAllRoles();
+        request.setAttribute("roles", roles);
 
         // Xác thực dữ liệu
         // Xác thực dữ liệu
@@ -214,9 +216,7 @@ public class EditStaffInfo extends HttpServlet {
             errorMessages.add("Salary must be a valid number.");
         }
         String image = (imagePart != null && imagePart.getSize() > 0 ? getAndSaveImg(imagePart) : null);
-        if (!validate.isValidEmail(image)) {
-            errorMessages.add("Invalid image path.");
-        }
+
         if (imagePart.getSize() > 1024 * 1024 * 5) {
             errorMessages.add("Image must be < 5mb");
         }

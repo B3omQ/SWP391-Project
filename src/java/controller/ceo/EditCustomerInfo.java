@@ -211,10 +211,7 @@ public class EditCustomerInfo extends HttpServlet {
         }
 
         String image = (imagePart != null && imagePart.getSize() > 0 ? getAndSaveImg(imagePart) : null);
-        if (!validate.isValidEmail(image)) {
-            errorMessages.add("Invalid image path.");
-        }
-
+        
         if (imagePart.getSize() > 1024 * 1024 * 5) {
             errorMessages.add("Image must be < 5mb");
         }
