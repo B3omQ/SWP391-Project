@@ -1,0 +1,67 @@
+/* Định dạng tổng thể */
+.deposit-container {
+    background: #fff;
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border: 2px solid #d32f2f;
+    text-align: center;
+}
+
+/* Tiêu đề */
+.deposit-header {
+    font-size: 24px;
+    font-weight: bold;
+    color: #d32f2f;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+/* Nhãn (label) */
+.form-label {
+    font-weight: bold;
+    color: #d32f2f;
+    display: block;
+    text-align: left;
+    margin-bottom: 5px;
+}
+
+/* Ô nhập số tiền */
+.form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #d32f2f;
+    border-radius: 6px;
+    font-size: 16px;
+}
+
+/* Dropdown */
+.form-select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #d32f2f;
+    border-radius: 6px;
+    font-size: 16px;
+    background-color: #fff;
+    color: #333;
+}
+
+/* Nút nạp tiền */
+.btn-deposit {
+    background: #d32f2f;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 12px;
+    width: 100%;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-deposit:hover {
+    background: #b71c1c;
+}

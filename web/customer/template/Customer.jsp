@@ -35,7 +35,6 @@
 
     <body>
         <%
-       // Kiểm tra session
        if (session.getAttribute("account") == null) {
            response.sendRedirect(request.getContextPath() + "/auth/template/login.jsp");
            return; 
@@ -386,16 +385,33 @@
                                 </div>
                             </div><!--end col-->
 
-                            <div class="col-xl-4 col-lg-5 mt-4">
-                                <div class="card shadow border-0 p-4">
-                                    <div class="d-flex justify-content-between align-items-center mb-3">
-                                        <h4 class="align-items-center mb-0">Tổng tài sản</h6>
+                        <div class="col-xl-4 col-lg-5 mt-4">
+    <div class="card shadow border-0 p-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="align-items-center mb-0">Tổng tài sản</h4>
+        </div>
+        
+        <!-- Thêm phần tử chứa biểu đồ -->
+        <div style="position: relative; width: 100%; max-width: 300px; margin: auto;">
+            <canvas id="assetChart"></canvas>
+            <div id="chart-center" style="
+               position: absolute;
+    top: 50%;
+    left: 35%;
+    transform: translate(-50%, -50%);
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    text-align: center; /* Căn giữa nội dung */
+    width: 100%; /* Đảm bảo không bị lệch do kích thước */
+    max-width: 200px; /* Giữ cho chữ không bị tràn */
+    white-space: nowrap; /* Tránh bị xuống dòng */
 
+            "></div>
+        </div>
+    </div>
+</div><!--end col-->
 
-                                    </div>
-                                    <canvas id="assetChart"></canvas>                            </div>
-                            </div><!--end col-->
-                        </div><!--end row-->
 
                         <div class="row">
                             <div class="col-xl-4 col-lg-6 mt-4">
