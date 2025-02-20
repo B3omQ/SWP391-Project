@@ -6,6 +6,7 @@ package controller.customer;
 
 import dal.ConsultantDAO;
 import dal.CustomerDAO;
+import dal.ManagerDAO;
 import dal.StaffDAO;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
@@ -69,58 +70,56 @@ public class AuthServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-    String action = request.getParameter("action");
+            throws ServletException, IOException {
+        String action = request.getParameter("action");
 
-    // Kiểm tra nếu người dùng đăng nhập bằng Google
-    if ("loginGG".equals(action)) {
-        String googleCode = request.getParameter("code");
-        if (googleCode != null) {
-            // Xử lý đăng nhập Google
-            try {
-                String accessToken = GoogleLogin.getToken(googleCode);
-                GoogleAccount googleAccount = GoogleLogin.getUserInfo(accessToken);
-                String email = googleAccount.getEmail();
+        // Kiểm tra nếu người dùng đăng nhập bằng Google
+        if ("loginGG".equals(action)) {
+            String googleCode = request.getParameter("code");
+            if (googleCode != null) {
+                // Xử lý đăng nhập Google
+                try {
+                    String accessToken = GoogleLogin.getToken(googleCode);
+                    GoogleAccount googleAccount = GoogleLogin.getUserInfo(accessToken);
+                    String email = googleAccount.getEmail();
 
-                // Kiểm tra nếu email có tồn tại trong hệ thống
-                boolean emailExists = customerDAO.emailExists(email) || staffDAO.emailExists(email);
-                if (!emailExists) {
-                    // Nếu email chưa tồn tại, chuyển lại login và thông báo lỗi
-                    request.getSession().setAttribute("errorAccount", "Tài khoản chưa tồn tại.");
+                    // Kiểm tra nếu email có tồn tại trong hệ thống
+                    boolean emailExists = customerDAO.emailExists(email) || staffDAO.emailExists(email);
+                    if (!emailExists) {
+                        // Nếu email chưa tồn tại, chuyển lại login và thông báo lỗi
+                        request.getSession().setAttribute("errorAccount", "Tài khoản chưa tồn tại.");
+                        response.sendRedirect("auth/template/login.jsp");
+                        return;
+                    }
+
+                    // Đăng nhập thành công
+                    Customer customer = customerDAO.getCustomerByEmail(email);
+                    Staff staff = staffDAO.getStaffByEmail(email);
+
+                    if (customer != null) {
+                        request.getSession().setAttribute("account", customer);
+                        response.sendRedirect("customer/template/Customer.jsp"); // Chuyển hướng người dùng
+                        return;
+                    } else if (staff != null) {
+                        request.getSession().setAttribute("staff", staff);
+                        response.sendRedirect("staff/template/Staff.jsp"); // Chuyển hướng staff
+                        return;
+                    }
+
+                } catch (Exception e) {
+                    request.getSession().setAttribute("errorAccount", "Đăng nhập Google thất bại.");
                     response.sendRedirect("auth/template/login.jsp");
-                    return;
                 }
-
-                // Đăng nhập thành công
-                Customer customer = customerDAO.getCustomerByEmail(email);
-                Staff staff = staffDAO.getStaffByEmail(email);
-
-                if (customer != null) {
-                    request.getSession().setAttribute("account", customer);
-                    response.sendRedirect("customer/template/Customer.jsp"); // Chuyển hướng người dùng
-                    return;
-                } else if (staff != null) {
-                    request.getSession().setAttribute("staff", staff);
-                    response.sendRedirect("staff/template/Staff.jsp"); // Chuyển hướng staff
-                    return;
-                }
-
-            } catch (Exception e) {
-                request.getSession().setAttribute("errorAccount", "Đăng nhập Google thất bại.");
+            } else {
+                // Không có code thì quay về trang login
                 response.sendRedirect("auth/template/login.jsp");
             }
         } else {
-            // Không có code thì quay về trang login
+            // Các hành động khác
             response.sendRedirect("auth/template/login.jsp");
         }
-    } else {
-        // Các hành động khác
-        response.sendRedirect("auth/template/login.jsp");
+
     }
-    
-}
-
-
 
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -138,12 +137,34 @@ public class AuthServlet extends HttpServlet {
         if ("logout".equals(action)) {
             handleLogout(request, response);
         } else if ("login".equals(action)) {
-            handleLogin(request, response);       
+            handleLogin(request, response);
         } else if ("changePassword".equals(action)) {
             handleChangePassword(request, response);
+        } else if ("sendOtp".equals(action)) {
+            handleOtp(request, response);
         } else {
             response.sendRedirect("auth/template/login.jsp");
         }
+    }
+
+    private void handleOtp(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        Staff staff = (Staff) session.getAttribute("staff");
+
+        try {
+
+            String otp = resetService.generateOTP();
+            session.setAttribute("otp", otp);
+
+            String otpMessage = "Mã OTP của bạn là: " + otp + ". OTP có hiệu lực trong 10 phút.";
+            resetService.sendOtpEmail(staff.getEmail(), otpMessage, staff.getFirstname());
+
+            response.sendRedirect("otpEmail.jsp");
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
     }
 
     private void handleLogin(HttpServletRequest request, HttpServletResponse response)
@@ -151,20 +172,20 @@ public class AuthServlet extends HttpServlet {
         String email = request.getParameter("email");
         String passWord = request.getParameter("password");
         String rememberMe = request.getParameter("remember");
-          String googleCode = request.getParameter("code");
+        String googleCode = request.getParameter("code");
         HttpSession session = request.getSession();
- if (googleCode != null) {
-        // Google login process
-        try {
-            String accessToken = GoogleLogin.getToken(googleCode);
-            GoogleAccount googleAccount = GoogleLogin.getUserInfo(accessToken);
-            email = googleAccount.getEmail(); // Get email from Google account info
-        } catch (Exception e) {
-            session.setAttribute("errorAccount", "Đăng nhập bằng Google thất bại.");
-            response.sendRedirect("auth/template/login.jsp");
-            return;
+        if (googleCode != null) {
+            // Google login process
+            try {
+                String accessToken = GoogleLogin.getToken(googleCode);
+                GoogleAccount googleAccount = GoogleLogin.getUserInfo(accessToken);
+                email = googleAccount.getEmail(); // Get email from Google account info
+            } catch (Exception e) {
+                session.setAttribute("errorAccount", "Đăng nhập bằng Google thất bại.");
+                response.sendRedirect("auth/template/login.jsp");
+                return;
+            }
         }
-    }
         if (email == null || passWord == null) {
             session.setAttribute("errorAccount", "Vui lòng nhập email và mật khẩu.");
             response.sendRedirect("auth/template/login.jsp");
@@ -232,7 +253,6 @@ public class AuthServlet extends HttpServlet {
         response.sendRedirect("auth/template/login.jsp");
     }
 
-   
     private void handleLogout(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         request.getSession().invalidate();

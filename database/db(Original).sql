@@ -9,8 +9,8 @@ create table [Staff] (
 	[Password] nvarchar(255) null,
 	[Image] nvarchar(max) default 'assets/images/default.jpg',
 	Email nvarchar(255) null,
-	FirstName varchar(50) null,
-	LastName varchar(50) null,
+	FirstName nvarchar(50) null,
+	LastName nvarchar(50) null,
 	Gender nvarchar(50) null,
 	Dob datetime null,
 	Phone nvarchar(255) null,
@@ -27,8 +27,8 @@ create table Customer (
 	[Password] nvarchar(255) not null,
 	[Image] nvarchar(max) default 'assets/images/default.jpg',
 	Email nvarchar(255) not null,
-	FirstName varchar(50) not null,
-	LastName varchar(50) not null,
+	FirstName nvarchar(50) not null,
+	LastName nvarchar(50) not null,
 	Gender nvarchar(50) not null,
 	Dob datetime not null,
 	Phone nvarchar(255) not null,
@@ -56,7 +56,8 @@ create table DepService (
 	Description nvarchar(max) null,
 	MinimumDep decimal(10,2) not null,	
 	DuringTime int null,
-	SavingRate decimal(10,2) null
+	SavingRate decimal(10,2) null,
+	SavingRateMinimum decimal(10,2) null 
 )
 
 create table DepServiceUsed (
