@@ -33,7 +33,6 @@
     <link href="<%= request.getContextPath() %>/assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
     <link href="<%= request.getContextPath() %>/assets/css/deposit.css" rel="stylesheet" type="text/css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js" crossorigin="anonymous"></script>
-
     <style>
         .btn-custom {
             border: 2px solid #d70000;
@@ -44,11 +43,36 @@
             background-color: #d70000;
             color: white;
         }
+        .feature-box {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .icon-large {
+            font-size: 2rem;
+            color: #d70000;
+        }
     </style>
 </head>
 
     <body>
-  
+          <%
+       if (session.getAttribute("account") == null) {
+           response.sendRedirect(request.getContextPath() + "/auth/template/login.jsp");
+           return; 
+       }
+
+       // Lấy thông tin người dùng từ session
+       Customer account = (Customer) session.getAttribute("account");
+       String imagePath;
+
+       if (account != null && account.getImage() != null && !account.getImage().isEmpty()) {
+           imagePath = request.getContextPath() + "/uploads/" + account.getImage();
+       } else {
+           imagePath = request.getContextPath() + "/assets/images/default-avatar.jpg"; // Ảnh mặc định
+       }
+        %>
 
     <div class="page-wrapper doctris-theme toggled">
         <nav id="sidebar" class="sidebar-wrapper">
@@ -238,30 +262,36 @@
 
      <div class="container-fluid">
     <div class="layout-specing">
-       <div class="row justify-content-center">
-    <div class="col-12 mb-3">
-        <button class="btn btn-custom w-100 py-3 text-start d-flex flex-column" onclick="location.href='Termsavings.jsp'">
-            <div class="d-flex align-items-center">
-                <i class="fas fa-piggy-bank fa-2x me-3"></i> 
-                <span class="fs-5 fw-bold">Tiền gửi có kỳ hạn</span>
+         <div class="container mt-5">
+        <div class="text-center">
+            <h2><i class="fas fa-piggy-bank"></i> Tiền gửi có kỳ hạn</h2>
+            <p>Giữ tiền an toàn, sinh lời hấp dẫn với lãi suất lên đến 5%/năm.</p>
+        </div>
+        <div class="row text-center mt-4">
+            <div class="col-md-4">
+                <div class="feature-box">
+                    <i class="fas fa-shield-alt icon-large"></i>
+                    <p>An toàn và bảo mật tuyệt đối</p>
+                </div>
             </div>
-            <small class="text-muted mt-1 ms-5">
-                Lãi suất hấp dẫn, bảo đảm an toàn, kỳ hạn linh hoạt.
-            </small>
-        </button>
-    </div>
-    <div class="col-12">
-        <button class="btn btn-custom w-100 py-3 text-start d-flex flex-column">
-            <div class="d-flex align-items-center">
-                <i class="fas fa-seedling fa-2x me-3"></i> 
-                <span class="fs-5 fw-bold">Sinh lời tự động</span>
+            <div class="col-md-4">
+                <div class="feature-box">
+                    <i class="fas fa-percentage icon-large"></i>
+                    <p>Nhận lãi suất đến 5%/năm</p>
+                </div>
             </div>
-            <small class="text-muted mt-1 ms-5">
-                Tự động tái tục, tối ưu hóa lợi nhuận với lãi suất cao.
-            </small>
-        </button>
+            <div class="col-md-4">
+                <div class="feature-box">
+                    <i class="fas fa-wallet icon-large"></i>
+                    <p>Rút tiền linh hoạt theo nhu cầu</p>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-4">
+            <button class="btn btn-dark px-4 py-2" onclick="startSaving()"><i class="fas fa-play"></i> Bắt đầu ngay</button>
+        </div>
     </div>
-</div>
+
     </div>
 </div>
 
@@ -295,6 +325,10 @@
     <script src="<%= request.getContextPath() %>/assets/js/feather.min.js"></script>
     <!-- Main Js -->
     <script src="<%= request.getContextPath() %>/assets/js/app.js"></script>
-
+ <script>
+        function startSaving() {
+            window.location.href = 'savemoney.jsp';
+        }
+    </script>
     </body>
 </html>

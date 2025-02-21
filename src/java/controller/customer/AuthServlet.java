@@ -97,10 +97,14 @@ public class AuthServlet extends HttpServlet {
 
                 if (customer != null) {
                     request.getSession().setAttribute("account", customer);
+                    request.getSession().setAttribute("userId", customer.getId()); // Thêm dòng này
+
                     response.sendRedirect("customer/template/Customer.jsp"); // Chuyển hướng người dùng
                     return;
                 } else if (staff != null) {
                     request.getSession().setAttribute("staff", staff);
+                                        request.getSession().setAttribute("staffId", staff.getId()); // Thêm dòng này
+
                     response.sendRedirect("staff/template/Staff.jsp"); // Chuyển hướng staff
                     return;
                 }
@@ -190,6 +194,7 @@ public class AuthServlet extends HttpServlet {
 
         if (customer != null && av.checkPassword(passWord, customer.getPassword())) {
             session.setAttribute("account", customer);
+                session.setAttribute("userId", customer.getId()); // Thêm dòng này
 
             String otp = String.format("%06d", new Random().nextInt(999999));
             session.setAttribute("otp", otp);
@@ -207,6 +212,7 @@ public class AuthServlet extends HttpServlet {
 
         if (staff != null && av.checkPassword(passWord, staff.getPassword())) {
             session.setAttribute("staff", staff);
+    session.setAttribute("staffId", staff.getId()); // Thêm dòng này
 
             String otp = resetService.generateOTP();
             session.setAttribute("otp", otp);

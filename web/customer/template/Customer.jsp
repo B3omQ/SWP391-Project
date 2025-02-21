@@ -85,9 +85,9 @@
                             <a href="javascript:void(0)"><i class="uil uil-university me-2 d-inline-block"></i>Manage Account Bank</a>
                             <div class="sidebar-submenu">
                                 <ul>
-                                    <li><a href="blogs.html">Dashboard</a></li>
-                                    <li><a href="deposit.jsp">Deposit</a></li>
-                                    <li><a href="Saving.jsp">Move money</a></li>
+                                    <li><a href="blogs.html">Trang chủ</a></li>
+                                    <li><a href="deposit.jsp">Nạp tiền</a></li>
+                                    <li><a href="Saving.jsp">Gửi tiết kiệm</a></li>
                                 </ul>
                             </div>
                         </li>

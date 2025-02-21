@@ -33,8 +33,6 @@
         <link href="<%= request.getContextPath() %>/assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
         <link href="<%= request.getContextPath() %>/assets/css/deposit.css" rel="stylesheet" type="text/css" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js" crossorigin="anonymous"></script>
-        <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-
         <style>
             .btn-custom {
                 border: 2px solid #d70000;
@@ -60,20 +58,20 @@
 
     <body>
         <%
-     if (session.getAttribute("account") == null) {
-         response.sendRedirect(request.getContextPath() + "/auth/template/login.jsp");
-         return; 
-     }
-
-     // Lấy thông tin người dùng từ session
-     Customer account = (Customer) session.getAttribute("account");
-     String imagePath;
-
-     if (account != null && account.getImage() != null && !account.getImage().isEmpty()) {
-         imagePath = request.getContextPath() + "/uploads/" + account.getImage();
-     } else {
-         imagePath = request.getContextPath() + "/assets/images/default-avatar.jpg";
-     }
+//     if (session.getAttribute("account") == null) {
+//         response.sendRedirect(request.getContextPath() + "/auth/template/login.jsp");
+//         return; 
+//     }
+//
+//     // Lấy thông tin người dùng từ session
+//     Customer account = (Customer) session.getAttribute("account");
+//     String imagePath;
+//
+//     if (account != null && account.getImage() != null && !account.getImage().isEmpty()) {
+//         imagePath = request.getContextPath() + "/uploads/" + account.getImage();
+//     } else {
+//         imagePath = request.getContextPath() + "/assets/images/default-avatar.jpg";
+//     }
         %>
 
         <div class="page-wrapper doctris-theme toggled">
@@ -266,12 +264,11 @@
                     <div class="layout-specing">
                         <div class="container mt-5">
                             <h2 class="text-center text-danger"><i class="fas fa-piggy-bank"></i> Nhập Số Tiền Gửi</h2>
-                            <form action="<%= request.getContextPath() %>/DepositValidationServlet" method="post">
+                            <form action="DepositValidationServlet" method="post">
                                 <h5>Từ tài khoản</h5>
                                 <div class="d-flex justify-content-between align-items-center p-3 border rounded">
                                     <span><i class="fas fa-wallet"></i> Tài khoản thanh toán</span>
-                                   <fmt:formatNumber value="${account.wallet}" type="number" groupingUsed="true" /> VND
-
+                                    <span>${account.wallet} VND</span>
                                 </div>
                                 <h5 class="mt-3">Số tiền gửi</h5>
                                 <input type="number" id="depositAmount" name="depositAmount" class="form-control" placeholder="Nhập số tiền" required>
@@ -288,15 +285,11 @@
                                     </button>
                                 </div>
                             </form>
-                            <%
-          String errorAccount = (String) session.getAttribute("error4");
-          if (errorAccount != null) {
-                                %>
-                                <div class="alert alert-danger text-center"><%= errorAccount %></div>
-                                <%
-                                        session.removeAttribute("error4");  
-                                    }
-                                %>
+                            <c:if test="${not empty sessionScope.error4}">
+                                <div class="alert alert-danger mt-3">${sessionScope.error4}</div>
+                                <% session.removeAttribute("error4"); %>
+                            </c:if>
+
 
                         </div>
                     </div>
