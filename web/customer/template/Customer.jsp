@@ -87,15 +87,7 @@
                                 <ul>
                                     <li><a href="blogs.html">Dashboard</a></li>
                                     <li><a href="deposit.jsp">Deposit</a></li>
-                                    <li class="sidebar-dropdown">
-                                        <a href="javascript:void(0)"><i ></i>Move Money</a>
-                                        <div class="sidebar-submenu">
-                                            <ul>
-                                                <li><a href="transfer.jsp">In SmartBank</a></li>
-                                                <li><a href="javascript:void(0)">Other Banks (Unavailable)</a></li>
-                                            </ul>
-                                        </div>
-                                    </li>
+                                    <li><a href="Saving.jsp">Move money</a></li>
                                 </ul>
                             </div>
                         </li>
@@ -381,7 +373,7 @@
                                             </select>
                                         </div>-->
                                     </div>
-                                    <div id="dashboard" class="apex-chart"></div>
+<!--                                    <div id="dashboard" class="apex-chart"></div>-->
                                 </div>
                             </div><!--end col-->
 

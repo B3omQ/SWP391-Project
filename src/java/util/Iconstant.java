@@ -10,7 +10,6 @@ package util;
  */
 public class Iconstant {
 
-  
     public static final String GOOGLE_REDIRECT_URI = "http://localhost:8080/BankingSystem/AuthServlet?action=loginGG";
     public static final String GOOGLE_GRANT_TYPE = "authorization_code";
     public static final String GOOGLE_LINK_GET_TOKEN = "https://oauth2.googleapis.com/token";

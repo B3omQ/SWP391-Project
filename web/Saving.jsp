@@ -32,36 +32,23 @@
     <!-- Css -->
     <link href="<%= request.getContextPath() %>/assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
     <link href="<%= request.getContextPath() %>/assets/css/deposit.css" rel="stylesheet" type="text/css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js" crossorigin="anonymous"></script>
 
+    <style>
+        .btn-custom {
+            border: 2px solid #d70000;
+            color: #d70000;
+            font-weight: bold;
+        }
+        .btn-custom:hover {
+            background-color: #d70000;
+            color: white;
+        }
+    </style>
 </head>
 
     <body>
-     <%
-
-    if (session.getAttribute("account") == null) {
-        response.sendRedirect(request.getContextPath() + "/auth/template/login.jsp");
-        return; 
-    }
-
-
-    Customer account = (Customer) session.getAttribute("account");
-    String imagePath;
-
-    if (account != null && account.getImage() != null && !account.getImage().isEmpty()) {
-        imagePath = request.getContextPath() + "/uploads/" + account.getImage();
-    } else {
-        imagePath = request.getContextPath() + "/assets/images/default-avatar.jpg"; // Ảnh mặc định
-    }
-%>
-<!--            <div id="preloader">
-        <div id="status">
-            <div class="spinner">
-                <div class="double-bounce1"></div>
-                <div class="double-bounce2"></div>
-            </div>
-        </div>
-    </div>
-     Loader -->
+  
 
     <div class="page-wrapper doctris-theme toggled">
         <nav id="sidebar" class="sidebar-wrapper">
@@ -89,15 +76,8 @@
       <ul>
          <li><a href="blogs.html">Dashboard</a></li>
          <li><a href="deposit.jsp">Deposit</a></li>
-         <li class="sidebar-dropdown">
-            <a href="javascript:void(0)"><i ></i>Move Money</a>
-            <div class="sidebar-submenu">
-               <ul>
-                  <li><a href="transfer.jsp">In SmartBank</a></li>
-                  <li><a href="javascript:void(0)">Other Banks (Unavailable)</a></li>
-               </ul>
-            </div>
-         </li>
+                  <li><a href="Saving.jsp">Save Money</a></li>
+
       </ul>
    </div>
 </li>
@@ -260,30 +240,30 @@
 
      <div class="container-fluid">
     <div class="layout-specing">
-        <div class="deposit-container">
-            <div class="deposit-header">Nạp Tiền</div>
-            <form action="<%= request.getContextPath() %>/VNpayServlet" method="post">
-                
-                <!-- Nhập số tiền -->
-                <div class="mb-3">
-                    <label for="amount" class="form-label">Nhập số tiền cần nạp (VNĐ):</label>
-                    <input type="number" class="form-control" id="amount" name="amount" min="10000" required>
-                </div>
-
-                <!-- Dropdown chọn phương thức nạp -->
-                <div class="mb-3">
-                    <label class="form-label">Chọn phương thức nạp:</label>
-                    <select id="paymentMethod" name="paymentMethod" class="form-select">
-                        <option value="VNPAY" selected>VNPay</option>
-                        <option value="MOMO" disabled>MoMo (Soon)</option>
-                        <option value="BANK" disabled>Ngân hàng khác (Not Available)</option>
-                    </select>
-                </div>
-
-                <!-- Nút nạp tiền -->
-                <button type="submit" class="btn btn-deposit">Nạp Tiền Ngay</button>
-            </form>
-        </div>
+       <div class="row justify-content-center">
+    <div class="col-12 mb-3">
+        <button class="btn btn-custom w-100 py-3 text-start d-flex flex-column" onclick="location.href='Saving2.jsp'">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-piggy-bank fa-2x me-3"></i> 
+                <span class="fs-5 fw-bold">Tiền gửi có kỳ hạn</span>
+            </div>
+            <small class="text-muted mt-1 ms-5">
+                Lãi suất hấp dẫn, bảo đảm an toàn, kỳ hạn linh hoạt.
+            </small>
+        </button>
+    </div>
+    <div class="col-12">
+        <button class="btn btn-custom w-100 py-3 text-start d-flex flex-column">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-seedling fa-2x me-3"></i> 
+                <span class="fs-5 fw-bold">Sinh lời tự động</span>
+            </div>
+            <small class="text-muted mt-1 ms-5">
+                Tự động tái tục, tối ưu hóa lợi nhuận với lãi suất cao.
+            </small>
+        </button>
+    </div>
+</div>
     </div>
 </div>
 
