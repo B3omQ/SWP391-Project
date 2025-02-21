@@ -64,7 +64,7 @@
 
     <script>
         function startSaving() {
-            window.location.href = 'fixedSavingStep1.jsp';
+            window.location.href = 'savemoney.jsp';
         }
     </script>
 </body>
