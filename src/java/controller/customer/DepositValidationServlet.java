@@ -56,24 +56,7 @@ public class DepositValidationServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        String amountStr = request.getParameter("depositAmount");
-        double amount = 0;
 
-        try {
-            amount = Integer.parseInt(amountStr);
-        } catch (NumberFormatException e) {
-            request.getSession().setAttribute("error4", "Số tiền không hợp lệ!");
-            response.sendRedirect("customer/template/savemoney.jsp");
-            return;
-        }
-
-        if (amount < 1000000) {
-            request.getSession().setAttribute("error4", "Số tiền phải từ 1,000,000 VND trở lên!");
-            response.sendRedirect("customer/template/savemoney.jsp");
-        } else {
-            // Nếu số tiền hợp lệ, chuyển đến trang xác nhận
-            response.sendRedirect("confirmDeposit.jsp");
-        }
     } 
 
     /** 
@@ -86,64 +69,66 @@ public class DepositValidationServlet extends HttpServlet {
     @Override
 
 
-protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-      HttpSession session = request.getSession(false);
-        if (session == null) {
-            response.sendRedirect(request.getContextPath() + "/auth/template/login.jsp");
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+          HttpSession session = request.getSession(false);
+            if (session == null) {
+                response.sendRedirect(request.getContextPath() + "/auth/template/login.jsp");
+                return;
+            }
+        Integer userId = (Integer) session.getAttribute("userId");
+            System.out.println(userId);
+        CustomerDAO customerDao = new CustomerDAO();
+
+        // Lấy số dư từ database (BigDecimal)
+        BigDecimal accountBalance = customerDao.getWalletByCustomerId(userId);
+        System.out.println("User ID từ session: " + userId);
+        System.out.println("Số dư lấy từ DB: " + accountBalance);
+
+        // Lưu số dư vào session
+        session.setAttribute("wallet", accountBalance);
+
+        // Lấy số tiền nhập từ form
+        String amountStr = request.getParameter("depositAmount");
+        BigDecimal amount;
+
+        try {
+            amount = new BigDecimal(amountStr);
+        } catch (NumberFormatException e) {
+            session.setAttribute("error4", "Số tiền không hợp lệ!");
+            response.sendRedirect("customer/template/savemoney.jsp");
             return;
         }
-    Integer userId = (Integer) session.getAttribute("userId");
-        System.out.println(userId);
-    CustomerDAO customerDao = new CustomerDAO();
-  
-    // Lấy số dư từ database (BigDecimal)
-    BigDecimal accountBalance = customerDao.getWalletByCustomerId(userId);
-    System.out.println("User ID từ session: " + userId);
-    System.out.println("Số dư lấy từ DB: " + accountBalance);
 
-    // Lưu số dư vào session
-    session.setAttribute("wallet", accountBalance);
+        // Ngưỡng tối thiểu gửi tiết kiệm (1 triệu VND)
+        BigDecimal minAmount = new BigDecimal("1000000");
 
-    // Lấy số tiền nhập từ form
-    String amountStr = request.getParameter("depositAmount");
-    BigDecimal amount;
+        // Kiểm tra số tiền nhập vào
+        if (amount.compareTo(minAmount) < 0) {
+            session.setAttribute("error4", "Số tiền phải từ 1,000,000 VND trở lên!");
+            response.sendRedirect("customer/template/savemoney.jsp");
+        } else if (amount.compareTo(accountBalance) > 0) {
+            session.setAttribute("error4", "Số dư không đủ để gửi tiết kiệm!");
+            response.sendRedirect("customer/template/savemoney.jsp");
+        } else {
+              session.setAttribute("depositAmount", amount);
+              System.out.println("Số tiền gửi tiết kiệm được lưu vào session: " + session.getAttribute("depositAmount"));
 
-    try {
-        amount = new BigDecimal(amountStr);
-    } catch (NumberFormatException e) {
-        session.setAttribute("error4", "Số tiền không hợp lệ!");
-        response.sendRedirect("customer/template/savemoney.jsp");
-        return;
+            response.sendRedirect("customer/template/chooseTerm.jsp");
+        }
     }
 
-    // Ngưỡng tối thiểu gửi tiết kiệm (1 triệu VND)
-    BigDecimal minAmount = new BigDecimal("1000000");
 
-    // Kiểm tra số tiền nhập vào
-    if (amount.compareTo(minAmount) < 0) {
-        session.setAttribute("error4", "Số tiền phải từ 1,000,000 VND trở lên!");
-        response.sendRedirect("customer/template/savemoney.jsp");
-    } else if (amount.compareTo(accountBalance) > 0) {
-        session.setAttribute("error4", "Số dư không đủ để gửi tiết kiệm!");
-        response.sendRedirect("customer/template/savemoney.jsp");
-    } else {
-        // Nếu hợp lệ, chuyển đến trang xác nhận
-        response.sendRedirect("customer/template/chooseTerm.jsp");
+
+
+
+
+        /** 
+         * Returns a short description of the servlet.
+         * @return a String containing servlet description
+         */
+        @Override
+        public String getServletInfo() {
+            return "Short description";
+        }// </editor-fold>
+
     }
-}
-
-
-
-    
-
-
-    /** 
-     * Returns a short description of the servlet.
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
-}

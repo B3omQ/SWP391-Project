@@ -3,6 +3,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="model.TermInfo" %> 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+       <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <% 
     if (request.getAttribute("termList") == null) { 
         response.sendRedirect(request.getContextPath() + "/Calculation");
@@ -41,7 +42,7 @@
         <link href="<%= request.getContextPath() %>/assets/css/deposit.css" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-        <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+ 
   <style>
         .term-box {
             border: 2px solid #ddd;
@@ -267,19 +268,21 @@
                        <div class="container mt-5">
         <h2 class="text-center">Chọn Kỳ Hạn Gửi Tiết Kiệm</h2>
         <div class="row mt-4">
-        <% List<TermInfo> termList = (List<TermInfo>) request.getAttribute("termList"); %>
-        <% if (termList != null) { %>
-            <% for (TermInfo term : termList) { %>
-                <div class="col-md-6 mb-3">
-                    <div class="term-box" onclick="selectTerm(<%= term.getTerm() %>)">
-                        <h4><%= term.getTerm() %> tháng</h4>
-                        <p>Số tiền lãi: <strong>VND <%= term.getInterestAmount() %></strong></p>
-                        <p>Lãi suất: <strong><%= term.getInterestRate() %>%/năm</strong></p>
-                    </div>
+    <c:if test="${not empty termList}">
+        <c:forEach var="term" items="${termList}">
+            <div class="col-md-6 mb-3">
+                <div class="term-box" onclick="selectTerm(${term.term})">
+                    <h4>${term.term} tháng</h4>
+                    <p>Số tiền lãi: <strong>
+                        <fmt:formatNumber value="${term.interestAmount}" type="number" groupingUsed="true" maxFractionDigits= "0"/>
+                    </strong> VND </p>
+                    <p>Lãi suất: <strong>${term.interestRate}%/năm</strong></p>
                 </div>
-            <% } %>
-        <% } %>
-    </div>
+            </div>
+        </c:forEach>
+    </c:if>
+</div>
+
 
     <div class="text-center mt-4">
         <button class="btn btn-dark px-4 py-2" id="continueBtn" disabled onclick="goToNextStep()">

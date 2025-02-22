@@ -5,6 +5,7 @@
 
 package controller.customer;
 
+import dal.CustomerDAO;
 import model.TermInfo;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
@@ -13,6 +14,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,23 +61,35 @@ public class Calculation extends HttpServlet {
      */
     @Override
 protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<TermInfo> termList = new ArrayList<>();
-        int[] terms = {1,2,3,4,5,6,7,8,9,10,11,12,24,36};
+       HttpSession session = request.getSession(false);
+    if (session == null || session.getAttribute("depositAmount") == null) {
+        System.out.println("Dang null");
+        response.sendRedirect("customer/template/savemoney.jsp");
+        return;
+    }
+    System.out.println("User ID từ session: " + session.getAttribute("userId"));
+System.out.println("Wallet từ session: " + session.getAttribute("wallet"));
+System.out.println("Deposit Amount từ session: " + session.getAttribute("depositAmount"));
 
-        for (int term : terms) {
-            double interestRate = 3 + term * 0.1;
-            double interestAmount = term * 2000;
-            termList.add(new TermInfo(term, interestAmount, interestRate));
-        }
-        System.out.println(">>> termList size: " + termList.size());
-    for (TermInfo t : termList) {
-        System.out.println("Term: " + t.getTerm() + ", Interest: " + t.getInterestAmount() + ", Rate: " + t.getInterestRate());
+
+BigDecimal depositAmount = (BigDecimal) session.getAttribute("depositAmount");
+
+    List<TermInfo> termList = new ArrayList<>();
+    int[] terms = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 24, 36};
+
+    for (int term : terms) {
+        double interestRate = 3 + term * 0.1; // Lãi suất (%)
+        BigDecimal rateDecimal = BigDecimal.valueOf(interestRate / 100);
+
+        // Công thức lãi đơn: Lãi = Số tiền * Lãi suất * Số tháng / 12
+        BigDecimal interestAmount = depositAmount.multiply(rateDecimal).multiply(BigDecimal.valueOf(term)).divide(BigDecimal.valueOf(12), 2, BigDecimal.ROUND_HALF_UP);
+
+        termList.add(new TermInfo(term, interestAmount.doubleValue(), interestRate));
     }
 
-        request.setAttribute("termList", termList);
-        request.getRequestDispatcher("customer/template/chooseTerm.jsp").forward(request, response);
+    request.setAttribute("termList", termList);
+    request.getRequestDispatcher("customer/template/chooseTerm.jsp").forward(request, response);
 }
-
     /** 
      * Handles the HTTP <code>POST</code> method.
      * @param request servlet request
@@ -86,24 +100,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        String termParam = request.getParameter("term");
-        if (termParam == null || !termParam.matches("\\d+")) {
-            request.setAttribute("error", "Invalid term");
-            RequestDispatcher dispatcher = request.getRequestDispatcher("errorPage.jsp");
-            dispatcher.forward(request, response);
-            return;
-        }
         
-        int term = Integer.parseInt(termParam);
-        double interestRate = 3 + term * 0.1; // % per year
-        double interestAmount = term * 2000; // Fixed calculation for example
-        
-        request.setAttribute("term", term);
-        request.setAttribute("interestAmount", interestAmount);
-        request.setAttribute("interestRate", interestRate);
-        
-        RequestDispatcher dispatcher = request.getRequestDispatcher("result.jsp");
-        dispatcher.forward(request, response);
     }
 
     /** 
