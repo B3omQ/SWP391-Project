@@ -128,7 +128,7 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response) 
         response.sendRedirect("customer/template/savemoney.jsp");
     } else {
         // Nếu hợp lệ, chuyển đến trang xác nhận
-        response.sendRedirect("confirmDeposit.jsp");
+        response.sendRedirect("customer/template/chooseTerm.jsp");
     }
 }
 
