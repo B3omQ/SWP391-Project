@@ -32,6 +32,103 @@
         <!-- Css -->
         <link href="assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
 
+        <style>
+            .chat-icon {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background: #007bff;
+                color: white;
+                font-size: 24px;
+                padding: 15px;
+                border-radius: 50%;
+                cursor: pointer;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+
+            /* Hộp thoại chat */
+            .chat-container {
+                display: none;
+                position: fixed;
+                bottom: 80px;
+                right: 20px;
+                width: 300px;
+                background: white;
+                border-radius: 10px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                overflow: hidden;
+            }
+
+            /* Tiêu đề chat */
+            .chat-header {
+                background: #007bff;
+                color: white;
+                padding: 10px;
+                text-align: center;
+                font-size: 16px;
+                position: relative;
+            }
+
+            /* Nút đóng */
+            .close-btn {
+                position: absolute;
+                right: 10px;
+                cursor: pointer;
+            }
+
+            /* Nội dung chat */
+            .chat-box {
+                height: 250px;
+                overflow-y: auto;
+                padding: 10px;
+                background: #f9f9f9;
+            }
+
+            /* Tin nhắn */
+            .chat-box p {
+                padding: 8px;
+                border-radius: 5px;
+                margin: 5px 0;
+            }
+
+            /* Tin nhắn người dùng */
+            .user-message {
+                background: #007bff;
+                color: white;
+                text-align: right;
+            }
+
+            /* Tin nhắn AI */
+            .ai-message {
+                background: #e9ecef;
+                text-align: left;
+            }
+
+            /* Ô nhập tin nhắn */
+            .chat-input {
+                display: flex;
+                padding: 10px;
+                border-top: 1px solid #ddd;
+            }
+
+            .chat-input input {
+                flex: 1;
+                padding: 8px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+            }
+
+            .chat-input button {
+                background: #007bff;
+                color: white;
+                border: none;
+                padding: 8px 15px;
+                margin-left: 5px;
+                cursor: pointer;
+                border-radius: 5px;
+            }
+
+        </style>
     </head>
 
     <body>
@@ -1349,6 +1446,21 @@
             </div><!--end container-->
         </footer><!--end footer-->
         <!-- End -->
+        <!-- Hộp thoại chat -->
+        <div class="chat-icon" onclick="toggleChat()">💬</div>
+
+        <!-- Hộp thoại chat -->
+        <div class="chat-container" id="chatContainer">
+            <div class="chat-header">
+                Hỗ trợ tự động
+                <span class="close-btn" onclick="toggleChat()">✖</span>
+            </div>
+            <div class="chat-box" id="chatBox"></div>
+            <div class="chat-input">
+                <input type="text" id="userMessage" placeholder="Nhập tin nhắn..." onkeypress="handleKeyPress(event)">
+                <button onclick="sendMessage()">Gửi</button>
+            </div>
+        </div>
 
         <!-- Back to top -->
         <a href="#" onclick="topFunction()" id="back-to-top" class="btn btn-icon btn-pills btn-primary back-to-top"><i
@@ -1439,6 +1551,65 @@
                     </div><!--end col-->
                 </div><!--end row-->
             </div>
+            <script>
+                function toggleChat() {
+                    let chatBox = document.getElementById("chatContainer");
+                    chatBox.style.display = (chatBox.style.display === "none" || chatBox.style.display === "") ? "block" : "none";
+                }
+
+// Gửi tin nhắn khi nhấn Enter
+                function handleKeyPress(event) {
+                    if (event.key === "Enter") {
+                        sendMessage();
+                    }
+                }
+
+// Gửi tin nhắn đến servlet
+                function sendMessage() {
+                    let userMessageInput = document.getElementById("userMessage");
+                    let userMessage = userMessageInput.value.trim();
+                    if (!userMessage) {
+                        alert("Vui lòng nhập tin nhắn!");
+                        return;
+                    }
+
+                    let chatBox = document.getElementById("chatBox");
+                    // Hiển thị tin nhắn của người dùng
+                    chatBox.innerHTML += `<p class="user-message"><b>Bạn:</b> ${userMessage} </p>`;
+                    userMessageInput.value = ""; // Xóa nội dung nhập sau khi gửi
+                    chatBox.scrollTop = chatBox.scrollHeight; // Cuộn xuống cuối
+
+                    // Gửi yêu cầu đến servlet
+                    fetch("http://localhost:9999/BankingSystem/AiChatBotServlet", {
+                        method: "POST",
+                        headers: {"Content-Type": "application/x-www-form-urlencoded"},
+                        body: new URLSearchParams({message: userMessage})
+                    })
+                            .then(response => {
+                                if (!response.ok)
+                                    throw new Error("Không thể kết nối với server.");
+                                return response.json();
+                            })
+                            .then(data => {
+                                console.log("Dữ liệu nhận từ AI:", data); // Kiểm tra dữ liệu nhận
+                                if (aiReply) {
+                                    let chatBox = document.getElementById("chatBox");
+                                    let aiMessage = document.createElement("p");
+                                    aiMessage.innerHTML = `<b>Người hỗ trợ:</b> ${data.reply}`;
+                                    aiMessage.classList.add("ai-message"); // Thêm class để CSS có thể áp dụng
+                                    chatBox.appendChild(aiMessage);
+                                } else {
+                                    chatBox.innerHTML += `<p class="ai-message" style="color: red;">Lỗi: AI không phản hồi.</p>`;
+                                }
+                                chatBox.scrollTop = chatBox.scrollHeight; // Cuộn xuống cuối
+                            })
+                            .catch(error => {
+                                console.error("Lỗi:", error);
+                                chatBox.innerHTML += `<p class="ai-message" style="color: red;">Lỗi: Không thể kết nối tới AI.</p>`;
+                            });
+                }
+
+            </script>
 
             <div class="offcanvas-footer p-4 border-top text-center">
                 <ul class="list-unstyled social-icon mb-0">
