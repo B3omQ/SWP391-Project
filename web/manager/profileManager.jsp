@@ -25,10 +25,12 @@
         <link href="<%= request.getContextPath() %>/assets/css/materialdesignicons.min.css" rel="stylesheet" type="text/css" />
         <link href="<%= request.getContextPath() %>/assets/css/remixicon.css" rel="stylesheet" type="text/css" />
         <link href="https://unicons.iconscout.com/release/v3.0.6/css/line.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
         <!-- SLIDER -->
         <link href="<%= request.getContextPath() %>/assets/css/tiny-slider.css" rel="stylesheet" />
         <!-- Css -->
         <link href="<%= request.getContextPath() %>/assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
+        <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css">
 
         <style>
             .card-title {
@@ -138,15 +140,16 @@
                                                         <img src="${staff.image}" alt="Image"
                                                              style="width: 205px; height: 205px; object-fit: cover; border-radius: 30%;">
                                                         <div class="mb-4 mt-3">
-                                                            <label for="newImg" class="form-label text-muted">Upload a new avatar. Larger images will be resized automatically. Maximum upload size is 5 MB.</label>
-                                                            <input type="file" id="newImg" accept=".jpg,.png,.jpeg" name="newImg" class="form-control-file">
+                                                            <label for="newImg" class="form-label text-muted">Upload a new avatar. Larger images will be resized automatically. Maximum upload size is 5 MB. Only accept jpg, jpeg, png, gif file</label>
+                                                            <input type="file" id="newImg" accept=".jpg,.png,.jpeg,.gif" name="newImg" class="form-control-file">
                                                         </div>
+
                                                         <div class="mb-4">
                                                             <p class="text-muted">Your email: ${staff.email}
-                                                                <a href="customer-manager" class="ms-2 text-decoration-none">
-                                                                    <i class="fas fa-edit"></i>
-                                                                </a>
-                                                            </p>
+                                                                <button type="button" id="sendOtpBtn" class="ms-2 text-decoration-none">
+                                                                    <i class="fas fa-edit"></i> 
+                                                                </button>  
+                                                            </p>                                                          
                                                         </div>
                                                     </div>
                                                     <!-- User Info Section -->
@@ -262,9 +265,38 @@
         </div>
 
         <script src ="resources/script/jquery-3.7.1.min.js"></script>
+        <script src="https://unpkg.com/@popperjs/core@2"></script>
+        <script src="https://unpkg.com/tippy.js@6"></script>
 
         <script>
+                                                                document.addEventListener("DOMContentLoaded", function () {
+                                                                    tippy('#newPassword', {
+                                                                        content: "Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, a special character and not contains space characters.",
+                                                                        animation: 'fade',
+                                                                        duration: [300, 300],
+                                                                        placement: 'top',
+                                                                        theme: 'light-border'
+                                                                    });
+
+                                                                    tippy('#confirmPassword', {
+                                                                        content: "Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, a special character and not contains space characters.",
+                                                                        animation: 'fade',
+                                                                        duration: [300, 300],
+                                                                        placement: 'top',
+                                                                        theme: 'light-border'
+                                                                    });
+
+                                                                    tippy('#newPhone', {
+                                                                        content: "Phone must be 10 - 11 digits number",
+                                                                        animation: 'fade',
+                                                                        duration: [300, 300],
+                                                                        placement: 'top',
+                                                                        theme: 'light-border'
+                                                                    });
+                                                                });
+
                                                                 $(document).ready(function () {
+                                                                    showToastrAfterReload();
                                                                     $('#changePasswordForm').on('submit', function (event) {
                                                                         event.preventDefault();
                                                                         var currentPassword = $('#currentPassword');
@@ -276,12 +308,8 @@
                                                                             newPassword: newPassword.val(),
                                                                         };
                                                                         console.log(formData);
-                                                                        if (!currentPassword.val() || !newPassword.val()) {
-                                                                            $('#error-message').text('Please enter all required fields.');
-                                                                            return;
-                                                                        }
                                                                         if (newPassword.val() !== confirmPassword.val()) {
-                                                                            $('#error-message').text('Your confirm password is incorrect');
+                                                                            showErrorMessage("Error", "Your confirm password is incorrect");
                                                                             newPassword.val("");
                                                                             confirmPassword.val("");
                                                                             return;
@@ -293,20 +321,13 @@
                                                                             data: formData,
                                                                             success: function (response) {
                                                                                 if (response.success) {
-                                                                                    Swal.fire({
-                                                                                        title: "Success!",
-                                                                                        text: "Password changed successfully.",
-                                                                                        icon: "success",
-                                                                                        confirmButtonText: "OK"
-                                                                                    }).then(() => {
-                                                                                        location.reload();
-                                                                                    });
+                                                                                    reloadWithMessage("success", "Success", "Change successful");
                                                                                 } else {
-                                                                                    $('#error-message').text(response.message);
+                                                                                    showErrorMessage("Error", response.message);
                                                                                 }
                                                                             },
                                                                             error: function () {
-                                                                                alert('Server is busy right now');
+                                                                                showErrorMessage("Error", "Server is busy right now, try again");
                                                                             }
                                                                         });
                                                                     }
@@ -325,20 +346,27 @@
                                                                             contentType: false, // Để trình duyệt tự động set multipart/form-data
                                                                             success: function (response) {
                                                                                 if (response.success) {
-                                                                                    Swal.fire({
-                                                                                        title: "Success!",
-                                                                                        text: "Password changed successfully.",
-                                                                                        icon: "success",
-                                                                                        confirmButtonText: "OK"
-                                                                                    }).then(() => {
-                                                                                        location.reload();
-                                                                                    });
+                                                                                    reloadWithMessage("success", "Success", "Update successful");
                                                                                 } else {
-                                                                                    $('#error-message-info').text(response.message);
+                                                                                    showErrorMessage("Error", response.message);
                                                                                 }
                                                                             },
                                                                             error: function () {
-                                                                                alert('Server is busy right now');
+                                                                                showErrorMessage("Error", "Server is busy right now, try again");
+                                                                            }
+                                                                        });
+                                                                    });
+                                                                    $('#sendOtpBtn').click(function () {
+                                                                        event.preventDefault();
+                                                                        $.ajax({
+                                                                            url: 'AuthServlet',
+                                                                            type: 'POST',
+                                                                            data: {action: 'sendOtp'},
+                                                                            success: function (response) {
+                                                                                window.location.href = "otpEmail.jsp";
+                                                                            },
+                                                                            error: function () {
+                                                                                showErrorMessage("Error", "Something wrong");
                                                                             }
                                                                         });
                                                                     });
@@ -359,7 +387,8 @@
                                                                     }
                                                                 }
         </script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+        <script src="./resources/script/script.js"></script>
 
         <!-- page-wrapper -->
         <script src="<%= request.getContextPath() %>/assets/js/jquery.min.js"></script>
