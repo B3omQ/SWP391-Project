@@ -33,17 +33,15 @@
         <link href="assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
 
         <style>
-            .chat-icon {
+            .chat-icon{
                 position: fixed;
-                bottom: 20px;
-                right: 20px;
-                background: #007bff;
-                color: white;
-                font-size: 24px;
-                padding: 15px;
+                bottom: 40px;
+                right: 5px;
+                background: transparent;
+                padding: 0;
                 border-radius: 50%;
                 cursor: pointer;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                border: none;
             }
 
             /* Hộp thoại chat */
@@ -61,19 +59,30 @@
 
             /* Tiêu đề chat */
             .chat-header {
-                background: #007bff;
+                background: #dc3545;
                 color: white;
                 padding: 10px;
-                text-align: center;
+                display: flex;
+                justify-content: space-between; /* Đặt khoảng cách giữa title và nút đóng */
+                align-items: center;
                 font-size: 16px;
                 position: relative;
+                font-weight: bold;
             }
 
             /* Nút đóng */
             .close-btn {
-                position: absolute;
-                right: 10px;
+                background: none;
+                border: none;
                 cursor: pointer;
+                padding: 0;
+            }
+            .close-btn img {
+                width: 10px; /* Adjust width as needed */
+                height: 20px; /* Adjust height as needed */
+                /* or */
+                width: 1.5rem; /* Use relative units like rem or em for better scaling */
+                height: 1.5rem;
             }
 
             /* Nội dung chat */
@@ -93,9 +102,9 @@
 
             /* Tin nhắn người dùng */
             .user-message {
-                background: #007bff;
+                background: #dc3545;
                 color: white;
-                text-align: right;
+                text-align: left;
             }
 
             /* Tin nhắn AI */
@@ -119,7 +128,7 @@
             }
 
             .chat-input button {
-                background: #007bff;
+                background: #dc3545;
                 color: white;
                 border: none;
                 padding: 8px 15px;
@@ -1447,15 +1456,17 @@
         </footer><!--end footer-->
         <!-- End -->
         <!-- Hộp thoại chat -->
-        <div class="chat-icon" onclick="toggleChat()">💬</div>
-
-        <!-- Hộp thoại chat -->
-        <div class="chat-container" id="chatContainer">
+        <div class="chat-icon" onclick="toggleChat()" >
+            <img src="assets/images/ai logo/ai logo.png" class="avatar avatar-medium"/>
+        </div>
+        <div class="chat-container mb-5" id="chatContainer">
             <div class="chat-header">
-                Hỗ trợ tự động
-                <span class="close-btn" onclick="toggleChat()">✖</span>
+                Chat cùng smartBank Digibot
+                <button class="close-btn" onclick="toggleChat()">
+                    <img src="assets/images/ai logo/delete.png" alt="Đóng"> </button>
             </div>
             <div class="chat-box" id="chatBox"></div>
+            <div class="loading" id="loading"></div>
             <div class="chat-input">
                 <input type="text" id="userMessage" placeholder="Nhập tin nhắn..." onkeypress="handleKeyPress(event)">
                 <button onclick="sendMessage()">Gửi</button>
@@ -1553,60 +1564,71 @@
             </div>
             <script>
                 function toggleChat() {
-                    let chatBox = document.getElementById("chatContainer");
+                    const chatBox = document.getElementById("chatContainer");
                     chatBox.style.display = (chatBox.style.display === "none" || chatBox.style.display === "") ? "block" : "none";
                 }
 
-// Gửi tin nhắn khi nhấn Enter
                 function handleKeyPress(event) {
                     if (event.key === "Enter") {
                         sendMessage();
                     }
                 }
 
-// Gửi tin nhắn đến servlet
                 function sendMessage() {
-                    let userMessageInput = document.getElementById("userMessage");
+                    const userMessageInput = document.getElementById("userMessage");
                     let userMessage = userMessageInput.value.trim();
+
                     if (!userMessage) {
-                        alert("Vui lòng nhập tin nhắn!");
                         return;
                     }
 
-                    let chatBox = document.getElementById("chatBox");
-                    // Hiển thị tin nhắn của người dùng
-                    chatBox.innerHTML += `<p class="user-message"><b>Bạn:</b> ${userMessage} </p>`;
-                    userMessageInput.value = ""; // Xóa nội dung nhập sau khi gửi
-                    chatBox.scrollTop = chatBox.scrollHeight; // Cuộn xuống cuối
+                    displayMessage(userMessage, true);
+                    userMessageInput.value = "";
+                    showLoadingIndicator(true);
 
-                    // Gửi yêu cầu đến servlet
                     fetch("http://localhost:9999/BankingSystem/AiChatBotServlet", {
                         method: "POST",
                         headers: {"Content-Type": "application/x-www-form-urlencoded"},
-                        body: new URLSearchParams({message: userMessage})
+                        body: new URLSearchParams({message: userMessage}) // Gửi tin nhắn trực tiếp
                     })
                             .then(response => {
-                                if (!response.ok)
-                                    throw new Error("Không thể kết nối với server.");
+                                if (!response.ok) {
+                                    throw new Error("Network response was not ok");
+                                }
                                 return response.json();
                             })
                             .then(data => {
-                                console.log("Dữ liệu nhận từ AI:", data); // Kiểm tra dữ liệu nhận
-                                if (aiReply) {
-                                    let chatBox = document.getElementById("chatBox");
-                                    let aiMessage = document.createElement("p");
-                                    aiMessage.innerHTML = `<b>Người hỗ trợ:</b> ${data.reply}`;
-                                    aiMessage.classList.add("ai-message"); // Thêm class để CSS có thể áp dụng
-                                    chatBox.appendChild(aiMessage);
+                                showLoadingIndicator(false);
+                                if (data && data.reply) {
+                                    displayMessage(data.reply, false);
                                 } else {
-                                    chatBox.innerHTML += `<p class="ai-message" style="color: red;">Lỗi: AI không phản hồi.</p>`;
+                                    displayMessage("Lỗi: AI không phản hồi hoặc dữ liệu không hợp lệ.", false, "error");
+                                    console.error("Invalid AI response:", data);
                                 }
-                                chatBox.scrollTop = chatBox.scrollHeight; // Cuộn xuống cuối
                             })
                             .catch(error => {
-                                console.error("Lỗi:", error);
-                                chatBox.innerHTML += `<p class="ai-message" style="color: red;">Lỗi: Không thể kết nối tới AI.</p>`;
+                                showLoadingIndicator(false);
+                                displayMessage("Lỗi: Không thể kết nối tới AI.", false, "error");
+                                console.error("Error:", error);
                             });
+                }
+
+                function displayMessage(message, isUser, messageType = "normal") {
+                    const chatBox = document.getElementById("chatBox");
+                    const messageElement = document.createElement("p");
+                    messageElement.classList.add(isUser ? "user-message" : "ai-message");
+                    if (messageType === "error") {
+                        messageElement.style.color = "red";
+                    }
+
+                    messageElement.textContent = (isUser ? "Bạn: " : "Digibot: ") + message; // Hiển thị tin nhắn trực tiếp
+                    chatBox.appendChild(messageElement);
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                }
+
+                function showLoadingIndicator(show) {
+                    const loadingIndicator = document.getElementById("loading");
+                    loadingIndicator.style.display = show ? "block" : "none";
                 }
 
             </script>
