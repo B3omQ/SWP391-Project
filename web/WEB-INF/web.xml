@@ -48,6 +48,10 @@
         <servlet-name>Calculation</servlet-name>
         <servlet-class>controller.customer.Calculation</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ProcessTermOptions</servlet-name>
+        <servlet-class>controller.customer.ProcessTermOptions</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>HomeServlet</servlet-name>
         <url-pattern>/home</url-pattern>
@@ -159,6 +163,10 @@
     <servlet-mapping>
         <servlet-name>Calculation</servlet-name>
         <url-pattern>/Calculation</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProcessTermOptions</servlet-name>
+        <url-pattern>/ProcessTermOptions</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>1440</session-timeout>

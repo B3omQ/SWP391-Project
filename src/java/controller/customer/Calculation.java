@@ -107,10 +107,8 @@ public class Calculation extends HttpServlet {
      */
  @Override
 protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    System.out.println("----- [LOG] Bắt đầu xử lý doPost -----");
 
     String selectedTermStr = request.getParameter("selectedTerm");
-    System.out.println("[LOG] selectedTerm nhận từ request: " + selectedTermStr);
 
     if (selectedTermStr == null || selectedTermStr.isEmpty()) {
         System.out.println("[ERROR] Không có kỳ hạn nào được chọn!");
@@ -127,16 +125,17 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response) 
         session.setAttribute("selectedTerm", selectedTerm);
         System.out.println("[LOG] selectedTerm đã lưu vào session.");
 
-        // Chuyển đến trang termOption.jsp
-        String nextPage = "/customer/template/termOptions.jsp";
+        // Chuyển hướng bằng sendRedirect để URL thay đổi
+        String nextPage = request.getContextPath() + "/customer/template/termOptions.jsp";
         System.out.println("[LOG] Chuyển hướng đến: " + nextPage);
-        request.getRequestDispatcher(nextPage).forward(request, response);
+        response.sendRedirect(nextPage);  // Thay vì forward()
     } catch (NumberFormatException e) {
         System.out.println("[ERROR] Lỗi chuyển đổi kỳ hạn: " + e.getMessage());
         request.setAttribute("error", "Kỳ hạn không hợp lệ!");
         request.getRequestDispatcher("/customer/template/chooseTerm.jsp").forward(request, response);
     }
 }
+
 
 
 
