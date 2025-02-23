@@ -1,26 +1,20 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
 
-/**
- *
- * @author emkob
- */
 public class TermInfo {
-
     private int term;
     private double interestAmount;
     private double interestRate;
+    private String dueDate; // Thêm ngày đáo hạn
 
     public TermInfo() {
     }
 
-    public TermInfo(int term, double interestAmount, double interestRate) {
+    // Cập nhật constructor
+    public TermInfo(int term, double interestAmount, double interestRate, String dueDate) {
         this.term = term;
         this.interestAmount = interestAmount;
         this.interestRate = interestRate;
+        this.dueDate = dueDate;
     }
 
     public int getTerm() {
@@ -47,4 +41,11 @@ public class TermInfo {
         this.interestRate = interestRate;
     }
 
+    public String getDueDate() { // Getter cho ngày đáo hạn
+        return dueDate;
+    }
+
+    public void setDueDate(String dueDate) { // Setter cho ngày đáo hạn
+        this.dueDate = dueDate;
+    }
 }

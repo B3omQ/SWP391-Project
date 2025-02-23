@@ -61,20 +61,20 @@
 
     <body>
         <%
-//     if (session.getAttribute("account") == null) {
-//         response.sendRedirect(request.getContextPath() + "/auth/template/login.jsp");
-//         return; 
-//     }
-//
-//     // Lấy thông tin người dùng từ session
-//     Customer account = (Customer) session.getAttribute("account");
-//     String imagePath;
-//
-//     if (account != null && account.getImage() != null && !account.getImage().isEmpty()) {
-//         imagePath = request.getContextPath() + "/uploads/" + account.getImage();
-//     } else {
-//         imagePath = request.getContextPath() + "/assets/images/default-avatar.jpg";
-//     }
+     if (session.getAttribute("account") == null) {
+         response.sendRedirect(request.getContextPath() + "/auth/template/login.jsp");
+         return; 
+     }
+
+     // Lấy thông tin người dùng từ session
+     Customer account = (Customer) session.getAttribute("account");
+     String imagePath;
+
+     if (account != null && account.getImage() != null && !account.getImage().isEmpty()) {
+         imagePath = request.getContextPath() + "/uploads/" + account.getImage();
+     } else {
+         imagePath = request.getContextPath() + "/assets/images/default-avatar.jpg";
+     }
         %>
 
         <div class="page-wrapper doctris-theme toggled">
@@ -267,28 +267,39 @@
                     <div class="layout-specing">
                        <div class="container mt-5">
         <h2 class="text-center">Chọn Kỳ Hạn Gửi Tiết Kiệm</h2>
-        <div class="row mt-4">
-    <c:if test="${not empty termList}">
-        <c:forEach var="term" items="${termList}">
-            <div class="col-md-6 mb-3">
-                <div class="term-box" onclick="selectTerm(${term.term})">
-                    <h4>${term.term} tháng</h4>
-                    <p>Số tiền lãi: <strong>
-                        <fmt:formatNumber value="${term.interestAmount}" type="number" groupingUsed="true" maxFractionDigits= "0"/>
-                    </strong> VND </p>
-                    <p>Lãi suất: <strong>${term.interestRate}%/năm</strong></p>
+       <form id="termForm" action="${pageContext.request.contextPath}/Calculation" method="POST">
+    <input type="hidden" name="selectedTerm" id="selectedTerm">
+    <div class="row mt-4">
+        <c:if test="${not empty termList}">
+            <c:forEach var="term" items="${termList}">
+                <div class="col-md-6 mb-3">
+                    <div class="term-box" onclick="selectTerm(${term.term})">
+                        <h4>${term.term} tháng</h4>
+                        <p>Số tiền lãi: <strong>
+                            <fmt:formatNumber value="${term.interestAmount}" type="number" groupingUsed="true" maxFractionDigits="0"/>
+                        </strong> VND </p>
+                        <p>Lãi suất: <strong>${term.interestRate}%/năm</strong></p>
+                        <p>Ngày đáo hạn: <strong>${term.dueDate}</strong></p>
+                    </div>
                 </div>
-            </div>
-        </c:forEach>
-    </c:if>
-</div>
-
-
+            </c:forEach>
+        </c:if>
+    </div>
     <div class="text-center mt-4">
-        <button class="btn btn-dark px-4 py-2" id="continueBtn" disabled onclick="goToNextStep()">
+        <button type="submit" class="btn btn-dark px-4 py-2" id="continueBtn" disabled>
             Tiếp tục
         </button>
     </div>
+</form>
+
+
+<script>
+    function selectTerm(term) {
+        document.getElementById("selectedTerm").value = term;
+        document.getElementById("continueBtn").disabled = false;
+    }
+</script>
+
     </div>
 
                     </div>
@@ -324,19 +335,6 @@
         <script src="<%= request.getContextPath() %>/assets/js/feather.min.js"></script>
         <!-- Main Js -->
         <script src="<%= request.getContextPath() %>/assets/js/app.js"></script>
-      <script>
-        let selectedTerm = null;
-        function selectTerm(term) {
-            document.querySelectorAll('.term-box').forEach(box => box.classList.remove('selected'));
-            event.currentTarget.classList.add('selected');
-            selectedTerm = term;
-            document.getElementById('continueBtn').disabled = false;
-        }
-        function goToNextStep() {
-            if (selectedTerm) {
-                window.location.href = 'confirmSaving.jsp?term=' + selectedTerm;
-            }
-        }
-    </script>
+     
     </body>
 </html>
