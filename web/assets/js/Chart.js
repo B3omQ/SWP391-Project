@@ -3,46 +3,56 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(response => response.json())
         .then(data => {
             const ctx = document.getElementById('assetChart').getContext('2d');
+            const totalBalance = data.walletBalance.toLocaleString() + " VNĐ"; // Hiển thị tổng tiền
+
             new Chart(ctx, {
                 type: 'doughnut',
                 data: {
                     labels: data.labels,
                     datasets: [{
                         data: data.values,
-                        backgroundColor: ['blue', 'cyan', 'purple', 'yellow'],
+                        backgroundColor: ['#007bff', '#17a2b8', '#6f42c1', '#ffc107'], // Màu sắc đẹp hơn
                         hoverOffset: 10
                     }]
                 },
                 options: {
                     responsive: true, 
-                            maintainAspectRatio: true,  // Đảm bảo biểu đồ thay đổi kích thước khi thay đổi kích thước của phần tử cha
-
+                    maintainAspectRatio: true,
                     plugins: {
                         legend: {
-                            position: 'right', // Đặt legend ở bên phải biểu đồ
+                            position: 'right',
                             labels: {
-                                boxWidth: 10,  // Kích thước của hộp màu trong legend
-                                padding: 20     // Khoảng cách giữa các mục trong legend
+                                font: {
+                                    family: 'Poppins, Arial, sans-serif', // Font chữ đẹp hơn
+                                    size: 12 // Giảm kích thước chữ
+                                },
+                                color: '#333', // Màu chữ tối hơn cho dễ đọc
+                                boxWidth: 12,
+                                padding: 15
                             }
                         },
                         tooltip: {
                             callbacks: {
                                 label: function (tooltipItem) {
-                                    return `${tooltipItem.label}: ${tooltipItem.raw}%`; // Hiển thị % trên tooltip
+                                    return `${tooltipItem.label}: ${tooltipItem.raw}%`;
                                 }
                             }
                         }
                     },
                     layout: {
-                        padding: {
-                            left: 20,    // Padding trái giữa biểu đồ và legend
-                            right: 20,   // Padding phải giữa biểu đồ và legend
-                            top: 20,     // Padding trên cùng giữa biểu đồ và các thành phần khác
-                            bottom: 20   // Padding dưới cùng nếu cần thiết
-                        }
-                    }
+                        padding: 20
+                    },
+                    cutout: '70%' // Tạo khoảng trống giữa vòng tròn
                 }
             });
+
+            // Hiển thị số dư giữa biểu đồ với font đẹp và nhỏ hơn
+            const chartCenter = document.getElementById("chart-center");
+            chartCenter.innerHTML = totalBalance;
+            chartCenter.style.fontFamily = "Poppins, Arial, sans-serif"; // Font chữ
+            chartCenter.style.fontSize = "16px"; // Chữ nhỏ hơn
+            chartCenter.style.fontWeight = "bold"; // Chữ đậm hơn
+            chartCenter.style.color = "#333"; // Màu tối hơn cho dễ nhìn
         })
         .catch(error => {
             console.error('Error fetching data:', error);

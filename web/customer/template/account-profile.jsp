@@ -189,27 +189,27 @@
 
                                     <div class="col-lg-5 col-md-12 text-lg-end text-center mt-4 mt-lg-0">
                                         <!-- Form Upload -->
-                             <form action="<%= request.getContextPath() %>/UploadImageServlet" method="post" enctype="multipart/form-data">
-    <input type="file" name="image" accept=".jpg,.png" class="form-control mb-2">
-    <button type="submit" class="btn btn-primary">Upload</button>
-    
-<c:if test="${not empty sessionScope.error2}">
-    <p style="color: red;">${sessionScope.error2}</p>
-    <c:remove var="error2" scope="session"/>
-</c:if>
+                                        <form action="<%= request.getContextPath() %>/UploadImageServlet" method="post" enctype="multipart/form-data">
+                                            <input type="file" name="image" accept=".jpg,.png" class="form-control mb-2">
+                                            <button type="submit" class="btn btn-primary">Upload</button>
 
-<c:if test="${not empty sessionScope.success2}">
-    <p style="color: green;">${sessionScope.success2}</p>
-    <c:remove var="success2" scope="session"/>
-</c:if>
+                                            <c:if test="${not empty sessionScope.error2}">
+                                                <p style="color: red;">${sessionScope.error2}</p>
+                                                <c:remove var="error2" scope="session"/>
+                                            </c:if>
 
-</form>
+                                            <c:if test="${not empty sessionScope.success2}">
+                                                <p style="color: green;">${sessionScope.success2}</p>
+                                                <c:remove var="success2" scope="session"/>
+                                            </c:if>
+
+                                        </form>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Hi?n th? thông báo khi có l?i -->
-                        
+
                             <form action="<%= request.getContextPath() %>/UpdateInfo" method="post" onsubmit="return confirmUpdate()" >
                                 <div class="p-4">
                                     <div class="row">
@@ -286,14 +286,14 @@
                                     </div>
 
                                     <!-- Thông báo thành công / l?i -->
-                           <c:if test="${not empty sessionScope.error3}">
-    <p style="color: red;">${sessionScope.error3}</p>
-    <c:remove var="error3" scope="session"/>
-</c:if>
-<c:if test="${not empty sessionScope.success3}">
-    <p style="color: green;">${sessionScope.success3}</p>
-    <c:remove var="success3" scope="session"/>
-</c:if>
+                                    <c:if test="${not empty sessionScope.error3}">
+                                        <p style="color: red;">${sessionScope.error3}</p>
+                                        <c:remove var="error3" scope="session"/>
+                                    </c:if>
+                                    <c:if test="${not empty sessionScope.success3}">
+                                        <p style="color: green;">${sessionScope.success3}</p>
+                                        <c:remove var="success3" scope="session"/>
+                                    </c:if>
 
                                 </div>
                             </form>
@@ -462,26 +462,26 @@
         <!-- Main Js -->
         <script src="<%= request.getContextPath() %>/assets/js/app.js"></script>
         <script>
-    function confirmUpdate() {
-        return confirm("Bạn có chắc chắn muốn lưu thay đổi không?");
-    }
-</script>
+                                        function confirmUpdate() {
+                                            return confirm("Bạn có chắc chắn muốn lưu thay đổi không?");
+                                        }
+        </script>
 
     </body>
     <script>
-                                            function togglePassword(passwordFieldId, iconId) {
-                                                var passwordField = document.getElementById(passwordFieldId);
-                                                var toggleIcon = document.getElementById(iconId);
+        function togglePassword(passwordFieldId, iconId) {
+            var passwordField = document.getElementById(passwordFieldId);
+            var toggleIcon = document.getElementById(iconId);
 
-                                                if (passwordField.type === "password") {
-                                                    passwordField.type = "text";
-                                                    toggleIcon.classList.remove("mdi-eye-outline");
-                                                    toggleIcon.classList.add("mdi-eye-off-outline");
-                                                } else {
-                                                    passwordField.type = "password";
-                                                    toggleIcon.classList.remove("mdi-eye-off-outline");
-                                                    toggleIcon.classList.add("mdi-eye-outline");
-                                                }
-                                            }
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                toggleIcon.classList.remove("mdi-eye-outline");
+                toggleIcon.classList.add("mdi-eye-off-outline");
+            } else {
+                passwordField.type = "password";
+                toggleIcon.classList.remove("mdi-eye-off-outline");
+                toggleIcon.classList.add("mdi-eye-outline");
+            }
+        }
     </script>
 </html>

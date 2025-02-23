@@ -40,6 +40,26 @@ public class ManagerDAO extends DBContext {
         }
         return false;
     }
+    
+        public boolean isDuplicatedEmailStaff(String email) {
+        String sql = """
+                    SELECT 1 FROM [BankingSystem].[dbo].[Staff] 
+                    WHERE [Email] = ? 
+                 """;
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, email);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return true;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ConsultantDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+    
+    
 
     public Role getRole(int roleID) {
         String sql = """
