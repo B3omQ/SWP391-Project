@@ -35,6 +35,8 @@
     <servlet>
         <servlet-name>AiChatBotServlet</servlet-name>
         <servlet-class>controller.AiChatBotServlet</servlet-class>
+    </servlet>    
+    <servlet>    
         <servlet-name>LoanOptionService</servlet-name>
         <servlet-class>controller.manager.LoanOptionService</servlet-class>
     </servlet>
@@ -157,7 +159,8 @@
     <servlet-mapping>
         <servlet-name>AiChatBotServlet</servlet-name>
         <url-pattern>/AiChatBotServlet</url-pattern>
-
+        </servlet-mapping>
+    <servlet-mapping>    
         <servlet-name>LoanOptionService</servlet-name>
         <url-pattern>/Loan-Option-Service</url-pattern>
     </servlet-mapping>
