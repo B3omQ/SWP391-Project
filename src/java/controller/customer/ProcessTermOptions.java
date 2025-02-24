@@ -87,6 +87,6 @@ public class ProcessTermOptions extends HttpServlet {
         System.out.println("[LOG] Hành động đã chọn: " + action);
 
         // Chuyển sang trang xác nhận
-        response.sendRedirect("confirmTermAction.jsp");
+        response.sendRedirect("customer/template/confirmTermAction.jsp");
     }
 }
