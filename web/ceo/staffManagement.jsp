@@ -60,7 +60,8 @@
                                     class="uil uil-stethoscope me-2 d-inline-block"></i>Staff Management</a></li>
                         <li><a href="<%= request.getContextPath() %>/customerManagement"><i
                                     class="uil uil-stethoscope me-2 d-inline-block"></i>Customer Management</a></li>
-
+                        <li><a href="<%= request.getContextPath() %>/ceo/ceoProfile.jsp"><i
+                                    class="uil uil-stethoscope me-2 d-inline-block"></i>Profile</a></li>
                     </ul>
                     <!-- sidebar-menu  -->
                 </div>

@@ -159,6 +159,9 @@ public class EditCustomerInfo extends HttpServlet {
         if (validate.normalizeInput(username).isEmpty()) {
             errorMessages.add("Username is required.");
         }
+        if (aDao.getStaffByUsername(username) != null && id != aDao.getStaffByUsername(username).getId()) {
+            errorMessages.add("Duplicate username.");
+        }
 
         if (!validate.isValidEmail(email)) {
             errorMessages.add("Invalid email format.");
@@ -211,11 +214,13 @@ public class EditCustomerInfo extends HttpServlet {
         }
 
         String image = (imagePart != null && imagePart.getSize() > 0 ? getAndSaveImg(imagePart) : null);
-        
+
         if (imagePart.getSize() > 1024 * 1024 * 5) {
             errorMessages.add("Image must be < 5mb");
         }
-
+        if (image != null && !validate.isValidateImage(image)) {
+            errorMessages.add("Image must be .jpg, .jpeg, .png");
+        }
         // Nếu có lỗi, trả về trang trước đó với thông báo lỗi
         if (!errorMessages.isEmpty()) {
             request.setAttribute("errorMessages", errorMessages);

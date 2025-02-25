@@ -64,6 +64,7 @@
                         <li><a href="<%= request.getContextPath() %>/ceo/ceoProfile.jsp"><i
                                     class="uil uil-stethoscope me-2 d-inline-block"></i>Profile</a></li>
 
+
                     </ul>
                     <!-- sidebar-menu  -->
                 </div>
@@ -227,184 +228,110 @@
                                 <nav aria-label="breadcrumb" class="d-inline-block mt-2">
                                     <ul class="breadcrumb breadcrumb-muted bg-transparent rounded mb-0 p-0">
                                         <li class="breadcrumb-item"><a href="index.html">Ceo</a></li>
-                                        <li class="breadcrumb-item active" aria-current="page">Customer Management</li>
+                                        <li class="breadcrumb-item active" aria-current="page">Profile</li>
                                     </ul>
                                 </nav>
                             </div><!--end col-->
-                            <div class="col-xl-6 col-lg-6 col-md-8 mt-4 mt-md-0">
-                                <div class="justify-content-md-end">
-                                    <form action="<%= request.getContextPath() %>/customerManagement" method="get" id="RoleFilterList">
-                                        <div class="row g-3 justify-content-between align-items-center">
-                                            <!-- Search Input -->
-                                            <div class="col-md-12 col-sm-12">
-                                                <div class="input-group">
-                                                    <input type="text" 
-                                                           name="search" 
-                                                           class="form-control" 
-                                                           placeholder="Search name/email/phone"
-                                                           value="${searchValue}">
-                                                    <button type="submit" class="btn btn-primary">
-                                                        <i class="uil uil-search"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <!-- Pagination Input -->
-                                            <div class="col-md-6">
-                                                <div class="mb-0 position-relative d-flex align-items-center justify-content-center">
-                                                    <label class="form-label me-2 mb-0">Items/page:</label>
-                                                    <div class="position-relative">
-                                                        <input type="number" 
-                                                               name="perPage" 
-                                                               value="${perPage}"
-                                                               class="form-control border-primary rounded-pill"
-                                                               min="1"
-                                                               step="1"
-                                                               onchange="document.getElementById('RoleFilterList').submit()">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </form>
-                                </div>
-                            </div><!--end col-->
                         </div><!--end row-->
-
-                        <div class="row">
-                            <div class="col-12 mt-4">
-
-                                <form action="<%= request.getContextPath() %>/customerManagement" method="get">
-                                    <div class="table-responsive bg-white shadow rounded">
-                                        <table class="table table-bordered table-hover">
-                                            <thead class="thead-dark">
-                                                <tr>
-                                                    <th>#</th>
-                                                    <th>Avatar</th>
-                                                    <th>Name</th>
-                                                    <th>Gender</th>
-                                                    <th>Email</th>                                                  
-                                                    <th>Phone</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-
-                                                <c:if test="${empty customers}">
-                                                    <tr>
-                                                        <td colspan="8" class="text-center">No customers available.</td>
-                                                    </tr>
-                                                </c:if>
-
-
-                                                <c:forEach var="customer" items="${customers}">
-                                                    <tr>
-                                                        <td>${customer.id}</td>
-                                                        <td>
-                                                            <div class="d-flex align-items-center">
-                                                                <img src="${customer.image}" width="40" height="" alt="alt"/>
-                                                            </div>
-                                                        </td>
-                                                        <td>${customer.firstname} ${customer.lastname}</td>
-                                                        <td>${customer.gender}</td>
-                                                        <td>${customer.email}</td>
-                                                        <td>${customer.phone}</td>                                                       
-                                                        <td>                              
-                                                            <a href="#" class="btn btn-icon btn-pills btn-soft-primary" 
-                                                               data-bs-toggle="modal" 
-                                                               data-bs-target="#viewprofile"
-                                                               data-id="${customer.id}"
-                                                               data-username="${customer.username}"
-                                                               data-image="${customer.image}"
-                                                               data-firstname="${customer.firstname}"
-                                                               data-lastname="${customer.lastname}"
-                                                               data-gender="${customer.gender}"
-                                                               data-email="${customer.email}"
-                                                               data-phone="${customer.phone}"
-                                                               data-dob="<fmt:parseDate value="${customer.dob}" type="date" pattern="yyyy-MM-dd" var="parsedDate" /> <fmt:formatDate value="${parsedDate}" type="date" pattern="dd/MM/yyyy" />"
-                                                               data-address="${customer.getAddress()}"
-                                                               data-wallet="${customer.wallet}">
-                                                                <i class="uil uil-eye"></i>
-                                                            </a>
-                                                            <!-- Các nút khác -->
-                                                            <!-- Các nút khác -->
-                                                            <a href="editCustomerInfo?uid=${customer.id}" class="btn btn-icon btn-pills btn-soft-success"><i class="uil uil-pen"></i></a>
-                                                            <button type="button" class="btn btn-icon btn-pills btn-soft-danger" onclick="deleteCustomer('${customer.id}')">
-                                                                <i class="uil uil-trash"></i>
-                                                            </button>
-                                                        </td>
-                                                    </tr>
+                        <div class="col-xl-8 col-lg-12 col-md-7 mt-4 pt-2 mt-sm-0 pt-sm-0">
+                            <div class="rounded shadow mt-4">
+                                <div class="p-4 border-bottom">
+                                    <h5 class="mb-0">Personal Information :</h5>
+                                </div>
+                                <c:if test="${not empty errorMessages}">
+                                    <div class="alert alert-danger">
+                                        <ul>
+                                            <c:forEach var="error" items="${errorMessages}">
+                                                <li>${error}</li>
                                                 </c:forEach>
-                                            </tbody>
-                                        </table>
+                                        </ul>
+                                    </div>
+                                </c:if>
+
+                                <form action="<%= request.getContextPath() %>/ceoProfileServlet" method="post" enctype="multipart/form-data">
+                                    <div class="p-4 border-bottom">
+                                        <div class="row align-items-center">
+                                            <label class="form-label">Image</label>
+                                            <div class="col-lg-2 col-md-4">
+                                                <img src="<%= request.getContextPath() %>/${staff.image}" class="avatar avatar-md-md rounded-pill shadow mx-auto d-block" alt="">
+                                            </div><!--end col-->
+                                            <div class="md-5" style="padding-top: 10px">
+                                                <input type="file" class="form-control-file" name="image" accept=".jpg,.png,.jpeg"> 
+                                            </div>
+                                        </div><!--end row-->
+                                    </div>
+                                    <div class="p-4">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Username</label>
+                                                    <input name="username" type="text" class="form-control" value="${staff.username}">
+                                                </div>
+                                            </div><!--end col-->
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label">First Name</label>
+                                                    <input name="firstname" type="text" class="form-control" value="${staff.firstname}">
+                                                </div>
+                                            </div><!--end col-->
+
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Last Name</label>
+                                                    <input name="lastname" type="text" class="form-control" value="${staff.lastname}">
+                                                </div>
+                                            </div><!--end col-->
+
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Gender</label>
+                                                    <select class="form-control" name="gender" required>
+                                                        <option value="Male" <c:if test="${staff.gender == 'Male'}">selected</c:if>>Male</option>
+                                                        <option value="Female" <c:if test="${staff.gender == 'Female'}">selected</c:if>>Female</option>
+                                                        </select>
+                                                    </div>
+                                                </div> <!--end col-->
+
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">DoB:</label>
+                                                        <input type="date" class="form-control" name="dob" value="${staff.dob}" readonly=""/>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Your Email</label>
+                                                    <input name="email" type="email" class="form-control" value="${staff.email}" readonly="">
+                                                </div> 
+                                            </div><!--end col-->
+
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Phone</label>
+                                                    <input name="phone" type="text" class="form-control" value="${staff.phone}" readonly="">
+                                                </div>                                                                               
+                                            </div><!--end col-->
+
+                                            <div class="col-md-12">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Address</label>
+                                                    <input type="text" class="form-control" name="address" value="${staff.getAddress()}">
+                                                </div>
+                                            </div>
+                                        </div><!--end row-->
+
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <input type="submit" id="submit" name="send" class="btn btn-primary" value="Save changes">
+                                            </div><!--end col-->
+                                        </div><!--end row-->
                                     </div>
                                 </form>
-                            </div>
-                        </div>
 
-                        <div class="row text-center">
-                            <!-- PAGINATION START -->
-                            <div class="col-12 mt-4">
-                                <div class="d-md-flex align-items-center text-center justify-content-between">
-                                    <span class="text-muted me-3">
-                                        <c:if test="${page == endPage}">
-                                            <c:if test="${(page - 1)* recordsPerPage + 1 == numberOfRecords}">
-                                                Showing ${numberOfRecords} out of ${numberOfRecords}
-                                            </c:if>
-                                            <c:if test="${(page - 1)* recordsPerPage + 1 != numberOfRecords}">
-                                                Showing ${(page - 1)* recordsPerPage + 1} - ${numberOfRecords} out of ${numberOfRecords}
-                                            </c:if>    
-                                        </c:if>
-                                        <c:if test="${page != endPage}">
-                                            Showing ${(page - 1)* recordsPerPage + 1} - ${page * recordsPerPage} out of ${numberOfRecords}
-                                        </c:if>
-                                    </span>                                  
-                                    <span class="mx-3">
-                                        <input type="text" style="text-align: right; max-width: 60px" value="${page}" class="form-control d-inline w-auto"                                               
-                                               onchange="location.href = '${pageContext.request.contextPath}/customerManagement?page=' + this.value">
-                                        / ${endPage}
-                                    </span>
-                                    <ul class="pagination justify-content-center mb-0 mt-3 mt-sm-0">
-                                        <!-- Previous -->
-                                        <c:if test="${page != 1}">
-                                            <li class="page-item"><a class="page-link" href="<%= request.getContextPath() %>/customerManagement?page=${page - 1}" aria-label="Previous">Prev</a></li>
-                                            </c:if>  
-                                        <!-- Current Page -->  
-                                        <!-- Start process -->
-                                        <c:if test="${endPage < 8}">
-                                            <c:forEach var="i" begin="1" end="${endPage}">
-                                                <li class="page-item ${page == i? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/customerManagement?page=${i}" aria-label="Pages">${i}</a></li>
-                                                </c:forEach>
-                                            </c:if>
-                                            <c:if test="${endPage >= 8}">
-                                            <li class="page-item ${page == 1? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/customerManagement?page=1" aria-label="Pages">1</a></li>
-                                                <c:if test="${page < 4 || page > endPage - 3}">
-                                                <li class="page-item ${page == 2? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/customerManagement?page=2" aria-label="Pages">2</a></li>
-                                                <li class="page-item ${page == 3? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/customerManagement?page=3" aria-label="Pages">3</a></li>
-                                                </c:if>
-                                                <c:if test="${page > 3 && page < endPage - 2}">
-                                                <li class="page-item"><span class="page-link" aria-label="Pages">...</span></li>
-                                                <li class="page-item ${page == page - 1 ? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/customerManagement?page=${page - 1}" aria-label="Pages">${page - 1}</a></li>
-                                                <li class="page-item ${page == page? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/customerManagement?page=${page}" aria-label="Pages">${page}</a></li>
-                                                <li class="page-item ${page == page + 1 ? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/customerManagement?page=${page + 1}" aria-label="Pages">${page + 1}</a></li>
-                                                <li class="page-item"><span class="page-link" aria-label="Pages">...</span></li>
-                                                </c:if>
-                                                <c:if test="${page < 4 || page > endPage - 3}">
-                                                <li class="page-item"><span class="page-link" aria-label="Pages">...</span></li>
-                                                <li class="page-item ${page == endPage - 2? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/customerManagement?page=${endPage - 2}" aria-label="Pages">${endPage - 2}</a></li>
-                                                <li class="page-item ${page == endPage - 1? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/customerManagement?page=${endPage - 1}" aria-label="Pages">${endPage - 1}</a></li>
-                                                </c:if> 
-                                            <li class="page-item ${page == endPage? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/customerManagement?page=${endPage}" aria-label="Pages">${endPage}</a></li>
-                                            </c:if>                                              
-                                        <!-- End process -->
-                                        <!-- Next -->
-                                        <c:if test="${page lt endPage}">
-                                            <li class="page-item"><a class="page-link" href="<%= request.getContextPath() %>/customerManagement?page=${page + 1}" aria-label="Next">Next</a></li>
-                                            </c:if>
-                                    </ul>
-                                </div>
-                            </div><!--end col-->
-                            <!-- PAGINATION END -->
-                        </div><!--end row-->
+                            </div>
+
+                        </div><!--end col-->
                     </div>
                 </div><!--end container-->
 
@@ -514,49 +441,6 @@
         <script src="<%= request.getContextPath() %>/assets/js/feather.min.js"></script>
         <!-- Main Js -->
         <script src="<%= request.getContextPath() %>/assets/js/app.js"></script>
-        <script>
-                                            // Cập nhật script xử lý modal
-                                            $('#viewprofile').on('show.bs.modal', function (event) {
-                                                var button = $(event.relatedTarget);
-                                                var modal = $(this);
-
-                                                // Lấy tất cả dữ liệu từ data attributes
-                                                var customerData = {
-                                                    id: button.data('id'),
-                                                    username: button.data('username'),
-                                                    image: button.data('image'),
-                                                    firstname: button.data('firstname'),
-                                                    lastname: button.data('lastname'),
-                                                    gender: button.data('gender'),
-                                                    email: button.data('email'),
-                                                    phone: button.data('phone'),
-                                                    dob: button.data('dob'),
-                                                    address: button.data('address'),
-                                                    wallet: button.data('wallet')
-                                                };
-                                                var username = button.data('username');
-                                                console.log('Username ' + username);
-
-                                                // Điền dữ liệu vào modal
-                                                modal.find('#viewId').text(customerData.id);
-                                                modal.find('#viewUsername').text(customerData.username);
-                                                modal.find('#viewName').text(customerData.firstname + ' ' + customerData.lastname);
-                                                modal.find('#viewAvatar').attr('src', customerData.image);
-                                                modal.find('#viewGender').text(customerData.gender);
-                                                modal.find('#viewEmail').text(customerData.email);
-                                                modal.find('#viewPhone').text(customerData.phone);
-                                                modal.find('#viewDob').text(customerData.dob);
-                                                modal.find('#viewAddress').text(customerData.address);
-                                                modal.find('#viewWallet').text(customerData.wallet);
-                                            });
-        </script>
-        <script>
-            function deleteCustomer(Id) {
-                if (confirm("Are you sure to delete customer with id = " + Id)) {
-                    window.location = "customerManagement?deleteId=" + Id;
-                }
-            }
-        </script>
     </body>
 
 </html>

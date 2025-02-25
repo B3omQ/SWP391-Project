@@ -23,7 +23,8 @@ import util.DBContext;
  *
  * @author Long
  */
-public class CeoDAO extends DBContext{
+public class CeoDAO extends DBContext {
+
     private AccountValidation av = new AccountValidation();
 
     public String getRoleNameById(int roleId) {
@@ -40,6 +41,7 @@ public class CeoDAO extends DBContext{
         }
         return null;
     }
+
     public static Customer mapResultSetToCustomer(ResultSet rs) throws SQLException {
         return new Customer(
                 rs.getInt("Id"),
@@ -58,8 +60,7 @@ public class CeoDAO extends DBContext{
                 rs.getBigDecimal("Wallet")
         );
     }
-    
-    
+
     public static Staff mapResultSetToStaff1(ResultSet rs) throws SQLException {
         LocalDate dob = rs.getDate("Dob") != null ? rs.getDate("Dob").toLocalDate() : null;
         LocalDateTime lockTime = rs.getTimestamp("LockTime") != null ? rs.getTimestamp("LockTime").toLocalDateTime() : null;
@@ -79,9 +80,10 @@ public class CeoDAO extends DBContext{
                 rs.getBigDecimal("Salary"),
                 rs.getInt("failAttempts"),
                 lockTime,
-                new Role(rs.getInt("RoleId"),c.getRoleNameById(rs.getInt("RoleId"))) // Truyền đối tượng Role
+                new Role(rs.getInt("RoleId"), c.getRoleNameById(rs.getInt("RoleId"))) // Truyền đối tượng Role
         );
     }
+
     public List<Customer> searchCustomers(String searchTerm, int page, int pageSize) {
         List<Customer> customers = new ArrayList<>();
         String sql = "SELECT * FROM Customer WHERE 1=1 ";
@@ -115,7 +117,7 @@ public class CeoDAO extends DBContext{
         }
         return customers;
     }
-    
+
     public int getTotalCustomerRecords(String searchTerm) {
         int total = 0;
         String sql = "SELECT COUNT(*) AS total FROM Customer WHERE 1=1 ";
@@ -152,7 +154,7 @@ public class CeoDAO extends DBContext{
             String likeTerm = "%" + searchTerm + "%";
             Collections.addAll(params, likeTerm, likeTerm, likeTerm, likeTerm);
         }
-        
+
         // Thêm điều kiện role
         if (role != null && !role.trim().isEmpty()) {
             sql += "AND r.Name = ? ";
@@ -210,7 +212,7 @@ public class CeoDAO extends DBContext{
         }
         return total;
     }
-    
+
     public List<Role> getAllRoles() {
         List<Role> roles = new ArrayList<>();
         String sql = "SELECT * FROM Role";
@@ -225,7 +227,7 @@ public class CeoDAO extends DBContext{
         }
         return roles;
     }
-    
+
     public Customer getCustomerById(int id) {
         String sql = "SELECT * FROM [dbo].[Customer] WHERE Id = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -240,7 +242,7 @@ public class CeoDAO extends DBContext{
         }
         return null;
     }
-    
+
     public Customer getCustomerByEmail(String email) {
         String sql = "SELECT * FROM [dbo].[Customer] WHERE Email = ?";
         try (PreparedStatement p = connection.prepareStatement(sql)) {
@@ -255,7 +257,7 @@ public class CeoDAO extends DBContext{
         }
         return null;
     }
-    
+
     public Customer getCustomerByPhone(String phone) {
         String sql = "SELECT * FROM [dbo].[Customer] WHERE Phone = ?";
         try (PreparedStatement p = connection.prepareStatement(sql)) {
@@ -270,7 +272,7 @@ public class CeoDAO extends DBContext{
         }
         return null;
     }
-    
+
     public void updateCustomerInfo(Customer x, int id) {
         String sql = "UPDATE Customer SET \n"
                 + "	Username = ?,\n"
@@ -302,7 +304,7 @@ public class CeoDAO extends DBContext{
             e.printStackTrace();
         }
     }
-    
+
     public int getRoleIdByName(String roleName) {
         String sql = "SELECT Id FROM Role WHERE Name = ?";
         try (PreparedStatement p = connection.prepareStatement(sql)) {
@@ -317,7 +319,7 @@ public class CeoDAO extends DBContext{
         }
         return -1; // Return -1 if not found
     }
-    
+
     public void updateStaffInfo(Staff x, int id) {
         String sql = "UPDATE Staff SET \n"
                 + "	Username = ?,\n"
@@ -351,7 +353,7 @@ public class CeoDAO extends DBContext{
             e.printStackTrace();
         }
     }
-    
+
     public Staff getStaffById(int id) {
         String sql = "SELECT * FROM [dbo].[Staff] WHERE Id = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -366,7 +368,7 @@ public class CeoDAO extends DBContext{
         }
         return null;
     }
-    
+
     public Staff getStaffByEmail(String email) {
         String sql = "SELECT * FROM [dbo].[Staff] WHERE Email = ?";
         try (PreparedStatement p = connection.prepareStatement(sql)) {
@@ -381,7 +383,22 @@ public class CeoDAO extends DBContext{
         }
         return null;
     }
-    
+
+    public Staff getStaffByUsername(String username) {
+        String sql = "SELECT * FROM [dbo].[Staff] WHERE Username = ?";
+        try (PreparedStatement p = connection.prepareStatement(sql)) {
+            p.setString(1, username);
+            try (ResultSet rs = p.executeQuery()) {
+                if (rs.next()) {
+                    return mapResultSetToStaff1(rs);  // Giả sử bạn có phương thức mapResultSetToStaff
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public Staff getStaffByPhone(String phone) {
         String sql = "SELECT * FROM [dbo].[Staff] WHERE Phone = ?";
         try (PreparedStatement p = connection.prepareStatement(sql)) {
@@ -396,6 +413,7 @@ public class CeoDAO extends DBContext{
         }
         return null;
     }
+
     public boolean deleteCustomer(int id) {
         String sql = "DELETE FROM Customer WHERE Id=?";
         try (PreparedStatement st = connection.prepareStatement(sql)) {
@@ -406,7 +424,7 @@ public class CeoDAO extends DBContext{
         }
         return false;
     }
-    
+
     public boolean deleteStaff(int id) {
         String sql = "DELETE FROM Staff WHERE Id=?";
         try (PreparedStatement st = connection.prepareStatement(sql)) {
@@ -417,11 +435,22 @@ public class CeoDAO extends DBContext{
         }
         return false;
     }
-    
+
+    public void updatePassword(int staffId, String newHashedPassword) {
+        String sql = "UPDATE staff SET password = ? WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, newHashedPassword);
+            stmt.setInt(2, staffId);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) {
         CeoDAO c = new CeoDAO();
         c.deleteStaff(40);
-        for(Staff x : c.searchStaffs("", "", 1, 5)) {
+        for (Staff x : c.searchStaffs("", "", 1, 5)) {
             System.out.println(x.toString());
         }
     }
