@@ -410,7 +410,7 @@
                                 giao dịch an toàn hoặc tư vấn quản lý tài khoản đơn giản.</p>
 
                             <div class="mt-4 pt-2">
-                                <a href="booking-appointment.html" class="btn btn-primary">Hỗ trợ tạo tài khoản ngay</a>
+                                <a href="./test.jsp" class="btn btn-primary">Hỗ trợ tạo tài khoản ngay</a>
                                 <p class="text-white-50 mb-0 mt-2">T&C apply. Please read <a href="#"
                                                                                              class="text-white-50">Terms and Conditions <i
                                             class="ri-arrow-right-line align-middle"></i></a></p>
