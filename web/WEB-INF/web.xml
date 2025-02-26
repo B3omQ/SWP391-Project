@@ -47,7 +47,7 @@
     <servlet>
         <servlet-name>changeEmail</servlet-name>
         <servlet-class>controller.changeEmail</servlet-class>
-</servlet>
+    </servlet>
     <servlet>
         <servlet-name>VNpayReturn</servlet-name>
         <servlet-class>controller.customer.VNpayReturn</servlet-class>
@@ -55,6 +55,26 @@
     <servlet>
         <servlet-name>Transfer</servlet-name>
         <servlet-class>controller.customer.Transfer</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CustomerManagement</servlet-name>
+        <servlet-class>controller.ceo.CustomerManagement</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StaffManagement</servlet-name>
+        <servlet-class>controller.ceo.StaffManagement</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditCustomerInfo</servlet-name>
+        <servlet-class>controller.ceo.EditCustomerInfo</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditStaffInfo</servlet-name>
+        <servlet-class>controller.ceo.EditStaffInfo</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CeoProfileServlet</servlet-name>
+        <servlet-class>controller.ceo.CeoProfileServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>HomeServlet</servlet-name>
@@ -153,7 +173,6 @@
         <url-pattern>/ConsultantProfile</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-
         <servlet-name>LoanOptionService</servlet-name>
         <url-pattern>/Loan-Option-Service</url-pattern>
     </servlet-mapping>
@@ -168,7 +187,7 @@
     <servlet-mapping>
         <servlet-name>changeEmail</servlet-name>
         <url-pattern>/change-email</url-pattern>
-</servlet-mapping>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>VNpayReturn</servlet-name>
         <url-pattern>/VNpayReturn</url-pattern>
@@ -176,7 +195,26 @@
     <servlet-mapping>
         <servlet-name>Transfer</servlet-name>
         <url-pattern>/Transfer</url-pattern>
-
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CustomerManagement</servlet-name>
+        <url-pattern>/customerManagement</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StaffManagement</servlet-name>
+        <url-pattern>/staffManagement</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditCustomerInfo</servlet-name>
+        <url-pattern>/editCustomerInfo</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditStaffInfo</servlet-name>
+        <url-pattern>/editStaffInfo</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CeoProfileServlet</servlet-name>
+        <url-pattern>/ceoProfileServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>1440</session-timeout>
