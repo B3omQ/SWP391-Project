@@ -5,7 +5,6 @@
 package controller.manager;
 
 import dal.DepServiceDAO;
-import dal.ManagerDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,9 +12,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
-import java.util.List;
-import model.Customer;
-import model.DepService;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -23,7 +19,7 @@ import org.json.JSONObject;
  *
  * @author JIGGER
  */
-public class DepOptionService extends HttpServlet {
+public class AddSavingOption extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -37,22 +33,7 @@ public class DepOptionService extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        DepServiceDAO depdao = new DepServiceDAO();
-        String status = request.getParameter("pendingStatus");
-
-        if (status == null || status.trim().isEmpty()) {
-            status = "Approved";
-        }
-
-        try {
-            List<DepService> depList = depdao.getAllDepServiceByStatus(status);
-            request.setAttribute("currentStatus", status);
-            request.setAttribute("depOptionServiceList", depList);
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-
-        request.getRequestDispatcher("./manager/depOptionServiceManager.jsp").forward(request, response);
+        request.getRequestDispatcher("./manager/addDepOptionService.jsp").forward(request, response);
     }
 
     /**
@@ -66,28 +47,25 @@ public class DepOptionService extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        DepServiceDAO ddao = new DepServiceDAO();
+        DepServiceDAO depdao = new DepServiceDAO();
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        String edit = request.getParameter("edit");
-        String delete = request.getParameter("delete");
         JSONObject json = new JSONObject();
+        try {
+            String description = request.getParameter("description");
+            String minimumDepStr = request.getParameter("minimumDep");
+            BigDecimal minimumDep = new BigDecimal(minimumDepStr);
+            String duringTimeStr = request.getParameter("duringTime");
+            int duringTime = Integer.parseInt(duringTimeStr);
+            String savingRateStr = request.getParameter("savingRate");
+            double savingRate = Double.parseDouble(savingRateStr);
+            String savingRateMinimumStr = request.getParameter("savingRateMinimum");
+            double savingRateMinimum = Double.parseDouble(savingRateMinimumStr);
+            depdao.createDepService(description, minimumDep, duringTime, savingRate, savingRateMinimum);
+        } catch (Exception e) {
 
-        if (delete != null) {
-            try {
-                int delId = Integer.parseInt(delete);
-                ddao.deleteDep(delId);
-                json.put("success", true);
-                response.getWriter().write(json.toString());
-                return;
-
-            } catch (IOException | NumberFormatException | JSONException ex) {
-                json.put("success", false);
-                json.put("message", "An error occurred while trying to delete customer");
-                response.getWriter().write(json.toString());
-                System.out.println(ex);
-            }
         }
+
         doGet(request, response);
     }
 

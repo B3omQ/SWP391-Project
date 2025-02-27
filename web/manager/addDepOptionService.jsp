@@ -65,6 +65,55 @@
                 <jsp:include page="template/header.jsp"/>               
 
 
+                <div class="container-fluid">                    
+
+                    <div class="layout-specing">
+                        
+                        <form action="add-saving-option" method="POST">
+                            <div class="row align-items-center">
+                                <!-- Title & Breadcrumb -->
+                                <div class="row mt-2">
+                                    <div class="col-md-6">
+                                        <label class="form-label head" for="minimumDep">Deposite Minimum</label>
+                                        <input class="form-control" type="number" id="minimumDep" name="minimumDep" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label head" for="duringTime">During Time (Months)</label>
+                                        <input class="form-control" type="number" id="duringTime" name="duringTime" required>
+                                    </div>
+                                </div>                    
+                                <div class="row mt-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label head" for="savingRate">Saving Rate (%)</label>
+                                        <input class="form-control" type="number" step="0.01" id="savingRate" name="savingRate" required min="0">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label head" for="savingRateMinimum">Saving Rate Minimum (%)</label>
+                                        <input class="form-control" type="number" step="0.01" id="savingRateMinimum" name="savingRateMinimum" required>
+                                    </div>
+                                </div>                   
+
+                            </div>
+
+                            <div class ="row align-items-center">
+
+                                <div class="col-md-12">
+                                    <label class="form-label head" for="description">Description</label>
+                                    <textarea name ="description" id="description"></textarea>
+                                </div>
+
+                            </div>
+                            <div class="footer-bar">
+                                <p id="error-message" class="text-danger"></p>                            
+                                <button type="submit" class="btn btn-primary">Send request approvement</button>
+                            </div>
+
+                        </form>
+                        <!-- Header Section -->
+
+                    </div>
+                </div>
+
 
 
                 <!-- Footer Start -->
@@ -81,38 +130,6 @@
         <script src="https://unpkg.com/@popperjs/core@2"></script>
         <script src="https://unpkg.com/tippy.js@6"></script>
         <script src="./resources/script/script.js"></script>
-
-        <script>
-            $(document).ready(function () {
-
-                $('form[id^="deleteDepOptionService-"]').on('submit', function (event) {
-                    event.preventDefault();
-
-                    let form = $(this);
-                    let depId = form.find('input[name="delete"]').val();
-
-                    if (confirm("Are you sure you want to delete this option?")) {
-                        $.ajax({
-                            url: 'dep-option-service',
-                            type: 'POST',
-                            data: {delete: depId},
-                            success: function (response) {
-                                if (response.success) {
-                                    showSuccessMessage("Success", "Deleted!");
-                                    form.closest('tr').remove();
-                                } else {
-                                    showErrorMessage("Error", "Something wrong here");
-                                }
-                            },
-                            error: function () {
-                                showErrorMessage("Error", "Server is busy right now. Please try again later.");
-                            }
-                        });
-                    }
-                });
-            });
-
-        </script>
 
 
         <!-- page-wrapper -->

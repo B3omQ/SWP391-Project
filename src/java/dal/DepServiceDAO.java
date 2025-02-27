@@ -23,7 +23,7 @@ public class DepServiceDAO extends DBContext {
         List<DepService> list = new ArrayList<>();
 
         String sql = """
-                      SELECT Id, Description, MinimumDep, DuringTime, SavingRate, SavingRateMinimum
+                      SELECT Id, Description, MinimumDep, DuringTime, SavingRate, SavingRateMinimum, PendingStatus
                      FROM BankingSystem.dbo.DepService""";
 
         try (PreparedStatement st = connection.prepareStatement(sql)) {
@@ -35,7 +35,48 @@ public class DepServiceDAO extends DBContext {
                             rs.getBigDecimal("MinimumDep"),
                             rs.getInt("DuringTime"),
                             rs.getDouble("SavingRate"),
-                            rs.getDouble("SavingRateMinimum")
+                            rs.getDouble("SavingRateMinimum"),
+                            rs.getString("PendingStatus")
+                    );
+                    list.add(depService);
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return list;
+    }
+   
+    public static void main(String[] args) {
+        DepServiceDAO d = new DepServiceDAO();
+        List<DepService> list = d.getAllDepServiceByStatus("Pending");
+        for(DepService o : list) {
+            System.out.println(o);}
+    }
+
+    public List<DepService> getAllDepServiceByStatus(String status) {
+        List<DepService> list = new ArrayList<>();
+
+        String sql = """
+                      SELECT Id, Description, MinimumDep, DuringTime, SavingRate, SavingRateMinimum, PendingStatus
+                     FROM BankingSystem.dbo.DepService
+                     WHERE PendingStatus = ?""";        
+        
+
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setString(1, status);
+            try (ResultSet rs = st.executeQuery()) {
+                while (rs.next()) {
+                    DepService depService = new DepService(
+                            rs.getInt("Id"),
+                            rs.getString("Description"),
+                            rs.getBigDecimal("MinimumDep"),
+                            rs.getInt("DuringTime"),
+                            rs.getDouble("SavingRate"),
+                            rs.getDouble("SavingRateMinimum"),
+                            rs.getString("PendingStatus")
                     );
                     list.add(depService);
                 }
@@ -75,7 +116,8 @@ public class DepServiceDAO extends DBContext {
                             rs.getBigDecimal("MinimumDep"),
                             rs.getInt("DuringTime"),
                             rs.getDouble("SavingRate"),
-                            rs.getDouble("SavingRateMinimum")
+                            rs.getDouble("SavingRateMinimum"),
+                            rs.getString("PendingStatus")
                     );
                 }
             }
