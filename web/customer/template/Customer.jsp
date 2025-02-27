@@ -1,55 +1,67 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ page import="jakarta.servlet.http.HttpSession" %>
 <%@ page import="model.Customer" %>
+<%@ page import="dal.DepHistoryDAO" %>
+<%@ page import="model.DepHistory" %>
+<%@ page import="java.util.List" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<jsp:useBean id="depHistoryDAO" class="dal.DepHistoryDAO" scope="page"/>
 
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <title>SmartBanking</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="Premium Bootstrap 4 Landing Page Template" />
-        <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health" />
-        <meta name="author" content="Shreethemes" />
-        <meta name="email" content="support@shreethemes.in" />
-        <meta name="website" content="../../../index.jsp" />
-        <meta name="Version" content="v1.2.0" />
-        <!-- favicon -->
-        <link rel="shortcut icon" href="<%= request.getContextPath() %>/assets/images/favicon.ico.png">
-        <!-- Bootstrap -->
-        <link href="<%= request.getContextPath() %>/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <!-- simplebar -->
-        <link href="<%= request.getContextPath() %>/assets/css/simplebar.css" rel="stylesheet" type="text/css" />
+<head>
+    <meta charset="utf-8" />
+    <title>SmartBanking</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Premium Bootstrap 4 Landing Page Template" />
+    <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health" />
+    <meta name="author" content="Shreethemes" />
+    <meta name="email" content="support@shreethemes.in" />
+    <meta name="website" content="${pageContext.request.contextPath}/index.jsp" />
+    <meta name="Version" content="v1.2.0" />
+    <!-- favicon -->
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/images/favicon.ico.png">
+    <!-- Bootstrap -->
+    <link href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <!-- simplebar -->
+    <link href="${pageContext.request.contextPath}/assets/css/simplebar.css" rel="stylesheet" type="text/css" />
+    <!-- Select2 -->
+    <link href="${pageContext.request.contextPath}/assets/css/select2.min.css" rel="stylesheet" />
+    <!-- Icons -->
+    <link href="${pageContext.request.contextPath}/assets/css/materialdesignicons.min.css" rel="stylesheet" type="text/css" />
+    <link href="${pageContext.request.contextPath}/assets/css/remixicon.css" rel="stylesheet" type="text/css" />
+    <link href="https://unicons.iconscout.com/release/v3.0.6/css/line.css" rel="stylesheet">
+    <!-- SLIDER -->
+    <link href="${pageContext.request.contextPath}/assets/css/tiny-slider.css" rel="stylesheet" />
+    <!-- Css -->
+    <link href="${pageContext.request.contextPath}/assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
+</head>
 
-        <!-- Select2 -->
-        <link href="<%= request.getContextPath() %>/assets/css/select2.min.css" rel="stylesheet" />
-        <!-- Icons -->
-        <link href="<%= request.getContextPath() %>/assets/css/materialdesignicons.min.css" rel="stylesheet" type="text/css" />
-        <link href="<%= request.getContextPath() %>/assets/css/remixicon.css" rel="stylesheet" type="text/css" />
-        <link href="https://unicons.iconscout.com/release/v3.0.6/css/line.css" rel="stylesheet">
-        <!-- SLIDER -->
-        <link href="<%= request.getContextPath() %>/assets/css/tiny-slider.css" rel="stylesheet" />
-        <!-- Css -->
-        <link href="<%= request.getContextPath() %>/assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
+<body>
+    <%
+        HttpSession sessionObj = request.getSession(false);
+        Customer account = (sessionObj != null) ? (Customer) sessionObj.getAttribute("account") : null;
 
-    </head>
+        if (account == null) {
+            response.sendRedirect(request.getContextPath() + "/auth/template/login.jsp");
+            return;
+        }
 
-    <body>
-        <%
-       if (session.getAttribute("account") == null) {
-           response.sendRedirect(request.getContextPath() + "/auth/template/login.jsp");
-           return; 
-       }
+        // Lấy thông tin người dùng từ session
+        String imagePath;
 
-       // Lấy thông tin người dùng từ session
-       Customer account = (Customer) session.getAttribute("account");
-       String imagePath;
+        if (account != null && account.getImage() != null && !account.getImage().isEmpty()) {
+            imagePath = request.getContextPath() + "/uploads/" + account.getImage();
+        } else {
+            imagePath = request.getContextPath() + "/assets/images/default-avatar.jpg"; // Ảnh mặc định
+        }
 
-       if (account != null && account.getImage() != null && !account.getImage().isEmpty()) {
-           imagePath = request.getContextPath() + "/uploads/" + account.getImage();
-       } else {
-           imagePath = request.getContextPath() + "/assets/images/default-avatar.jpg"; // Ảnh mặc định
-       }
-        %>
+        // Lấy danh sách lịch sử giao dịch của khách hàng
+        List<DepHistory> depHistoryList = depHistoryDAO.getDepHistoryByCustomerId(account.getId());
+        pageContext.setAttribute("depHistoryList", depHistoryList);
+    %>
         <!-- Loader -->
         <div id="preloader">
             <div id="status">
@@ -147,56 +159,7 @@
                         </div>
 
                         <ul class="list-unstyled mb-0">
-                            <li class="list-inline-item mb-0">
-                                <div class="dropdown dropdown-primary">
-                                    <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0"
-                                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img
-                                            src="<%= request.getContextPath() %>/assets/images/language/american.png"
-                                            class="avatar avatar-ex-small rounded-circle p-2" alt=""></button>
-                                    <div class="dropdown-menu dd-menu drop-ups dropdown-menu-end bg-white shadow border-0 mt-3 p-2"
-                                         data-simplebar style="height: 175px;">
-                                        <a href="javascript:void(0)" class="d-flex align-items-center">
-                                            <img src="<%= request.getContextPath() %>/assets/images/language/chinese.png"
-                                                 class="avatar avatar-client rounded-circle shadow" alt="">
-                                            <div class="flex-1 text-left ms-2 overflow-hidden">
-                                                <small class="text-dark mb-0">Chinese</small>
-                                            </div>
-                                        </a>
 
-                                        <a href="javascript:void(0)" class="d-flex align-items-center mt-2">
-                                            <img src="<%= request.getContextPath() %>/assets/images/language/european.png"
-                                                 class="avatar avatar-client rounded-circle shadow" alt="">
-                                            <div class="flex-1 text-left ms-2 overflow-hidden">
-                                                <small class="text-dark mb-0">European</small>
-                                            </div>
-                                        </a>
-
-                                        <a href="javascript:void(0)" class="d-flex align-items-center mt-2">
-                                            <img src="<%= request.getContextPath() %>/assets/images/language/indian.png"
-                                                 class="avatar avatar-client rounded-circle shadow" alt="">
-                                            <div class="flex-1 text-left ms-2 overflow-hidden">
-                                                <small class="text-dark mb-0">Indian</small>
-                                            </div>
-                                        </a>
-
-                                        <a href="javascript:void(0)" class="d-flex align-items-center mt-2">
-                                            <img src="<%= request.getContextPath() %>/assets/images/language/japanese.png"
-                                                 class="avatar avatar-client rounded-circle shadow" alt="">
-                                            <div class="flex-1 text-left ms-2 overflow-hidden">
-                                                <small class="text-dark mb-0">Japanese</small>
-                                            </div>
-                                        </a>
-
-                                        <a href="javascript:void(0)" class="d-flex align-items-center mt-2">
-                                            <img src="<%= request.getContextPath() %>/assets/images/language/russian.png"
-                                                 class="avatar avatar-client rounded-circle shadow" alt="">
-                                            <div class="flex-1 text-left ms-2 overflow-hidden">
-                                                <small class="text-dark mb-0">Russian</small>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                            </li>
 
                             <li class="list-inline-item mb-0 ms-1">
                                 <a href="javascript:void(0)" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
@@ -206,91 +169,7 @@
                                 </a>
                             </li>
 
-                            <!--                        <li class="list-inline-item mb-0 ms-1">
-                                                        <div class="dropdown dropdown-primary">
-                                                            <button type="button"
-                                                                class="btn btn-icon btn-pills btn-soft-primary dropdown-toggle p-0"
-                                                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
-                                                                    data-feather="mail" class="fea icon-sm"></i></button>
-                                                            <span
-                                                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">4
-                                                                <span class="visually-hidden">unread mail</span></span>
-                            
-                                                            <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow rounded border-0 mt-3 px-2 py-2"
-                                                                data-simplebar style="height: 320px; width: 300px;">
-                                                                <a href="#" class="d-flex align-items-center justify-content-between py-2">
-                                                                    <div class="d-inline-flex position-relative overflow-hidden">
-                                                                        <img src="<%= request.getContextPath() %>/assets/images/client/02.jpg"
-                                                                            class="avatar avatar-md-sm rounded-circle shadow" alt="">
-                                                                        <small class="text-dark mb-0 d-block text-truncat ms-3">You received a new
-                                                                            email from <b>Janalia</b> <small
-                                                                                class="text-muted fw-normal d-inline-block">1 hour
-                                                                                ago</small></small>
-                                                                    </div>
-                                                                </a>
-                            
-                                                                <a href="#"
-                                                                    class="d-flex align-items-center justify-content-between py-2 border-top">
-                                                                    <div class="d-inline-flex position-relative overflow-hidden">
-                                                                        <img src="<%= request.getContextPath() %>/assets/images/client/Codepen.svg"
-                                                                            class="avatar avatar-md-sm rounded-circle shadow" alt="">
-                                                                        <small class="text-dark mb-0 d-block text-truncat ms-3">You received a new
-                                                                            email from <b>codepen</b> <small
-                                                                                class="text-muted fw-normal d-inline-block">4 hour
-                                                                                ago</small></small>
-                                                                    </div>
-                                                                </a>
-                            
-                                                                <a href="#"
-                                                                    class="d-flex align-items-center justify-content-between py-2 border-top">
-                                                                    <div class="d-inline-flex position-relative overflow-hidden">
-                                                                        <img src="<%= request.getContextPath() %>/assets/images/client/03.jpg"
-                                                                            class="avatar avatar-md-sm rounded-circle shadow" alt="">
-                                                                        <small class="text-dark mb-0 d-block text-truncat ms-3">You received a new
-                                                                            email from <b>Cristina</b> <small
-                                                                                class="text-muted fw-normal d-inline-block">5 hour
-                                                                                ago</small></small>
-                                                                    </div>
-                                                                </a>
-                            
-                                                                <a href="#"
-                                                                    class="d-flex align-items-center justify-content-between py-2 border-top">
-                                                                    <div class="d-inline-flex position-relative overflow-hidden">
-                                                                        <img src="<%= request.getContextPath() %>/assets/images/client/dribbble.svg"
-                                                                            class="avatar avatar-md-sm rounded-circle shadow" alt="">
-                                                                        <small class="text-dark mb-0 d-block text-truncat ms-3">You received a new
-                                                                            email from <b>Dribbble</b> <small
-                                                                                class="text-muted fw-normal d-inline-block">24 hour
-                                                                                ago</small></small>
-                                                                    </div>
-                                                                </a>
-                            
-                                                                <a href="#"
-                                                                    class="d-flex align-items-center justify-content-between py-2 border-top">
-                                                                    <div class="d-inline-flex position-relative overflow-hidden">
-                                                                        <img src="<%= request.getContextPath() %>/assets/images/client/06.jpg"
-                                                                            class="avatar avatar-md-sm rounded-circle shadow" alt="">
-                                                                        <small class="text-dark mb-0 d-block text-truncat ms-3">You received a new
-                                                                            email from <b>Donald Aghori</b> <small
-                                                                                class="text-muted fw-normal d-inline-block">1 day
-                                                                                ago</small></small>
-                                                                    </div>
-                                                                </a>
-                            
-                                                                <a href="#"
-                                                                    class="d-flex align-items-center justify-content-between py-2 border-top">
-                                                                    <div class="d-inline-flex position-relative overflow-hidden">
-                                                                        <img src="<%= request.getContextPath() %>/assets/images/client/07.jpg"
-                                                                            class="avatar avatar-md-sm rounded-circle shadow" alt="">
-                                                                        <small class="text-dark mb-0 d-block text-truncat ms-3">You received a new
-                                                                            email from <b>Calvin</b> <small
-                                                                                class="text-muted fw-normal d-inline-block">2 day
-                                                                                ago</small></small>
-                                                                    </div>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </li>-->
+                  
 
                             <li class="list-inline-item mb-0 ms-1">
                                 <div class="dropdown dropdown-primary">
@@ -356,449 +235,471 @@
                                             </div>
                                         </div>
                                         <div class="mb-0 position-relative ms-3">
-                        <select class="form-select form-control" id="sort">
-                            <option value="time">Sắp xếp theo Thời gian</option>
-                            <option value="transaction_code">Sắp xếp theo Mã giao dịch</option>
-                            <option value="amount">Sắp xếp theo Số tiền</option>
-                            <option value="sender">Sắp xếp theo Người gửi</option>
-                            <option value="receiver">Sắp xếp theo Người nhận</option>
-                            <option value="type">Sắp xếp theo Loại giao dịch</option>
-                        </select>
-                    </div>
-<!--                                        <div class="mb-0 position-relative">
-                                            <select class="form-select form-control" id="yearchart">
-                                                <option selected>2020</option>
-                                                <option value="2019">2019</option>
-                                                <option value="2018">2018</option>
+                                            <select class="form-select form-control" id="sort" onchange="sortHistory(this.value)">
+                                                <option value="time">Sắp xếp theo Thời gian</option>
+                                                <option value="amount">Sắp xếp theo Số tiền</option>
+                                                <option value="description">Sắp xếp theo Mô tả</option>
                                             </select>
-                                        </div>-->
+                                        </div>
                                     </div>
-<!--                                    <div id="dashboard" class="apex-chart"></div>-->
+
+                                    <!-- Bảng hiển thị lịch sử giao dịch -->
+                                    <div class="table-responsive">
+                                        <table class="table table-hover table-striped">
+                                            <thead class="table-dark">
+                                                <tr>
+                                                    <th scope="col">ID Giao dịch</th>
+                                                    <th scope="col">Thời gian</th>
+                                                    <th scope="col">Số tiền</th>
+                                                    <th scope="col">Mô tả</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="historyTable">
+                                            <c:forEach var="history" items="${depHistoryList}">
+                                                <tr>
+                                                    <td>${history.id}</td>
+                                                    <td>
+                                                <fmt:formatDate value="${history.createdAt}" pattern="dd/MM/yyyy HH:mm:ss" />
+                                                </td>
+                                                <td>
+                                                <fmt:formatNumber value="${history.amount}" type="number" groupingUsed="true" /> VND
+                                                </td>
+                                                <td>${history.description}</td>
+                                                </tr>
+                                            </c:forEach>
+                                            <c:if test="${empty depHistoryList}">
+                                                <tr>
+                                                    <td colspan="4" class="text-center">Không có lịch sử giao dịch nào.</td>
+                                                </tr>
+                                            </c:if>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div><!--end col-->
 
-                        <div class="col-xl-4 col-lg-5 mt-4">
-    <div class="card shadow border-0 p-4">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h4 class="align-items-center mb-0">Tổng tài sản</h4>
-        </div>
-        
-        <!-- Thêm phần tử chứa biểu đồ -->
-        <div style="position: relative; width: 100%; max-width: 300px; margin: auto;">
-            <canvas id="assetChart"></canvas>
-            <div id="chart-center" style="
-               position: absolute;
-    top: 50%;
-    left: 35%;
-    transform: translate(-50%, -50%);
-    font-size: 20px;
-    font-weight: bold;
-    color: #333;
-    text-align: center; /* Căn giữa nội dung */
-    width: 100%; /* Đảm bảo không bị lệch do kích thước */
-    max-width: 200px; /* Giữ cho chữ không bị tràn */
-    white-space: nowrap; /* Tránh bị xuống dòng */
-
-            "></div>
-        </div>
-    </div>
-</div><!--end col-->
-
-
-                        <div class="row">
-                            <div class="col-xl-4 col-lg-6 mt-4">
-                                <div class="card border-0 shadow rounded">
-                                    <div class="d-flex justify-content-between align-items-center p-4 border-bottom">
-                                        <h6 class="mb-0"><i class="uil uil-calender text-primary me-1 h5"></i> Latest
-                                            Appointment</h6>
-                                        <h6 class="text-muted mb-0">55 Patients</h6>
+                            <div class="col-xl-4 col-lg-5 mt-4">
+                                <div class="card shadow border-0 p-4">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <h4 class="align-items-center mb-0">Tổng tài sản</h4>
                                     </div>
 
-                                    <ul class="list-unstyled mb-0 p-4">
-                                        <li>
-                                            <div class="d-flex align-items-center justify-content-between">
-                                                <div class="d-inline-flex">
-                                                    <img src="<%= request.getContextPath() %>/assets/images/client/01.jpg"
-                                                         class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                    <div class="ms-3">
-                                                        <h6 class="text-dark mb-0 d-block">Calvin Carlo</h6>
-                                                        <small class="text-muted">Booking on 27th Nov, 2020</small>
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <a href="#" class="btn btn-icon btn-pills btn-soft-success"><i
-                                                            class="uil uil-check icons"></i></a>
-                                                    <a href="#" class="btn btn-icon btn-pills btn-soft-danger"><i
-                                                            class="uil uil-times icons"></i></a>
-                                                </div>
-                                            </div>
-                                        </li>
+                                    <!-- Thêm phần tử chứa biểu đồ -->
+                                    <div style="position: relative; width: 100%; max-width: 300px; margin: auto;">
+                                        <canvas id="assetChart"></canvas>
+                                        <div id="chart-center" style="
+                                             position: absolute;
+                                             top: 50%;
+                                             left: 35%;
+                                             transform: translate(-50%, -50%);
+                                             font-size: 20px;
+                                             font-weight: bold;
+                                             color: #333;
+                                             text-align: center; /* Căn giữa nội dung */
+                                             width: 100%; /* Đảm bảo không bị lệch do kích thước */
+                                             max-width: 200px; /* Giữ cho chữ không bị tràn */
+                                             white-space: nowrap; /* Tránh bị xuống dòng */
 
-                                        <li class="mt-4">
-                                            <div class="d-flex align-items-center justify-content-between">
-                                                <div class="d-inline-flex">
-                                                    <img src="<%= request.getContextPath() %>/assets/images/client/02.jpg"
-                                                         class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                    <div class="ms-3">
-                                                        <h6 class="text-dark mb-0 d-block">Joya Khan</h6>
-                                                        <small class="text-muted">Booking on 27th Nov, 2020</small>
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <a href="#" class="btn btn-icon btn-pills btn-soft-success"><i
-                                                            class="uil uil-check icons"></i></a>
-                                                    <a href="#" class="btn btn-icon btn-pills btn-soft-danger"><i
-                                                            class="uil uil-times icons"></i></a>
-                                                </div>
-                                            </div>
-                                        </li>
-
-                                        <li class="mt-4">
-                                            <div class="d-flex align-items-center justify-content-between">
-                                                <div class="d-inline-flex">
-                                                    <img src="<%= request.getContextPath() %>/assets/images/client/03.jpg"
-                                                         class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                    <div class="ms-3">
-                                                        <h6 class="text-dark mb-0 d-block">Amelia Muli</h6>
-                                                        <small class="text-muted">Booking on 27th Nov, 2020</small>
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <a href="#" class="btn btn-icon btn-pills btn-soft-success"><i
-                                                            class="uil uil-check icons"></i></a>
-                                                    <a href="#" class="btn btn-icon btn-pills btn-soft-danger"><i
-                                                            class="uil uil-times icons"></i></a>
-                                                </div>
-                                            </div>
-                                        </li>
-
-                                        <li class="mt-4">
-                                            <div class="d-flex align-items-center justify-content-between">
-                                                <div class="d-inline-flex">
-                                                    <img src="<%= request.getContextPath() %>/assets/images/client/04.jpg"
-                                                         class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                    <div class="ms-3">
-                                                        <h6 class="text-dark mb-0 d-block">Nik Ronaldo</h6>
-                                                        <small class="text-muted">Booking on 27th Nov, 2020</small>
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <a href="#" class="btn btn-icon btn-pills btn-soft-success"><i
-                                                            class="uil uil-check icons"></i></a>
-                                                    <a href="#" class="btn btn-icon btn-pills btn-soft-danger"><i
-                                                            class="uil uil-times icons"></i></a>
-                                                </div>
-                                            </div>
-                                        </li>
-
-                                        <li class="mt-4">
-                                            <div class="d-flex align-items-center justify-content-between">
-                                                <div class="d-inline-flex">
-                                                    <img src="<%= request.getContextPath() %>/assets/images/client/05.jpg"
-                                                         class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                    <div class="ms-3">
-                                                        <h6 class="text-dark mb-0 d-block">Crista Joseph</h6>
-                                                        <small class="text-muted">Booking on 27th Nov, 2020</small>
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <a href="#" class="btn btn-icon btn-pills btn-soft-success"><i
-                                                            class="uil uil-check icons"></i></a>
-                                                    <a href="#" class="btn btn-icon btn-pills btn-soft-danger"><i
-                                                            class="uil uil-times icons"></i></a>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                             "></div>
+                                    </div>
                                 </div>
                             </div><!--end col-->
 
-                            <div class="col-xl-4 col-lg-6 mt-4">
-                                <div class="card chat chat-person border-0 shadow rounded">
-                                    <div class="d-flex justify-content-between border-bottom p-4">
-                                        <div class="d-flex">
-                                            <img src="<%= request.getContextPath() %>/assets/images/doctors/02.jpg"
-                                                 class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                            <div class="flex-1 overflow-hidden ms-3">
-                                                <a href="#" class="text-dark mb-0 h6 d-block text-truncate">Cristino
-                                                    Murphy</a>
-                                                <small class="text-muted"><i
-                                                        class="mdi mdi-checkbox-blank-circle text-success on-off align-text-bottom"></i>
-                                                    Online</small>
-                                            </div>
+
+                            <div class="row">
+                                <div class="col-xl-4 col-lg-6 mt-4">
+                                    <div class="card border-0 shadow rounded">
+                                        <div class="d-flex justify-content-between align-items-center p-4 border-bottom">
+                                            <h6 class="mb-0"><i class="uil uil-calender text-primary me-1 h5"></i> Latest
+                                                Appointment</h6>
+                                            <h6 class="text-muted mb-0">55 Patients</h6>
                                         </div>
 
-                                        <ul class="list-unstyled mb-0">
-                                            <li class="dropdown dropdown-primary list-inline-item">
-                                                <button type="button"
-                                                        class="btn btn-icon btn-pills btn-soft-primary dropdown-toggle p-0"
-                                                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
-                                                        class="uil uil-ellipsis-h icons"></i></button>
-                                                <div
-                                                    class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3">
-                                                    <a class="dropdown-item text-dark" href="#"><span
-                                                            class="mb-0 d-inline-block me-1"><i
-                                                                class="uil uil-user align-middle h6"></i></span> Profile</a>
-                                                    <a class="dropdown-item text-dark" href="#"><span
-                                                            class="mb-0 d-inline-block me-1"><i
-                                                                class="uil uil-setting align-middle h6"></i></span> Profile
-                                                        Settings</a>
-                                                    <a class="dropdown-item text-dark" href="#"><span
-                                                            class="mb-0 d-inline-block me-1"><i
-                                                                class="uil uil-trash align-middle h6"></i></span> Delete</a>
+                                        <ul class="list-unstyled mb-0 p-4">
+                                            <li>
+                                                <div class="d-flex align-items-center justify-content-between">
+                                                    <div class="d-inline-flex">
+                                                        <img src="<%= request.getContextPath() %>/assets/images/client/01.jpg"
+                                                             class="avatar avatar-md-sm rounded-circle border shadow" alt="">
+                                                        <div class="ms-3">
+                                                            <h6 class="text-dark mb-0 d-block">Calvin Carlo</h6>
+                                                            <small class="text-muted">Booking on 27th Nov, 2020</small>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <a href="#" class="btn btn-icon btn-pills btn-soft-success"><i
+                                                                class="uil uil-check icons"></i></a>
+                                                        <a href="#" class="btn btn-icon btn-pills btn-soft-danger"><i
+                                                                class="uil uil-times icons"></i></a>
+                                                    </div>
+                                                </div>
+                                            </li>
+
+                                            <li class="mt-4">
+                                                <div class="d-flex align-items-center justify-content-between">
+                                                    <div class="d-inline-flex">
+                                                        <img src="<%= request.getContextPath() %>/assets/images/client/02.jpg"
+                                                             class="avatar avatar-md-sm rounded-circle border shadow" alt="">
+                                                        <div class="ms-3">
+                                                            <h6 class="text-dark mb-0 d-block">Joya Khan</h6>
+                                                            <small class="text-muted">Booking on 27th Nov, 2020</small>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <a href="#" class="btn btn-icon btn-pills btn-soft-success"><i
+                                                                class="uil uil-check icons"></i></a>
+                                                        <a href="#" class="btn btn-icon btn-pills btn-soft-danger"><i
+                                                                class="uil uil-times icons"></i></a>
+                                                    </div>
+                                                </div>
+                                            </li>
+
+                                            <li class="mt-4">
+                                                <div class="d-flex align-items-center justify-content-between">
+                                                    <div class="d-inline-flex">
+                                                        <img src="<%= request.getContextPath() %>/assets/images/client/03.jpg"
+                                                             class="avatar avatar-md-sm rounded-circle border shadow" alt="">
+                                                        <div class="ms-3">
+                                                            <h6 class="text-dark mb-0 d-block">Amelia Muli</h6>
+                                                            <small class="text-muted">Booking on 27th Nov, 2020</small>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <a href="#" class="btn btn-icon btn-pills btn-soft-success"><i
+                                                                class="uil uil-check icons"></i></a>
+                                                        <a href="#" class="btn btn-icon btn-pills btn-soft-danger"><i
+                                                                class="uil uil-times icons"></i></a>
+                                                    </div>
+                                                </div>
+                                            </li>
+
+                                            <li class="mt-4">
+                                                <div class="d-flex align-items-center justify-content-between">
+                                                    <div class="d-inline-flex">
+                                                        <img src="<%= request.getContextPath() %>/assets/images/client/04.jpg"
+                                                             class="avatar avatar-md-sm rounded-circle border shadow" alt="">
+                                                        <div class="ms-3">
+                                                            <h6 class="text-dark mb-0 d-block">Nik Ronaldo</h6>
+                                                            <small class="text-muted">Booking on 27th Nov, 2020</small>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <a href="#" class="btn btn-icon btn-pills btn-soft-success"><i
+                                                                class="uil uil-check icons"></i></a>
+                                                        <a href="#" class="btn btn-icon btn-pills btn-soft-danger"><i
+                                                                class="uil uil-times icons"></i></a>
+                                                    </div>
+                                                </div>
+                                            </li>
+
+                                            <li class="mt-4">
+                                                <div class="d-flex align-items-center justify-content-between">
+                                                    <div class="d-inline-flex">
+                                                        <img src="<%= request.getContextPath() %>/assets/images/client/05.jpg"
+                                                             class="avatar avatar-md-sm rounded-circle border shadow" alt="">
+                                                        <div class="ms-3">
+                                                            <h6 class="text-dark mb-0 d-block">Crista Joseph</h6>
+                                                            <small class="text-muted">Booking on 27th Nov, 2020</small>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <a href="#" class="btn btn-icon btn-pills btn-soft-success"><i
+                                                                class="uil uil-check icons"></i></a>
+                                                        <a href="#" class="btn btn-icon btn-pills btn-soft-danger"><i
+                                                                class="uil uil-times icons"></i></a>
+                                                    </div>
                                                 </div>
                                             </li>
                                         </ul>
                                     </div>
+                                </div><!--end col-->
 
-                                    <ul class="p-4 list-unstyled mb-0 chat" data-simplebar
-                                        style="background: url('<%= request.getContextPath() %>/assets/images/bg/bg-chat.png') center center; max-height: 295px;">
-                                        <li>
-                                            <div class="d-inline-block">
-                                                <div class="d-flex chat-type mb-3">
-                                                    <div class="position-relative">
-                                                        <img src="<%= request.getContextPath() %>/assets/images/doctors/02.jpg"
-                                                             class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                        <i
+                                <div class="col-xl-4 col-lg-6 mt-4">
+                                    <div class="card chat chat-person border-0 shadow rounded">
+                                        <div class="d-flex justify-content-between border-bottom p-4">
+                                            <div class="d-flex">
+                                                <img src="<%= request.getContextPath() %>/assets/images/doctors/02.jpg"
+                                                     class="avatar avatar-md-sm rounded-circle border shadow" alt="">
+                                                <div class="flex-1 overflow-hidden ms-3">
+                                                    <a href="#" class="text-dark mb-0 h6 d-block text-truncate">Cristino
+                                                        Murphy</a>
+                                                    <small class="text-muted"><i
                                                             class="mdi mdi-checkbox-blank-circle text-success on-off align-text-bottom"></i>
-                                                    </div>
-
-                                                    <div class="flex-1 chat-msg" style="max-width: 500px;">
-                                                        <p class="text-muted small shadow px-3 py-2 bg-white rounded mb-1">
-                                                            Hey Christopher</p>
-                                                        <small class="text-muted msg-time"><i
-                                                                class="uil uil-clock-nine me-1"></i>59 min ago</small>
-                                                    </div>
+                                                        Online</small>
                                                 </div>
                                             </div>
-                                        </li>
 
-                                        <li class="chat-right">
-                                            <div class="d-inline-block">
-                                                <div class="d-flex chat-type mb-3">
-                                                    <div class="position-relative chat-user-image">
-                                                        <img src="<%= request.getContextPath() %>/assets/images/client/09.jpg"
-                                                             class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                        <i
-                                                            class="mdi mdi-checkbox-blank-circle text-success on-off align-text-bottom"></i>
+                                            <ul class="list-unstyled mb-0">
+                                                <li class="dropdown dropdown-primary list-inline-item">
+                                                    <button type="button"
+                                                            class="btn btn-icon btn-pills btn-soft-primary dropdown-toggle p-0"
+                                                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
+                                                            class="uil uil-ellipsis-h icons"></i></button>
+                                                    <div
+                                                        class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3">
+                                                        <a class="dropdown-item text-dark" href="#"><span
+                                                                class="mb-0 d-inline-block me-1"><i
+                                                                    class="uil uil-user align-middle h6"></i></span> Profile</a>
+                                                        <a class="dropdown-item text-dark" href="#"><span
+                                                                class="mb-0 d-inline-block me-1"><i
+                                                                    class="uil uil-setting align-middle h6"></i></span> Profile
+                                                            Settings</a>
+                                                        <a class="dropdown-item text-dark" href="#"><span
+                                                                class="mb-0 d-inline-block me-1"><i
+                                                                    class="uil uil-trash align-middle h6"></i></span> Delete</a>
                                                     </div>
+                                                </li>
+                                            </ul>
+                                        </div>
 
-                                                    <div class="flex-1 chat-msg" style="max-width: 500px;">
-                                                        <p class="text-muted small shadow px-3 py-2 bg-white rounded mb-1">
-                                                            Hello Cristino</p>
-                                                        <small class="text-muted msg-time"><i
-                                                                class="uil uil-clock-nine me-1"></i>45 min ago</small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
+                                        <ul class="p-4 list-unstyled mb-0 chat" data-simplebar
+                                            style="background: url('<%= request.getContextPath() %>/assets/images/bg/bg-chat.png') center center; max-height: 295px;">
+                                            <li>
+                                                <div class="d-inline-block">
+                                                    <div class="d-flex chat-type mb-3">
+                                                        <div class="position-relative">
+                                                            <img src="<%= request.getContextPath() %>/assets/images/doctors/02.jpg"
+                                                                 class="avatar avatar-md-sm rounded-circle border shadow" alt="">
+                                                            <i
+                                                                class="mdi mdi-checkbox-blank-circle text-success on-off align-text-bottom"></i>
+                                                        </div>
 
-                                        <li class="chat-right">
-                                            <div class="d-inline-block">
-                                                <div class="d-flex chat-type mb-3">
-                                                    <div class="position-relative chat-user-image">
-                                                        <img src="<%= request.getContextPath() %>/assets/images/client/09.jpg"
-                                                             class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                        <i
-                                                            class="mdi mdi-checkbox-blank-circle text-success on-off align-text-bottom"></i>
-                                                    </div>
-
-                                                    <div class="flex-1 chat-msg" style="max-width: 500px;">
-                                                        <p class="text-muted small shadow px-3 py-2 bg-white rounded mb-1">
-                                                            How can i help you?</p>
-                                                        <small class="text-muted msg-time"><i
-                                                                class="uil uil-clock-nine me-1"></i>44 min ago</small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-
-                                        <li>
-                                            <div class="d-inline-block">
-                                                <div class="d-flex chat-type mb-3">
-                                                    <div class="position-relative">
-                                                        <img src="<%= request.getContextPath() %>/assets/images/doctors/02.jpg"
-                                                             class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                        <i
-                                                            class="mdi mdi-checkbox-blank-circle text-success on-off align-text-bottom"></i>
-                                                    </div>
-
-                                                    <div class="flex-1 chat-msg" style="max-width: 500px;">
-                                                        <p class="text-muted small shadow px-3 py-2 bg-white rounded mb-1">
-                                                            Nice to meet you</p>
-                                                        <small class="text-muted msg-time"><i
-                                                                class="uil uil-clock-nine me-1"></i>42 min ago</small>
+                                                        <div class="flex-1 chat-msg" style="max-width: 500px;">
+                                                            <p class="text-muted small shadow px-3 py-2 bg-white rounded mb-1">
+                                                                Hey Christopher</p>
+                                                            <small class="text-muted msg-time"><i
+                                                                    class="uil uil-clock-nine me-1"></i>59 min ago</small>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </li>
+                                            </li>
 
-                                        <li>
-                                            <div class="d-inline-block">
-                                                <div class="d-flex chat-type mb-3">
-                                                    <div class="position-relative">
-                                                        <img src="<%= request.getContextPath() %>/assets/images/doctors/02.jpg"
-                                                             class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                        <i
-                                                            class="mdi mdi-checkbox-blank-circle text-success on-off align-text-bottom"></i>
-                                                    </div>
+                                            <li class="chat-right">
+                                                <div class="d-inline-block">
+                                                    <div class="d-flex chat-type mb-3">
+                                                        <div class="position-relative chat-user-image">
+                                                            <img src="<%= request.getContextPath() %>/assets/images/client/09.jpg"
+                                                                 class="avatar avatar-md-sm rounded-circle border shadow" alt="">
+                                                            <i
+                                                                class="mdi mdi-checkbox-blank-circle text-success on-off align-text-bottom"></i>
+                                                        </div>
 
-                                                    <div class="flex-1 chat-msg" style="max-width: 500px;">
-                                                        <p class="text-muted small shadow px-3 py-2 bg-white rounded mb-1">
-                                                            Hope you are doing fine?</p>
-                                                        <small class="text-muted msg-time"><i
-                                                                class="uil uil-clock-nine me-1"></i>40 min ago</small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-
-                                        <li class="chat-right">
-                                            <div class="d-inline-block">
-                                                <div class="d-flex chat-type mb-3">
-                                                    <div class="position-relative chat-user-image">
-                                                        <img src="<%= request.getContextPath() %>/assets/images/client/09.jpg"
-                                                             class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                        <i
-                                                            class="mdi mdi-checkbox-blank-circle text-success on-off align-text-bottom"></i>
-                                                    </div>
-
-                                                    <div class="flex-1 chat-msg" style="max-width: 500px;">
-                                                        <p class="text-muted small shadow px-3 py-2 bg-white rounded mb-1">
-                                                            I'm good thanks for asking</p>
-                                                        <small class="text-muted msg-time"><i
-                                                                class="uil uil-clock-nine me-1"></i>45 min ago</small>
+                                                        <div class="flex-1 chat-msg" style="max-width: 500px;">
+                                                            <p class="text-muted small shadow px-3 py-2 bg-white rounded mb-1">
+                                                                Hello Cristino</p>
+                                                            <small class="text-muted msg-time"><i
+                                                                    class="uil uil-clock-nine me-1"></i>45 min ago</small>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </li>
+                                            </li>
 
-                                        <li>
-                                            <div class="d-inline-block">
-                                                <div class="d-flex chat-type mb-3">
-                                                    <div class="position-relative">
-                                                        <img src="<%= request.getContextPath() %>/assets/images/doctors/02.jpg"
-                                                             class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                        <i
-                                                            class="mdi mdi-checkbox-blank-circle text-success on-off align-text-bottom"></i>
-                                                    </div>
+                                            <li class="chat-right">
+                                                <div class="d-inline-block">
+                                                    <div class="d-flex chat-type mb-3">
+                                                        <div class="position-relative chat-user-image">
+                                                            <img src="<%= request.getContextPath() %>/assets/images/client/09.jpg"
+                                                                 class="avatar avatar-md-sm rounded-circle border shadow" alt="">
+                                                            <i
+                                                                class="mdi mdi-checkbox-blank-circle text-success on-off align-text-bottom"></i>
+                                                        </div>
 
-                                                    <div class="flex-1 chat-msg" style="max-width: 500px;">
-                                                        <p class="text-muted small shadow px-3 py-2 bg-white rounded mb-1">I
-                                                            am intrested to know more about your prices and services you
-                                                            offer</p>
-                                                        <small class="text-muted msg-time"><i
-                                                                class="uil uil-clock-nine me-1"></i>35 min ago</small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-
-                                        <li class="chat-right">
-                                            <div class="d-inline-block">
-                                                <div class="d-flex chat-type mb-3">
-                                                    <div class="position-relative chat-user-image">
-                                                        <img src="<%= request.getContextPath() %>/assets/images/client/09.jpg"
-                                                             class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                        <i
-                                                            class="mdi mdi-checkbox-blank-circle text-success on-off align-text-bottom"></i>
-                                                    </div>
-
-                                                    <div class="flex-1 chat-msg" style="max-width: 500px;">
-                                                        <p class="text-muted small shadow px-3 py-2 bg-white rounded mb-1">
-                                                            Sure please check below link to find more useful information <a
-                                                                href="https://1.envato.market/landrick" target="_blank"
-                                                                class="text-primary">https://shreethemes.in/landrick/</a>
-                                                        </p>
-                                                        <small class="text-muted msg-time"><i
-                                                                class="uil uil-clock-nine me-1"></i>25 min ago</small>
+                                                        <div class="flex-1 chat-msg" style="max-width: 500px;">
+                                                            <p class="text-muted small shadow px-3 py-2 bg-white rounded mb-1">
+                                                                How can i help you?</p>
+                                                            <small class="text-muted msg-time"><i
+                                                                    class="uil uil-clock-nine me-1"></i>44 min ago</small>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </li>
+                                            </li>
 
-                                        <li>
-                                            <div class="d-inline-block">
-                                                <div class="d-flex chat-type mb-3">
-                                                    <div class="position-relative">
-                                                        <img src="<%= request.getContextPath() %>/assets/images/doctors/02.jpg"
-                                                             class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                        <i
-                                                            class="mdi mdi-checkbox-blank-circle text-success on-off align-text-bottom"></i>
-                                                    </div>
+                                            <li>
+                                                <div class="d-inline-block">
+                                                    <div class="d-flex chat-type mb-3">
+                                                        <div class="position-relative">
+                                                            <img src="<%= request.getContextPath() %>/assets/images/doctors/02.jpg"
+                                                                 class="avatar avatar-md-sm rounded-circle border shadow" alt="">
+                                                            <i
+                                                                class="mdi mdi-checkbox-blank-circle text-success on-off align-text-bottom"></i>
+                                                        </div>
 
-                                                    <div class="flex-1 chat-msg" style="max-width: 500px;">
-                                                        <p class="text-muted small shadow px-3 py-2 bg-white rounded mb-1">
-                                                            Thank you 😊</p>
-                                                        <small class="text-muted msg-time"><i
-                                                                class="uil uil-clock-nine me-1"></i>20 min ago</small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-
-                                        <li class="chat-right">
-                                            <div class="d-inline-block">
-                                                <div class="d-flex chat-type mb-3">
-                                                    <div class="position-relative chat-user-image">
-                                                        <img src="<%= request.getContextPath() %>/assets/images/client/09.jpg"
-                                                             class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                        <i
-                                                            class="mdi mdi-checkbox-blank-circle text-success on-off align-text-bottom"></i>
-                                                    </div>
-
-                                                    <div class="flex-1 chat-msg" style="max-width: 500px;">
-                                                        <p class="text-muted small shadow px-3 py-2 bg-white rounded mb-1">
-                                                            Welcome</p>
-                                                        <small class="text-muted msg-time"><i
-                                                                class="uil uil-clock-nine me-1"></i>18 min ago</small>
+                                                        <div class="flex-1 chat-msg" style="max-width: 500px;">
+                                                            <p class="text-muted small shadow px-3 py-2 bg-white rounded mb-1">
+                                                                Nice to meet you</p>
+                                                            <small class="text-muted msg-time"><i
+                                                                    class="uil uil-clock-nine me-1"></i>42 min ago</small>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                            </li>
 
-                                    <div class="p-2 rounded-bottom shadow">
-                                        <div class="row">
-                                            <div class="col">
-                                                <input type="text" class="form-control border"
-                                                       placeholder="Enter Message...">
-                                            </div>
-                                            <div class="col-auto">
-                                                <a href="#" class="btn btn-icon btn-primary"><i
-                                                        class="uil uil-message icons"></i></a>
-                                                <a href="#" class="btn btn-icon btn-primary"><i
-                                                        class="uil uil-smile icons"></i></a>
-                                                <a href="#" class="btn btn-icon btn-primary"><i
-                                                        class="uil uil-paperclip icons"></i></a>
+                                            <li>
+                                                <div class="d-inline-block">
+                                                    <div class="d-flex chat-type mb-3">
+                                                        <div class="position-relative">
+                                                            <img src="<%= request.getContextPath() %>/assets/images/doctors/02.jpg"
+                                                                 class="avatar avatar-md-sm rounded-circle border shadow" alt="">
+                                                            <i
+                                                                class="mdi mdi-checkbox-blank-circle text-success on-off align-text-bottom"></i>
+                                                        </div>
+
+                                                        <div class="flex-1 chat-msg" style="max-width: 500px;">
+                                                            <p class="text-muted small shadow px-3 py-2 bg-white rounded mb-1">
+                                                                Hope you are doing fine?</p>
+                                                            <small class="text-muted msg-time"><i
+                                                                    class="uil uil-clock-nine me-1"></i>40 min ago</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+
+                                            <li class="chat-right">
+                                                <div class="d-inline-block">
+                                                    <div class="d-flex chat-type mb-3">
+                                                        <div class="position-relative chat-user-image">
+                                                            <img src="<%= request.getContextPath() %>/assets/images/client/09.jpg"
+                                                                 class="avatar avatar-md-sm rounded-circle border shadow" alt="">
+                                                            <i
+                                                                class="mdi mdi-checkbox-blank-circle text-success on-off align-text-bottom"></i>
+                                                        </div>
+
+                                                        <div class="flex-1 chat-msg" style="max-width: 500px;">
+                                                            <p class="text-muted small shadow px-3 py-2 bg-white rounded mb-1">
+                                                                I'm good thanks for asking</p>
+                                                            <small class="text-muted msg-time"><i
+                                                                    class="uil uil-clock-nine me-1"></i>45 min ago</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+
+                                            <li>
+                                                <div class="d-inline-block">
+                                                    <div class="d-flex chat-type mb-3">
+                                                        <div class="position-relative">
+                                                            <img src="<%= request.getContextPath() %>/assets/images/doctors/02.jpg"
+                                                                 class="avatar avatar-md-sm rounded-circle border shadow" alt="">
+                                                            <i
+                                                                class="mdi mdi-checkbox-blank-circle text-success on-off align-text-bottom"></i>
+                                                        </div>
+
+                                                        <div class="flex-1 chat-msg" style="max-width: 500px;">
+                                                            <p class="text-muted small shadow px-3 py-2 bg-white rounded mb-1">I
+                                                                am intrested to know more about your prices and services you
+                                                                offer</p>
+                                                            <small class="text-muted msg-time"><i
+                                                                    class="uil uil-clock-nine me-1"></i>35 min ago</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+
+                                            <li class="chat-right">
+                                                <div class="d-inline-block">
+                                                    <div class="d-flex chat-type mb-3">
+                                                        <div class="position-relative chat-user-image">
+                                                            <img src="<%= request.getContextPath() %>/assets/images/client/09.jpg"
+                                                                 class="avatar avatar-md-sm rounded-circle border shadow" alt="">
+                                                            <i
+                                                                class="mdi mdi-checkbox-blank-circle text-success on-off align-text-bottom"></i>
+                                                        </div>
+
+                                                        <div class="flex-1 chat-msg" style="max-width: 500px;">
+                                                            <p class="text-muted small shadow px-3 py-2 bg-white rounded mb-1">
+                                                                Sure please check below link to find more useful information <a
+                                                                    href="https://1.envato.market/landrick" target="_blank"
+                                                                    class="text-primary">https://shreethemes.in/landrick/</a>
+                                                            </p>
+                                                            <small class="text-muted msg-time"><i
+                                                                    class="uil uil-clock-nine me-1"></i>25 min ago</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+
+                                            <li>
+                                                <div class="d-inline-block">
+                                                    <div class="d-flex chat-type mb-3">
+                                                        <div class="position-relative">
+                                                            <img src="<%= request.getContextPath() %>/assets/images/doctors/02.jpg"
+                                                                 class="avatar avatar-md-sm rounded-circle border shadow" alt="">
+                                                            <i
+                                                                class="mdi mdi-checkbox-blank-circle text-success on-off align-text-bottom"></i>
+                                                        </div>
+
+                                                        <div class="flex-1 chat-msg" style="max-width: 500px;">
+                                                            <p class="text-muted small shadow px-3 py-2 bg-white rounded mb-1">
+                                                                Thank you 😊</p>
+                                                            <small class="text-muted msg-time"><i
+                                                                    class="uil uil-clock-nine me-1"></i>20 min ago</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+
+                                            <li class="chat-right">
+                                                <div class="d-inline-block">
+                                                    <div class="d-flex chat-type mb-3">
+                                                        <div class="position-relative chat-user-image">
+                                                            <img src="<%= request.getContextPath() %>/assets/images/client/09.jpg"
+                                                                 class="avatar avatar-md-sm rounded-circle border shadow" alt="">
+                                                            <i
+                                                                class="mdi mdi-checkbox-blank-circle text-success on-off align-text-bottom"></i>
+                                                        </div>
+
+                                                        <div class="flex-1 chat-msg" style="max-width: 500px;">
+                                                            <p class="text-muted small shadow px-3 py-2 bg-white rounded mb-1">
+                                                                Welcome</p>
+                                                            <small class="text-muted msg-time"><i
+                                                                    class="uil uil-clock-nine me-1"></i>18 min ago</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+
+                                        <div class="p-2 rounded-bottom shadow">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <input type="text" class="form-control border"
+                                                           placeholder="Enter Message...">
+                                                </div>
+                                                <div class="col-auto">
+                                                    <a href="#" class="btn btn-icon btn-primary"><i
+                                                            class="uil uil-message icons"></i></a>
+                                                    <a href="#" class="btn btn-icon btn-primary"><i
+                                                            class="uil uil-smile icons"></i></a>
+                                                    <a href="#" class="btn btn-icon btn-primary"><i
+                                                            class="uil uil-paperclip icons"></i></a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div><!--end col-->
+                                </div><!--end col-->
 
 
-                        </div><!--end row-->
-                    </div>
-                </div><!--end container-->
-
-                <!-- Footer Start -->
-                <footer class="bg-white shadow py-3">
-                    <div class="container-fluid">
-                        <div class="row align-items-center">
-                            <div class="col">
-                                <div class="text-sm-start text-center">
-                                    <p class="mb-0 text-muted">
-                                        <script>document.write(new Date().getFullYear())</script> © Doctris. Design with <i
-                                            class="mdi mdi-heart text-danger"></i> by <a href="../../../index.jsp"
-                                            target="_blank" class="text-reset">Shreethemes</a>.
-                                    </p>
-                                </div>
-                            </div><!--end col-->
-                        </div><!--end row-->
+                            </div><!--end row-->
+                        </div>
                     </div><!--end container-->
-                </footer><!--end footer-->
-                <!-- End -->
+
+                    <!-- Footer Start -->
+                    <footer class="bg-white shadow py-3">
+                        <div class="container-fluid">
+                            <div class="row align-items-center">
+                                <div class="col">
+                                    <div class="text-sm-start text-center">
+                                        <p class="mb-0 text-muted">
+                                            <script>document.write(new Date().getFullYear())</script> © Doctris. Design with <i
+                                                class="mdi mdi-heart text-danger"></i> by <a href="../../../index.jsp"
+                                                target="_blank" class="text-reset">Shreethemes</a>.
+                                        </p>
+                                    </div>
+                                </div><!--end col-->
+                            </div><!--end row-->
+                        </div><!--end container-->
+                    </footer><!--end footer-->
+                    <!-- End -->
             </main>
             <!--End page-content" -->
         </div>

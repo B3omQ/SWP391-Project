@@ -65,28 +65,41 @@ public class ProcessTermOptions extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
   @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        Integer selectedTerm = (Integer) session.getAttribute("selectedTerm");
-
-        if (selectedTerm == null) {
-            response.sendRedirect("chooseTerm.jsp");
-            return;
-        }
-
-        String action = request.getParameter("action");
-        if (action == null) {
-            request.setAttribute("error", "Bạn chưa chọn phương án xử lý khi kỳ hạn kết thúc!");
-            request.getRequestDispatcher("/customer/template/termOptions.jsp").forward(request, response);
-            return;
-        }
-
-        // Lưu lựa chọn vào session
-        session.setAttribute("selectedAction", action);
-        System.out.println("[LOG] Kỳ hạn: " + selectedTerm);
-        System.out.println("[LOG] Hành động đã chọn: " + action);
-
-        // Chuyển sang trang xác nhận
-        response.sendRedirect("customer/template/confirmTermAction.jsp");
+  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    HttpSession session = request.getSession(false); // Không tạo session mới
+    if (session == null || session.getAttribute("selectedTerm") == null) {
+        System.out.println("[ERROR] Session không hợp lệ hoặc thiếu selectedTerm, quay lại chooseTerm.jsp");
+        response.sendRedirect(request.getContextPath() + "/customer/template/chooseTerm.jsp");
+        return;
     }
+
+    Integer selectedTerm = (Integer) session.getAttribute("selectedTerm");
+    System.out.println("[DEBUG] selectedTerm from session: " + selectedTerm);
+
+    String action = request.getParameter("action");
+    if (action == null) {
+        request.setAttribute("error", "Bạn chưa chọn phương án xử lý khi kỳ hạn kết thúc!");
+        request.getRequestDispatcher("/customer/template/termOptions.jsp").forward(request, response);
+        return;
+    }
+
+    // Lưu lựa chọn vào session
+    String actionLabel;
+    switch (action) {
+        case "withdrawInterest":
+            actionLabel = "Rút tiền lãi và gửi tiếp gốc";
+            break;
+        case "renewAll":
+            actionLabel = "Gửi tiếp cả tiền gốc và lãi";
+            break;
+        case "withdrawAll":
+            actionLabel = "Rút toàn bộ cả tiền gốc và lãi";
+            break;
+        default:
+            actionLabel = "Không xác định";
+    }
+    session.setAttribute("selectedAction", actionLabel);
+
+    response.sendRedirect(request.getContextPath() + "/customer/template/confirmTermAction.jsp");
+}
 }

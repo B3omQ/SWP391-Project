@@ -113,7 +113,7 @@ public class DepositValidationServlet extends HttpServlet {
               session.setAttribute("depositAmount", amount);
               System.out.println("Số tiền gửi tiết kiệm được lưu vào session: " + session.getAttribute("depositAmount"));
 
-            response.sendRedirect("customer/template/chooseTerm.jsp");
+response.sendRedirect(request.getContextPath() + "/Calculation");
         }
     }
 

@@ -1,7 +1,7 @@
 package model;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.sql.Timestamp;
 
 public class DepServiceUsed {
     private int id;
@@ -9,14 +9,14 @@ public class DepServiceUsed {
     private int cusId;
     private int depTypeId;
     private BigDecimal amount;
-    private Date startDate;
-    private Date endDate;
+    private Timestamp startDate;
+    private Timestamp endDate;
     private String depStatus;
 
     public DepServiceUsed() {
     }
 
-    public DepServiceUsed(int id, int depId, int cusId, int depTypeId, BigDecimal amount, Date startDate, Date endDate, String depStatus) {
+    public DepServiceUsed(int id, int depId, int cusId, int depTypeId, BigDecimal amount, Timestamp startDate, Timestamp endDate, String depStatus) {
         this.id = id;
         this.depId = depId;
         this.cusId = cusId;
@@ -26,6 +26,8 @@ public class DepServiceUsed {
         this.endDate = endDate;
         this.depStatus = depStatus;
     }
+
+    // Getters và Setters
 
     public int getId() {
         return id;
@@ -67,19 +69,19 @@ public class DepServiceUsed {
         this.amount = amount;
     }
 
-    public Date getStartDate() {
+    public Timestamp getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(Timestamp startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public Timestamp getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(Timestamp endDate) {
         this.endDate = endDate;
     }
 
@@ -89,19 +91,5 @@ public class DepServiceUsed {
 
     public void setDepStatus(String depStatus) {
         this.depStatus = depStatus;
-    }
-
-    @Override
-    public String toString() {
-        return "DepServiceUsed{" +
-                "id=" + id +
-                ", depId=" + depId +
-                ", cusId=" + cusId +
-                ", depTypeId=" + depTypeId +
-                ", amount=" + amount +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", depStatus='" + depStatus + '\'' +
-                '}';
     }
 }

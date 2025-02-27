@@ -11,7 +11,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import model.Customer;
+import model.DepService;
 import util.AccountValidation;
 
 /**
@@ -296,5 +299,26 @@ public void updateCustomerImage(int customerId, String imagePath) {
             e.printStackTrace();
         }
     }
- 
+ public List<DepService> getAllDepServices() {
+    List<DepService> depServices = new ArrayList<>();
+    String sql = "SELECT * FROM DepService ORDER BY duringTime ASC";
+
+    try (PreparedStatement ps = connection.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+
+        while (rs.next()) {
+            DepService depService = new DepService(
+                rs.getInt("id"),
+                rs.getString("description"),
+                rs.getBigDecimal("minimumDep"),
+                rs.getObject("duringTime") != null ? rs.getInt("duringTime") : null,
+                rs.getObject("savingRate") != null ? rs.getBigDecimal("savingRate") : null
+            );
+            depServices.add(depService);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return depServices;
+}
 }

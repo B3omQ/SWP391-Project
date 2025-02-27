@@ -11,6 +11,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -77,7 +78,7 @@ private static final String RETURN_URL = "http://localhost:8080/BankingSystem/VN
      */
     @Override
    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        long amount = Long.parseLong(request.getParameter("amount")) * 100; // VNPAY tính theo đơn vị VND x100
+BigDecimal amount = new BigDecimal(request.getParameter("amount")).multiply(BigDecimal.valueOf(100));
         String orderId = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
         
         // Tạo request params

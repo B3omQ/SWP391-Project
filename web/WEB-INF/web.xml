@@ -52,6 +52,10 @@
         <servlet-name>ProcessTermOptions</servlet-name>
         <servlet-class>controller.customer.ProcessTermOptions</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ConfirmDepositServlet</servlet-name>
+        <servlet-class>controller.customer.ConfirmDepositServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>HomeServlet</servlet-name>
         <url-pattern>/home</url-pattern>
@@ -167,6 +171,10 @@
     <servlet-mapping>
         <servlet-name>ProcessTermOptions</servlet-name>
         <url-pattern>/ProcessTermOptions</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ConfirmDepositServlet</servlet-name>
+        <url-pattern>/ConfirmDepositServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>1440</session-timeout>

@@ -1,20 +1,23 @@
 <%@ page import="java.time.LocalDate" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
-
+<%@ page import="model.Customer" %>
 <%
     HttpSession sessionObj = request.getSession();
     Integer term = (Integer) sessionObj.getAttribute("selectedTerm");
 
     if (term == null) {
-        response.sendRedirect("chooseTerm.jsp"); // Quay lại nếu không có dữ liệu
-        return;
+        term = 1; // Giá trị mặc định, ví dụ 1 tháng
     }
 
-    LocalDate today = LocalDate.now();
-    LocalDate dueDate = today.plusMonths(term);
+    LocalDate today = LocalDate.now(); // Thêm lại dòng này
+    int days = term * 30; // Tính theo 360 ngày/năm
+    LocalDate dueDate = today.plusDays(days);
+
     String formattedDate = dueDate.format(DateTimeFormatter.ofPattern("dd MMMM yyyy"));
 %>
+
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -49,6 +52,22 @@
     </style>
 </head>
 <body class="bg-light">
+       <%
+   // Ki?m tra session
+   if (session.getAttribute("account") == null) {
+       response.sendRedirect(request.getContextPath() + "/auth/template/login.jsp");
+       return; 
+   }
+
+   Customer account = (Customer) session.getAttribute("account");
+   String imagePath;
+
+   if (account != null && account.getImage() != null && !account.getImage().isEmpty()) {
+       imagePath = request.getContextPath() + "/uploads/" + account.getImage();
+   } else {
+       imagePath = request.getContextPath() + "/assets/images/default-avatar.jpg";
+   }
+    %>
     <div class="container">
         <h3 class="text-center">Bạn muốn làm gì khi kỳ hạn gửi tiền kết thúc?</h3>
         <p class="text-center text-muted">Vào <strong><%= formattedDate %> </strong></p>

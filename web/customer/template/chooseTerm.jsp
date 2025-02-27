@@ -3,12 +3,9 @@
 <%@ page import="java.util.List" %>
 <%@ page import="model.TermInfo" %> 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-       <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<% 
-    if (request.getAttribute("termList") == null) { 
-        response.sendRedirect(request.getContextPath() + "/Calculation");
-    }
-%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ page import="java.time.LocalDate, java.time.format.DateTimeFormatter" %>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -41,22 +38,23 @@
         <link href="<%= request.getContextPath() %>/assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
         <link href="<%= request.getContextPath() %>/assets/css/deposit.css" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
- 
-  <style>
-        .term-box {
-            border: 2px solid #ddd;
-            padding: 15px;
-            text-align: center;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .term-box:hover, .term-box.selected {
-            border-color: #d70000;
-            background-color: #f8d7da;
-        }
-    </style>
+        <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+        <style>
+            .term-box {
+                border: 2px solid #ddd;
+                padding: 15px;
+                text-align: center;
+                border-radius: 10px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+            .term-box:hover, .term-box.selected {
+                border-color: #d70000;
+                background-color: #f8d7da;
+            }
+        </style>
+
     </head>
 
     <body>
@@ -262,48 +260,71 @@
                         </ul>
                     </div>
                 </div>
-
                 <div class="container-fluid">
                     <div class="layout-specing">
-                       <div class="container mt-5">
-        <h2 class="text-center">Chọn Kỳ Hạn Gửi Tiết Kiệm</h2>
-       <form id="termForm" action="${pageContext.request.contextPath}/Calculation" method="POST">
-    <input type="hidden" name="selectedTerm" id="selectedTerm">
-    <div class="row mt-4">
-        <c:if test="${not empty termList}">
-            <c:forEach var="term" items="${termList}">
-                <div class="col-md-6 mb-3">
-                    <div class="term-box" onclick="selectTerm(${term.term})">
-                        <h4>${term.term} tháng</h4>
-                        <p>Số tiền lãi: <strong>
-                            <fmt:formatNumber value="${term.interestAmount}" type="number" groupingUsed="true" maxFractionDigits="0"/>
-                        </strong> VND </p>
-                        <p>Lãi suất: <strong>${term.interestRate}%/năm</strong></p>
-                        <p>Ngày đáo hạn: <strong>${term.dueDate}</strong></p>
+                        <div class="container mt-5">
+                            <h2 class="text-center">Chọn Kỳ Hạn Gửi Tiết Kiệm</h2>
+                            <form id="termForm" action="${pageContext.request.contextPath}/Calculation" method="POST">
+
+                                <input type="hidden" name="selectedTerm" id="selectedTerm">
+                                <div class="row mt-4">
+                                    <c:if test="${not empty depServices}">
+                                        <c:forEach var="dep" items="${depServices}">
+                                            <div class="col-md-6 mb-3">
+                                                <div class="term-box" onclick="selectTerm(${dep.id})">
+                                                    <h4>${dep.duringTime} tháng</h4>
+
+                                                    <p>Lãi suất: <strong>${dep.savingRate}%/năm</strong></p>
+                                                    <c:if test="${not empty interestMap[dep.id]}">
+                                                        <p>Số tiền lãi ước tính: 
+                                                            <strong>
+                                                                <fmt:formatNumber value="${interestMap[dep.id]}" type="currency" currencySymbol="VND" groupingUsed="true"/>
+                                                            </strong>
+                                                        </p>
+                                                    </c:if>
+                                                    <c:if test="${not empty maturityDateMap[dep.id]}">
+<p>Ngày đáo hạn: <strong>${maturityDateMap[dep.id]}</strong></p>
+                                                    </c:if>
+                                                </div>
+                                            </div>
+                                        </c:forEach>
+                                    </c:if>
+                                </div>
+                                <div class="text-center mt-4">
+                                    <button type="submit" class="btn btn-dark px-4 py-2" id="continueBtn" disabled>
+                                        Tiếp tục
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </c:forEach>
-        </c:if>
-    </div>
-    <div class="text-center mt-4">
-        <button type="submit" class="btn btn-dark px-4 py-2" id="continueBtn" disabled>
-            Tiếp tục
-        </button>
-    </div>
-</form>
 
 
-<script>
-    function selectTerm(term) {
-        document.getElementById("selectedTerm").value = term;
-        document.getElementById("continueBtn").disabled = false;
-    }
-</script>
+                <script>
+                    function selectTerm(termId) {
+                        document.getElementById("selectedTerm").value = termId;
+                        document.getElementById("continueBtn").disabled = false;
+                    }
+                </script>
+                <script>
+                    function selectTerm(id) {
+                        document.getElementById("selectedTerm").value = id;
+                        document.getElementById("continueBtn").disabled = false;
+                        console.log("Selected Term:", id);
+                    }
 
-    </div>
+                    document.getElementById("termForm").addEventListener("submit", function (event) {
+                        let selectedTerm = document.getElementById("selectedTerm").value;
+                        console.log("Submitting form with selectedTerm:", selectedTerm);
 
-                    </div>
-                </div>
+                        if (!selectedTerm) {
+                            event.preventDefault(); // Chặn submit nếu chưa có giá trị
+                            alert("Vui lòng chọn kỳ hạn trước khi tiếp tục.");
+                        }
+                    });
+                </script>
+
 
                 <!-- Footer Start -->
                 <footer class="bg-white shadow py-3">
@@ -335,6 +356,6 @@
         <script src="<%= request.getContextPath() %>/assets/js/feather.min.js"></script>
         <!-- Main Js -->
         <script src="<%= request.getContextPath() %>/assets/js/app.js"></script>
-     
+
     </body>
 </html>
