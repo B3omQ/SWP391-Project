@@ -1,3 +1,8 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+
 package dal;
 
 import model.DepServiceUsed;
@@ -7,11 +12,21 @@ import java.util.ArrayList;
 import java.util.List;
 import util.DBContext;
 
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import model.DepServiceUsed;
+import util.DBContext;
+
 public class DepServiceUsedDAO extends DBContext {
 
     public List<DepServiceUsed> getDepServiceUsedByCustomerId(int customerId) {
         List<DepServiceUsed> list = new ArrayList<>();
-        String sql = "SELECT * FROM DepServiceUsed WHERE Id = ?";
+        String sql = "SELECT * FROM DepServiceUsed WHERE CusId = ?"; // Sửa từ Id thành CusId
         
         try (PreparedStatement p = connection.prepareStatement(sql)) {
             p.setInt(1, customerId);
@@ -27,16 +42,18 @@ public class DepServiceUsedDAO extends DBContext {
     }
 
     public boolean addDepServiceUsed(DepServiceUsed dsu) {
-        String sql = "INSERT INTO DepServiceUsed (DepId, CusId, DepTypeId, Amount, StartDate, EndDate, DepStatus) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO DepServiceUsed (DepId, CusId, DepTypeId, Amount, StartDate, EndDate, DepStatus, MaturityOption) " +
+                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?)"; // Thêm MaturityOption vào SQL
 
         try (PreparedStatement p = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            p.setInt(1, dsu.getDepId());   // ID của bảng DepService
-            p.setInt(2, dsu.getCusId());   // ID của bảng Customer
-            p.setInt(3, dsu.getDepTypeId()); // ID của bảng DepType
+            p.setInt(1, dsu.getDepId());
+            p.setInt(2, dsu.getCusId());
+            p.setInt(3, dsu.getDepTypeId());
             p.setBigDecimal(4, dsu.getAmount());
             p.setTimestamp(5, dsu.getStartDate());
             p.setTimestamp(6, dsu.getEndDate());
             p.setString(7, dsu.getDepStatus());
+            p.setString(8, dsu.getMaturityAction()); // Lưu giá trị maturityAction vào MaturityOption
 
             int affectedRows = p.executeUpdate();
             if (affectedRows > 0) {
@@ -75,7 +92,8 @@ public class DepServiceUsedDAO extends DBContext {
             rs.getBigDecimal("Amount"),
             rs.getTimestamp("StartDate"),
             rs.getTimestamp("EndDate"),
-            rs.getString("DepStatus")
+            rs.getString("DepStatus"),
+            rs.getString("MaturityOption") // Ánh xạ MaturityOption từ DB
         );
     }
 
@@ -95,11 +113,6 @@ public class DepServiceUsedDAO extends DBContext {
         return -1; // Trả về -1 nếu không tìm thấy
     }
 
-    /**
-     * Lấy lãi suất (SavingRate) từ bảng DepService dựa trên DepId
-     * @param depId ID của dịch vụ gửi tiết kiệm
-     * @return BigDecimal chứa lãi suất, hoặc null nếu không tìm thấy
-     */
     public BigDecimal getSavingRateByDepId(int depId) {
         String sql = "SELECT SavingRate FROM DepService WHERE Id = ?";
         
@@ -115,4 +128,18 @@ public class DepServiceUsedDAO extends DBContext {
         }
         return null; // Trả về null nếu không tìm thấy
     }
+    public int getTermMonthsByDepId(int depId) {
+    String sql = "SELECT DuringTime FROM DepService WHERE Id = ?";
+    try (PreparedStatement p = connection.prepareStatement(sql)) {
+        p.setInt(1, depId);
+        try (ResultSet rs = p.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt("DuringTime");
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return 0; // Trả về 0 nếu không tìm thấy
+}
 }

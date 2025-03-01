@@ -1,9 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="java.math.BigDecimal"%>
-<%@page import="java.math.RoundingMode"%>
 <%@page import="java.text.DecimalFormat"%>
-<%@page import="java.time.LocalDate"%>
-<%@page import="java.time.format.DateTimeFormatter"%>
 <%@page import="model.Customer"%>
 
 <%
@@ -13,45 +10,32 @@
         return;
     }
 
+    // Lấy thông tin từ session do Calculation đã lưu
     Object rawDepositAmount = sessionObj.getAttribute("depositAmount");
     Object rawSelectedTerm = sessionObj.getAttribute("selectedTerm");
-    
-    if (rawDepositAmount == null || rawSelectedTerm == null) {
-        response.sendRedirect("chooseTerm.jsp");
+    Object rawInterest = sessionObj.getAttribute("calculatedInterest");
+    Object rawSavingRate = sessionObj.getAttribute("savingRate");
+    Object rawMaturityDate = sessionObj.getAttribute("maturityDate");
+
+    if (rawDepositAmount == null || rawSelectedTerm == null || rawInterest == null || 
+        rawSavingRate == null || rawMaturityDate == null) {
+        response.sendRedirect("chooseTerm.jsp?error=missing_data");
         return;
     }
 
-    // Lấy thông tin từ session
+    // Ép kiểu dữ liệu
+    BigDecimal depositAmount = (BigDecimal) rawDepositAmount;
+    int selectedTerm = (Integer) rawSelectedTerm;
+    BigDecimal interestAmount = (BigDecimal) rawInterest;
+    BigDecimal savingRate = (BigDecimal) rawSavingRate;
+    String maturityDate = (String) rawMaturityDate;
+
     Customer account = (Customer) sessionObj.getAttribute("account");
     String selectedAction = (String) sessionObj.getAttribute("selectedAction");
-    selectedAction = (selectedAction != null) ? selectedAction : "Không xác định";
-
-    // Kiểm tra kiểu dữ liệu và ép kiểu an toàn
-    BigDecimal depositAmount;
-    int selectedTerm;
-    
-    try {
-        depositAmount = new BigDecimal(rawDepositAmount.toString());
-        selectedTerm = Integer.parseInt(rawSelectedTerm.toString());
-    } catch (NumberFormatException e) {
-        response.sendRedirect("chooseTerm.jsp?error=invalid_data");
-        return;
-    }
-
-    // Tính lãi suất và số tiền lãi
-    double interestRate = 3 + selectedTerm * 0.1;
-    BigDecimal rateDecimal = BigDecimal.valueOf(interestRate / 100);
-    BigDecimal interestAmount = depositAmount.multiply(rateDecimal)
-                                             .multiply(BigDecimal.valueOf(selectedTerm))
-                                             .divide(BigDecimal.valueOf(12), 2, RoundingMode.HALF_UP);
+    selectedAction = (selectedAction != null) ? selectedAction : "withdrawAll";
 
     // Định dạng số tiền
-    DecimalFormat currencyFormat = new DecimalFormat("#,###.##");
-
-    // Ngày gửi và ngày đến hạn
-    LocalDate today = LocalDate.now();
-    LocalDate dueDate = today.plusDays(selectedTerm * 30);
-    String dueDateFormatted = dueDate.format(DateTimeFormatter.ofPattern("dd MMMM, yyyy"));
+    DecimalFormat currencyFormat = new DecimalFormat("#,###");
 
     // Ảnh đại diện
     String imagePath = (account.getImage() != null && !account.getImage().isEmpty()) 
@@ -88,11 +72,11 @@
                 </div>
                 <div class="row mb-3">
                     <div class="col-6">Lãi suất:</div>
-                    <div class="col-6 text-end fw-bold"><%= interestRate %> %/năm</div>
+                    <div class="col-6 text-end fw-bold"><%= savingRate %> %/năm</div>
                 </div>
                 <div class="row mb-3">
                     <div class="col-6">Ngày hiệu lực:</div>
-                    <div class="col-6 text-end fw-bold"><%= today.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) %></div>
+                    <div class="col-6 text-end fw-bold">01/03/2025</div>
                 </div>
                 <div class="row mb-3">
                     <div class="col-6">Kỳ hạn:</div>
@@ -104,7 +88,7 @@
                 </div>
                 <div class="row mb-3">
                     <div class="col-6">Ngày đến hạn:</div>
-                    <div class="col-6 text-end fw-bold"><%= dueDateFormatted %></div>
+                    <div class="col-6 text-end fw-bold"><%= maturityDate %></div>
                 </div>
                 <div class="row mb-3">
                     <div class="col-6">Phương thức đáo hạn:</div>
@@ -125,4 +109,4 @@
 </div>
 
 </body>
-</html>  
+</html>

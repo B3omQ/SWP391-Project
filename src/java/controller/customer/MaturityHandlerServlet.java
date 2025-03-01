@@ -5,56 +5,21 @@ import dal.DepServiceUsedDAO;
 import dal.DepHistoryDAO;
 import model.Customer;
 import model.DepServiceUsed;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import controller.calculation.InterestCalculator;
 
-public class VerifyingOtp extends HttpServlet {
-    private CustomerDAO customerDAO = new CustomerDAO();
-    private DepServiceUsedDAO depServiceUsedDAO = new DepServiceUsedDAO();
-    private DepHistoryDAO depHistoryDAO = new DepHistoryDAO();
+public class MaturityHandlerServlet {
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        String userOtp = request.getParameter("otp");
-        String generatedOtp = (String) session.getAttribute("otp");
+    private final CustomerDAO customerDAO = new CustomerDAO();
+    private final DepServiceUsedDAO depServiceUsedDAO = new DepServiceUsedDAO();
+    private final DepHistoryDAO depHistoryDAO = new DepHistoryDAO();
 
-        if (generatedOtp == null) {
-            response.sendRedirect("auth/template/login.jsp");
-            return;
-        }
-
-        if (userOtp != null && userOtp.equals(generatedOtp)) {
-            session.removeAttribute("otp");
-
-            if (session.getAttribute("staff") != null) {
-                // Staff không có tiết kiệm, chuyển hướng thẳng
-                response.sendRedirect("profile-manager");
-            } else {
-                // Customer: Xử lý đáo hạn trước khi chuyển hướng
-                Customer customer = (Customer) session.getAttribute("account");
-                if (customer != null) {
-                    processMaturedDeposits(customer, session);
-                }
-                response.sendRedirect("customer/template/Customer.jsp");
-            }
-        } else {
-            session.setAttribute("otpError", "Mã OTP không đúng, vui lòng thử lại!");
-            response.sendRedirect(request.getContextPath() + "/auth/template/otp.jsp");
-        }
-    }
-
-    private void processMaturedDeposits(Customer customer, HttpSession session) {
+    // Phương thức chính để xử lý các khoản đáo hạn
+    public void processMaturedDeposits(Customer customer, HttpSession session) {
         List<DepServiceUsed> maturedDeposits = depServiceUsedDAO.getDepServiceUsedByCustomerId(customer.getId());
         LocalDateTime now = LocalDateTime.now();
         boolean hasProcessed = false;
@@ -69,7 +34,6 @@ public class VerifyingOtp extends HttpServlet {
         if (hasProcessed) {
             session.setAttribute("success", "Đã tự động xử lý các khoản tiết kiệm đáo hạn!");
         }
-
         customer.setWallet(customerDAO.getWalletByCustomerId(customer.getId()));
         session.setAttribute("account", customer);
     }
@@ -77,18 +41,31 @@ public class VerifyingOtp extends HttpServlet {
     private void processMaturedDeposit(DepServiceUsed deposit, Customer customer) {
         BigDecimal principal = deposit.getAmount();
         BigDecimal savingRate = depServiceUsedDAO.getSavingRateByDepId(deposit.getDepId());
-        int termMonths = calculateTermMonths(deposit.getStartDate(), deposit.getEndDate());
+        int termMonths = depServiceUsedDAO.getTermMonthsByDepId(deposit.getDepId()); // Sử dụng DuringTime từ DepService
         BigDecimal interest = InterestCalculator.calculateInterest(principal, savingRate, termMonths);
         BigDecimal totalAmount = principal.add(interest);
 
-        String maturityAction = deposit.getMaturityAction() != null ? deposit.getMaturityAction() : "withdrawAll";
+        // Log để kiểm tra giá trị
+        System.out.println("✅ Principal của deposit " + deposit.getId() + ": " + principal);
+        System.out.println("✅ SavingRate: " + savingRate);
+        System.out.println("✅ TermMonths: " + termMonths);
+        System.out.println("✅ Interest tính được: " + interest);
+        System.out.println("✅ TotalAmount: " + totalAmount);
+
+        String maturityAction = deposit.getMaturityAction();
+        System.out.println("✅ MaturityAction của deposit " + deposit.getId() + ": " + maturityAction);
+        if (maturityAction == null) {
+            System.out.println("⚠️ MaturityAction là null, gán mặc định 'withdrawAll'");
+            maturityAction = "withdrawAll";
+        }
 
         depServiceUsedDAO.updateDepStatus(deposit.getId(), "COMPLETED");
 
+        // Xử lý theo maturityAction
         switch (maturityAction) {
             case "withdrawInterest":
-                BigDecimal newBalance = customerDAO.getWalletByCustomerId(customer.getId()).add(interest);
-                customerDAO.updateWallet(customer.getId(), newBalance);
+                BigDecimal newBalanceWithdrawInterest = customerDAO.getWalletByCustomerId(customer.getId()).add(interest);
+                customerDAO.updateWallet(customer.getId(), newBalanceWithdrawInterest);
                 renewDeposit(deposit, principal, customer);
                 depHistoryDAO.addDepHistory(deposit.getId(), "Đáo hạn tự động: Rút lãi " + interest + " VND, gửi lại gốc " + principal + " VND");
                 break;
@@ -99,15 +76,22 @@ public class VerifyingOtp extends HttpServlet {
                 break;
 
             case "withdrawAll":
-                newBalance = customerDAO.getWalletByCustomerId(customer.getId()).add(totalAmount);
-                customerDAO.updateWallet(customer.getId(), newBalance);
-                depHistoryDAO.addDepHistory(deposit.getId(), "Đáo hạn tự động: Rút toàn bộ " + totalAmount + " VND");
+                BigDecimal currentBalance = customerDAO.getWalletByCustomerId(customer.getId());
+                BigDecimal newBalanceWithdrawAll = currentBalance.add(totalAmount);
+                boolean updated = customerDAO.updateWallet(customer.getId(), newBalanceWithdrawAll);
+                if (!updated) {
+                    System.out.println("❌ Lỗi: Không thể cập nhật ví cho customer " + customer.getId());
+                } else {
+                    System.out.println("✅ Đã cộng " + totalAmount + " (gốc + lãi) vào ví, số dư mới: " + newBalanceWithdrawAll);
+                }
+                depHistoryDAO.addDepHistory(deposit.getId(), "Đáo hạn tự động: Rút toàn bộ " + totalAmount + " VND (gốc: " + principal + ", lãi: " + interest + ")");
                 break;
 
             default:
-                newBalance = customerDAO.getWalletByCustomerId(customer.getId()).add(totalAmount);
-                customerDAO.updateWallet(customer.getId(), newBalance);
+                BigDecimal newBalanceDefault = customerDAO.getWalletByCustomerId(customer.getId()).add(totalAmount);
+                customerDAO.updateWallet(customer.getId(), newBalanceDefault);
                 depHistoryDAO.addDepHistory(deposit.getId(), "Đáo hạn tự động: Rút toàn bộ (mặc định) " + totalAmount + " VND");
+                break;
         }
     }
 
@@ -115,7 +99,7 @@ public class VerifyingOtp extends HttpServlet {
         DepServiceUsed newDep = new DepServiceUsed(
             0, oldDeposit.getDepId(), customer.getId(), oldDeposit.getDepTypeId(),
             amount, Timestamp.valueOf(LocalDateTime.now()),
-            Timestamp.valueOf(LocalDateTime.now().plusMonths(calculateTermMonths(oldDeposit.getStartDate(), oldDeposit.getEndDate()))),
+            Timestamp.valueOf(LocalDateTime.now().plusDays(depServiceUsedDAO.getTermMonthsByDepId(oldDeposit.getDepId()) * 30)),
             "ACTIVE", oldDeposit.getMaturityAction()
         );
         depServiceUsedDAO.addDepServiceUsed(newDep);
@@ -125,10 +109,5 @@ public class VerifyingOtp extends HttpServlet {
         LocalDateTime startDate = start.toLocalDateTime();
         LocalDateTime endDate = end.toLocalDateTime();
         return (int) java.time.temporal.ChronoUnit.MONTHS.between(startDate, endDate);
-    }
-
-    @Override
-    public String getServletInfo() {
-        return "Short description";
     }
 }

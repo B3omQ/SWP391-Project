@@ -1,4 +1,4 @@
-package controller.customer;
+ package controller.customer;
 
 import dal.CustomerDAO;
 import dal.DepHistoryDAO;
@@ -6,7 +6,6 @@ import dal.DepServiceUsedDAO;
 import jakarta.servlet.http.HttpServlet;
 import model.Customer;
 import model.DepServiceUsed;
-
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -15,8 +14,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-
-// Sử dụng InterestCalculator hiện tại mà không sửa đổi
 import controller.calculation.InterestCalculator;
 
 public class ConfirmDepositServlet extends HttpServlet {
@@ -31,18 +28,14 @@ public class ConfirmDepositServlet extends HttpServlet {
         
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("account") == null) {
-            System.out.println("⚠️ Lỗi: Session không hợp lệ hoặc người dùng chưa đăng nhập.");
             response.sendRedirect(request.getContextPath() + "/auth/template/login.jsp");
             return;
         }
-
-        // Lấy thông tin từ session
         Customer account = (Customer) session.getAttribute("account");
         Object rawDepositAmount = session.getAttribute("depositAmount");
         Object rawSelectedTerm = session.getAttribute("selectedTerm");
 
         if (rawDepositAmount == null || rawSelectedTerm == null) {
-            System.out.println("⚠️ Lỗi: Thiếu dữ liệu gửi tiết kiệm.");
             response.sendRedirect(request.getContextPath() + "/customer/template/chooseTerm.jsp?error=missing_data");
             return;
         }
@@ -50,43 +43,21 @@ public class ConfirmDepositServlet extends HttpServlet {
         try {
             BigDecimal depositAmount = new BigDecimal(rawDepositAmount.toString());
             int selectedTerm = Integer.parseInt(rawSelectedTerm.toString());
-
-            System.out.println("✅ Người dùng " + account.getId() + " đang gửi tiết kiệm số tiền " 
-                    + depositAmount + " kỳ hạn " + selectedTerm + " tháng.");
-
-            // Kiểm tra số dư tài khoản
             BigDecimal currentBalance = customerDAO.getWalletByCustomerId(account.getId());
-
-            if (currentBalance.compareTo(depositAmount) < 0) {
-                System.out.println("❌ Lỗi: Người dùng " + account.getId() 
-                        + " không đủ số dư. Số dư hiện tại: " + currentBalance 
-                        + ", số tiền gửi: " + depositAmount);
-                response.sendRedirect(request.getContextPath() + "/customer/template/confirmTermAction.jsp?error=insufficient_balance");
-                return;
-            }
-
-            // Lấy DepId theo kỳ hạn (giả định phương thức này trả về DepId đúng)
             int depId = depServiceUsedDAO.getDepIdByTerm(selectedTerm);
             if (depId == -1) {
                 System.out.println("❌ Lỗi: Không tìm thấy DepId cho kỳ hạn " + selectedTerm);
                 response.sendRedirect(request.getContextPath() + "/customer/template/confirmTermAction.jsp?error=invalid_term");
                 return;
             }
-            System.out.println("✅ Tìm thấy DepId: " + depId);
-
-            // Lấy lãi suất từ DepService (giả định bạn có phương thức trong DepServiceUsedDAO)
             BigDecimal savingRate = depServiceUsedDAO.getSavingRateByDepId(depId);
             if (savingRate == null) {
                 System.out.println("❌ Lỗi: Không tìm thấy lãi suất cho DepId " + depId);
                 response.sendRedirect(request.getContextPath() + "/customer/template/confirmTermAction.jsp?error=invalid_rate");
                 return;
             }
-
-            // Tính lãi và ngày đáo hạn sử dụng InterestCalculator hiện tại
             BigDecimal calculatedInterest = InterestCalculator.calculateInterest(depositAmount, savingRate, selectedTerm);
             String maturityDate = InterestCalculator.calculateMaturityDate(selectedTerm);
-
-            // Trừ tiền khỏi tài khoản khách hàng
             boolean deducted = customerDAO.updateWallet(account.getId(), currentBalance.subtract(depositAmount));
             if (!deducted) {
                 System.out.println("❌ Lỗi: Không thể trừ tiền tài khoản người dùng " + account.getId());
@@ -95,7 +66,14 @@ public class ConfirmDepositServlet extends HttpServlet {
             }
             System.out.println("✅ Đã trừ tiền thành công. Số dư mới: " + currentBalance.subtract(depositAmount));
 
-            // Tạo khoản tiền gửi mới
+            String maturityAction = (String) session.getAttribute("selectedAction");
+            System.out.println("✅ Giá trị selectedAction từ session: " + maturityAction);
+            if (maturityAction == null) {
+                System.out.println("⚠️ Cảnh báo: selectedAction là null, gán giá trị mặc định 'withdrawAll'");
+                maturityAction = "withdrawAll";
+            }
+
+            // Tạo khoản tiền gửi mới với constructor bao gồm maturityAction
             DepServiceUsed newDep = new DepServiceUsed(
                 0, // ID tự động tăng
                 depId, // Gán DepId đúng
@@ -103,8 +81,9 @@ public class ConfirmDepositServlet extends HttpServlet {
                 1, // Giả sử DepTypeId = 1
                 depositAmount,
                 Timestamp.valueOf(LocalDateTime.now()),
-                Timestamp.valueOf(LocalDateTime.now().plusDays(selectedTerm * 30)), // Sử dụng plusDays để khớp với InterestCalculator
-                "ACTIVE"
+                Timestamp.valueOf(LocalDateTime.now().plusDays(selectedTerm * 30)),
+                "ACTIVE",
+                maturityAction // Truyền giá trị đã kiểm tra
             );
 
             boolean added = depServiceUsedDAO.addDepServiceUsed(newDep);
@@ -131,8 +110,8 @@ public class ConfirmDepositServlet extends HttpServlet {
             // Cập nhật số dư trong đối tượng Customer trong session
             BigDecimal newBalance = currentBalance.subtract(depositAmount);
             Customer updatedAccount = account;
-            updatedAccount.setWallet(newBalance); // Cập nhật số dư mới
-            session.setAttribute("account", updatedAccount); // Lưu lại vào session
+            updatedAccount.setWallet(newBalance);
+            session.setAttribute("account", updatedAccount);
 
             // Lưu thông tin vào session để hiển thị trên confirmSuccess.jsp
             session.setAttribute("success", "Gửi tiết kiệm thành công!");

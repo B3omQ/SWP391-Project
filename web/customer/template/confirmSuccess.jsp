@@ -142,7 +142,7 @@
             <p class="info-text"><strong>Ngày đáo hạn:</strong> <%= maturityDate %></p>
             <p class="balance-text"><strong>Số dư còn lại:</strong> VND <%= formattedBalance %></p>
             
-            <a href="<%= request.getContextPath() %>/customer/template/home.jsp" class="btn-home">Quay Về Trang Chủ</a>
+            <a href="<%= request.getContextPath() %>/customer/template/Customer.jsp" class="btn-home">Quay Về Trang Chủ</a>
         </div>
     </div>
 

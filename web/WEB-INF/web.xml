@@ -56,6 +56,10 @@
         <servlet-name>ConfirmDepositServlet</servlet-name>
         <servlet-class>controller.customer.ConfirmDepositServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>MaturityHandlerServlet</servlet-name>
+        <servlet-class>controller.customer.MaturityHandlerServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>HomeServlet</servlet-name>
         <url-pattern>/home</url-pattern>
@@ -175,6 +179,10 @@
     <servlet-mapping>
         <servlet-name>ConfirmDepositServlet</servlet-name>
         <url-pattern>/ConfirmDepositServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MaturityHandlerServlet</servlet-name>
+        <url-pattern>/MaturityHandlerServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>1440</session-timeout>
