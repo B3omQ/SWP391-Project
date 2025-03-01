@@ -23,7 +23,7 @@
                     </div>
                 </div>
                 <div class="text-center">
-                    <a href="${pageContext.request.contextPath}/customer/template/Customer.jsp" class="btn btn-home">
+                    <a href="${pageContext.request.contextPath}/customer/Customer.jsp" class="btn btn-home">
                         <i class="fas fa-home me-2"></i>Quay Về Trang Chủ
                     </a>
                 </div>

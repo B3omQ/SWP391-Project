@@ -46,7 +46,7 @@ public class VerifyingOtp extends HttpServlet {
                 if (customer != null) {
                     processMaturedDeposits(customer, session);
                 }
-                response.sendRedirect("customer/template/Customer.jsp");
+                response.sendRedirect("customer/Customer.jsp");
             }
         } else {
             session.setAttribute("otpError", "Mã OTP không đúng, vui lòng thử lại!");

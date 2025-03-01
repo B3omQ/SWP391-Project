@@ -169,4 +169,20 @@ public class DepHistoryDAO extends DBContext {
             rs.getTimestamp("StartDate")
         );
     }
+      public boolean addDepHistory(DepHistory history) {
+        String sql = "INSERT INTO DepHistory (DSUId, CustomerId, Discription, Amount, CreatedAt) VALUES (?, ?, ?, ?, ?)";
+        try (PreparedStatement p = connection.prepareStatement(sql)) {
+            p.setInt(1, history.getDsuId());
+            p.setInt(2, history.getCustomerId());
+            p.setString(3, history.getDescription());
+            p.setBigDecimal(4, history.getAmount());
+            p.setTimestamp(5, history.getCreatedAt());
+            int affectedRows = p.executeUpdate();
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            System.out.println("❌ Error adding DepHistory: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

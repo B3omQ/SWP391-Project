@@ -23,21 +23,21 @@ public class Calculation extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("depositAmount") == null) {
-            response.sendRedirect(request.getContextPath() + "/customer/template/savemoney.jsp");
+            response.sendRedirect(request.getContextPath() + "/customer/savemoney.jsp");
             return;
         }
 
         BigDecimal depositAmount = (BigDecimal) session.getAttribute("depositAmount");
         if (depositAmount.compareTo(BigDecimal.ZERO) <= 0) {
             session.setAttribute("error", "Số tiền gửi không hợp lệ!");
-            response.sendRedirect(request.getContextPath() + "/customer/template/savemoney.jsp");
+            response.sendRedirect(request.getContextPath() + "/customer/savemoney.jsp");
             return;
         }
 
         List<DepService> depServices = customerDAO.getAllDepServices();
         if (depServices == null || depServices.isEmpty()) {
             session.setAttribute("error", "Không tìm thấy kỳ hạn tiết kiệm nào!");
-            response.sendRedirect(request.getContextPath() + "/customer/template/savemoney.jsp");
+            response.sendRedirect(request.getContextPath() + "/customer/savemoney.jsp");
             return;
         }
 
@@ -68,7 +68,7 @@ public class Calculation extends HttpServlet {
         session.setAttribute("maturityDateMap", maturityDateMap);
         session.setAttribute("savingRateMap", savingRateMap);
 
-        response.sendRedirect(request.getContextPath() + "/customer/template/chooseTerm.jsp");
+        response.sendRedirect(request.getContextPath() + "/customer/chooseTerm.jsp");
     }
 
     @Override
@@ -78,7 +78,7 @@ public class Calculation extends HttpServlet {
         if (session == null || session.getAttribute("depositAmount") == null) {
             System.out.println("❌ Session hoặc depositAmount không tồn tại");
             request.setAttribute("error", "Vui lòng nhập số tiền gửi trước!");
-            request.getRequestDispatcher("/customer/template/savemoney.jsp").forward(request, response);
+            request.getRequestDispatcher("/customer/savemoney.jsp").forward(request, response);
             return;
         }
 
@@ -86,7 +86,7 @@ public class Calculation extends HttpServlet {
         if (selectedTermStr == null || selectedTermStr.trim().isEmpty()) {
             System.out.println("❌ selectedTerm không được cung cấp");
             request.setAttribute("error", "Vui lòng chọn kỳ hạn!");
-            request.getRequestDispatcher("/customer/template/chooseTerm.jsp").forward(request, response);
+            request.getRequestDispatcher("/customer/chooseTerm.jsp").forward(request, response);
             return;
         }
 
@@ -98,7 +98,7 @@ public class Calculation extends HttpServlet {
             if (depServices == null || depServices.isEmpty()) {
                 System.out.println("❌ Không tìm thấy kỳ hạn tiết kiệm nào");
                 request.setAttribute("error", "Không tìm thấy kỳ hạn tiết kiệm nào!");
-                request.getRequestDispatcher("/customer/template/chooseTerm.jsp").forward(request, response);
+                request.getRequestDispatcher("/customer/chooseTerm.jsp").forward(request, response);
                 return;
             }
 
@@ -110,7 +110,7 @@ public class Calculation extends HttpServlet {
             if (selectedDepService == null) {
                 System.out.println("❌ Không tìm thấy DepService với Id: " + selectedTermId);
                 request.setAttribute("error", "Kỳ hạn không hợp lệ!");
-                request.getRequestDispatcher("/customer/template/chooseTerm.jsp").forward(request, response);
+                request.getRequestDispatcher("/customer/chooseTerm.jsp").forward(request, response);
                 return;
             }
 
@@ -137,16 +137,16 @@ public class Calculation extends HttpServlet {
             session.setAttribute("maturityDate", maturityDate);
             session.setAttribute("selectedDepService", selectedDepService); // Optional
 
-            response.sendRedirect(request.getContextPath() + "/customer/template/termOptions.jsp");
+            response.sendRedirect(request.getContextPath() + "/customer/termOptions.jsp");
 
         } catch (NumberFormatException e) {
             System.out.println("❌ selectedTerm không hợp lệ: " + selectedTermStr);
             request.setAttribute("error", "Kỳ hạn không hợp lệ!");
-            request.getRequestDispatcher("/customer/template/chooseTerm.jsp").forward(request, response);
+            request.getRequestDispatcher("/customer/chooseTerm.jsp").forward(request, response);
         } catch (Exception e) {
             System.out.println("❌ Lỗi không xác định: " + e.getMessage());
             request.setAttribute("error", "Đã xảy ra lỗi không xác định!");
-            request.getRequestDispatcher("/customer/template/chooseTerm.jsp").forward(request, response);
+            request.getRequestDispatcher("/customer/chooseTerm.jsp").forward(request, response);
         }
     }
 

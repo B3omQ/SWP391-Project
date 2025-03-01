@@ -36,7 +36,7 @@ public class ConfirmDepositServlet extends HttpServlet {
         Object rawSelectedTerm = session.getAttribute("selectedTerm");
 
         if (rawDepositAmount == null || rawSelectedTerm == null) {
-            response.sendRedirect(request.getContextPath() + "/customer/template/chooseTerm.jsp?error=missing_data");
+            response.sendRedirect(request.getContextPath() + "/customer/chooseTerm.jsp?error=missing_data");
             return;
         }
 
@@ -47,13 +47,13 @@ public class ConfirmDepositServlet extends HttpServlet {
             int depId = depServiceUsedDAO.getDepIdByTerm(selectedTerm);
             if (depId == -1) {
                 System.out.println("❌ Lỗi: Không tìm thấy DepId cho kỳ hạn " + selectedTerm);
-                response.sendRedirect(request.getContextPath() + "/customer/template/confirmTermAction.jsp?error=invalid_term");
+                response.sendRedirect(request.getContextPath() + "/customer/confirmTermAction.jsp?error=invalid_term");
                 return;
             }
             BigDecimal savingRate = depServiceUsedDAO.getSavingRateByDepId(depId);
             if (savingRate == null) {
                 System.out.println("❌ Lỗi: Không tìm thấy lãi suất cho DepId " + depId);
-                response.sendRedirect(request.getContextPath() + "/customer/template/confirmTermAction.jsp?error=invalid_rate");
+                response.sendRedirect(request.getContextPath() + "/customer/confirmTermAction.jsp?error=invalid_rate");
                 return;
             }
             BigDecimal calculatedInterest = InterestCalculator.calculateInterest(depositAmount, savingRate, selectedTerm);
@@ -61,7 +61,7 @@ public class ConfirmDepositServlet extends HttpServlet {
             boolean deducted = customerDAO.updateWallet(account.getId(), currentBalance.subtract(depositAmount));
             if (!deducted) {
                 System.out.println("❌ Lỗi: Không thể trừ tiền tài khoản người dùng " + account.getId());
-                response.sendRedirect(request.getContextPath() + "/customer/template/confirmTermAction.jsp?error=transaction_failed");
+                response.sendRedirect(request.getContextPath() + "/customer/confirmTermAction.jsp?error=transaction_failed");
                 return;
             }
             System.out.println("✅ Đã trừ tiền thành công. Số dư mới: " + currentBalance.subtract(depositAmount));
@@ -89,7 +89,7 @@ public class ConfirmDepositServlet extends HttpServlet {
             boolean added = depServiceUsedDAO.addDepServiceUsed(newDep);
             if (!added) {
                 System.out.println("❌ Lỗi: Không thể thêm khoản gửi tiết kiệm của người dùng " + account.getId());
-                response.sendRedirect(request.getContextPath() + "/customer/template/confirmTermAction.jsp?error=transaction_failed");
+                response.sendRedirect(request.getContextPath() + "/customer/confirmTermAction.jsp?error=transaction_failed");
                 return;
             }
             System.out.println("✅ Khoản gửi tiết kiệm đã được tạo thành công cho người dùng " + account.getId());
@@ -102,7 +102,7 @@ public class ConfirmDepositServlet extends HttpServlet {
             boolean historyAdded = depHistoryDAO.addDepHistory(dsuId, "Gửi tiết kiệm kỳ hạn " + selectedTerm + " tháng");
             if (!historyAdded) {
                 System.out.println("❌ Lỗi: Không thể thêm lịch sử giao dịch cho người dùng " + account.getId() + " với DSUId: " + dsuId);
-                response.sendRedirect(request.getContextPath() + "/customer/template/confirmTermAction.jsp?error=history_failed");
+                response.sendRedirect(request.getContextPath() + "/customer/confirmTermAction.jsp?error=history_failed");
                 return;
             }
             System.out.println("✅ Đã ghi lịch sử gửi tiết kiệm cho người dùng " + account.getId() + " với DSUId: " + dsuId);
@@ -122,16 +122,16 @@ public class ConfirmDepositServlet extends HttpServlet {
             session.setAttribute("maturityDate", maturityDate);
 
             // Chuyển hướng đến trang kết quả
-            response.sendRedirect(request.getContextPath() + "/customer/template/confirmSuccess.jsp");
+            response.sendRedirect(request.getContextPath() + "/customer/confirmSuccess.jsp");
 
         } catch (NumberFormatException e) {
             System.out.println("❌ Lỗi: Chuyển đổi dữ liệu gửi tiết kiệm thất bại.");
             e.printStackTrace();
-            response.sendRedirect(request.getContextPath() + "/customer/template/confirmTermAction.jsp?error=invalid_data");
+            response.sendRedirect(request.getContextPath() + "/customer/confirmTermAction.jsp?error=invalid_data");
         } catch (Exception e) {
             System.out.println("❌ Lỗi không xác định: " + e.getMessage());
             e.printStackTrace();
-            response.sendRedirect(request.getContextPath() + "/customer/template/confirmTermAction.jsp?error=unexpected_error");
+            response.sendRedirect(request.getContextPath() + "/customer/confirmTermAction.jsp?error=unexpected_error");
         }
     }
 }

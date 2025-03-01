@@ -54,7 +54,7 @@ public class AuthServlet extends HttpServlet {
                         // Gọi handler để xử lý đáo hạn
                         maturityHandler.processMaturedDeposits(customer, session);
 
-                        response.sendRedirect("customer/template/Customer.jsp");
+                        response.sendRedirect("customer/Customer.jsp");
                         return;
                     } else if (staff != null) {
                         session.setAttribute("staff", staff);
@@ -186,7 +186,7 @@ public class AuthServlet extends HttpServlet {
             return;
         }
 
-        String profilePage = isCustomer ? "customer/template/account-profile.jsp" : "staff/staff-profile.jsp";
+        String profilePage = isCustomer ? "customer/account-profile.jsp" : "staff/staff-profile.jsp";
 
         String oldPass = request.getParameter("oldPassword");
         String newPass = request.getParameter("newPassword");

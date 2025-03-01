@@ -95,7 +95,7 @@ public class DepositValidationServlet extends HttpServlet {
             amount = new BigDecimal(amountStr);
         } catch (NumberFormatException e) {
             session.setAttribute("error4", "Số tiền không hợp lệ!");
-            response.sendRedirect("customer/template/savemoney.jsp");
+            response.sendRedirect("customer/savemoney.jsp");
             return;
         }
 
@@ -105,10 +105,10 @@ public class DepositValidationServlet extends HttpServlet {
         // Kiểm tra số tiền nhập vào
         if (amount.compareTo(minAmount) < 0) {
             session.setAttribute("error4", "Số tiền phải từ 1,000,000 VND trở lên!");
-            response.sendRedirect("customer/template/savemoney.jsp");
+            response.sendRedirect("customer/savemoney.jsp");
         } else if (amount.compareTo(accountBalance) > 0) {
             session.setAttribute("error4", "Số dư không đủ để gửi tiết kiệm!");
-            response.sendRedirect("customer/template/savemoney.jsp");
+            response.sendRedirect("customer/savemoney.jsp");
         } else {
               session.setAttribute("depositAmount", amount);
               System.out.println("Số tiền gửi tiết kiệm được lưu vào session: " + session.getAttribute("depositAmount"));

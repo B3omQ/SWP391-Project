@@ -15,7 +15,7 @@ public class ProcessTermOptions extends HttpServlet {
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("selectedTerm") == null) {
             System.out.println("[ERROR] Session không hợp lệ hoặc thiếu selectedTerm, quay lại chooseTerm.jsp");
-            response.sendRedirect(request.getContextPath() + "/customer/template/chooseTerm.jsp");
+            response.sendRedirect(request.getContextPath() + "/customer/chooseTerm.jsp");
             return;
         }
 
@@ -25,7 +25,7 @@ public class ProcessTermOptions extends HttpServlet {
         String action = request.getParameter("action");
         if (action == null) {
             request.setAttribute("error", "Bạn chưa chọn phương án xử lý khi kỳ hạn kết thúc!");
-            request.getRequestDispatcher("/customer/template/termOptions.jsp").forward(request, response);
+            request.getRequestDispatcher("/customer/termOptions.jsp").forward(request, response);
             return;
         }
 
@@ -47,13 +47,13 @@ public class ProcessTermOptions extends HttpServlet {
         session.setAttribute("selectedAction", actionValue);
         System.out.println("[DEBUG] Stored selectedAction in session: " + actionValue);
 
-        response.sendRedirect(request.getContextPath() + "/customer/template/confirmTermAction.jsp");
+        response.sendRedirect(request.getContextPath() + "/customer/confirmTermAction.jsp");
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.sendRedirect(request.getContextPath() + "/customer/template/chooseTerm.jsp");
+        response.sendRedirect(request.getContextPath() + "/customer/chooseTerm.jsp");
     }
 
     @Override
