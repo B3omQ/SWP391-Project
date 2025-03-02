@@ -142,4 +142,76 @@ public class DepServiceUsedDAO extends DBContext {
     }
     return 0; // Trả về 0 nếu không tìm thấy
 }
+      public List<DepServiceUsed> getActiveDepositsByCustomerId(int customerId) {
+        List<DepServiceUsed> deposits = new ArrayList<>();
+        String sql = "SELECT Id, DepId, CusId, DepTypeId, Amount, StartDate, EndDate, DepStatus, MaturityOption " +
+                     "FROM DepServiceUsed " +
+                     "WHERE CusId = ? AND UPPER(DepStatus) = 'ACTIVE' AND EndDate > GETDATE()";
+        try (PreparedStatement p = connection.prepareStatement(sql)) {
+            p.setInt(1, customerId);
+            System.out.println("Executing query for customerId: " + customerId);
+            try (ResultSet rs = p.executeQuery()) {
+                while (rs.next()) {
+                    DepServiceUsed deposit = new DepServiceUsed();
+                    deposit.setId(rs.getInt("Id"));
+                    deposit.setDepId(rs.getInt("DepId"));
+                    deposit.setCusId(rs.getInt("CusId"));
+                    deposit.setDepTypeId(rs.getInt("DepTypeId"));
+                    deposit.setAmount(rs.getBigDecimal("Amount"));
+                    deposit.setStartDate(rs.getTimestamp("StartDate"));
+                    deposit.setEndDate(rs.getTimestamp("EndDate"));
+                    deposit.setDepStatus(rs.getString("DepStatus"));
+                    deposit.setMaturityAction(rs.getString("MaturityOption")); // Sửa ở đây
+                    deposits.add(deposit);
+                    System.out.println("Found active deposit: Id=" + deposit.getId() + ", Amount=" + deposit.getAmount());
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("❌ Error querying active deposits for customerId " + customerId + ": " + e.getMessage());
+            e.printStackTrace();
+        }
+        System.out.println("Found " + deposits.size() + " active deposits for customerId: " + customerId);
+        return deposits;
+    }
+      public DepServiceUsed getDepositById(int depositId) {
+        DepServiceUsed deposit = null;
+        String sql = "SELECT Id, DepId, CusId, DepTypeId, Amount, StartDate, EndDate, DepStatus, MaturityOption " +
+                     "FROM DepServiceUsed WHERE Id = ?";
+        try (PreparedStatement p = connection.prepareStatement(sql)) {
+            p.setInt(1, depositId);
+            try (ResultSet rs = p.executeQuery()) {
+                if (rs.next()) {
+                    deposit = new DepServiceUsed();
+                    deposit.setId(rs.getInt("Id"));
+                    deposit.setDepId(rs.getInt("DepId"));
+                    deposit.setCusId(rs.getInt("CusId"));
+                    deposit.setDepTypeId(rs.getInt("DepTypeId"));
+                    deposit.setAmount(rs.getBigDecimal("Amount"));
+                    deposit.setStartDate(rs.getTimestamp("StartDate"));
+                    deposit.setEndDate(rs.getTimestamp("EndDate"));
+                    deposit.setDepStatus(rs.getString("DepStatus"));
+                    String maturityOption = rs.getString("MaturityOption");
+                    deposit.setMaturityAction(maturityOption != null ? maturityOption : "Không xác định");
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("❌ Error querying deposit by Id " + depositId + ": " + e.getMessage());
+            e.printStackTrace();
+        }
+        return deposit;
+    }
+       public boolean updateDepositStatus(int depositId, String status) {
+        String sql = "UPDATE DepServiceUsed SET DepStatus = ? WHERE Id = ?";
+        try (PreparedStatement p = connection.prepareStatement(sql)) {
+            p.setString(1, status);
+            p.setInt(2, depositId);
+            int affectedRows = p.executeUpdate();
+            System.out.println("Updated deposit status: Id=" + depositId + ", New Status=" + status + ", Rows=" + affectedRows);
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            System.err.println("❌ Error updating deposit status for Id " + depositId + ": " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

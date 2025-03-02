@@ -60,6 +60,14 @@
         <servlet-name>MaturityHandlerServlet</servlet-name>
         <servlet-class>controller.customer.MaturityHandlerServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SavingServlet</servlet-name>
+        <servlet-class>controller.customer.SavingServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>WithdrawDepositServlet</servlet-name>
+        <servlet-class>controller.customer.WithdrawDepositServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>HomeServlet</servlet-name>
         <url-pattern>/home</url-pattern>
@@ -183,6 +191,14 @@
     <servlet-mapping>
         <servlet-name>MaturityHandlerServlet</servlet-name>
         <url-pattern>/MaturityHandlerServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SavingServlet</servlet-name>
+        <url-pattern>/SavingServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>WithdrawDepositServlet</servlet-name>
+        <url-pattern>/WithdrawDepositServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>1440</session-timeout>

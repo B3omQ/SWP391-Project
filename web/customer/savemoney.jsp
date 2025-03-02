@@ -8,6 +8,10 @@
     <div class="layout-specing">
         <div class="container mt-5">
             <h2 class="text-center text-danger"><i class="fas fa-piggy-bank"></i> Nhập Số Tiền Gửi</h2>
+            
+            <!-- Hiển thị thông báo lỗi nếu có -->
+    
+
             <form action="${pageContext.request.contextPath}/DepositValidationServlet" method="post">
                 <h5>Từ tài khoản</h5>
                 <div class="d-flex justify-content-between align-items-center p-3 border rounded">
@@ -15,7 +19,8 @@
                     <fmt:formatNumber value="${account.wallet}" type="number" groupingUsed="true" /> VND
                 </div>
                 <h5 class="mt-3">Số tiền gửi</h5>
-                <input type="number" id="depositAmount" name="depositAmount" class="form-control" placeholder="Nhập số tiền" required>
+                <input type="number" id="depositAmount" name="depositAmount" class="form-control" 
+                       placeholder="Nhập số tiền" required min="" step="1">
 
                 <div class="d-flex justify-content-around mt-3">
                     <span class="quick-amount" onclick="setAmount(1000000)">1,000,000</span>
@@ -29,7 +34,7 @@
                     </button>
                 </div>
             </form>
-            <%
+                 <%
                 String errorAccount = (String) session.getAttribute("error4");
                 if (errorAccount != null) {
             %>

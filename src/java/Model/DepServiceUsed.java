@@ -12,7 +12,7 @@ public class DepServiceUsed {
     private Timestamp startDate;
     private Timestamp endDate;
     private String depStatus;
-    private String maturityAction; // Thêm trường mới
+    private String maturityAction;
 
     public DepServiceUsed() {
     }

@@ -7,15 +7,13 @@
 
 <jsp:useBean id="depHistoryDAO" class="dal.DepHistoryDAO" scope="page"/>
 
+<%@ include file="template/header.jsp" %>
+<%@ include file="template/sidebar.jsp" %>
+
 <%
-    // Lấy danh sách lịch sử giao dịch dựa trên account từ session
-    // Vì session đã được kiểm tra trong header.jsp, nên ta chắc chắn account tồn tại
     List<DepHistory> depHistoryList = depHistoryDAO.getDepHistoryByCustomerId(((model.Customer) session.getAttribute("account")).getId());
     pageContext.setAttribute("depHistoryList", depHistoryList);
 %>
-
-<%@ include file="template/header.jsp" %>
-<%@ include file="template/sidebar.jsp" %>
 
 <div class="container-fluid">
     <div class="layout-specing">
@@ -55,19 +53,37 @@
                                 </tr>
                             </thead>
                             <tbody id="historyTable">
-                            <c:forEach var="history" items="${depHistoryList}">
-                                <tr>
-                                    <td>${history.id}</td>
-                                    <td><fmt:formatDate value="${history.createdAt}" pattern="dd/MM/yyyy HH:mm:ss" /></td>
-                                    <td><fmt:formatNumber value="${history.amount}" type="number" groupingUsed="true" /> VND</td>
-                                    <td>${history.description}</td>
-                                </tr>
-                            </c:forEach>
-                            <c:if test="${empty depHistoryList}">
-                                <tr>
-                                    <td colspan="4" class="text-center">Không có lịch sử giao dịch nào.</td>
-                                </tr>
-                            </c:if>
+                                <c:forEach var="history" items="${depHistoryList}">
+                                    <tr>
+                                        <td>${history.id}</td>
+                                        <td>
+                                            <c:choose>
+                                                <c:when test="${history.createdAt != null}">
+                                                    <fmt:formatDate value="${history.createdAt}" pattern="dd/MM/yyyy HH:mm:ss" />
+                                                </c:when>
+                                                <c:otherwise>
+                                                    Không xác định
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </td>
+                                        <td>
+                                            <c:choose>
+                                                <c:when test="${history.amount != null}">
+                                                    <fmt:formatNumber value="${history.amount}" type="number" groupingUsed="true" /> VND
+                                                </c:when>
+                                                <c:otherwise>
+                                                    Không xác định
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </td>
+                                        <td>${history.description}</td>
+                                    </tr>
+                                </c:forEach>
+                                <c:if test="${empty depHistoryList}">
+                                    <tr>
+                                        <td colspan="4" class="text-center">Không có lịch sử giao dịch nào.</td>
+                                    </tr>
+                                </c:if>
                             </tbody>
                         </table>
                     </div>
@@ -79,7 +95,6 @@
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h4 class="align-items-center mb-0">Tổng tài sản</h4>
                     </div>
-                    <!-- Thêm phần tử chứa biểu đồ -->
                     <div style="position: relative; width: 100%; max-width: 300px; margin: auto;">
                         <canvas id="assetChart"></canvas>
                         <div id="chart-center" style="
@@ -103,6 +118,29 @@
 
 <%@ include file="template/footer.jsp" %>
 
-<!-- Script cho biểu đồ (nếu cần) -->
+<!-- Script cho biểu đồ -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/Chart.js"></script>
+<script>
+    function sortHistory(criteria) {
+        let table = document.getElementById("historyTable");
+        let rows = Array.from(table.getElementsByTagName("tr"));
+
+        rows.sort((a, b) => {
+            let aValue, bValue;
+            if (criteria === "time") {
+                aValue = new Date(a.cells[1].textContent);
+                bValue = new Date(b.cells[1].textContent);
+            } else if (criteria === "amount") {
+                aValue = parseFloat(a.cells[2].textContent.replace(/[^\d.-]/g, ''));
+                bValue = parseFloat(b.cells[2].textContent.replace(/[^\d.-]/g, ''));
+            } else if (criteria === "description") {
+                aValue = a.cells[3].textContent;
+                bValue = b.cells[3].textContent;
+            }
+            return aValue > bValue ? 1 : -1;
+        });
+
+        rows.forEach(row => table.appendChild(row));
+    }
+</script>
