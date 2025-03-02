@@ -202,7 +202,6 @@
                                                 <p style="color: green;">${sessionScope.success2}</p>
                                                 <c:remove var="success2" scope="session"/>
                                             </c:if>
-
                                         </form>
                                     </div>
                                 </div>

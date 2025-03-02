@@ -39,14 +39,26 @@ public class DepOptionService extends HttpServlet {
             throws ServletException, IOException {
         DepServiceDAO depdao = new DepServiceDAO();
         String status = request.getParameter("pendingStatus");
+        String sortBy = request.getParameter("sortBy");
+        String order = request.getParameter("order");
 
         if (status == null || status.trim().isEmpty()) {
             status = "Approved";
         }
 
+        if (sortBy == null || sortBy.trim().isEmpty()) {
+            sortBy = "DuringTime";
+        }
+
+        if (order == null || order.trim().isEmpty()) {
+            order = "ASC";
+        }
+
         try {
-            List<DepService> depList = depdao.getAllDepServiceByStatus(status);
+            List<DepService> depList = depdao.getAllDepServiceByStatus(status, sortBy, order);
             request.setAttribute("currentStatus", status);
+            request.setAttribute("currentSort", sortBy);
+            request.setAttribute("currentOrder", order);
             request.setAttribute("depOptionServiceList", depList);
         } catch (Exception e) {
             System.out.println(e);

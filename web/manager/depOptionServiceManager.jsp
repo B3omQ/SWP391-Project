@@ -33,34 +33,141 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
         <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css">
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="resources/script/animate.min.css">
 
         <style>
+            /* Tổng thể layout */
+            .layout-specing {
+                max-width: 1600px;
+                margin: 0 auto;
+                padding: 20px;
+            }
+
+            /* Tiêu đề chính */
+            h2.text-primary {
+                font-family: 'Poppins', sans-serif;
+                font-size: 2rem;
+                font-weight: 600;
+                color: #ff6f61;
+                text-align: center;
+                margin-bottom: 30px;
+            }
+
+            /* Dropdown */
+            .form-select {
+                font-family: 'Poppins', sans-serif;
+                font-size: 1rem;
+                padding: 10px 15px;
+                border: 2px solid #e0e0e0;
+                border-radius: 10px;
+                background: #fafafa;
+                transition: all 0.3s ease;
+            }
+
+            .form-select:focus {
+                border-color: #ff6f61;
+                box-shadow: 0 0 5px rgba(255, 111, 97, 0.3);
+                outline: none;
+            }
+
+            /* Card bubble */
             .bubble {
                 cursor: pointer;
-                transition: transform 0.2s, box-shadow 0.2s;
+                background: #fff;
+                border-radius: 15px;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+                transition: transform 0.2s ease, box-shadow 0.2s ease, border 0.2s ease;
+                overflow: hidden;
+                font-family: 'Poppins', sans-serif;
+                position: relative; /* Để định vị icon tuyệt đối */
             }
 
             .bubble:hover {
-                transform: scale(1.02);
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                transform: translateY(-5px);
+                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+                border: 1px solid #ff6f61; /* Viền đỏ khi hover */
             }
 
-            .card-title {
-                font-size: 1.25rem;
-                font-weight: 600;
-                color: #007bff; /* Màu xanh Bootstrap */
+            .card-body {
+                padding: 20px;
+                position: relative;
             }
 
-            .card-text {
-                font-size: 1rem;
-                color: #555;
-            }
-
+            /* Icon xóa */
             .delete-icon {
-                color: #dc3545; /* Màu đỏ của Bootstrap */
+                color: #ff6f61;
                 font-size: 1.2rem;
+                position: absolute;
+                top: 15px;
+                right: 15px;
+                transition: transform 0.2s ease;
             }
 
+            .delete-icon:hover {
+                transform: scale(1.2);
+            }
+
+            /* Icon piggy */
+            .piggy-icon {
+                color: #ff6f61;
+                font-size: 1.2rem;
+                position: absolute;
+                top: 15px;
+                left: 15px;
+                transition: transform 0.2s ease;
+            }
+
+            .piggy-icon:hover {
+                transform: scale(1.2);
+            }
+
+            /* Nội dung trong card */
+            .bubble .row {
+                align-items: center;
+            }
+
+            .bubble .col-4 a {
+                font-size: 3.5rem;
+                font-weight: 700;
+                color: #333;
+            }
+
+            .bubble .col-4 p {
+                font-size: 1rem;
+                color: #777;
+                margin: 0;
+            }
+
+            .bubble .col-4 {
+                border-right: 2px solid #e0e0e0;
+                text-align: center;
+            }
+
+            .bubble .col-8 {
+                text-align: right;
+                padding-left: 20px;
+            }
+
+            .bubble .col-8 p {
+                font-size: 1.1rem;
+                color: #555;
+                margin: 5px 0;
+            }
+
+            .bubble .col-8 p strong {
+                color: #333;
+                font-weight: 600;
+            }
+
+            /* Thông báo khi danh sách rỗng */
+            .text-muted.fw-bold {
+                font-family: 'Poppins', sans-serif;
+                font-size: 1.2rem;
+                color: #777;
+                text-align: center;
+                padding: 20px;
+            }
         </style>
     </head>
 
@@ -88,6 +195,7 @@
                 <div class="container-fluid">
                     <div class="layout-specing">
                         <!-- Header Section -->
+                        </br>
                         <div class="row mb-4">
                             <div class="col-12">
                                 <h2 class="text-primary">Deposit Options</h2>
@@ -101,7 +209,15 @@
                                     <option value="Approved" ${currentStatus == 'Approved' || empty currentStatus ? 'selected' : ''}>Approved</option>
                                     <option value="Denied" ${currentStatus == 'Denied' ? 'selected' : ''}>Denied</option>
                                     <option value="Pending" ${currentStatus == 'Pending' ? 'selected' : ''}>Pending</option>
-                                </select>                                
+                                </select>   
+                                <select class="form-select me-2" name="sortBy" onchange="onChangeSubmit('sort')" id="sorBy">
+                                    <option value="DuringTime" ${currentSort == 'DuringTime' || empty currentSort ? 'selected' : ''}>Months</option>
+                                    <option value="MinimumDep" ${currentSort == 'MinimumDep' ? 'selected' : ''}>MinMoneyDep</option>
+                                </select>     
+                                <select class="form-select me-2" name="order" onchange="onChangeSubmit('sort')" id="order">
+                                    <option value="ASC" ${currentOrder == 'ASC' || empty currentOrder ? 'selected' : ''}>Asc</option>
+                                    <option value="DESC" ${currentOrder == 'DESC' ? 'selected' : ''}>Desc</option>
+                                </select> 
                             </form>
                         </div>
                         <!-- Deposit Options List -->                     
@@ -111,55 +227,55 @@
                                     <div class="col-12 text-center text-muted fw-bold">Search list is empty</div>
                                 </c:when>
                                 <c:otherwise>
-                                    <c:forEach var="dep" items="${depOptionServiceList}">
+                                    <c:forEach var="dep" items="${depOptionServiceList}" varStatus="status">
                                         <div class="col-md-6 mb-4">
-                                            <div class="card bubble" data-id="${dep.id}">
-                                                <div class="card-body position-relative">
-                                                    <!-- Biểu tượng xóa -->
-                                                    <c:if test="${dep.pendingStatus != 'Approved'}">
-                                                        <i class="fas fa-times delete-icon" style="position: absolute; top: 10px; right: 10px; cursor: pointer;"></i>
-                                                    </c:if>
-                                                    <div class="row align-items-center">
-                                                        <!-- Cột cho hình ảnh -->
-                                                        <div class="col-4">
-                                                            <img src="<%= request.getContextPath() %>/assets/images/piggy.png" alt="img" class="img-fluid">
-                                                        </div>
-                                                        <!-- Cột cho thông tin -->
-                                                        <div class="col-8 text-center">
-                                                            <h5 class="card-title">Deposit Option ID: ${dep.id}</h5>
-                                                            <p class="card-text"><strong>Deposit Minimum:</strong> ${dep.minimumDep}</p>
-                                                            <p class="card-text"><strong>During Time:</strong> ${dep.duringTime} months</p>
-                                                            <p class="card-text"><strong>Saving Rate:</strong> ${dep.savingRate}%</p>
-                                                            <p class="card-text"><strong>Saving Rate Minimum:</strong> ${dep.savingRateMinimum}%</p>
-                                                        </div>
+                                            <div class="card bubble wow fadeInUp" data-id="${dep.id}" data-wow-delay="${status.index * 0.2}s">
+                                                 <div class="card-body position-relative" >
+                                                <!-- Biểu tượng xóa -->
+                                                <c:if test="${dep.pendingStatus != 'Approved'}">
+                                                    <i class="fas fa-trash delete-icon" style="position: absolute; top: 10px; right: 10px; cursor: pointer;"></i>
+                                                </c:if>
+                                                <div class="row align-items-center">
+                                                    <div class="col-4 text-center" style="border-right: 2px solid rgba(0, 0, 0, 0.1); ">
+                                                        <a class="" style="font-size: 4rem; font-weight: bold; color: black"> ${dep.duringTime}</a>
+                                                        <p class="text-muted">tháng</p>
+                                                    </div>
+                                                    <div class="col-8" style="text-align: right">
+                                                        <p class="" ><strong>Số tiền tối thiểu (VNĐ):</strong> ${dep.minimumDep}</p>
+                                                        <p class=""><strong>Lãi suất thấp nhất:</strong> ${dep.savingRateMinimum}%</p>
+                                                        <p class=""><strong>Lãi suất:</strong> ${dep.savingRate}%</p> 
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </c:forEach>
-                                </c:otherwise>
-                            </c:choose>
-                        </div>
+                                    </div>
+                                </c:forEach>
+
+                            </c:otherwise>
+                        </c:choose>
                     </div>
                 </div>
-
-                <!-- Footer Start -->
-                <jsp:include page="template/footer.jsp"/>
-                <!-- End -->
-            </main>
-            <!--End page-content-->
         </div>
+        <!-- Footer Start -->
+        <jsp:include page="template/footer.jsp"/>
+        <!-- End -->
+    </main>
+    <!--End page-content-->
+</div>
+<script src="resources/script/wow.min.js"></script>
+<script src="resources/script/jquery-3.7.1.min.js"></script>
+<script src="./assets/tinymce/tinymce.min.js"></script>
+<script src="./resources/script/tinymceConfig.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://unpkg.com/tippy.js@6"></script>
+<script src="./resources/script/script.js"></script>
 
-        <script src="resources/script/jquery-3.7.1.min.js"></script>
-        <script src="./assets/tinymce/tinymce.min.js"></script>
-        <script src="./resources/script/tinymceConfig.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-        <script src="https://unpkg.com/@popperjs/core@2"></script>
-        <script src="https://unpkg.com/tippy.js@6"></script>
-        <script src="./resources/script/script.js"></script>
+<script>
+                                    new WOW().init();
 
-        <script>
                                     $(document).ready(function () {
+
                                         showToastrAfterReload();
                                         // Handle bubble click to review
                                         $('.bubble').on('click', function () {
@@ -191,24 +307,29 @@
                                             }
                                         });
                                     });
-        </script>
+</script>
 
-        <!-- page-wrapper -->
-        <script src="<%= request.getContextPath() %>/assets/js/jquery.min.js"></script>
-        <script src="<%= request.getContextPath() %>/assets/js/bootstrap.bundle.min.js"></script>
-        <!-- simplebar -->
-        <script src="<%= request.getContextPath() %>/assets/js/simplebar.min.js"></script>
-        <!-- Select2 -->
-        <script src="<%= request.getContextPath() %>/assets/js/select2.min.js"></script>
-        <script src="<%= request.getContextPath() %>/assets/js/select2.init.js"></script>
-        <!-- Datepicker -->
-        <script src="<%= request.getContextPath() %>/assets/js/flatpickr.min.js"></script>
-        <script src="<%= request.getContextPath() %>/assets/js/flatpickr.init.js"></script>
-        <script src="<%= request.getContextPath() %>/assets/js/jquery.timepicker.min.js"></script>
-        <script src="<%= request.getContextPath() %>/assets/js/timepicker.init.js"></script>
-        <!-- Icons -->
-        <script src="<%= request.getContextPath() %>/assets/js/feather.min.js"></script>
-        <!-- Main Js -->
-        <script src="<%= request.getContextPath() %>/assets/js/app.js"></script>
-    </body>
+<!-- page-wrapper -->
+<script src="<%= request.getContextPath() %>/assets/js/jquery.min.js"></script>
+<script src="<%= request.getContextPath() %>/assets/js/bootstrap.bundle.min.js"></script>
+<!-- simplebar -->
+<script src="<%= request.getContextPath() %>/assets/js/simplebar.min.js"></script>
+<!-- Select2 -->
+<script src="<%= request.getContextPath() %>/assets/js/select2.min.js"></script>
+<script src="<%= request.getContextPath() %>/assets/js/select2.init.js"></script>
+<!-- Datepicker -->
+<!-- SLIDER -->
+<script src="assets/js/tiny-slider.js"></script>
+<script src="assets/js/tiny-slider-init.js"></script>
+<!-- Counter -->
+<script src="assets/js/counter.init.js"></script>
+<script src="<%= request.getContextPath() %>/assets/js/flatpickr.min.js"></script>
+<script src="<%= request.getContextPath() %>/assets/js/flatpickr.init.js"></script>
+<script src="<%= request.getContextPath() %>/assets/js/jquery.timepicker.min.js"></script>
+<script src="<%= request.getContextPath() %>/assets/js/timepicker.init.js"></script>
+<!-- Icons -->
+<script src="<%= request.getContextPath() %>/assets/js/feather.min.js"></script>
+<!-- Main Js -->
+<script src="<%= request.getContextPath() %>/assets/js/app.js"></script>
+</body>
 </html>

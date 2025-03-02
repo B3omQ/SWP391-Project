@@ -38,6 +38,104 @@
 
     </head>
     <style>
+        /* Tổng thể container */
+        .kofi-inspired-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Tiêu đề */
+        .kofi-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* Nhóm input */
+        .kofi-input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .kofi-input-group label {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .kofi-input-group label i {
+            margin-right: 8px;
+        }
+
+        /* Input và Textarea */
+        .kofi-input {
+            width: 100%;
+            padding: 12px 15px;
+            font-size: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            background: #fafafa;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .kofi-input:focus {
+            border-color: #ff6f61; /* Màu hồng nhạt của Ko-fi */
+            background: #fff;
+            outline: none;
+            box-shadow: 0 0 5px rgba(255, 111, 97, 0.3);
+        }
+
+        .kofi-textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        /* Nút Submit */
+        .kofi-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #fff;
+            background: #ff6f61; /* Màu hồng đặc trưng của Ko-fi */
+            border: none;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .kofi-btn:hover {
+            background: #ff867a;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 111, 97, 0.4);
+        }
+
+        .kofi-btn i {
+            margin-right: 8px;
+        }
+
+        /* Footer */
+        .kofi-footer {
+            text-align: center;
+        }
+
+        /* Hiệu ứng hover cho card (nếu cần) */
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
 
     </style>
 
@@ -56,73 +154,106 @@
 
         <div class="page-wrapper doctris-theme toggled">
             <jsp:include page="template/sidebar.jsp"/>
-            <!-- sidebar-wrapper  -->
 
-            <!-- Start Page Content -->
             <main class="page-content bg-light">   
-
                 <c:set value="${sessionScope.staff}" var="staff"/>
                 <jsp:include page="template/header.jsp"/>               
 
-
                 <div class="container-fluid">                    
-
                     <div class="layout-specing">
-                        
-                        <form action="add-saving-option" method="POST">
-                            <div class="row align-items-center">
-                                <!-- Title & Breadcrumb -->
-                                <div class="row mt-2">
-                                    <div class="col-md-6">
-                                        <label class="form-label head" for="minimumDep">Deposite Minimum</label>
-                                        <input class="form-control" type="number" id="minimumDep" name="minimumDep" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label head" for="duringTime">During Time (Months)</label>
-                                        <input class="form-control" type="number" id="duringTime" name="duringTime" required>
-                                    </div>
-                                </div>                    
-                                <div class="row mt-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label head" for="savingRate">Saving Rate (%)</label>
-                                        <input class="form-control" type="number" step="0.01" id="savingRate" name="savingRate" required min="0">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label head" for="savingRateMinimum">Saving Rate Minimum (%)</label>
-                                        <input class="form-control" type="number" step="0.01" id="savingRateMinimum" name="savingRateMinimum" required>
-                                    </div>
-                                </div>                   
+                        <div class="kofi-inspired-container">
+                            <h5 class="kofi-title">
+                                <i class="fas fa-piggy-bank me-2" style="color: red;"></i>
+                                Create a New Saving Option
+                            </h5>
 
-                            </div>
-
-                            <div class ="row align-items-center">
-
-                                <div class="col-md-12">
-                                    <label class="form-label head" for="description">Description</label>
-                                    <textarea name ="description" id="description"></textarea>
+                            <form id="savingForm" action="add-saving-option" method="POST">
+                                <div class="row g-4">
+                                    <div class="col-md-6">
+                                        <div class="kofi-input-group">
+                                            <label for="minimumDep">
+                                                <i class="fas fa-dollar-sign text-success"></i> Deposit Minimum
+                                            </label>
+                                            <input type="number" id="minimumDep" name="minimumDep" 
+                                                   class="kofi-input" placeholder="Enter amount" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="kofi-input-group">
+                                            <label for="duringTime">
+                                                <i class="fas fa-clock text-primary"></i> During Time
+                                            </label>
+                                            <input type="number" id="duringTime" name="duringTime" 
+                                                   class="kofi-input" placeholder="Months" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="kofi-input-group">
+                                            <label for="savingRate">
+                                                <i class="fas fa-percentage text-warning"></i> Saving Rate
+                                            </label>
+                                            <input type="number" step="0.01" id="savingRate" 
+                                                   name="savingRate" class="kofi-input" 
+                                                   placeholder="Interest rate (%)" required min="0">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="kofi-input-group">
+                                            <label for="savingRateMinimum">
+                                                <i class="fas fa-chart-line text-danger"></i> Minimum Rate
+                                            </label>
+                                            <input type="number" step="0.01" id="savingRateMinimum" 
+                                                   name="savingRateMinimum" class="kofi-input" 
+                                                   placeholder="Minimum rate (%)" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="kofi-input-group">
+                                            <label for="description">
+                                                <i class="fas fa-comment-dots text-info"></i> Description
+                                            </label>
+                                            <textarea name="description" id="description" 
+                                                      class="kofi-input kofi-textarea" 
+                                                      placeholder="Tell us about this saving option..."></textarea>
+                                        </div>
+                                    </div>
                                 </div>
 
-                            </div>
-                            <div class="footer-bar">
-                                <p id="error-message" class="text-danger"></p>                            
-                                <button type="submit" class="btn btn-primary">Send request approvement</button>
-                            </div>
+                                <div class="kofi-footer mt-2">                                    
+                                    <button type="submit" class="kofi-btn">
+                                        <i class="fas fa-paper-plane me-2"></i>
+                                        Send for Approval
+                                    </button>
+                                </div>
 
-                        </form>
-                        <!-- Header Section -->
-
+                                <div class="modal fade" id="leaveConfirmationModal" tabindex="-1" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Leave This Page?</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Your changes will be not saved</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Stay on Page</button>
+                                                <button type="button" class="btn btn-primary" id="confirmLeaveBtn">Leave Page</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                
+                            </form>
+                        </div>
                     </div>
                 </div>
 
-
-
-                <!-- Footer Start -->
                 <jsp:include page="template/footer.jsp"/>
-                <!-- End -->
             </main>
-            <!--End page-content-->
-
         </div>
+
         <script src ="resources/script/jquery-3.7.1.min.js"></script>
         <script src="./assets/tinymce/tinymce.min.js"></script>
         <script src="./resources/script/tinymceConfig.js"></script>
@@ -151,7 +282,120 @@
         <script src="<%= request.getContextPath() %>/assets/js/feather.min.js"></script>
         <!-- Main Js -->
         <script src="<%= request.getContextPath() %>/assets/js/app.js"></script>
+        <!-- Thêm đoạn script này vào phần script hiện có -->
+        <script>
+            $(document).ready(function () {
+                let formDirty = false;
+                let nextUrl = null;
+                let isLeaving = false;
 
+                // Theo dõi thay đổi trong form
+                $('.kofi-input, .kofi-textarea').on('input', function () {
+                    formDirty = true;
+                });
+
+                // Submit form
+                $('#savingForm').on('submit', function (e) {
+                    e.preventDefault();
+
+                    let formData = {
+                        description: $('#description').val(),
+                        minimumDep: $('#minimumDep').val(),
+                        duringTime: $('#duringTime').val(),
+                        savingRate: $('#savingRate').val(),
+                        savingRateMinimum: $('#savingRateMinimum').val()
+                    };
+
+                    $.ajax({
+                        url: 'add-saving-option',
+                        type: 'POST',
+                        data: formData,
+                        dataType: 'json',
+                        success: function (response) {
+                            if (response.success) {
+                                showSuccessMessage("Success", "Sending approval successful");
+                                $('#savingForm')[0].reset();
+                                formDirty = false;
+                            } else {
+                                showErrorMessage("Error", response.message);
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            toastr.error('An error occurred while processing your request');
+                        }
+                    });
+                });
+
+                // Validate input
+                $('.kofi-input').on('input', function () {
+                    let $input = $(this);
+                    let value = $input.val();
+
+                    if ($input.attr('type') === 'number') {
+                        if (value === '' || parseFloat(value) <= 0) {
+                            $input.css('border-color', '#ff6f61');
+                            tippy(this, {
+                                content: 'Value must be greater than 0',
+                                showOnCreate: true,
+                                trigger: 'manual'
+                            });
+                        } else {
+                            $input.css('border-color', '#e0e0e0');
+                            if (this._tippy) {
+                                this._tippy.destroy();
+                            }
+                        }
+                    }
+                });
+
+                // Xử lý khi người dùng cố gắng rời trang
+                window.onbeforeunload = function (e) {
+                    if (formDirty && !isLeaving) {
+                        return 'Your changes made may not be saved.';
+                    }
+                };
+
+                // Xử lý click vào các link
+                $('a').on('click', function (e) {
+                    if (formDirty && !isLeaving) {
+                        e.preventDefault();
+                        nextUrl = $(this).attr('href');
+                        $('#leaveConfirmationModal').modal('show');
+                    }
+                });
+
+                // Xử lý nút confirm trong modal
+                $('#confirmLeaveBtn').on('click', function () {
+                    isLeaving = true;
+                    $('#leaveConfirmationModal').modal('hide');
+                    if (nextUrl) {
+                        window.location.href = nextUrl;
+                    } else {
+                        window.location.reload();
+                    }
+                });
+
+                // Xử lý nút back của trình duyệt
+                let originalUrl = window.location.href;
+                history.pushState({page: 'current'}, document.title, originalUrl);
+
+                $(window).on('popstate', function (e) {
+                    if (formDirty && !isLeaving) {
+                        e.preventDefault();
+                        $('#leaveConfirmationModal').modal('show');
+                        nextUrl = null; // Để reload khi nhấn Leave từ back
+                        history.pushState({page: 'current'}, document.title, originalUrl);
+                    }
+                });
+
+                // Reset nextUrl khi modal đóng mà không rời trang
+                $('#leaveConfirmationModal').on('hidden.bs.modal', function () {
+                    if (!isLeaving) {
+                        nextUrl = null;
+                    }
+                });
+            });
+        </script>
     </body>
 
 </html>

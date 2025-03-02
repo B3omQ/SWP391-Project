@@ -48,22 +48,28 @@ public class DepServiceDAO extends DBContext {
 
         return list;
     }
-   
+
     public static void main(String[] args) {
         DepServiceDAO d = new DepServiceDAO();
-        List<DepService> list = d.getAllDepServiceByStatus("Pending");
-        for(DepService o : list) {
-            System.out.println(o);}
+        List<DepService> list = d.getAllDepServiceByStatus("Pending", "DuringTime", "ASC");
+        for (DepService o : list) {
+            System.out.println(o);
+        }
     }
 
-    public List<DepService> getAllDepServiceByStatus(String status) {
+    public List<DepService> getAllDepServiceByStatus(String status, String sortBy, String order) {
         List<DepService> list = new ArrayList<>();
 
         String sql = """
-                      SELECT Id, Description, MinimumDep, DuringTime, SavingRate, SavingRateMinimum, PendingStatus
-                     FROM BankingSystem.dbo.DepService
-                     WHERE PendingStatus = ?""";        
+         SELECT Id, Description, MinimumDep, DuringTime, SavingRate, SavingRateMinimum, PendingStatus
+         FROM BankingSystem.dbo.DepService
+         WHERE PendingStatus = ?""";
         
+        if ("DuringTime".equalsIgnoreCase(sortBy)) {
+            sql += " ORDER BY [DuringTime] " + order;        
+        } else {
+            sql += " ORDER BY [MinimumDep] " + order;
+        }
 
         try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setString(1, status);
@@ -81,7 +87,6 @@ public class DepServiceDAO extends DBContext {
                     list.add(depService);
                 }
             }
-
         } catch (SQLException e) {
             System.out.println(e);
         }
