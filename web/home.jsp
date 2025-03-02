@@ -137,6 +137,60 @@
                 border-radius: 5px;
             }
 
+            .title {
+                color: #000;
+                font-size: 1.5rem;
+                font-weight: bold;
+            }
+
+            .para-desc {
+                font-size: 1rem;
+                max-width: 600px;
+                margin: 0 auto;
+            }
+
+            .testimonial-card {
+                border: none;
+                border-radius: 10px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+                height: 100%; /* Đảm bảo các thẻ có cùng chiều cao */
+            }
+
+            .testimonial-card:hover {
+                transform: scale(1.05); /* Phóng to 5% khi hover */
+                box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Bóng sâu hơn khi hover */
+            }
+
+            .card-img-top {
+                border-top-left-radius: 10px;
+                border-top-right-radius: 10px;
+                object-fit: cover;
+                height: 200px; /* Chiều cao cố định để nhất quán */
+            }
+
+            .card-body {
+                padding: 1.5rem;
+            }
+
+            .card-text {
+                font-size: 0.9rem;
+                line-height: 1.5;
+            }
+
+            .card-title {
+                font-size: 1.1rem;
+                margin-top: 1rem;
+            }
+
+            .text-muted {
+                color: #6c757d !important;
+            }
+
+            .text-primary {
+                color: black !important;
+            }
+
         </style>
     </head>
 
@@ -151,247 +205,9 @@
             </div>
         </div>
         <!-- Loader -->
-
+        <jsp:include page="template/header.jsp"/>
         <!-- Navbar STart -->
-        <header id="topnav" class="navigation sticky">
-            <div class="container">
-                <!-- Logo container-->
-                <div>
-                    <a class="logo" href="index.html">
-                        <span class="logo-light-mode">
-                            <img src="assets/images/logo-dark.png" class="l-dark" height="24" alt="">
-                            <img src="assets/images/logo-light.png" class="l-light" height="24" alt="">
-                        </span>
-                        <img src="assets/images/logo-light.png" height="24" class="logo-dark-mode" alt="">
-                    </a>
-                </div>
-                <!-- End Logo container-->
 
-                <!-- Start Mobile Toggle -->
-                <div class="menu-extras">
-                    <div class="menu-item">
-                        <!-- Mobile menu toggle-->
-                        <a class="navbar-toggle" id="isToggle" onclick="toggleMenu()">
-                            <div class="lines">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </div>
-                        </a>
-                        <!-- End mobile menu toggle-->
-                    </div>
-                </div>
-                <!-- End Mobile Toggle -->
-
-                <!-- Start Dropdown -->
-                <ul class="dropdowns list-inline mb-0">
-                    <li class="list-inline-item mb-0">
-                        <a href="javascript:void(0)" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
-                           aria-controls="offcanvasRight">
-                            <div class="btn btn-icon btn-pills btn-primary"><i data-feather="settings"
-                                                                               class="fea icon-sm"></i></div>
-                        </a>
-                    </li>
-                    <c:if test="${sessionScope.sustomer == null && sessionScope.staff == null}">
-
-                        <!--                    <li class="list-inline-item mb-0 ms-1">
-                                                <a href="javascript:void(0)" class="btn btn-icon btn-pills btn-primary" data-bs-toggle="offcanvas"
-                                                   data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
-                                                    <i class="uil uil-search"></i>
-                                                </a>
-                                            </li>-->
-                        <li class="list-inline-item mb-0 ms-1">
-                            <a href="
-                               ${pageContext.request.contextPath}/auth/template/login.jsp"" class="btn btn-pills btn-soft-primary">
-                                <i class="uil uil-sign-in-alt align-middle h6 me-1"></i> Đăng nhập
-                            </a>
-                        </li>
-                    </c:if>
-                    <c:if test="${sessionScope.customer != null}">
-                        <li class="list-inline-item mb-0 ms-1">
-                            <div class="dropdown dropdown-primary">
-                                <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0"
-                                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img
-                                        src={customer.image} class="avatar avatar-ex-small rounded-circle"
-                                        alt=""></button>
-                                <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3"
-                                     style="min-width: 200px;">
-                                    <a class="dropdown-item d-flex align-items-center text-dark" href="">
-                                        <img src="assets/images/doctors/01.jpg"
-                                             class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                        <div class="flex-1 ms-2">
-                                            <span class="d-block mb-1">${Customer.username}</span>
-                                        </div>
-                                    </a>
-                                    <a class="dropdown-item text-dark" href="doctor-dashboard.html"><span
-                                            class="mb-0 d-inline-block me-1"><i
-                                                class="uil uil-dashboard align-middle h6"></i></span> Dashboard</a>
-                                    <a class="dropdown-item text-dark" href="doctor-profile-setting.html"><span
-                                            class="mb-0 d-inline-block me-1"><i
-                                                class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
-                                    <div class="dropdown-divider border-top"></div>
-                                    <a class="dropdown-item text-dark" href="login.jsp"><span
-                                            class="mb-0 d-inline-block me-1"><i
-                                                class="uil uil-sign-out-alt align-middle h6"></i></span> Logout</a>
-                                </div>
-                            </div>
-                        </li>
-                    </c:if>
-                    <c:if test="${sessionScope.staff != null}">
-                        <li class="list-inline-item mb-0 ms-1">
-                            <div class="dropdown dropdown-primary">
-                                <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0"
-                                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img
-                                        src="assets/images/doctors/01.jpg" class="avatar avatar-ex-small rounded-circle"
-                                        alt=""></button>
-                                <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3"
-                                     style="min-width: 200px;">
-                                    <a class="dropdown-item d-flex align-items-center text-dark" href="">
-                                        <img src="assets/images/doctors/01.jpg"
-                                             class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                        <div class="flex-1 ms-2">
-                                            <span class="d-block mb-1">${customer.username}</span>
-                                        </div>
-                                    </a>
-                                    <a class="dropdown-item text-dark" href="doctor-dashboard.html"><span
-                                            class="mb-0 d-inline-block me-1"><i
-                                                class="uil uil-dashboard align-middle h6"></i></span> Dashboard</a>
-                                            <c:if test="${sessionScope.staff.roleId.id == 1}">
-                                        <a class="dropdown-item text-dark" href="doctor-profile-setting.html"><span
-                                                class="mb-0 d-inline-block me-1"><i
-                                                    class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
-                                            </c:if>
-                                            <c:if test="${sessionScope.staff.roleId.id == 2}">
-                                        <a class="dropdown-item text-dark" href="./consultant-customer"><span
-                                                class="mb-0 d-inline-block me-1"><i
-                                                    class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
-                                            </c:if>
-                                            <c:if test="${sessionScope.staff.roleId.id == 3}">
-                                        <a class="dropdown-item text-dark" href="./profile-manager"><span
-                                                class="mb-0 d-inline-block me-1"><i
-                                                    class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
-                                            </c:if>
-                                            <c:if test="${sessionScope.staff.roleId.id == 4}">
-                                        <a class="dropdown-item text-dark" href="./Admin.jsp"><span
-                                                class="mb-0 d-inline-block me-1"><i
-                                                    class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
-                                            </c:if>
-                                    <div class="dropdown-divider border-top"></div>
-                                    <a class="dropdown-item text-dark" href="AuthServlet" name ="action" value="logout"><span
-                                            class="mb-0 d-inline-block me-1"><i
-                                                class="uil uil-sign-out-alt align-middle h6"></i></span> Logout</a>
-                                </div>
-                            </div>
-                        </li>
-                    </c:if>
-                </ul>
-                <!-- Start Dropdown -->
-
-                <div id="navigation">
-                    <!-- Navigation Menu-->
-                    <ul class="navigation-menu nav-left nav-light">
-                        <li class="has-submenu parent-menu-item">
-                            <a href="javascript:void(0)">Tiết kiệm</a><span class="menu-arrow"></span>
-                            <ul class="submenu">
-                                <li><a href="index.html" class="sub-menu-item">Tiền gửi tiết kiệm có kì hạn</a></li>
-                                <li><a href="index-two.html" class="sub-menu-item">tiết kiệm linh hoạt</a></li>
-                                <li><a href="index-three.html" class="sub-menu-item">Chứng chỉ tiền gửi</a></li>
-                            </ul>
-                        </li>
-
-                        <li class="has-submenu parent-parent-menu-item">
-                            <a href="javascript:void(0)">Vay</a><span class="menu-arrow"></span>
-                            <ul class="submenu">
-                                <li class="has-submenu parent-menu-item">
-                                    <a href="javascript:void(0)" class="menu-item"> Dashboard </a>
-                                    <!--                                    <span
-                                                                            class="submenu-arrow"></span>
-                                                                        <ul class="submenu"> //submenu dùng lại nếu cần
-                                                                            <li><a href="doctor-dashboard.html" class="sub-menu-item">Dashboard</a></li>
-                                                                            <li><a href="doctor-appointment.html" class="sub-menu-item">Appointment</a></li>
-                                                                            <li><a href="patient-list.html" class="sub-menu-item">Patients</a></li>
-                                                                            <li><a href="doctor-schedule.html" class="sub-menu-item">Schedule Timing</a></li>
-                                                                            <li><a href="invoices.html" class="sub-menu-item">Invoices</a></li>
-                                                                            <li><a href="patient-review.html" class="sub-menu-item">Reviews</a></li>
-                                                                            <li><a href="doctor-messages.html" class="sub-menu-item">Messages</a></li>
-                                                                            <li><a href="doctor-profile.html" class="sub-menu-item">Profile</a></li>
-                                                                            <li><a href="doctor-profile-setting.html" class="sub-menu-item">Profile Settings</a>
-                                                                            </li>
-                                                                            <li><a href="doctor-chat.html" class="sub-menu-item">Chat</a></li>
-                                                                            <li><a href="/login.jsp" class="sub-menu-item">Login</a></li>
-                                                                            <li><a href="
-                                                                                   /signup.jsp" class="sub-menu-item">Sign Up</a></li>
-                                                                            <li><a href="
-                                                                                   /forgot-password.jsp" class="sub-menu-item">Forgot Password</a></li>
-                                                                        </ul>-->
-                                </li>
-                                <li><a href="doctor-team-one.html" class="sub-menu-item">Vay mua nhà</a></li>
-                                <li><a href="doctor-team-two.html" class="sub-menu-item">Vay mua ô tô</a></li>
-                                <li><a href="doctor-team-three.html" class="sub-menu-item">Vay tiêu dùng</a></li>
-                            </ul>
-                        </li>
-
-                        <li class="has-submenu parent-menu-item">
-                            <a href="javascript:void(0)">Đầu tư</a><span class="menu-arrow"></span>
-                            <ul class="submenu">
-                                <li><a href="patient-dashboard.html" class="sub-menu-item">Dashboard</a></li>
-                                <li><a href="patient-profile.html" class="sub-menu-item">Profile</a></li>
-                                <li><a href="booking-appointment.html" class="sub-menu-item">Book Appointment</a></li>
-                                <li><a href="patient-invoice.html" class="sub-menu-item">Invoice</a></li>
-                            </ul>
-                        </li>
-
-                        <li class="has-submenu parent-menu-item">
-                            <a href="javascript:void(0)">Bảo hiểm</a><span class="menu-arrow"></span>
-                            <ul class="submenu">
-                                <li><a href="pharmacy.html" class="sub-menu-item">Pharmacy</a></li>
-                                <li><a href="pharmacy-shop.html" class="sub-menu-item">Shop</a></li>
-                                <li><a href="pharmacy-product-detail.html" class="sub-menu-item">Medicine Detail</a></li>
-                                <li><a href="pharmacy-shop-cart.html" class="sub-menu-item">Shop Cart</a></li>
-                                <li><a href="pharmacy-checkout.html" class="sub-menu-item">Checkout</a></li>
-                                <li><a href="pharmacy-account.html" class="sub-menu-item">Account</a></li>
-                            </ul>
-                        </li>
-
-                        <li class="has-submenu parent-parent-menu-item"><a href="javascript:void(0)">Các công cụ và tiện ích</a><span
-                                class="menu-arrow"></span>
-                            <ul class="submenu">
-                                <li class="has-submenu parent-menu-item">
-                                    <a href="javascript:void(0)" class="menu-item"> Các loại bảng tính </a><span
-                                        class="submenu-arrow"></span>
-                                    <ul class="submenu">
-                                        <li><a href="./public/LoanInterestRateTool.jsp" class="sub-menu-item">Bảng tính lãi suất vay</a></li>
-                                        <li><a href="./public/InsuranceBenefitsTool.jsp" class="sub-menu-item">Bảng tính quyền lợi bảo hiểm</a></li>
-                                        <li><a href="./public/SaveInterestTool.jsp" class="sub-menu-item">Bảng tính lãi suất tiết kiệm</a></li>
-                                    </ul>
-                                </li>
-                                <li class="has-submenu parent-menu-item">
-                                    <a href="javascript:void(0)" class="menu-item"> Tỉ giá </a><span
-                                        class="submenu-arrow"></span>
-                                    <ul class="submenu">
-                                        <li><a href="blog-detail.html" class="sub-menu-item">Tỷ giá hối đoái</a></li>
-                                        <li><a href="blog-detail.html" class="sub-menu-item">Quy đổi tiền tệ</a></li>
-                                        <li><a href="blog-detail.html" class="sub-menu-item">Tỷ giá chốt</a></li>
-                                        <li><a href="blog-detail.html" class="sub-menu-item">Tỷ giá vàng</a></li>
-                                    </ul>
-                                </li>
-                                <li class="has-submenu parent-menu-item">
-                                    <a href="javascript:void(0)" class="menu-item"> Biểu phí biểu mẫu </a><span
-                                        class="submenu-arrow"></span>
-                                    <ul class="submenu">
-                                        <li><a href="blogs.html" class="sub-menu-item">Biểu phí và biểu mẫu</a></li>
-                                        <li><a href="blog-detail.html" class="sub-menu-item">Biểu lãi suất</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="departments.html" class="sub-menu-item">Hỗ trợ</a></li>
-                                <li><a href="faqs.html" class="sub-menu-item">Liên hệ</a></li>
-                            </ul>
-                        </li>
-                        <!--                    <li><a href="../admin/index.html" class="sub-menu-item" target="_blank">Admin</a></li>-->
-                    </ul><!--end navigation menu-->
-                </div><!--end navigation-->
-            </div><!--end container-->
-        </header><!--end header-->
         <!-- Navbar End -->
 
         <!-- Start Hero -->
@@ -643,292 +459,6 @@
             </div><!--end container-->
         </section><!--end section-->
         <!-- End -->
-
-        <!-- Start -->
-        <section class="section bg-light">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-12">
-                        <div class="section-title text-center mb-4 pb-2">
-                            <span class="badge badge-pill badge-soft-primary mb-3">Availability</span>
-                            <h4 class="title mb-4">Doctors Time Table</h4>
-                            <p class="text-muted mx-auto para-desc mb-0">Great doctor if you need your family member to get
-                                effective immediate assistance, emergency treatment or a simple consultation.</p>
-                        </div>
-                    </div><!--end col-->
-                </div><!--end row-->
-            </div><!--end container-->
-
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-12 mt-4 pt-2">
-                        <div class="table-responsive shadow rounded">
-                            <table class="table table-center table-bordered bg-white mb-0">
-                                <thead>
-                                    <tr>
-                                        <th class="text-center py-4" style="min-width: 120px;">Time Table</th>
-                                        <th class="text-center py-4" style="min-width: 200px;">Monday</th>
-                                        <th class="text-center py-4" style="min-width: 200px;">Tuesday</th>
-                                        <th class="text-center py-4" style="min-width: 200px;">Wednesday</th>
-                                        <th class="text-center py-4" style="min-width: 200px;">Thursday</th>
-                                        <th class="text-center py-4" style="min-width: 200px;">Friday</th>
-                                        <th class="text-center py-4" style="min-width: 200px;">Saturday</th>
-                                        <th class="text-center py-4" style="min-width: 200px;">Sunday</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- Start -->
-                                    <tr>
-                                        <th class="text-center py-5">09:00AM</th>
-                                        <td>
-                                            <div class="d-flex mb-3">
-                                                <img src="assets/images/doctors/01.jpg"
-                                                     class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                <div class="ms-3">
-                                                    <h6 class="text-dark mb-0 d-block">Calvin Carlo</h6>
-                                                    <small class="text-muted">Eye Care</small>
-                                                </div>
-                                            </div>
-                                            <small class="bg-soft-primary rounded py-1 px-2 d-block text-center">09:00AM -
-                                                10:00AM</small>
-                                        </td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td>
-                                            <div class="d-flex mb-3">
-                                                <img src="assets/images/doctors/03.jpg"
-                                                     class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                <div class="ms-3">
-                                                    <h6 class="text-dark mb-0 d-block">Alia Reddy</h6>
-                                                    <small class="text-muted">Psychotherapy</small>
-                                                </div>
-                                            </div>
-                                            <small class="bg-soft-primary rounded py-1 px-2 d-block text-center">09:00AM -
-                                                01:00PM</small>
-                                        </td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-
-                                    <tr>
-                                        <th class="text-center py-5">11:00AM</th>
-                                        <td></td>
-                                        <td>
-                                            <div class="d-flex mb-3">
-                                                <img src="assets/images/doctors/02.jpg"
-                                                     class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                <div class="ms-3">
-                                                    <h6 class="text-dark mb-0 d-block">Cristino Murphy</h6>
-                                                    <small class="text-muted">Gynecology</small>
-                                                </div>
-                                            </div>
-                                            <small class="bg-soft-primary rounded py-1 px-2 d-block text-center">11:00AM -
-                                                04:00PM</small>
-                                        </td>
-                                        <td></td>
-                                        <td>
-                                            <div class="d-flex mb-3">
-                                                <img src="assets/images/doctors/05.jpg"
-                                                     class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                <div class="ms-3">
-                                                    <h6 class="text-dark mb-0 d-block">Jennifer Ballance</h6>
-                                                    <small class="text-muted">Cardiology</small>
-                                                </div>
-                                            </div>
-                                            <small class="bg-soft-primary rounded py-1 px-2 d-block text-center">11:00AM -
-                                                12:00PM</small>
-                                        </td>
-                                        <td></td>
-                                        <td>
-                                            <div class="d-flex mb-3">
-                                                <img src="assets/images/doctors/04.jpg"
-                                                     class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                <div class="ms-3">
-                                                    <h6 class="text-dark mb-0 d-block">Toni Kovar</h6>
-                                                    <small class="text-muted">Orthopedic</small>
-                                                </div>
-                                            </div>
-                                            <small class="bg-soft-primary rounded py-1 px-2 d-block text-center">09:00AM -
-                                                10:00AM</small>
-                                        </td>
-                                        <td></td>
-                                    </tr>
-
-                                    <tr>
-                                        <th class="text-center py-5">02:00PM</th>
-                                        <td></td>
-                                        <td></td>
-                                        <td>
-                                            <div class="d-flex mb-3">
-                                                <img src="assets/images/doctors/06.jpg"
-                                                     class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                <div class="ms-3">
-                                                    <h6 class="text-dark mb-0 d-block">Tara Arrington</h6>
-                                                    <small class="text-muted">Neurology</small>
-                                                </div>
-                                            </div>
-                                            <small class="bg-soft-primary rounded py-1 px-2 d-block text-center">02:00PM -
-                                                04:00PM</small>
-                                        </td>
-                                        <td></td>
-                                        <td>
-                                            <div class="d-flex mb-3">
-                                                <img src="assets/images/doctors/05.jpg"
-                                                     class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                <div class="ms-3">
-                                                    <h6 class="text-dark mb-0 d-block">Jennifer Ballance</h6>
-                                                    <small class="text-muted">Cardiology</small>
-                                                </div>
-                                            </div>
-                                            <small class="bg-soft-primary rounded py-1 px-2 d-block text-center">11:00AM -
-                                                12:00PM</small>
-                                        </td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-
-                                    <tr>
-                                        <th class="text-center py-5">04:00PM</th>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td>
-                                            <div class="d-flex mb-3">
-                                                <img src="assets/images/doctors/06.jpg"
-                                                     class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                <div class="ms-3">
-                                                    <h6 class="text-dark mb-0 d-block">Tara Arrington</h6>
-                                                    <small class="text-muted">Neurology</small>
-                                                </div>
-                                            </div>
-                                            <small class="bg-soft-primary rounded py-1 px-2 d-block text-center">04:00PM -
-                                                05:00PM</small>
-                                        </td>
-                                        <td></td>
-                                        <td></td>
-                                        <td>
-                                            <div class="d-flex mb-3">
-                                                <img src="assets/images/doctors/06.jpg"
-                                                     class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                <div class="ms-3">
-                                                    <h6 class="text-dark mb-0 d-block">Tara Arrington</h6>
-                                                    <small class="text-muted">Neurology</small>
-                                                </div>
-                                            </div>
-                                            <small class="bg-soft-primary rounded py-1 px-2 d-block text-center">04:30PM -
-                                                06:00PM</small>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <th class="text-center py-5">06:00PM</th>
-                                        <td>
-                                            <div class="d-flex mb-3">
-                                                <img src="assets/images/doctors/03.jpg"
-                                                     class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                <div class="ms-3">
-                                                    <h6 class="text-dark mb-0 d-block">Alia Reddy</h6>
-                                                    <small class="text-muted">Psychotherapy</small>
-                                                </div>
-                                            </div>
-                                            <small class="bg-soft-primary rounded py-1 px-2 d-block text-center">06:00PM -
-                                                09:00PM</small>
-                                        </td>
-                                        <td></td>
-                                        <td>
-                                            <div class="d-flex mb-3">
-                                                <img src="assets/images/doctors/04.jpg"
-                                                     class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                <div class="ms-3">
-                                                    <h6 class="text-dark mb-0 d-block">Toni Kovar</h6>
-                                                    <small class="text-muted">Orthopedic</small>
-                                                </div>
-                                            </div>
-                                            <small class="bg-soft-primary rounded py-1 px-2 d-block text-center">07:00PM -
-                                                08:00PM</small>
-                                        </td>
-                                        <td></td>
-                                        <td>
-                                            <div class="d-flex mb-3">
-                                                <img src="assets/images/doctors/05.jpg"
-                                                     class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                <div class="ms-3">
-                                                    <h6 class="text-dark mb-0 d-block">Jennifer Ballance</h6>
-                                                    <small class="text-muted">Cardiology</small>
-                                                </div>
-                                            </div>
-                                            <small class="bg-soft-primary rounded py-1 px-2 d-block text-center">06:00PM -
-                                                07:00PM</small>
-                                        </td>
-                                        <td></td>
-                                        <td>
-                                            <div class="d-flex mb-3">
-                                                <img src="assets/images/doctors/03.jpg"
-                                                     class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                <div class="ms-3">
-                                                    <h6 class="text-dark mb-0 d-block">Alia Reddy</h6>
-                                                    <small class="text-muted">Psychotherapy</small>
-                                                </div>
-                                            </div>
-                                            <small class="bg-soft-primary rounded py-1 px-2 d-block text-center">06:00PM -
-                                                07:00PM</small>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <th class="text-center py-5">09:00PM</th>
-                                        <td></td>
-                                        <td>
-                                            <div class="d-flex mb-3">
-                                                <img src="assets/images/doctors/04.jpg"
-                                                     class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                <div class="ms-3">
-                                                    <h6 class="text-dark mb-0 d-block">Toni Kovar</h6>
-                                                    <small class="text-muted">Orthopedic</small>
-                                                </div>
-                                            </div>
-                                            <small class="bg-soft-primary rounded py-1 px-2 d-block text-center">09:00PM -
-                                                10:00PM</small>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex mb-3">
-                                                <img src="assets/images/doctors/05.jpg"
-                                                     class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                <div class="ms-3">
-                                                    <h6 class="text-dark mb-0 d-block">Jennifer Ballance</h6>
-                                                    <small class="text-muted">Cardiology</small>
-                                                </div>
-                                            </div>
-                                            <small class="bg-soft-primary rounded py-1 px-2 d-block text-center">09:00PM -
-                                                10:00PM</small>
-                                        </td>
-                                        <td></td>
-                                        <td>
-                                            <div class="d-flex mb-3">
-                                                <img src="assets/images/doctors/04.jpg"
-                                                     class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                <div class="ms-3">
-                                                    <h6 class="text-dark mb-0 d-block">Toni Kovar</h6>
-                                                    <small class="text-muted">Orthopedic</small>
-                                                </div>
-                                            </div>
-                                            <small class="bg-soft-primary rounded py-1 px-2 d-block text-center">09:00PM -
-                                                10:00PM</small>
-                                        </td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                    <!-- End -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div><!--end col-->
-                </div><!--end row-->
-            </div><!--end container-fluid-->
-        </section><!--end section-->
-        <!-- End -->
-
         <!-- Start -->
         <section class="section">
             <div class="container">
@@ -1046,14 +576,7 @@
                     <div class="col-12 text-center">
                         <div class="video-solution-cta position-relative" style="z-index: 1;">
                             <div class="position-relative">
-                                <img src="assets/images/bg/01.jpg" class="img-fluid rounded-md shadow-lg" alt="">
-                                <div class="play-icon">
-                                    <a href="#" data-bs-toggle="modal" data-bs-target="#watchvideomodal"
-                                       class="play-btn video-play-icon">
-                                        <i
-                                            class="mdi mdi-play text-primary rounded-circle bg-white title-bg-dark shadow-lg"></i>
-                                    </a>
-                                </div>
+                                <img src="assets/images/bg/bg-home.jpeg" class="img-fluid rounded-md shadow-lg" alt="">
                             </div>
 
                             <div class="content">
@@ -1063,7 +586,7 @@
                                             <h1 class="mt-3 text-white title-dark"><span class="counter-value"
                                                                                          data-target="99">10</span>%</h1>
                                             <h5 class="counter-head text-white title-dark mb-1">Positive feedback</h5>
-                                            <p class="text-white-50 mb-0">From Doctors</p>
+                                            <p class="text-white-50 mb-0">From Customer</p>
                                         </div><!--end counter box-->
                                     </div><!--end col-->
 
@@ -1096,139 +619,63 @@
 
         <!-- Start -->
         <section class="section">
-            <div class="container">
+            <div class="container mt-5 feedback">
                 <div class="row justify-content-center">
-                    <div class="col-12">
-                        <div class="section-title text-center mb-4 pb-2">
-                            <h4 class="title mb-4">Patients Says</h4>
-                            <p class="text-muted mx-auto para-desc mb-0">Great doctor if you need your family member to get
-                                effective immediate assistance, emergency treatment or a simple consultation.</p>
+                    <div class="col-12 text-center mb-4">
+                        <h4 class="title mb-4">Khách hàng nói về chúng tôi</h4>
+                        <p class="text-muted para-desc mb-0">Bác sĩ tuyệt vời nếu bạn cần người thân trong gia đình được hỗ trợ ngay lập tức, điều trị khẩn cấp hoặc tư vấn đơn giản.</p>
+                    </div>
+                </div>
+
+                <div class="row justify-content-center">
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="card testimonial-card">
+                            <img src="https://placehold.co/600x400" class="card-img-top" alt="Nguyen Trung Phong">
+                            <div class="card-body text-center">
+                                <p class="card-text text-muted">"Techcombank thật tuyệt vời tại Việt Nam, là một trong những ngân hàng tốt nhất."</p>
+                                <h6 class="card-title text-primary">Ông Nguyễn Trung Phong</h6>
+                            </div>
                         </div>
-                    </div><!--end col-->
-                </div><!--end row-->
+                    </div>
 
-                <div class="row justify-content-center">
-                    <div class="col-lg-8 mt-4 pt-2 text-center">
-                        <div class="client-review-slider">
-                            <div class="tiny-slide text-center">
-                                <p class="text-muted h6 fw-normal fst-italic">" It seems that only fragments of the original
-                                    text remain in the Lorem Ipsum texts used today. The most well-known dummy text is the
-                                    'Lorem Ipsum', which is said to have originated in the 16th century. "</p>
-                                <img src="assets/images/client/01.jpg"
-                                     class="img-fluid avatar avatar-small rounded-circle mx-auto shadow my-3" alt="">
-                                <ul class="list-unstyled mb-0">
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                </ul>
-                                <h6 class="text-primary">- Thomas Israel <small class="text-muted">C.E.O</small></h6>
-                            </div><!--end customer testi-->
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="card testimonial-card">
+                            <img src="https://placehold.co/600x400" class="card-img-top" alt="Dang Ngoc Thanh Ha">
+                            <div class="card-body text-center">
+                                <p class="card-text text-muted">"Khi tôi khám tại Techcombank, tôi thật sự ngạc nhiên trước sự chuyên nghiệp và tận tâm của nhân viên. Đó là lý do tôi luôn khuyên bạn bè đến chi nhánh này."</p>
+                                <h6 class="card-title text-primary">Bà Đặng Ngọc Thanh Hà</h6>
+                            </div>
+                        </div>
+                    </div>
 
-                            <div class="tiny-slide text-center">
-                                <p class="text-muted h6 fw-normal fst-italic">" The advantage of its Latin origin and the
-                                    relative meaninglessness of Lorum Ipsum is that the text does not attract attention to
-                                    itself or distract the viewer's attention from the layout. "</p>
-                                <img src="assets/images/client/02.jpg"
-                                     class="img-fluid avatar avatar-small rounded-circle mx-auto shadow my-3" alt="">
-                                <ul class="list-unstyled mb-0">
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                </ul>
-                                <h6 class="text-primary">- Carl Oliver <small class="text-muted">P.A</small></h6>
-                            </div><!--end customer testi-->
-
-                            <div class="tiny-slide text-center">
-                                <p class="text-muted h6 fw-normal fst-italic">" There is now an abundance of readable dummy
-                                    texts. These are usually used when a text is required purely to fill a space. These
-                                    alternatives to the classic Lorem Ipsum texts are often amusing and tell short, funny or
-                                    nonsensical stories. "</p>
-                                <img src="assets/images/client/03.jpg"
-                                     class="img-fluid avatar avatar-small rounded-circle mx-auto shadow my-3" alt="">
-                                <ul class="list-unstyled mb-0">
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                </ul>
-                                <h6 class="text-primary">- Barbara McIntosh <small class="text-muted">M.D</small></h6>
-                            </div><!--end customer testi-->
-
-                            <div class="tiny-slide text-center">
-                                <p class="text-muted h6 fw-normal fst-italic">" According to most sources, Lorum Ipsum can
-                                    be traced back to a text composed by Cicero in 45 BC. Allegedly, a Latin scholar
-                                    established the origin of the text by compiling all the instances of the unusual word
-                                    'consectetur' he could find "</p>
-                                <img src="assets/images/client/04.jpg"
-                                     class="img-fluid avatar avatar-small rounded-circle mx-auto shadow my-3" alt="">
-                                <ul class="list-unstyled mb-0">
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                </ul>
-                                <h6 class="text-primary">- Christa Smith <small class="text-muted">Manager</small></h6>
-                            </div><!--end customer testi-->
-
-                            <div class="tiny-slide text-center">
-                                <p class="text-muted h6 fw-normal fst-italic">" It seems that only fragments of the original
-                                    text remain in the Lorem Ipsum texts used today. The most well-known dummy text is the
-                                    'Lorem Ipsum', which is said to have originated in the 16th century. "</p>
-                                <img src="assets/images/client/05.jpg"
-                                     class="img-fluid avatar avatar-small rounded-circle mx-auto shadow my-3" alt="">
-                                <ul class="list-unstyled mb-0">
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                </ul>
-                                <h6 class="text-primary">- Dean Tolle <small class="text-muted">Developer</small></h6>
-                            </div><!--end customer testi-->
-
-                            <div class="tiny-slide text-center">
-                                <p class="text-muted h6 fw-normal fst-italic">" It seems that only fragments of the original
-                                    text remain in the Lorem Ipsum texts used today. One may speculate that over the course
-                                    of time certain letters were added or deleted at various positions within the text. "
-                                </p>
-                                <img src="assets/images/client/06.jpg"
-                                     class="img-fluid avatar avatar-small rounded-circle mx-auto shadow my-3" alt="">
-                                <ul class="list-unstyled mb-0">
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                </ul>
-                                <h6 class="text-primary">- Jill Webb <small class="text-muted">Designer</small></h6>
-                            </div><!--end customer testi-->
-                        </div><!--end carousel-->
-                    </div><!--end col-->
-                </div><!--end row-->
-            </div><!--end container-->
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="card testimonial-card">
+                            <img src="https://placehold.co/600x400" class="card-img-top" alt="Le Bich Phuong">
+                            <div class="card-body text-center">
+                                <p class="card-text text-muted">"Tôi thật sự ấn tượng với sự tận khẩn và nhiệt tình của Techcombank trong việc giải quyết vấn đề của tôi. Cảm ơn đội ngũ nhân viên đã giúp tôi."</p>
+                                <h6 class="card-title text-primary">Bà Lê Bích Phượng</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div class="container mt-100 mt-60">
                 <div class="row justify-content-center">
                     <div class="col-12">
                         <div class="section-title text-center mb-4 pb-2">
                             <span class="badge badge-pill badge-soft-primary mb-3">Read News</span>
-                            <h4 class="title mb-4">Latest News & Blogs</h4>
+                            <h4 class="title mb-4">Khám phá và chia sẻ</h4>
                             <p class="text-muted mx-auto para-desc mb-0">Great doctor if you need your family member to get
                                 effective immediate assistance, emergency treatment or a simple consultation.</p>
                         </div>
                     </div><!--end col-->
                 </div><!--end row-->
 
-                <div class="row">
-                    <div class="col-lg-4 col-md-6 col-12 mt-4 pt-2">
-                        <div class="card blog blog-primary border-0 shadow rounded overflow-hidden">
-                            <img src="assets/images/blog/01.jpg" class="img-fluid" alt="">
+                <div class="row justify-content-between">
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="card testimonial-card">
+                            <img src="https://placehold.co/600x400" class="img-fluid" alt="">
                             <div class="card-body p-4">
                                 <ul class="list-unstyled mb-2">
                                     <li class="list-inline-item text-muted small me-3"><i
@@ -1252,9 +699,9 @@
                         </div>
                     </div><!--end col-->
 
-                    <div class="col-lg-4 col-md-6 col-12 mt-4 pt-2">
-                        <div class="card blog blog-primary border-0 shadow rounded overflow-hidden">
-                            <img src="assets/images/blog/02.jpg" class="img-fluid" alt="">
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="card testimonial-card">
+                            <img src="https://placehold.co/600x400" class="img-fluid" alt="">
                             <div class="card-body p-4">
                                 <ul class="list-unstyled mb-2">
                                     <li class="list-inline-item text-muted small me-3"><i
@@ -1278,9 +725,9 @@
                         </div>
                     </div><!--end col-->
 
-                    <div class="col-lg-4 col-md-6 col-12 mt-4 pt-2">
-                        <div class="card blog blog-primary border-0 shadow rounded overflow-hidden">
-                            <img src="assets/images/blog/03.jpg" class="img-fluid" alt="">
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="card testimonial-card">
+                            <img src="https://placehold.co/600x400" class="img-fluid" alt="">
                             <div class="card-body p-4">
                                 <ul class="list-unstyled mb-2">
                                     <li class="list-inline-item text-muted small me-3"><i
@@ -1309,151 +756,39 @@
         <!-- End -->
 
         <!-- Partners start -->
-        <section class="py-4 bg-light">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-lg-2 col-md-2 col-6 text-center py-4">
-                        <img src="assets/images/client/amazon.png" class="avatar avatar-client" alt="">
-                    </div><!--end col-->
-
-                    <div class="col-lg-2 col-md-2 col-6 text-center py-4">
-                        <img src="assets/images/client/google.png" class="avatar avatar-client" alt="">
-                    </div><!--end col-->
-
-                    <div class="col-lg-2 col-md-2 col-6 text-center py-4">
-                        <img src="assets/images/client/lenovo.png" class="avatar avatar-client" alt="">
-                    </div><!--end col-->
-
-                    <div class="col-lg-2 col-md-2 col-6 text-center py-4">
-                        <img src="assets/images/client/paypal.png" class="avatar avatar-client" alt="">
-                    </div><!--end col-->
-
-                    <div class="col-lg-2 col-md-2 col-6 text-center py-4">
-                        <img src="assets/images/client/shopify.png" class="avatar avatar-client" alt="">
-                    </div><!--end col-->
-
-                    <div class="col-lg-2 col-md-2 col-6 text-center py-4">
-                        <img src="assets/images/client/spotify.png" class="avatar avatar-client" alt="">
-                    </div><!--end col-->
-                </div><!--end row-->
-            </div><!--end container-->
-        </section><!--end section-->
+        <!--        <section class="py-4 bg-light">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-2 col-md-2 col-6 text-center py-4">
+                                <img src="assets/images/client/amazon.png" class="avatar avatar-client" alt="">
+                            </div>end col
+        
+                            <div class="col-lg-2 col-md-2 col-6 text-center py-4">
+                                <img src="assets/images/client/google.png" class="avatar avatar-client" alt="">
+                            </div>end col
+        
+                            <div class="col-lg-2 col-md-2 col-6 text-center py-4">
+                                <img src="assets/images/client/lenovo.png" class="avatar avatar-client" alt="">
+                            </div>end col
+        
+                            <div class="col-lg-2 col-md-2 col-6 text-center py-4">
+                                <img src="assets/images/client/paypal.png" class="avatar avatar-client" alt="">
+                            </div>end col
+        
+                            <div class="col-lg-2 col-md-2 col-6 text-center py-4">
+                                <img src="assets/images/client/shopify.png" class="avatar avatar-client" alt="">
+                            </div>end col
+        
+                            <div class="col-lg-2 col-md-2 col-6 text-center py-4">
+                                <img src="assets/images/client/spotify.png" class="avatar avatar-client" alt="">
+                            </div>end col
+                        </div>end row
+                    </div>end container
+                </section>end section-->
         <!-- Partners End -->
 
         <!-- Start -->
-        <footer class="bg-footer">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-5 col-lg-4 mb-0 mb-md-4 pb-0 pb-md-2">
-                        <a href="#" class="logo-footer">
-                            <img src="assets/images/logo-light.png" height="22" alt="">
-                        </a>
-                        <p class="mt-4 me-xl-5">Great doctor if you need your family member to get effective immediate
-                            assistance, emergency treatment or a simple consultation.</p>
-                    </div><!--end col-->
-
-                    <div class="col-xl-7 col-lg-8 col-md-12">
-                        <div class="row">
-                            <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
-                                <h5 class="text-light title-dark footer-head">Company</h5>
-                                <ul class="list-unstyled footer-list mt-4">
-                                    <li><a href="aboutus.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i>
-                                            About us</a></li>
-                                    <li><a href="departments.html" class="text-foot"><i
-                                                class="mdi mdi-chevron-right me-1"></i> Services</a></li>
-                                    <li><a href="doctor-team-two.html" class="text-foot"><i
-                                                class="mdi mdi-chevron-right me-1"></i> Team</a></li>
-                                    <li><a href="blog-detail.html" class="text-foot"><i
-                                                class="mdi mdi-chevron-right me-1"></i> Project</a></li>
-                                    <li><a href="blogs.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i>
-                                            Blog</a></li>
-                                    <li><a href="
-                                           /login.jsp" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i>
-                                            Login</a></li>
-                                </ul>
-                            </div><!--end col-->
-
-                            <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
-                                <h5 class="text-light title-dark footer-head">Departments</h5>
-                                <ul class="list-unstyled footer-list mt-4">
-                                    <li><a href="departments.html" class="text-foot"><i
-                                                class="mdi mdi-chevron-right me-1"></i> Eye Care</a></li>
-                                    <li><a href="departments.html" class="text-foot"><i
-                                                class="mdi mdi-chevron-right me-1"></i> Psychotherapy</a></li>
-                                    <li><a href="departments.html" class="text-foot"><i
-                                                class="mdi mdi-chevron-right me-1"></i> Dental Care</a></li>
-                                    <li><a href="departments.html" class="text-foot"><i
-                                                class="mdi mdi-chevron-right me-1"></i> Orthopedic</a></li>
-                                    <li><a href="departments.html" class="text-foot"><i
-                                                class="mdi mdi-chevron-right me-1"></i> Cardiology</a></li>
-                                    <li><a href="departments.html" class="text-foot"><i
-                                                class="mdi mdi-chevron-right me-1"></i> Gynecology</a></li>
-                                    <li><a href="departments.html" class="text-foot"><i
-                                                class="mdi mdi-chevron-right me-1"></i> Neurology</a></li>
-                                </ul>
-                            </div><!--end col-->
-
-                            <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
-                                <h5 class="text-light title-dark footer-head">Contact us</h5>
-                                <ul class="list-unstyled footer-list mt-4">
-                                    <li class="d-flex align-items-center">
-                                        <i data-feather="mail" class="fea icon-sm text-foot align-middle"></i>
-                                        <a href="mailto:contact@example.com" class="text-foot ms-2">contact@example.com</a>
-                                    </li>
-
-                                    <li class="d-flex align-items-center">
-                                        <i data-feather="phone" class="fea icon-sm text-foot align-middle"></i>
-                                        <a href="tel:+152534-468-854" class="text-foot ms-2">+152 534-468-854</a>
-                                    </li>
-
-                                    <li class="d-flex align-items-center">
-                                        <i data-feather="map-pin" class="fea icon-sm text-foot align-middle"></i>
-                                        <a href="javascript:void(0)" class="video-play-icon text-foot ms-2">View on Google
-                                            map</a>
-                                    </li>
-                                </ul>
-
-                                <ul class="list-unstyled social-icon footer-social mb-0 mt-4">
-                                    <li class="list-inline-item"><a href="#" class="rounded-pill"><i data-feather="facebook"
-                                                                                                     class="fea icon-sm fea-social"></i></a></li>
-                                    <li class="list-inline-item"><a href="#" class="rounded-pill"><i
-                                                data-feather="instagram" class="fea icon-sm fea-social"></i></a></li>
-                                    <li class="list-inline-item"><a href="#" class="rounded-pill"><i data-feather="twitter"
-                                                                                                     class="fea icon-sm fea-social"></i></a></li>
-                                    <li class="list-inline-item"><a href="#" class="rounded-pill"><i data-feather="linkedin"
-                                                                                                     class="fea icon-sm fea-social"></i></a></li>
-                                </ul><!--end icon-->
-                            </div><!--end col-->
-                        </div><!--end row-->
-                    </div><!--end col-->
-                </div><!--end row-->
-            </div><!--end container-->
-
-            <div class="container mt-5">
-                <div class="pt-4 footer-bar">
-                    <div class="row align-items-center">
-                        <div class="col-sm-6">
-                            <div class="text-sm-start text-center">
-                                <p class="mb-0">
-                                    <script>document.write(new Date().getFullYear())</script> © Doctris. Design with <i
-                                        class="mdi mdi-heart text-danger"></i> by <a href="../../../index.html"
-                                        target="_blank" class="text-reset">Shreethemes</a>.
-                                </p>
-                            </div>
-                        </div><!--end col-->
-
-                        <div class="col-sm-6 mt-4 mt-sm-0">
-                            <ul class="list-unstyled footer-list text-sm-end text-center mb-0">
-                                <li class="list-inline-item"><a href="terms.html" class="text-foot me-2">Terms</a></li>
-                                <li class="list-inline-item"><a href="privacy.html" class="text-foot me-2">Privacy</a></li>
-                                <li class="list-inline-item"><a href="aboutus.html" class="text-foot me-2">About</a></li>
-                                <li class="list-inline-item"><a href="contact.html" class="text-foot me-2">Contact</a></li>
-                            </ul>
-                        </div><!--end col-->
-                    </div><!--end row-->
-                </div>
-            </div><!--end container-->
-        </footer><!--end footer-->
+        <jsp:include page="template/footer.jsp"/>
         <!-- End -->
         <!-- Hộp thoại chat -->
         <div class="chat-icon" onclick="toggleChat()" >
@@ -1689,6 +1024,8 @@
         <script src="assets/js/feather.min.js"></script>
         <!-- Main Js -->
         <script src="assets/js/app.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
     </body>
 
 </html>

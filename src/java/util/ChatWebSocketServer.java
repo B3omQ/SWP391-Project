@@ -24,7 +24,7 @@ public class ChatWebSocketServer {
         HttpSession httpSession = (HttpSession) config.getUserProperties().get("httpSession");
 
         String username = null;
-        String role = "guest"; // Mặc định là guest nếu không đăng nhập
+        String role = "guest";
 
         if (httpSession != null) {
             Customer customer = (Customer) httpSession.getAttribute("account");
@@ -153,9 +153,14 @@ public void onMessage(String message, Session session) {
     // Kiểm tra quyền trước khi gửi tin nhắn
     if ((senderRole.equals("staff") && (receiverRole.equals("customer") || receiverRole.equals("guest")))
             || ((senderRole.equals("customer") || senderRole.equals("guest")) && receiverRole.equals("staff"))) {
-        sendMessageToSession(receiverSession, sender + ": " + chatMessage);
+        // Xử lý tin nhắn ảnh
+        if (chatMessage.startsWith("IMAGE")) {
+            sendMessageToSession(receiverSession, sender + ": " + chatMessage); // Gửi tin nhắn ảnh với sender
+        } else {
+            sendMessageToSession(receiverSession, sender + ": " + chatMessage); // Gửi tin nhắn văn bản
+        }
         // Gửi xác nhận cho sender
-//        sendMessageToSession(session, "Hệ thống: Tin nhắn đã được gửi tới " + receiver);
+        sendMessageToSession(session, "Hệ thống: Tin nhắn đã được gửi tới " + receiver);
     } else {
         sendMessageToSession(session, "Bạn không thể gửi tin nhắn đến người này.");
     }
