@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import model.Customer;
+import model.DepService;
 import model.Role;
 import model.Staff;
 import util.AccountValidation;
@@ -91,9 +92,9 @@ public class CeoDAO extends DBContext {
 
         // Thêm điều kiện tìm kiếm
         if (searchTerm != null && !searchTerm.trim().isEmpty()) {
-            sql += "AND (FirstName LIKE ? OR LastName LIKE ? OR Email LIKE ? OR Phone LIKE ?) ";
+            sql += "AND (FirstName LIKE ? OR LastName LIKE ? OR Email LIKE ? OR Phone LIKE ? OR FirstName + ' ' + LastName LIKE ?) ";
             String likeTerm = "%" + searchTerm + "%";
-            Collections.addAll(params, likeTerm, likeTerm, likeTerm, likeTerm);
+            Collections.addAll(params, likeTerm, likeTerm, likeTerm, likeTerm, likeTerm);
         }
 
         // Phân trang cho SQL Server
@@ -444,6 +445,44 @@ public class CeoDAO extends DBContext {
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public DepService getDepServiceById(int id) {
+        String sql = """
+                     SELECT * 
+                     FROM BankingSystem.dbo.DepService
+                     WHERE Id = ?""";
+
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, id);
+            try (ResultSet rs = st.executeQuery()) {
+                while (rs.next()) {
+                    return new DepService(
+                            rs.getInt("Id"),
+                            rs.getString("Description"),
+                            rs.getBigDecimal("MinimumDep"),
+                            rs.getInt("DuringTime"),
+                            rs.getDouble("SavingRate"),
+                            rs.getDouble("SavingRateMinimum"),
+                            rs.getString("PendingStatus")
+                    );
+                }
+            }
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
+    public void updateDepServiceStatusById(int id, String changeStatus) {
+        String sql = """
+                     UPDATE BankingSystem.dbo.DepService SET PendingStatus = ? WHERE Id = ?""";
+
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setString(1, changeStatus);
+            st.setInt(2, id);
+            st.executeUpdate();
+        } catch (Exception e) {
         }
     }
 
