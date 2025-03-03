@@ -28,7 +28,7 @@ public class DepService {
         this.savingRate = savingRate;
     }
 
-    // Getter và Setter
+
     public int getId() {
         return id;
     }
