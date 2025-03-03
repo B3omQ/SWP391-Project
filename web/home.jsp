@@ -32,8 +32,9 @@
         <!-- Css -->
         <link href="assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
 
-        <style>
-            .chat-icon{
+    </head>
+    <style>
+        .chat-icon{
                 position: fixed;
                 bottom: 40px;
                 right: 5px;
@@ -136,64 +137,7 @@
                 cursor: pointer;
                 border-radius: 5px;
             }
-
-            .title {
-                color: #000;
-                font-size: 1.5rem;
-                font-weight: bold;
-            }
-
-            .para-desc {
-                font-size: 1rem;
-                max-width: 600px;
-                margin: 0 auto;
-            }
-
-            .testimonial-card {
-                border: none;
-                border-radius: 10px;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                transition: transform 0.3s ease, box-shadow 0.3s ease;
-                height: 100%; /* Đảm bảo các thẻ có cùng chiều cao */
-            }
-
-            .testimonial-card:hover {
-                transform: scale(1.05); /* Phóng to 5% khi hover */
-                box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Bóng sâu hơn khi hover */
-            }
-
-            .card-img-top {
-                border-top-left-radius: 10px;
-                border-top-right-radius: 10px;
-                object-fit: cover;
-                height: 200px; /* Chiều cao cố định để nhất quán */
-            }
-
-            .card-body {
-                padding: 1.5rem;
-            }
-
-            .card-text {
-                font-size: 0.9rem;
-                line-height: 1.5;
-            }
-
-            .card-title {
-                font-size: 1.1rem;
-                margin-top: 1rem;
-            }
-
-            .text-muted {
-                color: #6c757d !important;
-            }
-
-            .text-primary {
-                color: black !important;
-            }
-
-        </style>
-    </head>
-
+    </style>    
     <body>
         <!-- Loader -->
         <div id="preloader">
@@ -205,9 +149,247 @@
             </div>
         </div>
         <!-- Loader -->
-        <jsp:include page="template/header.jsp"/>
-        <!-- Navbar STart -->
 
+        <!-- Navbar STart -->
+        <header id="topnav" class="navigation sticky">
+            <div class="container">
+                <!-- Logo container-->
+                <div>
+                    <a class="logo" href="index.html">
+                        <span class="logo-light-mode">
+                            <img src="assets/images/logo-dark.png" class="l-dark" height="24" alt="">
+                            <img src="assets/images/logo-light.png" class="l-light" height="24" alt="">
+                        </span>
+                        <img src="assets/images/logo-light.png" height="24" class="logo-dark-mode" alt="">
+                    </a>
+                </div>
+                <!-- End Logo container-->
+
+                <!-- Start Mobile Toggle -->
+                <div class="menu-extras">
+                    <div class="menu-item">
+                        <!-- Mobile menu toggle-->
+                        <a class="navbar-toggle" id="isToggle" onclick="toggleMenu()">
+                            <div class="lines">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </a>
+                        <!-- End mobile menu toggle-->
+                    </div>
+                </div>
+                <!-- End Mobile Toggle -->
+
+                <!-- Start Dropdown -->
+                <ul class="dropdowns list-inline mb-0">
+                    <li class="list-inline-item mb-0">
+                        <a href="javascript:void(0)" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
+                           aria-controls="offcanvasRight">
+                            <div class="btn btn-icon btn-pills btn-primary"><i data-feather="settings"
+                                                                               class="fea icon-sm"></i></div>
+                        </a>
+                    </li>
+                    <c:if test="${sessionScope.sustomer == null && sessionScope.staff == null}">
+
+                        <!--                    <li class="list-inline-item mb-0 ms-1">
+                                                <a href="javascript:void(0)" class="btn btn-icon btn-pills btn-primary" data-bs-toggle="offcanvas"
+                                                   data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
+                                                    <i class="uil uil-search"></i>
+                                                </a>
+                                            </li>-->
+                        <li class="list-inline-item mb-0 ms-1">
+                            <a href="
+                               ${pageContext.request.contextPath}/auth/template/login.jsp"" class="btn btn-pills btn-soft-primary">
+                                <i class="uil uil-sign-in-alt align-middle h6 me-1"></i> Đăng nhập
+                            </a>
+                        </li>
+                    </c:if>
+                    <c:if test="${sessionScope.customer != null}">
+                        <li class="list-inline-item mb-0 ms-1">
+                            <div class="dropdown dropdown-primary">
+                                <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0"
+                                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img
+                                        src={customer.image} class="avatar avatar-ex-small rounded-circle"
+                                        alt=""></button>
+                                <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3"
+                                     style="min-width: 200px;">
+                                    <a class="dropdown-item d-flex align-items-center text-dark" href="">
+                                        <img src="assets/images/doctors/01.jpg"
+                                             class="avatar avatar-md-sm rounded-circle border shadow" alt="">
+                                        <div class="flex-1 ms-2">
+                                            <span class="d-block mb-1">${Customer.username}</span>
+                                        </div>
+                                    </a>
+                                    <a class="dropdown-item text-dark" href="doctor-dashboard.html"><span
+                                            class="mb-0 d-inline-block me-1"><i
+                                                class="uil uil-dashboard align-middle h6"></i></span> Dashboard</a>
+                                    <a class="dropdown-item text-dark" href="doctor-profile-setting.html"><span
+                                            class="mb-0 d-inline-block me-1"><i
+                                                class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
+                                    <div class="dropdown-divider border-top"></div>
+                                    <a class="dropdown-item text-dark" href="login.jsp"><span
+                                            class="mb-0 d-inline-block me-1"><i
+                                                class="uil uil-sign-out-alt align-middle h6"></i></span> Logout</a>
+                                </div>
+                            </div>
+                        </li>
+                    </c:if>
+                    <c:if test="${sessionScope.staff != null}">
+                        <li class="list-inline-item mb-0 ms-1">
+                            <div class="dropdown dropdown-primary">
+                                <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0"
+                                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img
+                                        src="assets/images/doctors/01.jpg" class="avatar avatar-ex-small rounded-circle"
+                                        alt=""></button>
+                                <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3"
+                                     style="min-width: 200px;">
+                                    <a class="dropdown-item d-flex align-items-center text-dark" href="">
+                                        <img src="assets/images/doctors/01.jpg"
+                                             class="avatar avatar-md-sm rounded-circle border shadow" alt="">
+                                        <div class="flex-1 ms-2">
+                                            <span class="d-block mb-1">${customer.username}</span>
+                                        </div>
+                                    </a>
+                                    <a class="dropdown-item text-dark" href="doctor-dashboard.html"><span
+                                            class="mb-0 d-inline-block me-1"><i
+                                                class="uil uil-dashboard align-middle h6"></i></span> Dashboard</a>
+                                            <c:if test="${sessionScope.staff.roleId.id == 1}">
+                                        <a class="dropdown-item text-dark" href="doctor-profile-setting.html"><span
+                                                class="mb-0 d-inline-block me-1"><i
+                                                    class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
+                                            </c:if>
+                                            <c:if test="${sessionScope.staff.roleId.id == 2}">
+                                        <a class="dropdown-item text-dark" href="./consultant-customer"><span
+                                                class="mb-0 d-inline-block me-1"><i
+                                                    class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
+                                            </c:if>
+                                            <c:if test="${sessionScope.staff.roleId.id == 3}">
+                                        <a class="dropdown-item text-dark" href="./profile-manager"><span
+                                                class="mb-0 d-inline-block me-1"><i
+                                                    class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
+                                            </c:if>
+                                            <c:if test="${sessionScope.staff.roleId.id == 4}">
+                                        <a class="dropdown-item text-dark" href="./Admin.jsp"><span
+                                                class="mb-0 d-inline-block me-1"><i
+                                                    class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
+                                            </c:if>
+                                    <div class="dropdown-divider border-top"></div>
+                                    <a class="dropdown-item text-dark" href="AuthServlet" name ="action" value="logout"><span
+                                            class="mb-0 d-inline-block me-1"><i
+                                                class="uil uil-sign-out-alt align-middle h6"></i></span> Logout</a>
+                                </div>
+                            </div>
+                        </li>
+                    </c:if>
+                </ul>
+                <!-- Start Dropdown -->
+
+                <div id="navigation">
+                    <!-- Navigation Menu-->
+                    <ul class="navigation-menu nav-left nav-light">
+                        <li class="has-submenu parent-menu-item">
+                            <a href="javascript:void(0)">Tiết kiệm</a><span class="menu-arrow"></span>
+                            <ul class="submenu">
+                                <li><a href="index.html" class="sub-menu-item">Tiền gửi tiết kiệm có kì hạn</a></li>
+                                <li><a href="index-two.html" class="sub-menu-item">tiết kiệm linh hoạt</a></li>
+                                <li><a href="index-three.html" class="sub-menu-item">Chứng chỉ tiền gửi</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="has-submenu parent-parent-menu-item">
+                            <a href="javascript:void(0)">Vay</a><span class="menu-arrow"></span>
+                            <ul class="submenu">
+                                <li class="has-submenu parent-menu-item">
+                                    <a href="javascript:void(0)" class="menu-item"> Dashboard </a>
+                                    <!--                                    <span
+                                                                            class="submenu-arrow"></span>
+                                                                        <ul class="submenu"> //submenu dùng lại nếu cần
+                                                                            <li><a href="doctor-dashboard.html" class="sub-menu-item">Dashboard</a></li>
+                                                                            <li><a href="doctor-appointment.html" class="sub-menu-item">Appointment</a></li>
+                                                                            <li><a href="patient-list.html" class="sub-menu-item">Patients</a></li>
+                                                                            <li><a href="doctor-schedule.html" class="sub-menu-item">Schedule Timing</a></li>
+                                                                            <li><a href="invoices.html" class="sub-menu-item">Invoices</a></li>
+                                                                            <li><a href="patient-review.html" class="sub-menu-item">Reviews</a></li>
+                                                                            <li><a href="doctor-messages.html" class="sub-menu-item">Messages</a></li>
+                                                                            <li><a href="doctor-profile.html" class="sub-menu-item">Profile</a></li>
+                                                                            <li><a href="doctor-profile-setting.html" class="sub-menu-item">Profile Settings</a>
+                                                                            </li>
+                                                                            <li><a href="doctor-chat.html" class="sub-menu-item">Chat</a></li>
+                                                                            <li><a href="/login.jsp" class="sub-menu-item">Login</a></li>
+                                                                            <li><a href="
+                                                                                   /signup.jsp" class="sub-menu-item">Sign Up</a></li>
+                                                                            <li><a href="
+                                                                                   /forgot-password.jsp" class="sub-menu-item">Forgot Password</a></li>
+                                                                        </ul>-->
+                                </li>
+                                <li><a href="doctor-team-one.html" class="sub-menu-item">Vay mua nhà</a></li>
+                                <li><a href="doctor-team-two.html" class="sub-menu-item">Vay mua ô tô</a></li>
+                                <li><a href="doctor-team-three.html" class="sub-menu-item">Vay tiêu dùng</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="has-submenu parent-menu-item">
+                            <a href="javascript:void(0)">Đầu tư</a><span class="menu-arrow"></span>
+                            <ul class="submenu">
+                                <li><a href="patient-dashboard.html" class="sub-menu-item">Dashboard</a></li>
+                                <li><a href="patient-profile.html" class="sub-menu-item">Profile</a></li>
+                                <li><a href="booking-appointment.html" class="sub-menu-item">Book Appointment</a></li>
+                                <li><a href="patient-invoice.html" class="sub-menu-item">Invoice</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="has-submenu parent-menu-item">
+                            <a href="javascript:void(0)">Bảo hiểm</a><span class="menu-arrow"></span>
+                            <ul class="submenu">
+                                <li><a href="pharmacy.html" class="sub-menu-item">Pharmacy</a></li>
+                                <li><a href="pharmacy-shop.html" class="sub-menu-item">Shop</a></li>
+                                <li><a href="pharmacy-product-detail.html" class="sub-menu-item">Medicine Detail</a></li>
+                                <li><a href="pharmacy-shop-cart.html" class="sub-menu-item">Shop Cart</a></li>
+                                <li><a href="pharmacy-checkout.html" class="sub-menu-item">Checkout</a></li>
+                                <li><a href="pharmacy-account.html" class="sub-menu-item">Account</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="has-submenu parent-parent-menu-item"><a href="javascript:void(0)">Các công cụ và tiện ích</a><span
+                                class="menu-arrow"></span>
+                            <ul class="submenu">
+                                <li class="has-submenu parent-menu-item">
+                                    <a href="javascript:void(0)" class="menu-item"> Các loại bảng tính </a><span
+                                        class="submenu-arrow"></span>
+                                    <ul class="submenu">
+                                        <li><a href="./public/LoanInterestRateTool.jsp" class="sub-menu-item">Bảng tính lãi suất vay</a></li>
+                                        <li><a href="./public/InsuranceBenefitsTool.jsp" class="sub-menu-item">Bảng tính quyền lợi bảo hiểm</a></li>
+                                        <li><a href="./public/SaveInterestTool.jsp" class="sub-menu-item">Bảng tính lãi suất tiết kiệm</a></li>
+                                    </ul>
+                                </li>
+                                <li class="has-submenu parent-menu-item">
+                                    <a href="javascript:void(0)" class="menu-item"> Tỉ giá </a><span
+                                        class="submenu-arrow"></span>
+                                    <ul class="submenu">
+                                        <li><a href="blog-detail.html" class="sub-menu-item">Tỷ giá hối đoái</a></li>
+                                        <li><a href="blog-detail.html" class="sub-menu-item">Quy đổi tiền tệ</a></li>
+                                        <li><a href="blog-detail.html" class="sub-menu-item">Tỷ giá chốt</a></li>
+                                        <li><a href="blog-detail.html" class="sub-menu-item">Tỷ giá vàng</a></li>
+                                    </ul>
+                                </li>
+                                <li class="has-submenu parent-menu-item">
+                                    <a href="javascript:void(0)" class="menu-item"> Biểu phí biểu mẫu </a><span
+                                        class="submenu-arrow"></span>
+                                    <ul class="submenu">
+                                        <li><a href="blogs.html" class="sub-menu-item">Biểu phí và biểu mẫu</a></li>
+                                        <li><a href="blog-detail.html" class="sub-menu-item">Biểu lãi suất</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="departments.html" class="sub-menu-item">Hỗ trợ</a></li>
+                                <li><a href="faqs.html" class="sub-menu-item">Liên hệ</a></li>
+                            </ul>
+                        </li>
+                        <!--                    <li><a href="../admin/index.html" class="sub-menu-item" target="_blank">Admin</a></li>-->
+                    </ul><!--end navigation menu-->
+                </div><!--end navigation-->
+            </div><!--end container-->
+        </header><!--end header-->
         <!-- Navbar End -->
 
         <!-- Start Hero -->
@@ -226,7 +408,7 @@
                                 giao dịch an toàn hoặc tư vấn quản lý tài khoản đơn giản.</p>
 
                             <div class="mt-4 pt-2">
-                                <a href="./test.jsp" class="btn btn-primary">Hỗ trợ tạo tài khoản ngay</a>
+                                <a href="booking-appointment.html" class="btn btn-primary">Hỗ trợ tạo tài khoản ngay</a>
                                 <p class="text-white-50 mb-0 mt-2">T&C apply. Please read <a href="#"
                                                                                              class="text-white-50">Terms and Conditions <i
                                             class="ri-arrow-right-line align-middle"></i></a></p>
@@ -459,6 +641,7 @@
             </div><!--end container-->
         </section><!--end section-->
         <!-- End -->
+
         <!-- Start -->
         <section class="section">
             <div class="container">
@@ -570,7 +753,7 @@
         <!-- End -->
 
         <!-- Start -->
-        <section class="section pt-0">
+<section class="section pt-0">
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-12 text-center">
@@ -619,46 +802,69 @@
 
         <!-- Start -->
         <section class="section">
-            <div class="container mt-5 feedback">
+            <div class="container">
                 <div class="row justify-content-center">
-                    <div class="col-12 text-center mb-4">
-                        <h4 class="title mb-4">Khách hàng nói về chúng tôi</h4>
-                        <p class="text-muted para-desc mb-0">Bác sĩ tuyệt vời nếu bạn cần người thân trong gia đình được hỗ trợ ngay lập tức, điều trị khẩn cấp hoặc tư vấn đơn giản.</p>
-                    </div>
-                </div>
+                    <div class="col-12">
+                        <div class="section-title text-center mb-4 pb-2">
+                            <h4 class="title mb-4">Khách hàng nói về chúng tôi</h4>
+                            <p class="text-muted mx-auto para-desc mb-0">Great doctor if you need your family member to get
+                                effective immediate assistance, emergency treatment or a simple consultation.</p>
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
 
                 <div class="row justify-content-center">
-                    <div class="col-lg-4 col-md-6 mb-4">
-                        <div class="card testimonial-card">
-                            <img src="https://placehold.co/600x400" class="card-img-top" alt="Nguyen Trung Phong">
-                            <div class="card-body text-center">
-                                <p class="card-text text-muted">"Techcombank thật tuyệt vời tại Việt Nam, là một trong những ngân hàng tốt nhất."</p>
-                                <h6 class="card-title text-primary">Ông Nguyễn Trung Phong</h6>
-                            </div>
-                        </div>
-                    </div>
+                    <div class="col-lg-8 mt-4 pt-2 text-center">
+                        <div class="client-review-slider">
+                            <div class="tiny-slide text-center">
+                                <p class="text-muted h6 fw-normal fst-italic">" It seems that only fragments of the original
+                                    text remain in the Lorem Ipsum texts used today. The most well-known dummy text is the
+                                    'Lorem Ipsum', which is said to have originated in the 16th century. "</p>
+                                <img src="https://placehold.co/600x400" class="img-fluid" alt="">
+                                <ul class="list-unstyled mb-0">
+                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                </ul>
+                                <h6 class="text-primary">- Thomas Israel <small class="text-muted">C.E.O</small></h6>
+                            </div><!--end customer testi-->
 
-                    <div class="col-lg-4 col-md-6 mb-4">
-                        <div class="card testimonial-card">
-                            <img src="https://placehold.co/600x400" class="card-img-top" alt="Dang Ngoc Thanh Ha">
-                            <div class="card-body text-center">
-                                <p class="card-text text-muted">"Khi tôi khám tại Techcombank, tôi thật sự ngạc nhiên trước sự chuyên nghiệp và tận tâm của nhân viên. Đó là lý do tôi luôn khuyên bạn bè đến chi nhánh này."</p>
-                                <h6 class="card-title text-primary">Bà Đặng Ngọc Thanh Hà</h6>
-                            </div>
-                        </div>
-                    </div>
+                            <div class="tiny-slide text-center">
+                                <p class="text-muted h6 fw-normal fst-italic">" The advantage of its Latin origin and the
+                                    relative meaninglessness of Lorum Ipsum is that the text does not attract attention to
+                                    itself or distract the viewer's attention from the layout. "</p>
+                                <img src="https://placehold.co/600x400" class="img-fluid" alt="">
+                                <ul class="list-unstyled mb-0">
+                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                </ul>
+                                <h6 class="text-primary">- Carl Oliver <small class="text-muted">P.A</small></h6>
+                            </div><!--end customer testi-->
 
-                    <div class="col-lg-4 col-md-6 mb-4">
-                        <div class="card testimonial-card">
-                            <img src="https://placehold.co/600x400" class="card-img-top" alt="Le Bich Phuong">
-                            <div class="card-body text-center">
-                                <p class="card-text text-muted">"Tôi thật sự ấn tượng với sự tận khẩn và nhiệt tình của Techcombank trong việc giải quyết vấn đề của tôi. Cảm ơn đội ngũ nhân viên đã giúp tôi."</p>
-                                <h6 class="card-title text-primary">Bà Lê Bích Phượng</h6>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                            <div class="tiny-slide text-center">
+                                <p class="text-muted h6 fw-normal fst-italic">" There is now an abundance of readable dummy
+                                    texts. These are usually used when a text is required purely to fill a space. These
+                                    alternatives to the classic Lorem Ipsum texts are often amusing and tell short, funny or
+                                    nonsensical stories. "</p>
+                                <img src="https://placehold.co/600x400" class="img-fluid" alt="">
+                                <ul class="list-unstyled mb-0">
+                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                </ul>
+                                <h6 class="text-primary">- Barbara McIntosh <small class="text-muted">M.D</small></h6>
+                            </div><!--end customer testi-->
+                        </div><!--end carousel-->
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div><!--end container-->
 
             <div class="container mt-100 mt-60">
                 <div class="row justify-content-center">
@@ -666,8 +872,7 @@
                         <div class="section-title text-center mb-4 pb-2">
                             <span class="badge badge-pill badge-soft-primary mb-3">Read News</span>
                             <h4 class="title mb-4">Khám phá và chia sẻ</h4>
-                            <p class="text-muted mx-auto para-desc mb-0">Great doctor if you need your family member to get
-                                effective immediate assistance, emergency treatment or a simple consultation.</p>
+                            <p class="text-muted mx-auto para-desc mb-0">content</p>
                         </div>
                     </div><!--end col-->
                 </div><!--end row-->
@@ -683,8 +888,7 @@
                                     <li class="list-inline-item text-muted small"><i
                                             class="uil uil-clock text-dark h6 me-1"></i>5 min read</li>
                                 </ul>
-                                <a href="blog-detail.html" class="text-dark title h5">You can easily connect to doctor and
-                                    make a treatment</a>
+                                <a href="blog-detail.html" class="text-dark title h5">content</a>
                                 <div class="post-meta d-flex justify-content-between mt-3">
                                     <ul class="list-unstyled mb-0">
                                         <li class="list-inline-item me-2 mb-0"><a href="#" class="text-muted like"><i
@@ -709,8 +913,7 @@
                                     <li class="list-inline-item text-muted small"><i
                                             class="uil uil-clock text-dark h6 me-1"></i>5 min read</li>
                                 </ul>
-                                <a href="blog-detail.html" class="text-dark title h5">Lockdowns lead to fewer people seeking
-                                    medical care</a>
+                                <a href="blog-detail.html" class="text-dark title h5">content</a>
                                 <div class="post-meta d-flex justify-content-between mt-3">
                                     <ul class="list-unstyled mb-0">
                                         <li class="list-inline-item me-2 mb-0"><a href="#" class="text-muted like"><i
@@ -735,8 +938,7 @@
                                     <li class="list-inline-item text-muted small"><i
                                             class="uil uil-clock text-dark h6 me-1"></i>5 min read</li>
                                 </ul>
-                                <a href="blog-detail.html" class="text-dark title h5">Emergency medicine research course for
-                                    the doctors</a>
+                                <a href="blog-detail.html" class="text-dark title h5">content</a>
                                 <div class="post-meta d-flex justify-content-between mt-3">
                                     <ul class="list-unstyled mb-0">
                                         <li class="list-inline-item me-2 mb-0"><a href="#" class="text-muted like"><i
@@ -756,41 +958,152 @@
         <!-- End -->
 
         <!-- Partners start -->
-        <!--        <section class="py-4 bg-light">
-                    <div class="container">
-                        <div class="row justify-content-center">
-                            <div class="col-lg-2 col-md-2 col-6 text-center py-4">
-                                <img src="assets/images/client/amazon.png" class="avatar avatar-client" alt="">
-                            </div>end col
-        
-                            <div class="col-lg-2 col-md-2 col-6 text-center py-4">
-                                <img src="assets/images/client/google.png" class="avatar avatar-client" alt="">
-                            </div>end col
-        
-                            <div class="col-lg-2 col-md-2 col-6 text-center py-4">
-                                <img src="assets/images/client/lenovo.png" class="avatar avatar-client" alt="">
-                            </div>end col
-        
-                            <div class="col-lg-2 col-md-2 col-6 text-center py-4">
-                                <img src="assets/images/client/paypal.png" class="avatar avatar-client" alt="">
-                            </div>end col
-        
-                            <div class="col-lg-2 col-md-2 col-6 text-center py-4">
-                                <img src="assets/images/client/shopify.png" class="avatar avatar-client" alt="">
-                            </div>end col
-        
-                            <div class="col-lg-2 col-md-2 col-6 text-center py-4">
-                                <img src="assets/images/client/spotify.png" class="avatar avatar-client" alt="">
-                            </div>end col
-                        </div>end row
-                    </div>end container
-                </section>end section-->
+        <section class="py-4 bg-light">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-2 col-md-2 col-6 text-center py-4">
+                        <img src="assets/images/client/amazon.png" class="avatar avatar-client" alt="">
+                    </div><!--end col-->
+
+                    <div class="col-lg-2 col-md-2 col-6 text-center py-4">
+                        <img src="assets/images/client/google.png" class="avatar avatar-client" alt="">
+                    </div><!--end col-->
+
+                    <div class="col-lg-2 col-md-2 col-6 text-center py-4">
+                        <img src="assets/images/client/lenovo.png" class="avatar avatar-client" alt="">
+                    </div><!--end col-->
+
+                    <div class="col-lg-2 col-md-2 col-6 text-center py-4">
+                        <img src="assets/images/client/paypal.png" class="avatar avatar-client" alt="">
+                    </div><!--end col-->
+
+                    <div class="col-lg-2 col-md-2 col-6 text-center py-4">
+                        <img src="assets/images/client/shopify.png" class="avatar avatar-client" alt="">
+                    </div><!--end col-->
+
+                    <div class="col-lg-2 col-md-2 col-6 text-center py-4">
+                        <img src="assets/images/client/spotify.png" class="avatar avatar-client" alt="">
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div><!--end container-->
+        </section><!--end section-->
         <!-- Partners End -->
 
         <!-- Start -->
-        <jsp:include page="template/footer.jsp"/>
+        <footer class="bg-footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-5 col-lg-4 mb-0 mb-md-4 pb-0 pb-md-2">
+                        <a href="#" class="logo-footer">
+                            <img src="assets/images/logo-light.png" height="22" alt="">
+                        </a>
+                        <p class="mt-4 me-xl-5">Great doctor if you need your family member to get effective immediate
+                            assistance, emergency treatment or a simple consultation.</p>
+                    </div><!--end col-->
+
+                    <div class="col-xl-7 col-lg-8 col-md-12">
+                        <div class="row">
+                            <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
+                                <h5 class="text-light title-dark footer-head">Company</h5>
+                                <ul class="list-unstyled footer-list mt-4">
+                                    <li><a href="aboutus.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i>
+                                            About us</a></li>
+                                    <li><a href="departments.html" class="text-foot"><i
+                                                class="mdi mdi-chevron-right me-1"></i> Services</a></li>
+                                    <li><a href="doctor-team-two.html" class="text-foot"><i
+                                                class="mdi mdi-chevron-right me-1"></i> Team</a></li>
+                                    <li><a href="blog-detail.html" class="text-foot"><i
+                                                class="mdi mdi-chevron-right me-1"></i> Project</a></li>
+                                    <li><a href="blogs.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i>
+                                            Blog</a></li>
+                                    <li><a href="
+                                           /login.jsp" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i>
+                                            Login</a></li>
+                                </ul>
+                            </div><!--end col-->
+
+                            <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
+                                <h5 class="text-light title-dark footer-head">Departments</h5>
+                                <ul class="list-unstyled footer-list mt-4">
+                                    <li><a href="departments.html" class="text-foot"><i
+                                                class="mdi mdi-chevron-right me-1"></i> Eye Care</a></li>
+                                    <li><a href="departments.html" class="text-foot"><i
+                                                class="mdi mdi-chevron-right me-1"></i> Psychotherapy</a></li>
+                                    <li><a href="departments.html" class="text-foot"><i
+                                                class="mdi mdi-chevron-right me-1"></i> Dental Care</a></li>
+                                    <li><a href="departments.html" class="text-foot"><i
+                                                class="mdi mdi-chevron-right me-1"></i> Orthopedic</a></li>
+                                    <li><a href="departments.html" class="text-foot"><i
+                                                class="mdi mdi-chevron-right me-1"></i> Cardiology</a></li>
+                                    <li><a href="departments.html" class="text-foot"><i
+                                                class="mdi mdi-chevron-right me-1"></i> Gynecology</a></li>
+                                    <li><a href="departments.html" class="text-foot"><i
+                                                class="mdi mdi-chevron-right me-1"></i> Neurology</a></li>
+                                </ul>
+                            </div><!--end col-->
+
+                            <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
+                                <h5 class="text-light title-dark footer-head">Contact us</h5>
+                                <ul class="list-unstyled footer-list mt-4">
+                                    <li class="d-flex align-items-center">
+                                        <i data-feather="mail" class="fea icon-sm text-foot align-middle"></i>
+                                        <a href="mailto:contact@example.com" class="text-foot ms-2">contact@example.com</a>
+                                    </li>
+
+                                    <li class="d-flex align-items-center">
+                                        <i data-feather="phone" class="fea icon-sm text-foot align-middle"></i>
+                                        <a href="tel:+152534-468-854" class="text-foot ms-2">+152 534-468-854</a>
+                                    </li>
+
+                                    <li class="d-flex align-items-center">
+                                        <i data-feather="map-pin" class="fea icon-sm text-foot align-middle"></i>
+                                        <a href="javascript:void(0)" class="video-play-icon text-foot ms-2">View on Google
+                                            map</a>
+                                    </li>
+                                </ul>
+
+                                <ul class="list-unstyled social-icon footer-social mb-0 mt-4">
+                                    <li class="list-inline-item"><a href="#" class="rounded-pill"><i data-feather="facebook"
+                                                                                                     class="fea icon-sm fea-social"></i></a></li>
+                                    <li class="list-inline-item"><a href="#" class="rounded-pill"><i
+                                                data-feather="instagram" class="fea icon-sm fea-social"></i></a></li>
+                                    <li class="list-inline-item"><a href="#" class="rounded-pill"><i data-feather="twitter"
+                                                                                                     class="fea icon-sm fea-social"></i></a></li>
+                                    <li class="list-inline-item"><a href="#" class="rounded-pill"><i data-feather="linkedin"
+                                                                                                     class="fea icon-sm fea-social"></i></a></li>
+                                </ul><!--end icon-->
+                            </div><!--end col-->
+                        </div><!--end row-->
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div><!--end container-->
+
+            <div class="container mt-5">
+                <div class="pt-4 footer-bar">
+                    <div class="row align-items-center">
+                        <div class="col-sm-6">
+                            <div class="text-sm-start text-center">
+                                <p class="mb-0">
+                                    <script>document.write(new Date().getFullYear())</script> © Doctris. Design with <i
+                                        class="mdi mdi-heart text-danger"></i> by <a href="../../../index.html"
+                                        target="_blank" class="text-reset">Shreethemes</a>.
+                                </p>
+                            </div>
+                        </div><!--end col-->
+
+                        <div class="col-sm-6 mt-4 mt-sm-0">
+                            <ul class="list-unstyled footer-list text-sm-end text-center mb-0">
+                                <li class="list-inline-item"><a href="terms.html" class="text-foot me-2">Terms</a></li>
+                                <li class="list-inline-item"><a href="privacy.html" class="text-foot me-2">Privacy</a></li>
+                                <li class="list-inline-item"><a href="aboutus.html" class="text-foot me-2">About</a></li>
+                                <li class="list-inline-item"><a href="contact.html" class="text-foot me-2">Contact</a></li>
+                            </ul>
+                        </div><!--end col-->
+                    </div><!--end row-->
+                </div>
+            </div><!--end container-->
+        </footer><!--end footer-->
         <!-- End -->
-        <!-- Hộp thoại chat -->
         <div class="chat-icon" onclick="toggleChat()" >
             <img src="assets/images/ai logo/ai logo.png" class="avatar avatar-medium"/>
         </div>
@@ -807,6 +1120,76 @@
                 <button onclick="sendMessage()">Gửi</button>
             </div>
         </div>
+                    <script>
+                function toggleChat() {
+                    const chatBox = document.getElementById("chatContainer");
+                    chatBox.style.display = (chatBox.style.display === "none" || chatBox.style.display === "") ? "block" : "none";
+                }
+
+                function handleKeyPress(event) {
+                    if (event.key === "Enter") {
+                        sendMessage();
+                    }
+                }
+
+                function sendMessage() {
+                    const userMessageInput = document.getElementById("userMessage");
+                    let userMessage = userMessageInput.value.trim();
+
+                    if (!userMessage) {
+                        return;
+                    }
+
+                    displayMessage(userMessage, true);
+                    userMessageInput.value = "";
+                    showLoadingIndicator(true);
+
+                    fetch("http://localhost:9999/BankingSystem/AiChatBotServlet", {
+                        method: "POST",
+                        headers: {"Content-Type": "application/x-www-form-urlencoded"},
+                        body: new URLSearchParams({message: userMessage}) // Gửi tin nhắn trực tiếp
+                    })
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error("Network response was not ok");
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                showLoadingIndicator(false);
+                                if (data && data.reply) {
+                                    displayMessage(data.reply, false);
+                                } else {
+                                    displayMessage("Lỗi: AI không phản hồi hoặc dữ liệu không hợp lệ.", false, "error");
+                                    console.error("Invalid AI response:", data);
+                                }
+                            })
+                            .catch(error => {
+                                showLoadingIndicator(false);
+                                displayMessage("Lỗi: Không thể kết nối tới AI.", false, "error");
+                                console.error("Error:", error);
+                            });
+                }
+
+                function displayMessage(message, isUser, messageType = "normal") {
+                    const chatBox = document.getElementById("chatBox");
+                    const messageElement = document.createElement("p");
+                    messageElement.classList.add(isUser ? "user-message" : "ai-message");
+                    if (messageType === "error") {
+                        messageElement.style.color = "red";
+                    }
+
+                    messageElement.textContent = (isUser ? "Bạn: " : "Digibot: ") + message; // Hiển thị tin nhắn trực tiếp
+                    chatBox.appendChild(messageElement);
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                }
+
+                function showLoadingIndicator(show) {
+                    const loadingIndicator = document.getElementById("loading");
+                    loadingIndicator.style.display = show ? "block" : "none";
+                }
+
+            </script>
 
         <!-- Back to top -->
         <a href="#" onclick="topFunction()" id="back-to-top" class="btn btn-icon btn-pills btn-primary back-to-top"><i
@@ -897,76 +1280,6 @@
                     </div><!--end col-->
                 </div><!--end row-->
             </div>
-            <script>
-                function toggleChat() {
-                    const chatBox = document.getElementById("chatContainer");
-                    chatBox.style.display = (chatBox.style.display === "none" || chatBox.style.display === "") ? "block" : "none";
-                }
-
-                function handleKeyPress(event) {
-                    if (event.key === "Enter") {
-                        sendMessage();
-                    }
-                }
-
-                function sendMessage() {
-                    const userMessageInput = document.getElementById("userMessage");
-                    let userMessage = userMessageInput.value.trim();
-
-                    if (!userMessage) {
-                        return;
-                    }
-
-                    displayMessage(userMessage, true);
-                    userMessageInput.value = "";
-                    showLoadingIndicator(true);
-
-                    fetch("http://localhost:9999/BankingSystem/AiChatBotServlet", {
-                        method: "POST",
-                        headers: {"Content-Type": "application/x-www-form-urlencoded"},
-                        body: new URLSearchParams({message: userMessage}) // Gửi tin nhắn trực tiếp
-                    })
-                            .then(response => {
-                                if (!response.ok) {
-                                    throw new Error("Network response was not ok");
-                                }
-                                return response.json();
-                            })
-                            .then(data => {
-                                showLoadingIndicator(false);
-                                if (data && data.reply) {
-                                    displayMessage(data.reply, false);
-                                } else {
-                                    displayMessage("Lỗi: AI không phản hồi hoặc dữ liệu không hợp lệ.", false, "error");
-                                    console.error("Invalid AI response:", data);
-                                }
-                            })
-                            .catch(error => {
-                                showLoadingIndicator(false);
-                                displayMessage("Lỗi: Không thể kết nối tới AI.", false, "error");
-                                console.error("Error:", error);
-                            });
-                }
-
-                function displayMessage(message, isUser, messageType = "normal") {
-                    const chatBox = document.getElementById("chatBox");
-                    const messageElement = document.createElement("p");
-                    messageElement.classList.add(isUser ? "user-message" : "ai-message");
-                    if (messageType === "error") {
-                        messageElement.style.color = "red";
-                    }
-
-                    messageElement.textContent = (isUser ? "Bạn: " : "Digibot: ") + message; // Hiển thị tin nhắn trực tiếp
-                    chatBox.appendChild(messageElement);
-                    chatBox.scrollTop = chatBox.scrollHeight;
-                }
-
-                function showLoadingIndicator(show) {
-                    const loadingIndicator = document.getElementById("loading");
-                    loadingIndicator.style.display = show ? "block" : "none";
-                }
-
-            </script>
 
             <div class="offcanvas-footer p-4 border-top text-center">
                 <ul class="list-unstyled social-icon mb-0">
@@ -1024,8 +1337,6 @@
         <script src="assets/js/feather.min.js"></script>
         <!-- Main Js -->
         <script src="assets/js/app.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
     </body>
 
 </html>

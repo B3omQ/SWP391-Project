@@ -17,8 +17,8 @@ import org.json.JSONArray;
 
 public class AiChatBotServlet extends HttpServlet {
 
-    private static final String API_KEY = "AIzaSyBv66vBHDRMuB1oUmNRDzpNLlKFn4pJBJY";
-    private static final String API_URL = "https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=" + API_KEY;
+    private static final String API_KEY = "AIzaSyAvwrIQZZZS50daDr-ryskTEJKxn9xjhs0";
+    private static final String API_URL = "https://generativelanguage.googleapis.com/v1/models/gemini-1.5-pro:generateContent?key=" + API_KEY;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
