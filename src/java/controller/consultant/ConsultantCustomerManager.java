@@ -73,7 +73,7 @@ public class ConsultantCustomerManager extends HttpServlet {
             int totalPages = (int) Math.ceil(totalRecords * 1.0 / recordsPerPageInt);
             for (Customer customer : customers) {
             if (validator.checkHashOfPassword(customer.getPassword())) {
-                customer.setPassword(null); // Hide hashed passwords
+                customer.setPassword(null);
                 System.out.println("hided");
             }
         }

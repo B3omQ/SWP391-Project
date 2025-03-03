@@ -1,6 +1,7 @@
 package controller.customer;
 
 import dal.CustomerDAO;
+import dal.ManagerDAO;
 import dal.StaffDAO;
 import java.io.IOException;
 import java.util.Random;
@@ -84,9 +85,31 @@ public class AuthServlet extends HttpServlet {
             handleLogin(request, response);
         } else if ("changePassword".equals(action)) {
             handleChangePassword(request, response);
+        } else if ("sendOtp".equals(action)) {
+            handleOtp(request, response);
         } else {
             response.sendRedirect("auth/template/login.jsp");
         }
+    }
+
+    private void handleOtp(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        Staff staff = (Staff) session.getAttribute("staff");
+
+        try {
+
+            String otp = resetService.generateOTP();
+            session.setAttribute("otp", otp);
+
+            String otpMessage = "Mã OTP của bạn là: " + otp + ". OTP có hiệu lực trong 10 phút.";
+            resetService.sendOtpEmail(staff.getEmail(), otpMessage, staff.getFirstname());
+
+            response.sendRedirect("otpEmail.jsp");
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
     }
 
     private void handleLogin(HttpServletRequest request, HttpServletResponse response)

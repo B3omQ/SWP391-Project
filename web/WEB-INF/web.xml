@@ -33,6 +33,26 @@
         <servlet-class>controller.consultant.ConsultantProfile</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>AiChatBotServlet</servlet-name>
+        <servlet-class>controller.AiChatBotServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoanOptionService</servlet-name>
+        <servlet-class>controller.manager.LoanOptionService</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DepOptionService</servlet-name>
+        <servlet-class>controller.manager.DepOptionService</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewDepOption</servlet-name>
+        <servlet-class>controller.manager.ViewDepOption</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>changeEmail</servlet-name>
+        <servlet-class>controller.changeEmail</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>VNpayReturn</servlet-name>
         <servlet-class>controller.customer.VNpayReturn</servlet-class>
     </servlet>
@@ -68,6 +88,54 @@
         <servlet-name>WithdrawDepositServlet</servlet-name>
         <servlet-class>controller.customer.WithdrawDepositServlet</servlet-class>
     </servlet>
+    <servlet> 
+        <servlet-name>ChatSupportServlet</servlet-name>
+        <servlet-class>controller.consultant.ChatSupportServlet</servlet-class>
+    </servlet>
+    <servlet>    
+        <servlet-name>CustomerAdminManagement</servlet-name>
+        <servlet-class>controller.userManagementAdmin.CustomerAdminManagement</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AccountantAdminManagement</servlet-name>
+        <servlet-class>controller.userManagementAdmin.AccountantAdminManagement</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ConsultantAdminManagement</servlet-name>
+        <servlet-class>controller.userManagementAdmin.ConsultantAdminManagement</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ManagerAdminManagement</servlet-name>
+        <servlet-class>controller.userManagementAdmin.ManagerAdminManagement</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProfileAdmin</servlet-name>
+        <servlet-class>controller.userManagementAdmin.ProfileAdmin</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddSavingOption</servlet-name>
+        <servlet-class>controller.manager.AddSavingOption</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CustomerManagement</servlet-name>
+        <servlet-class>controller.ceo.CustomerManagement</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StaffManagement</servlet-name>
+        <servlet-class>controller.ceo.StaffManagement</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditCustomerInfo</servlet-name>
+        <servlet-class>controller.ceo.EditCustomerInfo</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditStaffInfo</servlet-name>
+        <servlet-class>controller.ceo.EditStaffInfo</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CeoProfileServlet</servlet-name>
+        <servlet-class>controller.ceo.CeoProfileServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>HomeServlet</servlet-name>
         <url-pattern>/home</url-pattern>
@@ -77,17 +145,9 @@
         <url-pattern>/consultant-customer</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-name>CustomerManager</servlet-name>
-        <servlet-class>controller.manager.CustomerManager</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>ProfileManager</servlet-name>
         <servlet-class>controller.manager.ProfileManager</servlet-class>
     </servlet>
-    <servlet-mapping>
-        <servlet-name>CustomerManager</servlet-name>
-        <url-pattern>/customer-manager</url-pattern>
-    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ProfileManager</servlet-name>
         <url-pattern>/profile-manager</url-pattern>
@@ -165,6 +225,26 @@
         <url-pattern>/ConsultantProfile</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>AiChatBotServlet</servlet-name>
+        <url-pattern>/AiChatBotServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoanOptionService</servlet-name>
+        <url-pattern>/Loan-Option-Service</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DepOptionService</servlet-name>
+        <url-pattern>/dep-option-service</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewDepOption</servlet-name>
+        <url-pattern>/view-dep-option</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>changeEmail</servlet-name>
+        <url-pattern>/change-email</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>VNpayReturn</servlet-name>
         <url-pattern>/VNpayReturn</url-pattern>
     </servlet-mapping>
@@ -199,6 +279,54 @@
     <servlet-mapping>
         <servlet-name>WithdrawDepositServlet</servlet-name>
         <url-pattern>/WithdrawDepositServlet</url-pattern>
+</servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChatSupportServlet</servlet-name>
+        <url-pattern>/ChatSupportServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CustomerAdminManagement</servlet-name>
+        <url-pattern>/customer-admin-management</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AccountantAdminManagement</servlet-name>
+        <url-pattern>/accountant-admin-management</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ConsultantAdminManagement</servlet-name>
+        <url-pattern>/consultant-admin-management</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManagerAdminManagement</servlet-name>
+        <url-pattern>/manager-admin-management</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProfileAdmin</servlet-name>
+        <url-pattern>/profile-admin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddSavingOption</servlet-name>
+        <url-pattern>/add-saving-option</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CustomerManagement</servlet-name>
+        <url-pattern>/customerManagement</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StaffManagement</servlet-name>
+        <url-pattern>/staffManagement</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditCustomerInfo</servlet-name>
+        <url-pattern>/editCustomerInfo</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditStaffInfo</servlet-name>
+        <url-pattern>/editStaffInfo</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CeoProfileServlet</servlet-name>
+        <url-pattern>/ceoProfileServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>1440</session-timeout>

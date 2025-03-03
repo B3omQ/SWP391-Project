@@ -23,7 +23,7 @@ import util.AccountValidation;
  *
  * @author LAPTOP
  */
-@MultipartConfig(maxFileSize = 1024 * 1024 * 5)
+@MultipartConfig
 public class ConsultantProfile extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

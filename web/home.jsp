@@ -31,9 +31,114 @@
         <link rel="stylesheet" href="assets/css/tiny-slider.css" />
         <!-- Css -->
         <link href="assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
+        <link rel="stylesheet" href="resources/script/animate.min.css">
 
     </head>
+    <style>
+        .chat-icon{
+                position: fixed;
+                bottom: 40px;
+                right: 5px;
+                background: transparent;
+                padding: 0;
+                border-radius: 50%;
+                cursor: pointer;
+                border: none;
+            }
 
+            /* Hộp thoại chat */
+            .chat-container {
+                display: none;
+                position: fixed;
+                bottom: 80px;
+                right: 20px;
+                width: 300px;
+                background: white;
+                border-radius: 10px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                overflow: hidden;
+            }
+
+            /* Tiêu đề chat */
+            .chat-header {
+                background: #dc3545;
+                color: white;
+                padding: 10px;
+                display: flex;
+                justify-content: space-between; /* Đặt khoảng cách giữa title và nút đóng */
+                align-items: center;
+                font-size: 16px;
+                position: relative;
+                font-weight: bold;
+            }
+
+            /* Nút đóng */
+            .close-btn {
+                background: none;
+                border: none;
+                cursor: pointer;
+                padding: 0;
+            }
+            .close-btn img {
+                width: 10px; /* Adjust width as needed */
+                height: 20px; /* Adjust height as needed */
+                /* or */
+                width: 1.5rem; /* Use relative units like rem or em for better scaling */
+                height: 1.5rem;
+            }
+
+            /* Nội dung chat */
+            .chat-box {
+                height: 250px;
+                overflow-y: auto;
+                padding: 10px;
+                background: #f9f9f9;
+            }
+
+            /* Tin nhắn */
+            .chat-box p {
+                padding: 8px;
+                border-radius: 5px;
+                margin: 5px 0;
+            }
+
+            /* Tin nhắn người dùng */
+            .user-message {
+                background: #dc3545;
+                color: white;
+                text-align: left;
+            }
+
+            /* Tin nhắn AI */
+            .ai-message {
+                background: #e9ecef;
+                text-align: left;
+            }
+
+            /* Ô nhập tin nhắn */
+            .chat-input {
+                display: flex;
+                padding: 10px;
+                border-top: 1px solid #ddd;
+            }
+
+            .chat-input input {
+                flex: 1;
+                padding: 8px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+            }
+
+            .chat-input button {
+                background: #dc3545;
+                color: white;
+                border: none;
+                padding: 8px 15px;
+                margin-left: 5px;
+                cursor: pointer;
+                border-radius: 5px;
+            }
+    </style>    
     <body>
         <!-- Loader -->
         <div id="preloader">
@@ -187,8 +292,20 @@
                         <li class="has-submenu parent-menu-item">
                             <a href="javascript:void(0)">Tiết kiệm</a><span class="menu-arrow"></span>
                             <ul class="submenu">
-                                <li><a href="index.html" class="sub-menu-item">Tiền gửi tiết kiệm có kì hạn</a></li>
-                                <li><a href="index-two.html" class="sub-menu-item">tiết kiệm linh hoạt</a></li>
+                                <li class="has-submenu parent-menu-item">
+                                    <a href="javascript:void(0)" class="menu-item">Gửi tiết kiệm</a><span
+                                        class="submenu-arrow"></span>
+                                    <ul class="submenu">
+                                        <li><a href="./public/LoanInterestRateTool.jsp" class="sub-menu-item">Gửi tiết kiệm có kì hạn</a></li>
+                                    </ul>
+                                </li>
+                                <li class="has-submenu parent-menu-item">
+                                    <a href="javascript:void(0)" class="menu-item"></a><span
+                                        class="submenu-arrow"></span>
+                                    <ul class="submenu">
+                                        <li><a href="./public/LoanInterestRateTool.jsp" class="sub-menu-item">Gửi tiết kiệm có kì hạn</a></li>
+                                    </ul>
+                                </li>
                                 <li><a href="index-three.html" class="sub-menu-item">Chứng chỉ tiền gửi</a></li>
                             </ul>
                         </li>
@@ -198,26 +315,6 @@
                             <ul class="submenu">
                                 <li class="has-submenu parent-menu-item">
                                     <a href="javascript:void(0)" class="menu-item"> Dashboard </a>
-                                    <!--                                    <span
-                                                                            class="submenu-arrow"></span>
-                                                                        <ul class="submenu"> //submenu dùng lại nếu cần
-                                                                            <li><a href="doctor-dashboard.html" class="sub-menu-item">Dashboard</a></li>
-                                                                            <li><a href="doctor-appointment.html" class="sub-menu-item">Appointment</a></li>
-                                                                            <li><a href="patient-list.html" class="sub-menu-item">Patients</a></li>
-                                                                            <li><a href="doctor-schedule.html" class="sub-menu-item">Schedule Timing</a></li>
-                                                                            <li><a href="invoices.html" class="sub-menu-item">Invoices</a></li>
-                                                                            <li><a href="patient-review.html" class="sub-menu-item">Reviews</a></li>
-                                                                            <li><a href="doctor-messages.html" class="sub-menu-item">Messages</a></li>
-                                                                            <li><a href="doctor-profile.html" class="sub-menu-item">Profile</a></li>
-                                                                            <li><a href="doctor-profile-setting.html" class="sub-menu-item">Profile Settings</a>
-                                                                            </li>
-                                                                            <li><a href="doctor-chat.html" class="sub-menu-item">Chat</a></li>
-                                                                            <li><a href="/login.jsp" class="sub-menu-item">Login</a></li>
-                                                                            <li><a href="
-                                                                                   /signup.jsp" class="sub-menu-item">Sign Up</a></li>
-                                                                            <li><a href="
-                                                                                   /forgot-password.jsp" class="sub-menu-item">Forgot Password</a></li>
-                                                                        </ul>-->
                                 </li>
                                 <li><a href="doctor-team-one.html" class="sub-menu-item">Vay mua nhà</a></li>
                                 <li><a href="doctor-team-two.html" class="sub-menu-item">Vay mua ô tô</a></li>
@@ -318,7 +415,7 @@
 
         <!-- Start -->
         <section class="section">
-            <div class="container">
+            <div class="container wow fadeInUp">
                 <div class="row justify-content-center">
                     <div class="col-xl-10">
                         <div class="features-absolute bg-white shadow rounded overflow-hidden card-group">
@@ -365,7 +462,7 @@
                 </div><!--end row-->
             </div><!--end container-->
 
-            <div class="container mt-100 mt-60">
+            <div class="container mt-100 mt-60 wow fadeInUp">
                 <div class="row align-items-center">
                     <div class="col-lg-5 col-md-6">
                         <div class="position-relative">
@@ -401,7 +498,7 @@
                 </div><!--end row-->
             </div><!--end container-->
 
-            <div class="container mt-100 mt-60">
+            <div class="container mt-100 mt-60 wow fadeInUp">
                 <div class="row justify-content-center">
                     <div class="col-12">
                         <div class="section-title mb-4 pb-2 text-center">
@@ -539,294 +636,9 @@
         <!-- End -->
 
         <!-- Start -->
-        <section class="section bg-light">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-12">
-                        <div class="section-title text-center mb-4 pb-2">
-                            <span class="badge badge-pill badge-soft-primary mb-3">Availability</span>
-                            <h4 class="title mb-4">Doctors Time Table</h4>
-                            <p class="text-muted mx-auto para-desc mb-0">Great doctor if you need your family member to get
-                                effective immediate assistance, emergency treatment or a simple consultation.</p>
-                        </div>
-                    </div><!--end col-->
-                </div><!--end row-->
-            </div><!--end container-->
-
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-12 mt-4 pt-2">
-                        <div class="table-responsive shadow rounded">
-                            <table class="table table-center table-bordered bg-white mb-0">
-                                <thead>
-                                    <tr>
-                                        <th class="text-center py-4" style="min-width: 120px;">Time Table</th>
-                                        <th class="text-center py-4" style="min-width: 200px;">Monday</th>
-                                        <th class="text-center py-4" style="min-width: 200px;">Tuesday</th>
-                                        <th class="text-center py-4" style="min-width: 200px;">Wednesday</th>
-                                        <th class="text-center py-4" style="min-width: 200px;">Thursday</th>
-                                        <th class="text-center py-4" style="min-width: 200px;">Friday</th>
-                                        <th class="text-center py-4" style="min-width: 200px;">Saturday</th>
-                                        <th class="text-center py-4" style="min-width: 200px;">Sunday</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- Start -->
-                                    <tr>
-                                        <th class="text-center py-5">09:00AM</th>
-                                        <td>
-                                            <div class="d-flex mb-3">
-                                                <img src="assets/images/doctors/01.jpg"
-                                                     class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                <div class="ms-3">
-                                                    <h6 class="text-dark mb-0 d-block">Calvin Carlo</h6>
-                                                    <small class="text-muted">Eye Care</small>
-                                                </div>
-                                            </div>
-                                            <small class="bg-soft-primary rounded py-1 px-2 d-block text-center">09:00AM -
-                                                10:00AM</small>
-                                        </td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td>
-                                            <div class="d-flex mb-3">
-                                                <img src="assets/images/doctors/03.jpg"
-                                                     class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                <div class="ms-3">
-                                                    <h6 class="text-dark mb-0 d-block">Alia Reddy</h6>
-                                                    <small class="text-muted">Psychotherapy</small>
-                                                </div>
-                                            </div>
-                                            <small class="bg-soft-primary rounded py-1 px-2 d-block text-center">09:00AM -
-                                                01:00PM</small>
-                                        </td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-
-                                    <tr>
-                                        <th class="text-center py-5">11:00AM</th>
-                                        <td></td>
-                                        <td>
-                                            <div class="d-flex mb-3">
-                                                <img src="assets/images/doctors/02.jpg"
-                                                     class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                <div class="ms-3">
-                                                    <h6 class="text-dark mb-0 d-block">Cristino Murphy</h6>
-                                                    <small class="text-muted">Gynecology</small>
-                                                </div>
-                                            </div>
-                                            <small class="bg-soft-primary rounded py-1 px-2 d-block text-center">11:00AM -
-                                                04:00PM</small>
-                                        </td>
-                                        <td></td>
-                                        <td>
-                                            <div class="d-flex mb-3">
-                                                <img src="assets/images/doctors/05.jpg"
-                                                     class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                <div class="ms-3">
-                                                    <h6 class="text-dark mb-0 d-block">Jennifer Ballance</h6>
-                                                    <small class="text-muted">Cardiology</small>
-                                                </div>
-                                            </div>
-                                            <small class="bg-soft-primary rounded py-1 px-2 d-block text-center">11:00AM -
-                                                12:00PM</small>
-                                        </td>
-                                        <td></td>
-                                        <td>
-                                            <div class="d-flex mb-3">
-                                                <img src="assets/images/doctors/04.jpg"
-                                                     class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                <div class="ms-3">
-                                                    <h6 class="text-dark mb-0 d-block">Toni Kovar</h6>
-                                                    <small class="text-muted">Orthopedic</small>
-                                                </div>
-                                            </div>
-                                            <small class="bg-soft-primary rounded py-1 px-2 d-block text-center">09:00AM -
-                                                10:00AM</small>
-                                        </td>
-                                        <td></td>
-                                    </tr>
-
-                                    <tr>
-                                        <th class="text-center py-5">02:00PM</th>
-                                        <td></td>
-                                        <td></td>
-                                        <td>
-                                            <div class="d-flex mb-3">
-                                                <img src="assets/images/doctors/06.jpg"
-                                                     class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                <div class="ms-3">
-                                                    <h6 class="text-dark mb-0 d-block">Tara Arrington</h6>
-                                                    <small class="text-muted">Neurology</small>
-                                                </div>
-                                            </div>
-                                            <small class="bg-soft-primary rounded py-1 px-2 d-block text-center">02:00PM -
-                                                04:00PM</small>
-                                        </td>
-                                        <td></td>
-                                        <td>
-                                            <div class="d-flex mb-3">
-                                                <img src="assets/images/doctors/05.jpg"
-                                                     class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                <div class="ms-3">
-                                                    <h6 class="text-dark mb-0 d-block">Jennifer Ballance</h6>
-                                                    <small class="text-muted">Cardiology</small>
-                                                </div>
-                                            </div>
-                                            <small class="bg-soft-primary rounded py-1 px-2 d-block text-center">11:00AM -
-                                                12:00PM</small>
-                                        </td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-
-                                    <tr>
-                                        <th class="text-center py-5">04:00PM</th>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td>
-                                            <div class="d-flex mb-3">
-                                                <img src="assets/images/doctors/06.jpg"
-                                                     class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                <div class="ms-3">
-                                                    <h6 class="text-dark mb-0 d-block">Tara Arrington</h6>
-                                                    <small class="text-muted">Neurology</small>
-                                                </div>
-                                            </div>
-                                            <small class="bg-soft-primary rounded py-1 px-2 d-block text-center">04:00PM -
-                                                05:00PM</small>
-                                        </td>
-                                        <td></td>
-                                        <td></td>
-                                        <td>
-                                            <div class="d-flex mb-3">
-                                                <img src="assets/images/doctors/06.jpg"
-                                                     class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                <div class="ms-3">
-                                                    <h6 class="text-dark mb-0 d-block">Tara Arrington</h6>
-                                                    <small class="text-muted">Neurology</small>
-                                                </div>
-                                            </div>
-                                            <small class="bg-soft-primary rounded py-1 px-2 d-block text-center">04:30PM -
-                                                06:00PM</small>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <th class="text-center py-5">06:00PM</th>
-                                        <td>
-                                            <div class="d-flex mb-3">
-                                                <img src="assets/images/doctors/03.jpg"
-                                                     class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                <div class="ms-3">
-                                                    <h6 class="text-dark mb-0 d-block">Alia Reddy</h6>
-                                                    <small class="text-muted">Psychotherapy</small>
-                                                </div>
-                                            </div>
-                                            <small class="bg-soft-primary rounded py-1 px-2 d-block text-center">06:00PM -
-                                                09:00PM</small>
-                                        </td>
-                                        <td></td>
-                                        <td>
-                                            <div class="d-flex mb-3">
-                                                <img src="assets/images/doctors/04.jpg"
-                                                     class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                <div class="ms-3">
-                                                    <h6 class="text-dark mb-0 d-block">Toni Kovar</h6>
-                                                    <small class="text-muted">Orthopedic</small>
-                                                </div>
-                                            </div>
-                                            <small class="bg-soft-primary rounded py-1 px-2 d-block text-center">07:00PM -
-                                                08:00PM</small>
-                                        </td>
-                                        <td></td>
-                                        <td>
-                                            <div class="d-flex mb-3">
-                                                <img src="assets/images/doctors/05.jpg"
-                                                     class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                <div class="ms-3">
-                                                    <h6 class="text-dark mb-0 d-block">Jennifer Ballance</h6>
-                                                    <small class="text-muted">Cardiology</small>
-                                                </div>
-                                            </div>
-                                            <small class="bg-soft-primary rounded py-1 px-2 d-block text-center">06:00PM -
-                                                07:00PM</small>
-                                        </td>
-                                        <td></td>
-                                        <td>
-                                            <div class="d-flex mb-3">
-                                                <img src="assets/images/doctors/03.jpg"
-                                                     class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                <div class="ms-3">
-                                                    <h6 class="text-dark mb-0 d-block">Alia Reddy</h6>
-                                                    <small class="text-muted">Psychotherapy</small>
-                                                </div>
-                                            </div>
-                                            <small class="bg-soft-primary rounded py-1 px-2 d-block text-center">06:00PM -
-                                                07:00PM</small>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <th class="text-center py-5">09:00PM</th>
-                                        <td></td>
-                                        <td>
-                                            <div class="d-flex mb-3">
-                                                <img src="assets/images/doctors/04.jpg"
-                                                     class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                <div class="ms-3">
-                                                    <h6 class="text-dark mb-0 d-block">Toni Kovar</h6>
-                                                    <small class="text-muted">Orthopedic</small>
-                                                </div>
-                                            </div>
-                                            <small class="bg-soft-primary rounded py-1 px-2 d-block text-center">09:00PM -
-                                                10:00PM</small>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex mb-3">
-                                                <img src="assets/images/doctors/05.jpg"
-                                                     class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                <div class="ms-3">
-                                                    <h6 class="text-dark mb-0 d-block">Jennifer Ballance</h6>
-                                                    <small class="text-muted">Cardiology</small>
-                                                </div>
-                                            </div>
-                                            <small class="bg-soft-primary rounded py-1 px-2 d-block text-center">09:00PM -
-                                                10:00PM</small>
-                                        </td>
-                                        <td></td>
-                                        <td>
-                                            <div class="d-flex mb-3">
-                                                <img src="assets/images/doctors/04.jpg"
-                                                     class="avatar avatar-md-sm rounded-circle border shadow" alt="">
-                                                <div class="ms-3">
-                                                    <h6 class="text-dark mb-0 d-block">Toni Kovar</h6>
-                                                    <small class="text-muted">Orthopedic</small>
-                                                </div>
-                                            </div>
-                                            <small class="bg-soft-primary rounded py-1 px-2 d-block text-center">09:00PM -
-                                                10:00PM</small>
-                                        </td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                    <!-- End -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div><!--end col-->
-                </div><!--end row-->
-            </div><!--end container-fluid-->
-        </section><!--end section-->
-        <!-- End -->
-
-        <!-- Start -->
         <section class="section">
             <div class="container">
-                <div class="row justify-content-center">
+                <div class="row justify-content-center wow fadeInUp">
                     <div class="col-12">
                         <div class="section-title text-center mb-4 pb-2">
                             <h4 class="title mb-4">Doctors</h4>
@@ -836,7 +648,7 @@
                     </div><!--end col-->
                 </div><!--end row-->
 
-                <div class="row align-items-center">
+                <div class="row align-items-center wow fadeInUp">
                     <div class="col-xl-3 col-lg-3 col-md-6 mt-4 pt-2">
                         <div class="card team border-0 rounded shadow overflow-hidden">
                             <div class="team-img position-relative">
@@ -934,20 +746,13 @@
         <!-- End -->
 
         <!-- Start -->
-        <section class="section pt-0">
+<section class="section pt-0">
             <div class="container">
-                <div class="row justify-content-center">
+                <div class="row justify-content-center wow fadeInUp">
                     <div class="col-12 text-center">
                         <div class="video-solution-cta position-relative" style="z-index: 1;">
                             <div class="position-relative">
-                                <img src="assets/images/bg/01.jpg" class="img-fluid rounded-md shadow-lg" alt="">
-                                <div class="play-icon">
-                                    <a href="#" data-bs-toggle="modal" data-bs-target="#watchvideomodal"
-                                       class="play-btn video-play-icon">
-                                        <i
-                                            class="mdi mdi-play text-primary rounded-circle bg-white title-bg-dark shadow-lg"></i>
-                                    </a>
-                                </div>
+                                <img src="assets/images/bg/bg-home.jpeg" class="img-fluid rounded-md shadow-lg" alt="">
                             </div>
 
                             <div class="content">
@@ -957,7 +762,7 @@
                                             <h1 class="mt-3 text-white title-dark"><span class="counter-value"
                                                                                          data-target="99">10</span>%</h1>
                                             <h5 class="counter-head text-white title-dark mb-1">Positive feedback</h5>
-                                            <p class="text-white-50 mb-0">From Doctors</p>
+                                            <p class="text-white-50 mb-0">From Customer</p>
                                         </div><!--end counter box-->
                                     </div><!--end col-->
 
@@ -991,25 +796,24 @@
         <!-- Start -->
         <section class="section">
             <div class="container">
-                <div class="row justify-content-center">
+                <div class="row justify-content-center wow fadeInUp">
                     <div class="col-12">
                         <div class="section-title text-center mb-4 pb-2">
-                            <h4 class="title mb-4">Patients Says</h4>
+                            <h4 class="title mb-4">Khách hàng nói về chúng tôi</h4>
                             <p class="text-muted mx-auto para-desc mb-0">Great doctor if you need your family member to get
                                 effective immediate assistance, emergency treatment or a simple consultation.</p>
                         </div>
                     </div><!--end col-->
                 </div><!--end row-->
 
-                <div class="row justify-content-center">
+                <div class="row justify-content-center wow fadeInUp">
                     <div class="col-lg-8 mt-4 pt-2 text-center">
                         <div class="client-review-slider">
                             <div class="tiny-slide text-center">
                                 <p class="text-muted h6 fw-normal fst-italic">" It seems that only fragments of the original
                                     text remain in the Lorem Ipsum texts used today. The most well-known dummy text is the
                                     'Lorem Ipsum', which is said to have originated in the 16th century. "</p>
-                                <img src="assets/images/client/01.jpg"
-                                     class="img-fluid avatar avatar-small rounded-circle mx-auto shadow my-3" alt="">
+                                <img src="https://placehold.co/600x400" class="img-fluid" alt="">
                                 <ul class="list-unstyled mb-0">
                                     <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
                                     <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
@@ -1024,8 +828,7 @@
                                 <p class="text-muted h6 fw-normal fst-italic">" The advantage of its Latin origin and the
                                     relative meaninglessness of Lorum Ipsum is that the text does not attract attention to
                                     itself or distract the viewer's attention from the layout. "</p>
-                                <img src="assets/images/client/02.jpg"
-                                     class="img-fluid avatar avatar-small rounded-circle mx-auto shadow my-3" alt="">
+                                <img src="https://placehold.co/600x400" class="img-fluid" alt="">
                                 <ul class="list-unstyled mb-0">
                                     <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
                                     <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
@@ -1041,8 +844,7 @@
                                     texts. These are usually used when a text is required purely to fill a space. These
                                     alternatives to the classic Lorem Ipsum texts are often amusing and tell short, funny or
                                     nonsensical stories. "</p>
-                                <img src="assets/images/client/03.jpg"
-                                     class="img-fluid avatar avatar-small rounded-circle mx-auto shadow my-3" alt="">
+                                <img src="https://placehold.co/600x400" class="img-fluid" alt="">
                                 <ul class="list-unstyled mb-0">
                                     <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
                                     <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
@@ -1052,77 +854,26 @@
                                 </ul>
                                 <h6 class="text-primary">- Barbara McIntosh <small class="text-muted">M.D</small></h6>
                             </div><!--end customer testi-->
-
-                            <div class="tiny-slide text-center">
-                                <p class="text-muted h6 fw-normal fst-italic">" According to most sources, Lorum Ipsum can
-                                    be traced back to a text composed by Cicero in 45 BC. Allegedly, a Latin scholar
-                                    established the origin of the text by compiling all the instances of the unusual word
-                                    'consectetur' he could find "</p>
-                                <img src="assets/images/client/04.jpg"
-                                     class="img-fluid avatar avatar-small rounded-circle mx-auto shadow my-3" alt="">
-                                <ul class="list-unstyled mb-0">
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                </ul>
-                                <h6 class="text-primary">- Christa Smith <small class="text-muted">Manager</small></h6>
-                            </div><!--end customer testi-->
-
-                            <div class="tiny-slide text-center">
-                                <p class="text-muted h6 fw-normal fst-italic">" It seems that only fragments of the original
-                                    text remain in the Lorem Ipsum texts used today. The most well-known dummy text is the
-                                    'Lorem Ipsum', which is said to have originated in the 16th century. "</p>
-                                <img src="assets/images/client/05.jpg"
-                                     class="img-fluid avatar avatar-small rounded-circle mx-auto shadow my-3" alt="">
-                                <ul class="list-unstyled mb-0">
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                </ul>
-                                <h6 class="text-primary">- Dean Tolle <small class="text-muted">Developer</small></h6>
-                            </div><!--end customer testi-->
-
-                            <div class="tiny-slide text-center">
-                                <p class="text-muted h6 fw-normal fst-italic">" It seems that only fragments of the original
-                                    text remain in the Lorem Ipsum texts used today. One may speculate that over the course
-                                    of time certain letters were added or deleted at various positions within the text. "
-                                </p>
-                                <img src="assets/images/client/06.jpg"
-                                     class="img-fluid avatar avatar-small rounded-circle mx-auto shadow my-3" alt="">
-                                <ul class="list-unstyled mb-0">
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                </ul>
-                                <h6 class="text-primary">- Jill Webb <small class="text-muted">Designer</small></h6>
-                            </div><!--end customer testi-->
                         </div><!--end carousel-->
                     </div><!--end col-->
                 </div><!--end row-->
             </div><!--end container-->
 
-            <div class="container mt-100 mt-60">
+            <div class="container mt-100 mt-60 wow fadeInUp">
                 <div class="row justify-content-center">
                     <div class="col-12">
                         <div class="section-title text-center mb-4 pb-2">
                             <span class="badge badge-pill badge-soft-primary mb-3">Read News</span>
-                            <h4 class="title mb-4">Latest News & Blogs</h4>
-                            <p class="text-muted mx-auto para-desc mb-0">Great doctor if you need your family member to get
-                                effective immediate assistance, emergency treatment or a simple consultation.</p>
+                            <h4 class="title mb-4">Khám phá và chia sẻ</h4>
+                            <p class="text-muted mx-auto para-desc mb-0">content</p>
                         </div>
                     </div><!--end col-->
                 </div><!--end row-->
 
-                <div class="row">
-                    <div class="col-lg-4 col-md-6 col-12 mt-4 pt-2">
-                        <div class="card blog blog-primary border-0 shadow rounded overflow-hidden">
-                            <img src="assets/images/blog/01.jpg" class="img-fluid" alt="">
+                <div class="row justify-content-between">
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="card testimonial-card">
+                            <img src="https://placehold.co/600x400" class="img-fluid" alt="">
                             <div class="card-body p-4">
                                 <ul class="list-unstyled mb-2">
                                     <li class="list-inline-item text-muted small me-3"><i
@@ -1130,8 +881,7 @@
                                     <li class="list-inline-item text-muted small"><i
                                             class="uil uil-clock text-dark h6 me-1"></i>5 min read</li>
                                 </ul>
-                                <a href="blog-detail.html" class="text-dark title h5">You can easily connect to doctor and
-                                    make a treatment</a>
+                                <a href="blog-detail.html" class="text-dark title h5">content</a>
                                 <div class="post-meta d-flex justify-content-between mt-3">
                                     <ul class="list-unstyled mb-0">
                                         <li class="list-inline-item me-2 mb-0"><a href="#" class="text-muted like"><i
@@ -1146,9 +896,9 @@
                         </div>
                     </div><!--end col-->
 
-                    <div class="col-lg-4 col-md-6 col-12 mt-4 pt-2">
-                        <div class="card blog blog-primary border-0 shadow rounded overflow-hidden">
-                            <img src="assets/images/blog/02.jpg" class="img-fluid" alt="">
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="card testimonial-card">
+                            <img src="https://placehold.co/600x400" class="img-fluid" alt="">
                             <div class="card-body p-4">
                                 <ul class="list-unstyled mb-2">
                                     <li class="list-inline-item text-muted small me-3"><i
@@ -1156,8 +906,7 @@
                                     <li class="list-inline-item text-muted small"><i
                                             class="uil uil-clock text-dark h6 me-1"></i>5 min read</li>
                                 </ul>
-                                <a href="blog-detail.html" class="text-dark title h5">Lockdowns lead to fewer people seeking
-                                    medical care</a>
+                                <a href="blog-detail.html" class="text-dark title h5">content</a>
                                 <div class="post-meta d-flex justify-content-between mt-3">
                                     <ul class="list-unstyled mb-0">
                                         <li class="list-inline-item me-2 mb-0"><a href="#" class="text-muted like"><i
@@ -1172,9 +921,9 @@
                         </div>
                     </div><!--end col-->
 
-                    <div class="col-lg-4 col-md-6 col-12 mt-4 pt-2">
-                        <div class="card blog blog-primary border-0 shadow rounded overflow-hidden">
-                            <img src="assets/images/blog/03.jpg" class="img-fluid" alt="">
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="card testimonial-card">
+                            <img src="https://placehold.co/600x400" class="img-fluid" alt="">
                             <div class="card-body p-4">
                                 <ul class="list-unstyled mb-2">
                                     <li class="list-inline-item text-muted small me-3"><i
@@ -1182,8 +931,7 @@
                                     <li class="list-inline-item text-muted small"><i
                                             class="uil uil-clock text-dark h6 me-1"></i>5 min read</li>
                                 </ul>
-                                <a href="blog-detail.html" class="text-dark title h5">Emergency medicine research course for
-                                    the doctors</a>
+                                <a href="blog-detail.html" class="text-dark title h5">content</a>
                                 <div class="post-meta d-flex justify-content-between mt-3">
                                     <ul class="list-unstyled mb-0">
                                         <li class="list-inline-item me-2 mb-0"><a href="#" class="text-muted like"><i
@@ -1205,7 +953,7 @@
         <!-- Partners start -->
         <section class="py-4 bg-light">
             <div class="container">
-                <div class="row justify-content-center">
+                <div class="row justify-content-center wow fadeInUp">
                     <div class="col-lg-2 col-md-2 col-6 text-center py-4">
                         <img src="assets/images/client/amazon.png" class="avatar avatar-client" alt="">
                     </div><!--end col-->
@@ -1236,7 +984,7 @@
 
         <!-- Start -->
         <footer class="bg-footer">
-            <div class="container">
+            <div class="container wow fadeInUp">
                 <div class="row">
                     <div class="col-xl-5 col-lg-4 mb-0 mb-md-4 pb-0 pb-md-2">
                         <a href="#" class="logo-footer">
@@ -1323,7 +1071,7 @@
                 </div><!--end row-->
             </div><!--end container-->
 
-            <div class="container mt-5">
+            <div class="container mt-5 wow fadeInUp">
                 <div class="pt-4 footer-bar">
                     <div class="row align-items-center">
                         <div class="col-sm-6">
@@ -1349,6 +1097,92 @@
             </div><!--end container-->
         </footer><!--end footer-->
         <!-- End -->
+        <div class="chat-icon" onclick="toggleChat()" >
+            <img src="assets/images/ai logo/ai logo.png" class="avatar avatar-medium"/>
+        </div>
+        <div class="chat-container mb-5" id="chatContainer">
+            <div class="chat-header">
+                Chat cùng smartBank Digibot
+                <button class="close-btn" onclick="toggleChat()">
+                    <img src="assets/images/ai logo/delete.png" alt="Đóng"> </button>
+            </div>
+            <div class="chat-box" id="chatBox"></div>
+            <div class="loading" id="loading"></div>
+            <div class="chat-input">
+                <input type="text" id="userMessage" placeholder="Nhập tin nhắn..." onkeypress="handleKeyPress(event)">
+                <button onclick="sendMessage()">Gửi</button>
+            </div>
+        </div>
+                    <script>
+                function toggleChat() {
+                    const chatBox = document.getElementById("chatContainer");
+                    chatBox.style.display = (chatBox.style.display === "none" || chatBox.style.display === "") ? "block" : "none";
+                }
+
+                function handleKeyPress(event) {
+                    if (event.key === "Enter") {
+                        sendMessage();
+                    }
+                }
+
+                function sendMessage() {
+                    const userMessageInput = document.getElementById("userMessage");
+                    let userMessage = userMessageInput.value.trim();
+
+                    if (!userMessage) {
+                        return;
+                    }
+
+                    displayMessage(userMessage, true);
+                    userMessageInput.value = "";
+                    showLoadingIndicator(true);
+
+                    fetch("http://localhost:9999/BankingSystem/AiChatBotServlet", {
+                        method: "POST",
+                        headers: {"Content-Type": "application/x-www-form-urlencoded"},
+                        body: new URLSearchParams({message: userMessage}) // Gửi tin nhắn trực tiếp
+                    })
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error("Network response was not ok");
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                showLoadingIndicator(false);
+                                if (data && data.reply) {
+                                    displayMessage(data.reply, false);
+                                } else {
+                                    displayMessage("Lỗi: AI không phản hồi hoặc dữ liệu không hợp lệ.", false, "error");
+                                    console.error("Invalid AI response:", data);
+                                }
+                            })
+                            .catch(error => {
+                                showLoadingIndicator(false);
+                                displayMessage("Lỗi: Không thể kết nối tới AI.", false, "error");
+                                console.error("Error:", error);
+                            });
+                }
+
+                function displayMessage(message, isUser, messageType = "normal") {
+                    const chatBox = document.getElementById("chatBox");
+                    const messageElement = document.createElement("p");
+                    messageElement.classList.add(isUser ? "user-message" : "ai-message");
+                    if (messageType === "error") {
+                        messageElement.style.color = "red";
+                    }
+
+                    messageElement.textContent = (isUser ? "Bạn: " : "Digibot: ") + message; // Hiển thị tin nhắn trực tiếp
+                    chatBox.appendChild(messageElement);
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                }
+
+                function showLoadingIndicator(show) {
+                    const loadingIndicator = document.getElementById("loading");
+                    loadingIndicator.style.display = show ? "block" : "none";
+                }
+
+            </script>
 
         <!-- Back to top -->
         <a href="#" onclick="topFunction()" id="back-to-top" class="btn btn-icon btn-pills btn-primary back-to-top"><i
@@ -1483,8 +1317,10 @@
                 </div>
             </div>
         </div>
-        <!-- MOdal End -->
 
+        <script src="resources/script/wow.min.js"></script>
+        <!-- MOdal End -->
+        <script> new WOW().init();</script>
         <!-- javascript -->
         <script src="assets/js/bootstrap.bundle.min.js"></script>
         <!-- SLIDER -->

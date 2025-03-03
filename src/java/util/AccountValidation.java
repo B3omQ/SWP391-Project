@@ -21,6 +21,10 @@ public class AccountValidation {
 
     }
 
+    public boolean isValidateImage(String fileName) {
+        return fileName != null && fileName.matches(".*\\.(jpg|jpeg|png|gif)$");
+    }
+
     private static final Pattern EMAIL_PATTERN
             = Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
 
@@ -53,7 +57,7 @@ public class AccountValidation {
         return fileName.matches("(?i)^.*\\.(jpg|jpeg|png)$");
     }
 
-    public static boolean isValidPhoneNumber(String phone) {
+    public boolean isValidPhoneNumber(String phone) {
         return phone != null && phone.matches("^\\d{10,11}$");
     }
 
@@ -61,7 +65,7 @@ public class AccountValidation {
         return address != null && !address.trim().isEmpty();
     }
 
-    public static String normalizeInput(String input) {
+    public String normalizeInput(String input) {
         if (input == null) {
             return "";
         }
@@ -81,6 +85,9 @@ public class AccountValidation {
 
     public boolean checkHashOfPassword(String password) {
         if (password.length() < 8) {
+            return false;
+        }
+        if (password.contains(" ")) { // Kiểm tra dấu cách
             return false;
         }
         boolean hasUppercase = Pattern.compile("[A-Z]").matcher(password).find();
