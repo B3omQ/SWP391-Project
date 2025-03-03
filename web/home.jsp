@@ -31,6 +31,7 @@
         <link rel="stylesheet" href="assets/css/tiny-slider.css" />
         <!-- Css -->
         <link href="assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
+        <link rel="stylesheet" href="resources/script/animate.min.css">
 
     </head>
 
@@ -187,8 +188,20 @@
                         <li class="has-submenu parent-menu-item">
                             <a href="javascript:void(0)">Tiết kiệm</a><span class="menu-arrow"></span>
                             <ul class="submenu">
-                                <li><a href="index.html" class="sub-menu-item">Tiền gửi tiết kiệm có kì hạn</a></li>
-                                <li><a href="index-two.html" class="sub-menu-item">tiết kiệm linh hoạt</a></li>
+                                <li class="has-submenu parent-menu-item">
+                                    <a href="javascript:void(0)" class="menu-item">Gửi tiết kiệm</a><span
+                                        class="submenu-arrow"></span>
+                                    <ul class="submenu">
+                                        <li><a href="./public/LoanInterestRateTool.jsp" class="sub-menu-item">Gửi tiết kiệm có kì hạn</a></li>
+                                    </ul>
+                                </li>
+                                <li class="has-submenu parent-menu-item">
+                                    <a href="javascript:void(0)" class="menu-item"></a><span
+                                        class="submenu-arrow"></span>
+                                    <ul class="submenu">
+                                        <li><a href="./public/LoanInterestRateTool.jsp" class="sub-menu-item">Gửi tiết kiệm có kì hạn</a></li>
+                                    </ul>
+                                </li>
                                 <li><a href="index-three.html" class="sub-menu-item">Chứng chỉ tiền gửi</a></li>
                             </ul>
                         </li>
@@ -198,26 +211,6 @@
                             <ul class="submenu">
                                 <li class="has-submenu parent-menu-item">
                                     <a href="javascript:void(0)" class="menu-item"> Dashboard </a>
-                                    <!--                                    <span
-                                                                            class="submenu-arrow"></span>
-                                                                        <ul class="submenu"> //submenu dùng lại nếu cần
-                                                                            <li><a href="doctor-dashboard.html" class="sub-menu-item">Dashboard</a></li>
-                                                                            <li><a href="doctor-appointment.html" class="sub-menu-item">Appointment</a></li>
-                                                                            <li><a href="patient-list.html" class="sub-menu-item">Patients</a></li>
-                                                                            <li><a href="doctor-schedule.html" class="sub-menu-item">Schedule Timing</a></li>
-                                                                            <li><a href="invoices.html" class="sub-menu-item">Invoices</a></li>
-                                                                            <li><a href="patient-review.html" class="sub-menu-item">Reviews</a></li>
-                                                                            <li><a href="doctor-messages.html" class="sub-menu-item">Messages</a></li>
-                                                                            <li><a href="doctor-profile.html" class="sub-menu-item">Profile</a></li>
-                                                                            <li><a href="doctor-profile-setting.html" class="sub-menu-item">Profile Settings</a>
-                                                                            </li>
-                                                                            <li><a href="doctor-chat.html" class="sub-menu-item">Chat</a></li>
-                                                                            <li><a href="/login.jsp" class="sub-menu-item">Login</a></li>
-                                                                            <li><a href="
-                                                                                   /signup.jsp" class="sub-menu-item">Sign Up</a></li>
-                                                                            <li><a href="
-                                                                                   /forgot-password.jsp" class="sub-menu-item">Forgot Password</a></li>
-                                                                        </ul>-->
                                 </li>
                                 <li><a href="doctor-team-one.html" class="sub-menu-item">Vay mua nhà</a></li>
                                 <li><a href="doctor-team-two.html" class="sub-menu-item">Vay mua ô tô</a></li>
@@ -318,7 +311,7 @@
 
         <!-- Start -->
         <section class="section">
-            <div class="container">
+            <div class="container wow fadeInUp">
                 <div class="row justify-content-center">
                     <div class="col-xl-10">
                         <div class="features-absolute bg-white shadow rounded overflow-hidden card-group">
@@ -365,7 +358,7 @@
                 </div><!--end row-->
             </div><!--end container-->
 
-            <div class="container mt-100 mt-60">
+            <div class="container mt-100 mt-60 wow fadeInUp">
                 <div class="row align-items-center">
                     <div class="col-lg-5 col-md-6">
                         <div class="position-relative">
@@ -401,7 +394,7 @@
                 </div><!--end row-->
             </div><!--end container-->
 
-            <div class="container mt-100 mt-60">
+            <div class="container mt-100 mt-60 wow fadeInUp">
                 <div class="row justify-content-center">
                     <div class="col-12">
                         <div class="section-title mb-4 pb-2 text-center">
@@ -540,7 +533,7 @@
 
         <!-- Start -->
         <section class="section bg-light">
-            <div class="container">
+            <div class="container wow fadeInUp">
                 <div class="row justify-content-center">
                     <div class="col-12">
                         <div class="section-title text-center mb-4 pb-2">
@@ -553,7 +546,7 @@
                 </div><!--end row-->
             </div><!--end container-->
 
-            <div class="container-fluid">
+            <div class="container-fluid wow fadeInUp">
                 <div class="row">
                     <div class="col-12 mt-4 pt-2">
                         <div class="table-responsive shadow rounded">
@@ -826,7 +819,7 @@
         <!-- Start -->
         <section class="section">
             <div class="container">
-                <div class="row justify-content-center">
+                <div class="row justify-content-center wow fadeInUp">
                     <div class="col-12">
                         <div class="section-title text-center mb-4 pb-2">
                             <h4 class="title mb-4">Doctors</h4>
@@ -836,7 +829,7 @@
                     </div><!--end col-->
                 </div><!--end row-->
 
-                <div class="row align-items-center">
+                <div class="row align-items-center wow fadeInUp">
                     <div class="col-xl-3 col-lg-3 col-md-6 mt-4 pt-2">
                         <div class="card team border-0 rounded shadow overflow-hidden">
                             <div class="team-img position-relative">
@@ -936,7 +929,7 @@
         <!-- Start -->
         <section class="section pt-0">
             <div class="container">
-                <div class="row justify-content-center">
+                <div class="row justify-content-center wow fadeInUp">
                     <div class="col-12 text-center">
                         <div class="video-solution-cta position-relative" style="z-index: 1;">
                             <div class="position-relative">
@@ -991,7 +984,7 @@
         <!-- Start -->
         <section class="section">
             <div class="container">
-                <div class="row justify-content-center">
+                <div class="row justify-content-center wow fadeInUp">
                     <div class="col-12">
                         <div class="section-title text-center mb-4 pb-2">
                             <h4 class="title mb-4">Patients Says</h4>
@@ -1001,7 +994,7 @@
                     </div><!--end col-->
                 </div><!--end row-->
 
-                <div class="row justify-content-center">
+                <div class="row justify-content-center wow fadeInUp">
                     <div class="col-lg-8 mt-4 pt-2 text-center">
                         <div class="client-review-slider">
                             <div class="tiny-slide text-center">
@@ -1107,7 +1100,7 @@
                 </div><!--end row-->
             </div><!--end container-->
 
-            <div class="container mt-100 mt-60">
+            <div class="container mt-100 mt-60 wow fadeInUp">
                 <div class="row justify-content-center">
                     <div class="col-12">
                         <div class="section-title text-center mb-4 pb-2">
@@ -1205,7 +1198,7 @@
         <!-- Partners start -->
         <section class="py-4 bg-light">
             <div class="container">
-                <div class="row justify-content-center">
+                <div class="row justify-content-center wow fadeInUp">
                     <div class="col-lg-2 col-md-2 col-6 text-center py-4">
                         <img src="assets/images/client/amazon.png" class="avatar avatar-client" alt="">
                     </div><!--end col-->
@@ -1236,7 +1229,7 @@
 
         <!-- Start -->
         <footer class="bg-footer">
-            <div class="container">
+            <div class="container wow fadeInUp">
                 <div class="row">
                     <div class="col-xl-5 col-lg-4 mb-0 mb-md-4 pb-0 pb-md-2">
                         <a href="#" class="logo-footer">
@@ -1323,7 +1316,7 @@
                 </div><!--end row-->
             </div><!--end container-->
 
-            <div class="container mt-5">
+            <div class="container mt-5 wow fadeInUp">
                 <div class="pt-4 footer-bar">
                     <div class="row align-items-center">
                         <div class="col-sm-6">
@@ -1483,8 +1476,10 @@
                 </div>
             </div>
         </div>
-        <!-- MOdal End -->
 
+        <script src="resources/script/wow.min.js"></script>
+        <!-- MOdal End -->
+        <script> new WOW().init();</script>
         <!-- javascript -->
         <script src="assets/js/bootstrap.bundle.min.js"></script>
         <!-- SLIDER -->

@@ -2,32 +2,33 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller.manager;
+package controller.userManagementAdmin;
 
+import dal.AdminDAO;
 import dal.ManagerDAO;
 import java.io.IOException;
+import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.Part;
 import java.io.File;
 import java.time.LocalDate;
 import java.util.List;
 import model.Customer;
+import model.Staff;
 import org.json.JSONException;
-import util.AccountValidation;
 import org.json.JSONObject;
+import util.AccountValidation;
 
 /**
  *
  * @author JIGGER
  */
-@MultipartConfig
-public class CustomerManager extends HttpServlet {
-
+public class ConsultantAdminManagement extends HttpServlet {
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -39,7 +40,7 @@ public class CustomerManager extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ManagerDAO mdao = new ManagerDAO();
+        AdminDAO adao = new AdminDAO();
         String pageParam = request.getParameter("page");
         String phoneSearch = request.getParameter("phoneSearch");
         String recordsEntries = request.getParameter("recordsPerPage");
@@ -47,12 +48,12 @@ public class CustomerManager extends HttpServlet {
             int page = (pageParam == null) ? 1 : Integer.parseInt(pageParam);
             int recordsPerPage = (recordsEntries == null) ? 8 : Integer.parseInt(recordsEntries);
             int offset = (page - 1) * recordsPerPage;
-            int totalRecords = mdao.countTotalRecords();
+            int totalRecords = adao.countTotalStaffRecords(2);
             int totalPages = (int) Math.ceil(totalRecords * 1.0 / recordsPerPage);
 
-            List<Customer> customerList = mdao.getAllCustomer(offset, recordsPerPage, phoneSearch);
+            List<Staff> staffList = adao.getAllStaff(offset, recordsPerPage, phoneSearch, 2);
             request.setAttribute("currentPhoneSearch", phoneSearch);
-            request.setAttribute("customerList", customerList);
+            request.setAttribute("staffList", staffList);
             request.setAttribute("currentPage", page);
             request.setAttribute("totalPages", totalPages);
             request.setAttribute("currentRecords", recordsPerPage);
@@ -60,7 +61,7 @@ public class CustomerManager extends HttpServlet {
         } catch (NumberFormatException ex) {
         }
 
-        request.getRequestDispatcher("./manager/customerManager.jsp").forward(request, response);
+        request.getRequestDispatcher("./admin/consultantAdminManagement.jsp").forward(request, response);
     }
 
     /**
@@ -139,7 +140,7 @@ public class CustomerManager extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         String deleteId = request.getParameter("deleteId");
         String updateId = request.getParameter("updateId");
-        ManagerDAO mdao = new ManagerDAO();
+        AdminDAO adao = new AdminDAO();
         JSONObject json = new JSONObject();
         AccountValidation validator = new AccountValidation();
         if (updateId != null) {
@@ -172,13 +173,13 @@ public class CustomerManager extends HttpServlet {
                 }
 
                 if (image != null) {
-                    String imgPath = mdao.getCustomerById(id).getImage();
+                    String imgPath = adao.getStaffById(id).getImage();
                     deleteFile(imgPath);
                 } else {
-                    image = mdao.getCustomerById(id).getImage();
+                    image = adao.getStaffById(id).getImage();
                 }
 
-                if (mdao.isDuplicatedEmail(email) && !email.equals(mdao.getCustomerById(id).getEmail())) {
+                if (adao.isDuplicatedEmail(email) && !email.equals(adao.getStaffById(id).getEmail())) {
                     json.put("success", false);
                     json.put("message", "Email already existed");
                     response.getWriter().write(json.toString());
@@ -206,7 +207,7 @@ public class CustomerManager extends HttpServlet {
                     return;
                 }
 
-                mdao.updateInformationCustomer(id, image, email, firstname, lastname, gender, dob, phone, address);
+                adao.updateInformationStaff(id, image, email, firstname, lastname, gender, dob, phone, address);
                 json.put("success", true);
                 response.getWriter().write(json.toString());
                 return;
@@ -221,14 +222,14 @@ public class CustomerManager extends HttpServlet {
         if (deleteId != null) {
             try {
                 int delId = Integer.parseInt(deleteId);
-                Customer customer = mdao.getCustomerById(delId);
+                Staff staff = adao.getStaffById(delId);
 
-                if (customer != null) {
-                    String imgPath = customer.getImage();
+                if (staff != null) {
+                    String imgPath = staff.getImage();
                     if (imgPath != null) {
                         deleteFile(imgPath);
                     }
-                    mdao.deleteCustomer(delId);
+                    adao.deleteStaff(delId);
                     json.put("success", true);
                     response.getWriter().write(json.toString());
                 }
@@ -241,6 +242,11 @@ public class CustomerManager extends HttpServlet {
         }
     }
 
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
     @Override
     public String getServletInfo() {
         return "Short description";

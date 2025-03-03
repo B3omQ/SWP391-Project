@@ -38,8 +38,27 @@ public class DepOptionService extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DepServiceDAO depdao = new DepServiceDAO();
+        String status = request.getParameter("pendingStatus");
+        String sortBy = request.getParameter("sortBy");
+        String order = request.getParameter("order");
+
+        if (status == null || status.trim().isEmpty()) {
+            status = "Approved";
+        }
+
+        if (sortBy == null || sortBy.trim().isEmpty()) {
+            sortBy = "DuringTime";
+        }
+
+        if (order == null || order.trim().isEmpty()) {
+            order = "ASC";
+        }
+
         try {
-            List<DepService> depList = depdao.getAllDepService();
+            List<DepService> depList = depdao.getAllDepServiceByStatus(status, sortBy, order);
+            request.setAttribute("currentStatus", status);
+            request.setAttribute("currentSort", sortBy);
+            request.setAttribute("currentOrder", order);
             request.setAttribute("depOptionServiceList", depList);
         } catch (Exception e) {
             System.out.println(e);
@@ -59,34 +78,16 @@ public class DepOptionService extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        DepServiceDAO depdao = new DepServiceDAO();
+        DepServiceDAO ddao = new DepServiceDAO();
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        String add = request.getParameter("add");
         String edit = request.getParameter("edit");
         String delete = request.getParameter("delete");
         JSONObject json = new JSONObject();
-        if (add != null) {
-            try {
-                String description = request.getParameter("description");
-                String minimumDepStr = request.getParameter("minimumDep");
-                BigDecimal minimumDep = new BigDecimal(minimumDepStr);
-                String duringTimeStr = request.getParameter("duringTime");
-                int duringTime = Integer.parseInt(duringTimeStr);
-                String savingRateStr = request.getParameter("savingRate");
-                double savingRate = Double.parseDouble(savingRateStr);
-                String savingRateMinimumStr = request.getParameter("savingRateMinimum");
-                double savingRateMinimum = Double.parseDouble(savingRateMinimumStr);
-                depdao.createDepService(description, minimumDep, duringTime, savingRate, savingRateMinimum);
-            } catch (Exception e) {
-
-            }
-        }
 
         if (delete != null) {
             try {
                 int delId = Integer.parseInt(delete);
-                DepServiceDAO ddao = new DepServiceDAO();
                 ddao.deleteDep(delId);
                 json.put("success", true);
                 response.getWriter().write(json.toString());

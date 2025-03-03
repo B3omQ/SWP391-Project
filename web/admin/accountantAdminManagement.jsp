@@ -80,7 +80,7 @@
 
                             <!-- Search form -->
                             <div class="col-md-6">
-                                <form id="search" action="customer-manager" method="get" class="d-flex">
+                                <form id="search" action="accountant-admin-management" method="get" class="d-flex">
                                     <input
                                         value="${currentPhoneSearch}"
                                         class="form-control border-custome me-2"
@@ -197,78 +197,78 @@
                                 </thead>
                                 <tbody>
                                     <c:choose>
-                                        <c:when test="${empty customerList}">
+                                        <c:when test="${empty staffList}">
                                             <tr>
                                                 <td colspan="100%" class="text-center text-muted fw-bold">Search list is empty</td>
                                             </tr>
                                         </c:when>
                                         <c:otherwise>
-                                            <c:forEach var="customer" items="${customerList}">
+                                            <c:forEach var="accountant" items="${staffList}">
                                                 <tr>
-                                                    <td>${customer.id}</td>
+                                                    <td>${accountant.id}</td>
                                                     <td style="max-width: 100px;">
                                                         <div class ="photo-div">
-                                                            <img src="${customer.image}" class="photo" alt="Customer Image" />
+                                                            <img src="${accountant.image}" class="photo" alt="Customer Image" />
                                                         </div>
                                                     </td>
-                                                    <td class="text-truncate" style="max-width: 120px;">${customer.fullname}</td>
-                                                    <td class="text-truncate" style="max-width: 120px;">${customer.phone}</td>
-                                                    <td>${customer.gender}</td>
+                                                    <td class="text-truncate" style="max-width: 120px;">${accountant.fullname}</td>
+                                                    <td class="text-truncate" style="max-width: 120px;">${accountant.phone}</td>
+                                                    <td>${accountant.gender}</td>
                                                     <td class="text-center align-middle">
                                                         <div class="row justify-content-center">
                                                             <div class="col-auto">
                                                                 <button type="button" class="btn btn-info btn-md" data-bs-toggle="modal"
-                                                                        data-bs-target="#detailsModal${customer.id}">
+                                                                        data-bs-target="#detailsModal${accountant.id}">
                                                                     <i class="fas fa-eye"></i>
                                                                 </button>
                                                             </div>
                                                             <div class="col-auto">
-                                                                <button data-bs-toggle="modal" data-bs-target="#editModal${customer.id}" 
+                                                                <button data-bs-toggle="modal" data-bs-target="#editModal${accountant.id}" 
                                                                         class="btn btn-primary btn-md">
                                                                     <i class="fas fa-edit"></i>
                                                                 </button>
                                                             </div>
                                                             <div class="col-auto">
-                                                                <form action="customer-manager" method="post" id="deleteCustomer-${customer.id}">
-                                                                    <input name="deleteId" value="${customer.id}" type="hidden">
+                                                                <form action="accountant-admin-management" method="post" id="deleteAccountant-${accountant.id}">
+                                                                    <input name="deleteId" value="${accountant.id}" type="hidden">
                                                                     <button class="btn btn-danger btn-md" type="submit">
                                                                         <i class="fas fa-trash-alt"></i>
                                                                     </button>
                                                                 </form>
                                                             </div>
                                                         </div>
-                                                        <jsp:include page="template/editCustomer.jsp">
-                                                            <jsp:param name="id" value="${customer.id}" />
-                                                            <jsp:param name="email" value="${customer.email}" />
-                                                            <jsp:param name="firstname" value="${customer.firstname}" />
-                                                            <jsp:param name="lastname" value="${customer.lastname}" />
-                                                            <jsp:param name="gender" value="${customer.gender}" />
-                                                            <jsp:param name="dob" value="${customer.dob}" />
-                                                            <jsp:param name="phone" value="${customer.phone}" />
-                                                            <jsp:param name="address" value="${customer.address}" />
+                                                        <jsp:include page="template/editAccountant.jsp">
+                                                            <jsp:param name="id" value="${accountant.id}" />
+                                                            <jsp:param name="email" value="${accountant.email}" />
+                                                            <jsp:param name="firstname" value="${accountant.firstname}" />
+                                                            <jsp:param name="lastname" value="${accountant.lastname}" />
+                                                            <jsp:param name="gender" value="${accountant.gender}" />
+                                                            <jsp:param name="dob" value="${accountant.dob}" />
+                                                            <jsp:param name="phone" value="${accountant.phone}" />
+                                                            <jsp:param name="address" value="${accountant.address}" />
                                                         </jsp:include>           
                                                     </td>
                                                 </tr>
                                                 <!-- Details Modal -->
-                                            <div class="modal fade" id="detailsModal${customer.id}" tabindex="-1" aria-labelledby="detailsModalLabel${customer.id}" aria-hidden="true">
+                                            <div class="modal fade" id="detailsModal${accountant.id}" tabindex="-1" aria-labelledby="detailsModalLabel${accountant.id}" aria-hidden="true">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-header bg-danger text-white">
-                                                            <h1 class="modal-title fs-5" id="detailsModalLabel${customer.id}">Customer's Detail</h1>
+                                                            <h1 class="modal-title fs-5" id="detailsModalLabel${accountant.id}">Customer's Detail</h1>
                                                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
                                                             <div class="profile-header text-center">
-                                                                <img src="${customer.image}" alt="Customer Image" class="profile-image">
-                                                                <h2>${customer.firstname} ${customer.lastname}</h2>
+                                                                <img src="${accountant.image}" alt="Customer Image" class="profile-image">
+                                                                <h2>${accountant.firstname} ${accountant.lastname}</h2>
                                                                 <p class="text-muted">Customer</p>
                                                             </div>
                                                             <div class="profile-info">
-                                                                <p><strong>Id:</strong> ${customer.id}</p>
-                                                                <p><strong>Email contact:</strong> ${customer.email}</p>
-                                                                <p><strong>Address:</strong> ${customer.address}</p>
-                                                                <p><strong>Phone:</strong> ${customer.phone}</p>
-                                                                <p><strong>Date of Birth:</strong> ${customer.dob}</p>
+                                                                <p><strong>Id:</strong> ${accountant.id}</p>
+                                                                <p><strong>Email contact:</strong> ${accountant.email}</p>
+                                                                <p><strong>Address:</strong> ${accountant.address}</p>
+                                                                <p><strong>Phone:</strong> ${accountant.phone}</p>
+                                                                <p><strong>Date of Birth:</strong> ${accountant.dob}</p>
 
                                                             </div>
                                                         </div>
@@ -389,7 +389,7 @@
                     </ul>
                     <c:choose>
                         <c:when test="${totalPages > 10}">
-                            <form method="get" action="customer-manager" class="d-flex justify-content-center mt-2">
+                            <form method="get" action="accountant-admin-management" class="d-flex justify-content-center mt-2">
                                 <input type="hidden" name="phoneSearch" value="${currentPhoneSearch}">
                                 <input type="hidden" name="recordsPerPage" value="${currentRecords}">
                                 <input type="number" name="page" min="1" max="${totalPages}" 
@@ -460,21 +460,20 @@
                                         $(document).ready(function () {
                                             showToastrAfterReload();
 
-                                            $('form[id^="deleteCustomer-"]').on('submit', function (event) {
+                                            $('form[id^="deleteAccountant-"]').on('submit', function (event) {
                                                 event.preventDefault();
 
                                                 let form = $(this);
-                                                let customerId = form.find('input[name="deleteId"]').val();
+                                                let accountantId = form.find('input[name="deleteId"]').val();
 
                                                 if (confirm("Are you sure you want to delete this customer?")) {
                                                     $.ajax({
-                                                        url: 'customer-manager',
+                                                        url: 'accountant-admin-management',
                                                         type: 'POST',
-                                                        data: {deleteId: customerId},
+                                                        data: {deleteId: accountantId},
                                                         success: function (response) {
                                                             if (response.success) {
-                                                                showSuccessMessage("Success", "Deleted!");
-                                                                form.closest('tr').remove();
+                                                                reloadWithMessage("success", "Success", "Deleted!");
                                                             } else {
                                                                 showErrorMessage("Error", "Something wrong here");
                                                             }
@@ -486,11 +485,11 @@
                                                 }
                                             });
 
-                                            $('form[id^="editCustomer-"]').on('submit', function (event) {
+                                            $('form[id^="editAccountant-"]').on('submit', function (event) {
                                                 event.preventDefault(); // Chặn form submit mặc định
 
                                                 let form = $(this);
-                                                let customerId = form.find('input[name="updateId"]').val(); // Lấy ID từ input hidden
+                                                let accountantId = form.find('input[name="updateId"]').val(); // Lấy ID từ input hidden
                                                 let formData = new FormData(this); // Lấy dữ liệu form (bao gồm file)
 
                                                 if (confirm("Are you sure you want to update this customer?")) {
