@@ -63,6 +63,8 @@
     <servlet>
         <servlet-name>ChatSupportServlet</servlet-name>
         <servlet-class>controller.consultant.ChatSupportServlet</servlet-class>
+    </servlet>
+    <servlet>    
         <servlet-name>CustomerManagement</servlet-name>
         <servlet-class>controller.ceo.CustomerManagement</servlet-class>
     </servlet>
@@ -209,6 +211,8 @@
     <servlet-mapping>
         <servlet-name>ChatSupportServlet</servlet-name>
         <url-pattern>/ChatSupportServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>CustomerManagement</servlet-name>
         <url-pattern>/customerManagement</url-pattern>
     </servlet-mapping>
