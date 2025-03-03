@@ -229,107 +229,106 @@
                                 <c:otherwise>
                                     <c:forEach var="dep" items="${depOptionServiceList}" varStatus="status">
                                         <div class="col-md-6 mb-4">
-                                            <div class="card bubble wow fadeInUp" data-id="${dep.id}" data-wow-delay="${status.index * 0.2}s">
-                                                 <div class="card-body position-relative" >
-                                                <!-- Biểu tượng xóa -->
-                                                <c:if test="${dep.pendingStatus != 'Approved'}">
-                                                    <i class="fas fa-trash delete-icon" style="position: absolute; top: 10px; right: 10px; cursor: pointer;"></i>
-                                                </c:if>
-                                                <div class="row align-items-center">
-                                                    <div class="col-4 text-center" style="border-right: 2px solid rgba(0, 0, 0, 0.1); ">
-                                                        <a class="" style="font-size: 4rem; font-weight: bold; color: black"> ${dep.duringTime}</a>
-                                                        <p class="text-muted">tháng</p>
-                                                    </div>
-                                                    <div class="col-8" style="text-align: right">
-                                                        <p class="" ><strong>Số tiền tối thiểu (VNĐ):</strong> ${dep.minimumDep}</p>
-                                                        <p class=""><strong>Lãi suất thấp nhất:</strong> ${dep.savingRateMinimum}%</p>
-                                                        <p class=""><strong>Lãi suất:</strong> ${dep.savingRate}%</p> 
+                                            <div class="card bubble wow fadeInUp" data-id="${dep.id}" data-wow-delay="${status.index * 0.1}s">
+                                                <div class="card-body position-relative" >
+                                                    <!-- Biểu tượng xóa -->
+                                                    <c:if test="${dep.pendingStatus != 'Approved'}">
+                                                        <i class="fas fa-trash delete-icon" style="position: absolute; top: 10px; right: 10px; cursor: pointer;"></i>
+                                                    </c:if>
+                                                    <div class="row align-items-center">
+                                                        <div class="col-4 text-center" style="border-right: 2px solid rgba(0, 0, 0, 0.1); ">
+                                                            <a class="" style="font-size: 4rem; font-weight: bold; color: black"> ${dep.duringTime}</a>
+                                                            <p class="text-muted">tháng</p>
+                                                        </div>
+                                                        <div class="col-8" style="text-align: right">
+                                                            <p><strong>Số tiền tối thiểu (VNĐ):</strong> ${dep.minimumDep}</p>
+                                                            <p><strong>Lãi suất thấp nhất:</strong> ${dep.savingRateMinimum}%</p>
+                                                            <p><strong>Lãi suất:</strong> ${dep.savingRate}%</p> 
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </c:forEach>
-
-                            </c:otherwise>
-                        </c:choose>
+                                    </c:forEach>
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
                     </div>
                 </div>
+                <!-- Footer Start -->
+                <jsp:include page="template/footer.jsp"/>
+                <!-- End -->
+            </main>
+            <!--End page-content-->
         </div>
-        <!-- Footer Start -->
-        <jsp:include page="template/footer.jsp"/>
-        <!-- End -->
-    </main>
-    <!--End page-content-->
-</div>
-<script src="resources/script/wow.min.js"></script>
-<script src="resources/script/jquery-3.7.1.min.js"></script>
-<script src="./assets/tinymce/tinymce.min.js"></script>
-<script src="./resources/script/tinymceConfig.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-<script src="https://unpkg.com/@popperjs/core@2"></script>
-<script src="https://unpkg.com/tippy.js@6"></script>
-<script src="./resources/script/script.js"></script>
+        <script src="resources/script/wow.min.js"></script>
+        <script src="resources/script/jquery-3.7.1.min.js"></script>
+        <script src="./assets/tinymce/tinymce.min.js"></script>
+        <script src="./resources/script/tinymceConfig.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+        <script src="https://unpkg.com/@popperjs/core@2"></script>
+        <script src="https://unpkg.com/tippy.js@6"></script>
+        <script src="./resources/script/script.js"></script>
 
-<script>
-                                    new WOW().init();
+        <script>
+                                            new WOW().init();
 
-                                    $(document).ready(function () {
+                                            $(document).ready(function () {
 
-                                        showToastrAfterReload();
-                                        // Handle bubble click to review
-                                        $('.bubble').on('click', function () {
-                                            var depId = $(this).data('id');
-                                            window.location.href = 'view-dep-option?depId=' + depId;
-                                        });
+                                                showToastrAfterReload();
+                                                // Handle bubble click to review
+                                                $('.bubble').on('click', function () {
+                                                    var depId = $(this).data('id');
+                                                    window.location.href = 'view-dep-option?depId=' + depId;
+                                                });
 
-                                        // Handle delete icon click
-                                        $('.delete-icon').on('click', function (event) {
-                                            event.stopPropagation(); // Prevent bubble click event
-                                            var depId = $(this).closest('.bubble').data('id');
-                                            var column = $(this).closest('.col-md-6');
-                                            if (confirm("Are you sure you want to delete this option?")) {
-                                                $.ajax({
-                                                    url: 'dep-option-service',
-                                                    type: 'POST',
-                                                    data: {delete: depId},
-                                                    success: function (response) {
-                                                        if (response.success) {
-                                                            reloadWithMessage("success", "Success", "Deleted!");
-                                                        } else {
-                                                            showErrorMessage("Error", "Something wrong here");
-                                                        }
-                                                    },
-                                                    error: function () {
-                                                        showErrorMessage("Error", "Server is busy right now. Please try again later.");
+                                                // Handle delete icon click
+                                                $('.delete-icon').on('click', function (event) {
+                                                    event.stopPropagation(); // Prevent bubble click event
+                                                    var depId = $(this).closest('.bubble').data('id');
+                                                    var column = $(this).closest('.col-md-6');
+                                                    if (confirm("Are you sure you want to delete this option?")) {
+                                                        $.ajax({
+                                                            url: 'dep-option-service',
+                                                            type: 'POST',
+                                                            data: {delete: depId},
+                                                            success: function (response) {
+                                                                if (response.success) {
+                                                                    reloadWithMessage("success", "Success", "Deleted!");
+                                                                } else {
+                                                                    showErrorMessage("Error", "Something wrong here");
+                                                                }
+                                                            },
+                                                            error: function () {
+                                                                showErrorMessage("Error", "Server is busy right now. Please try again later.");
+                                                            }
+                                                        });
                                                     }
                                                 });
-                                            }
-                                        });
-                                    });
-</script>
+                                            });
+        </script>
 
-<!-- page-wrapper -->
-<script src="<%= request.getContextPath() %>/assets/js/jquery.min.js"></script>
-<script src="<%= request.getContextPath() %>/assets/js/bootstrap.bundle.min.js"></script>
-<!-- simplebar -->
-<script src="<%= request.getContextPath() %>/assets/js/simplebar.min.js"></script>
-<!-- Select2 -->
-<script src="<%= request.getContextPath() %>/assets/js/select2.min.js"></script>
-<script src="<%= request.getContextPath() %>/assets/js/select2.init.js"></script>
-<!-- Datepicker -->
-<!-- SLIDER -->
-<script src="assets/js/tiny-slider.js"></script>
-<script src="assets/js/tiny-slider-init.js"></script>
-<!-- Counter -->
-<script src="assets/js/counter.init.js"></script>
-<script src="<%= request.getContextPath() %>/assets/js/flatpickr.min.js"></script>
-<script src="<%= request.getContextPath() %>/assets/js/flatpickr.init.js"></script>
-<script src="<%= request.getContextPath() %>/assets/js/jquery.timepicker.min.js"></script>
-<script src="<%= request.getContextPath() %>/assets/js/timepicker.init.js"></script>
-<!-- Icons -->
-<script src="<%= request.getContextPath() %>/assets/js/feather.min.js"></script>
-<!-- Main Js -->
-<script src="<%= request.getContextPath() %>/assets/js/app.js"></script>
-</body>
+        <!-- page-wrapper -->
+        <script src="<%= request.getContextPath() %>/assets/js/jquery.min.js"></script>
+        <script src="<%= request.getContextPath() %>/assets/js/bootstrap.bundle.min.js"></script>
+        <!-- simplebar -->
+        <script src="<%= request.getContextPath() %>/assets/js/simplebar.min.js"></script>
+        <!-- Select2 -->
+        <script src="<%= request.getContextPath() %>/assets/js/select2.min.js"></script>
+        <script src="<%= request.getContextPath() %>/assets/js/select2.init.js"></script>
+        <!-- Datepicker -->
+        <!-- SLIDER -->
+        <script src="assets/js/tiny-slider.js"></script>
+        <script src="assets/js/tiny-slider-init.js"></script>
+        <!-- Counter -->
+        <script src="assets/js/counter.init.js"></script>
+        <script src="<%= request.getContextPath() %>/assets/js/flatpickr.min.js"></script>
+        <script src="<%= request.getContextPath() %>/assets/js/flatpickr.init.js"></script>
+        <script src="<%= request.getContextPath() %>/assets/js/jquery.timepicker.min.js"></script>
+        <script src="<%= request.getContextPath() %>/assets/js/timepicker.init.js"></script>
+        <!-- Icons -->
+        <script src="<%= request.getContextPath() %>/assets/js/feather.min.js"></script>
+        <!-- Main Js -->
+        <script src="<%= request.getContextPath() %>/assets/js/app.js"></script>
+    </body>
 </html>

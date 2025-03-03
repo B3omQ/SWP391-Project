@@ -10,9 +10,17 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     </head>
+    <style>
+        .setting {
+            text-align: center;
+            align-items: center;            
+        }
+    </style>
     <body>
         <main>
-            ${deposite.description}
+            <div class="setting">
+                ${deposite.description}
+            </div>            
         </main>
     </body>
 </html>

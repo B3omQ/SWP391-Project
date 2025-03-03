@@ -194,7 +194,7 @@
                                             </label>
                                             <input type="number" step="0.01" id="savingRate" 
                                                    name="savingRate" class="kofi-input" 
-                                                   placeholder="Interest rate (%)" required min="0">
+                                                   placeholder="Interest rate (%)" required>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -243,8 +243,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                
-                                
+
+
                             </form>
                         </div>
                     </div>
@@ -289,12 +289,23 @@
                 let nextUrl = null;
                 let isLeaving = false;
 
-                // Theo dõi thay đổi trong form
+                
+                function updateFormDirty() {
+                    let isAnyFieldFilled = false;
+                    $('.kofi-input, .kofi-textarea').each(function () {
+                        if ($(this).val().trim() !== '') {
+                            isAnyFieldFilled = true;
+                            return false; 
+                        }
+                    });
+                    formDirty = isAnyFieldFilled;
+                }
+
                 $('.kofi-input, .kofi-textarea').on('input', function () {
-                    formDirty = true;
+                    updateFormDirty();
                 });
 
-                // Submit form
+                
                 $('#savingForm').on('submit', function (e) {
                     e.preventDefault();
 
@@ -315,7 +326,7 @@
                             if (response.success) {
                                 showSuccessMessage("Success", "Sending approval successful");
                                 $('#savingForm')[0].reset();
-                                formDirty = false;
+                                formDirty = false; 
                             } else {
                                 showErrorMessage("Error", response.message);
                             }
@@ -324,28 +335,6 @@
                             toastr.error('An error occurred while processing your request');
                         }
                     });
-                });
-
-                // Validate input
-                $('.kofi-input').on('input', function () {
-                    let $input = $(this);
-                    let value = $input.val();
-
-                    if ($input.attr('type') === 'number') {
-                        if (value === '' || parseFloat(value) <= 0) {
-                            $input.css('border-color', '#ff6f61');
-                            tippy(this, {
-                                content: 'Value must be greater than 0',
-                                showOnCreate: true,
-                                trigger: 'manual'
-                            });
-                        } else {
-                            $input.css('border-color', '#e0e0e0');
-                            if (this._tippy) {
-                                this._tippy.destroy();
-                            }
-                        }
-                    }
                 });
 
                 // Xử lý khi người dùng cố gắng rời trang
@@ -383,7 +372,7 @@
                     if (formDirty && !isLeaving) {
                         e.preventDefault();
                         $('#leaveConfirmationModal').modal('show');
-                        nextUrl = null; // Để reload khi nhấn Leave từ back
+                        nextUrl = null; 
                         history.pushState({page: 'current'}, document.title, originalUrl);
                     }
                 });
