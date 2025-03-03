@@ -24,6 +24,16 @@ public class DepService {
         
     }
 
+    public DepService(int id, String description, BigDecimal minimumDep, int duringTime, double savingRate) {
+        this.id = id;
+        this.description = description;
+        this.minimumDep = minimumDep;
+        this.duringTime = duringTime;
+        this.savingRate = savingRate;
+    }
+    
+    
+
     public DepService(int id, String description, BigDecimal minimumDep, int duringTime, double savingRate, double savingRateMinimum, String pendingStatus) {
         this.id = id;
         this.description = description;

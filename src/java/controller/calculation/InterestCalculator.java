@@ -15,9 +15,9 @@ import java.time.format.DateTimeFormatter;
 public class InterestCalculator {
     private static final int DAYS_IN_YEAR = 360;
 
-    public static BigDecimal calculateInterest(BigDecimal depositAmount, BigDecimal savingRate, int months) {
+    public static BigDecimal calculateInterest(BigDecimal depositAmount, double savingRate, int months) {
         int days = months * 30;
-        return depositAmount.multiply(savingRate)
+        return depositAmount.multiply(BigDecimal.valueOf(savingRate))
             .divide(BigDecimal.valueOf(100)) // Chuyển lãi suất về dạng phần trăm
             .multiply(BigDecimal.valueOf(days))
             .divide(BigDecimal.valueOf(DAYS_IN_YEAR), BigDecimal.ROUND_HALF_UP);

@@ -56,7 +56,7 @@ public class Calculation extends HttpServlet {
 
             interestMap.put(dep.getId(), interest);
             maturityDateMap.put(dep.getId(), maturityDate);
-            savingRateMap.put(dep.getId(), dep.getSavingRate()); // Lưu lãi suất
+            savingRateMap.put(dep.getId(), BigDecimal.valueOf(dep.getSavingRate())); // Lưu lãi suất
 
             System.out.println("✅ DepId: " + dep.getId() + ", SavingRate: " + dep.getSavingRate() + 
                             ", Interest: " + interest + ", MaturityDate: " + maturityDate);
@@ -114,10 +114,10 @@ public class Calculation extends HttpServlet {
                 return;
             }
 
-            BigDecimal savingRate = selectedDepService.getSavingRate();
+            BigDecimal savingRate = BigDecimal.valueOf(selectedDepService.getSavingRate());
             BigDecimal interest = InterestCalculator.calculateInterest(
                 depositAmount, 
-                savingRate, 
+                savingRate.doubleValue(), 
                 selectedDepService.getDuringTime()
             );
             String maturityDate = InterestCalculator.calculateMaturityDate(selectedDepService.getDuringTime());

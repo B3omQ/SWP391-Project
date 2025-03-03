@@ -20,13 +20,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import controller.calculation.InterestCalculator;
+import java.io.PrintWriter;
+import model.Staff;
 
 public class VerifyingOtp extends HttpServlet {
     private CustomerDAO customerDAO = new CustomerDAO();
     private DepServiceUsedDAO depServiceUsedDAO = new DepServiceUsedDAO();
     private DepHistoryDAO depHistoryDAO = new DepHistoryDAO();
-
-    @Override
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -175,7 +175,7 @@ public class VerifyingOtp extends HttpServlet {
         BigDecimal principal = deposit.getAmount();
         BigDecimal savingRate = depServiceUsedDAO.getSavingRateByDepId(deposit.getDepId());
         int termMonths = calculateTermMonths(deposit.getStartDate(), deposit.getEndDate());
-        BigDecimal interest = InterestCalculator.calculateInterest(principal, savingRate, termMonths);
+        BigDecimal interest = InterestCalculator.calculateInterest(principal, savingRate.doubleValue(), termMonths);
         BigDecimal totalAmount = principal.add(interest);
 
         String maturityAction = deposit.getMaturityAction() != null ? deposit.getMaturityAction() : "withdrawAll";

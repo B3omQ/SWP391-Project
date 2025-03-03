@@ -329,8 +329,8 @@ public boolean updateWallet(int customerId, BigDecimal newBalance) {
                 rs.getInt("id"),
                 rs.getString("description"),
                 rs.getBigDecimal("minimumDep"),
-                rs.getObject("duringTime") != null ? rs.getInt("duringTime") : null,
-                rs.getObject("savingRate") != null ? rs.getBigDecimal("savingRate") : null
+                rs.getInt("duringTime"),
+                rs.getDouble("savingRate") 
             );
             depServices.add(depService);
         }

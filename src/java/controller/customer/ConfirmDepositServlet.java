@@ -56,7 +56,7 @@ public class ConfirmDepositServlet extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + "/customer/confirmTermAction.jsp?error=invalid_rate");
                 return;
             }
-            BigDecimal calculatedInterest = InterestCalculator.calculateInterest(depositAmount, savingRate, selectedTerm);
+            BigDecimal calculatedInterest = InterestCalculator.calculateInterest(depositAmount, savingRate.doubleValue(), selectedTerm);
             String maturityDate = InterestCalculator.calculateMaturityDate(selectedTerm);
             boolean deducted = customerDAO.updateWallet(account.getId(), currentBalance.subtract(depositAmount));
             if (!deducted) {

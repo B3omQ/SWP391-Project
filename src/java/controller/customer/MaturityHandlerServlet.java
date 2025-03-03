@@ -38,7 +38,7 @@ public class MaturityHandlerServlet {
         BigDecimal principal = deposit.getAmount();
         BigDecimal savingRate = depServiceUsedDAO.getSavingRateByDepId(deposit.getDepId());
         int termMonths = depServiceUsedDAO.getTermMonthsByDepId(deposit.getDepId());
-        BigDecimal interest = InterestCalculator.calculateInterest(principal, savingRate, termMonths);
+        BigDecimal interest = InterestCalculator.calculateInterest(principal, savingRate.doubleValue(), termMonths);
         BigDecimal totalAmount = principal.add(interest);
 
         // Log để kiểm tra giá trị
