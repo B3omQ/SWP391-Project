@@ -42,7 +42,24 @@ public class CustomerDAO extends DBContext {
         rs.getBigDecimal("Wallet")
     );
 }
- 
+ public List<Customer> getAllCustomers() {
+        List<Customer> customers = new ArrayList<>();
+        String sql = "SELECT Id, Wallet FROM Customer"; // Chỉ lấy các cột cần thiết
+        try (PreparedStatement p = connection.prepareStatement(sql);
+             ResultSet rs = p.executeQuery()) {
+            while (rs.next()) {
+                Customer customer = new Customer();
+                customer.setId(rs.getInt("Id"));
+                customer.setWallet(rs.getBigDecimal("Wallet"));
+                customers.add(customer);
+            }
+        } catch (SQLException e) {
+            System.err.println("❌ Error querying all customers: " + e.getMessage());
+            e.printStackTrace();
+        }
+        System.out.println("Found " + customers.size() + " customers");
+        return customers;
+    }
     public Customer getCustomerById(int id) {
         String sql = "SELECT * FROM Customer WHERE Id = ?";
         try (PreparedStatement p = connection.prepareStatement(sql)) {

@@ -3,6 +3,7 @@ package dal;
 import java.math.BigDecimal;
 import model.DepHistory;
 import java.sql.*;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import util.DBContext;
@@ -31,6 +32,19 @@ public class DepHistoryDAO extends DBContext {
             e.printStackTrace();
             return false;
         }
+    }
+        public boolean addDepHistory(int dsuId, String action, BigDecimal principal, BigDecimal interest, BigDecimal totalAmount) {
+        // Định dạng số tiền
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        String formattedTotalAmount = formatter.format(totalAmount);
+        String formattedPrincipal = formatter.format(principal);
+        String formattedInterest = formatter.format(interest);
+
+        // Tạo thông báo lịch sử với template đẹp
+        String description = "Đáo hạn tự động: " + action + " " + formattedTotalAmount + " VND " +
+                            "(Gốc: " + formattedPrincipal + " VND, Lãi: " + formattedInterest + " VND)";
+
+        return addDepHistory(dsuId, description);
     }
 
     /**

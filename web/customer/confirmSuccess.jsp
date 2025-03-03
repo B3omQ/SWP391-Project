@@ -40,7 +40,6 @@
     <div class="layout-specing">
         <div class="container" style="max-width: 600px; margin: 50px auto;">
             <div class="success-card">
-                <img src="${pageContext.request.contextPath}/assets/images/logo.png" alt="Techcombank Logo" class="bank-logo">
                 <div class="success-icon"><i class="fas fa-check-circle"></i></div>
                 <h2 class="success-title">Mở Thành Công Tiền Gửi Phát Lộc Online</h2>
                 <p class="success-message">Xin chúc mừng, giao dịch gửi tiết kiệm của bạn đã được thực hiện thành công.</p>

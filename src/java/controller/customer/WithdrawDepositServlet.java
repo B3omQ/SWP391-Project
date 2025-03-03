@@ -9,7 +9,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import model.Customer;
 import model.DepServiceUsed;
 
@@ -74,10 +73,9 @@ public class WithdrawDepositServlet extends HttpServlet {
                 return;
             }
 
-            // Lưu lịch sử giao dịch vào DepHistory (chỉ lưu DSUId và Discription)
+            // Lưu lịch sử giao dịch vào DepHistory (dùng hàm mới)
             DepHistoryDAO depHistoryDAO = new DepHistoryDAO();
-            String description = "Rút tiền tiết kiệm: Gốc " + principal + " VND, Lãi " + interest + " VND, Tổng " + totalAmount + " VND";
-            boolean historySaved = depHistoryDAO.addDepHistory(depositId, description);
+            boolean historySaved = depHistoryDAO.addDepHistory(depositId, "Rút tiền tiết kiệm", principal, interest, totalAmount);
             if (!historySaved) {
                 System.err.println("Failed to save DepHistory for withdrawal: depositId=" + depositId);
             }

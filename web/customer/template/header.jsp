@@ -38,137 +38,136 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        .btn-custom {
-            border: 2px solid #d70000;
-            color: #d70000;
-            font-weight: bold;
-            background-color: #000;
-            color: #fff;
-            border-radius: 8px;
-            padding: 10px 20px;
-        }
-        .btn-custom:hover {
-            background-color: #333;
-            color: white;
-        }
-        .feature-box {
-            background-color: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-        }
-        .icon-large {
-            font-size: 2rem;
-            color: #d70000;
-        }
-        .term-box {
-            border: 2px solid #ddd;
-            padding: 15px;
-            text-align: center;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .term-box:hover, .term-box.selected {
-            border-color: #d70000;
-            background-color: #f8d7da;
-        }
-        .option-box {
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .option-box:hover, .option-box.selected {
-            border-color: #dc3545;
-            background-color: #f8d7da;
-        }
-        .option-box input {
-            display: none;
-        }
-        .btn-group {
-            display: flex;
-            justify-content: space-between;
-        }
-        .card {
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        .success-card {
-            background-color: #fff;
-            border-radius: 15px;
-            box-shadow: 0 8px 16px rgba(0, 255, 0, 0.2);
-            padding: 20px;
-            border: 2px solid #28a745;
-            animation: fadeIn 1s ease-in;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .success-icon {
-            font-size: 60px;
-            color: #28a745;
-            margin-bottom: 20px;
-        }
-        .success-title {
-            color: #28a745;
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-        }
-        .success-message {
-            color: #333;
-            font-size: 18px;
-            margin-bottom: 25px;
-        }
-        .info-section {
-            background-color: #f8f9fa;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-        }
-        .amount {
-            font-size: 24px;
-            font-weight: bold;
-            color: #ff5722;
-        }
-        .balance {
-            font-size: 20px;
-            font-weight: bold;
-            color: #2196F3;
-        }
-        .btn-home {
-            background-color: #28a745;
-            color: #fff;
-            padding: 12px 40px;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
-            border: none;
-            transition: background-color 0.3s ease;
-        }
-        .btn-home:hover {
-            background-color: #218838;
-            color: #fff;
-            text-decoration: none;
-        }
-        .btn-deposit {
-            background-color: #d70000;
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 5px;
-            border: none;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-        }
-        .btn-deposit:hover {
-            background-color: #b50000;
-        }
-    </style>
+.btn-custom {
+    border: 2px solid #ff0000;
+    background-color: #ff0000; /* Đổi nền thành đỏ */
+    color: #fff; /* Giữ chữ trắng để tương phản */
+    font-weight: bold;
+    border-radius: 8px;
+    padding: 10px 20px;
+}
+.btn-custom:hover {
+    background-color: #cc0000; /* Đổi sang đỏ đậm hơn khi hover */
+    color: #fff; /* Giữ chữ trắng */
+}
+    .feature-box {
+        background-color: #fff0f0; /* Màu nền nhạt đỏ */
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+    }
+    .icon-large {
+        font-size: 2rem;
+        color: #ff0000; /* Màu đỏ cho icon */
+    }
+    .term-box {
+        border: 2px solid #ddd;
+        padding: 15px;
+        text-align: center;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    .term-box:hover, .term-box.selected {
+        border-color: #ff0000; /* Đường viền đỏ khi hover hoặc selected */
+        background-color: #ffe6e6; /* Màu nền nhạt đỏ */
+    }
+    .option-box {
+        border: 2px solid #ddd;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    .option-box:hover, .option-box.selected {
+        border-color: #ff0000; /* Đường viền đỏ */
+        background-color: #ffe6e6; /* Màu nền nhạt đỏ */
+    }
+    .option-box input {
+        display: none;
+    }
+    .btn-group {
+        display: flex;
+        justify-content: space-between;
+    }
+    .card {
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .success-card {
+        background-color: #fff;
+        border-radius: 15px;
+        box-shadow: 0 8px 16px rgba(255, 0, 0, 0.2); /* Hiệu ứng bóng đỏ */
+        padding: 20px;
+        border: 2px solid #ff0000; /* Đường viền đỏ */
+        animation: fadeIn 1s ease-in;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .success-icon {
+        font-size: 60px;
+        color: #ff0000; /* Icon đỏ */
+        margin-bottom: 20px;
+    }
+    .success-title {
+        color: #ff0000; /* Tiêu đề đỏ */
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+    }
+    .success-message {
+        color: #333;
+        font-size: 18px;
+        margin-bottom: 25px;
+    }
+    .info-section {
+        background-color: #fff0f0; /* Màu nền nhạt đỏ */
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
+    .amount {
+        font-size: 24px;
+        font-weight: bold;
+        color: #ff0000; /* Số tiền màu đỏ */
+    }
+    .balance {
+        font-size: 20px;
+        font-weight: bold;
+        color: #ff4444; /* Số dư màu đỏ nhạt */
+    }
+    .btn-home {
+        background-color: #ff0000; /* Nút home màu đỏ */
+        color: #fff;
+        padding: 12px 40px;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: 600;
+        border: none;
+        transition: background-color 0.3s ease;
+    }
+    .btn-home:hover {
+        background-color: #cc0000; /* Màu đỏ đậm hơn khi hover */
+        color: #fff;
+        text-decoration: none;
+    }
+    .btn-deposit {
+        background-color: #ff0000; /* Nút deposit màu đỏ */
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 5px;
+        border: none;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+    .btn-deposit:hover {
+        background-color: #cc0000; /* Màu đỏ đậm hơn khi hover */
+    }
+</style>
 </head>
 <body>
     <%

@@ -21,7 +21,6 @@ public class AuthServlet extends HttpServlet {
     private StaffDAO staffDAO = new StaffDAO();
     private AccountValidation av = new AccountValidation();
     private resetService resetService = new resetService();
-    private MaturityHandlerServlet maturityHandler = new MaturityHandlerServlet(); 
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -51,8 +50,7 @@ public class AuthServlet extends HttpServlet {
                         session.setAttribute("account", customer);
                         session.setAttribute("userId", customer.getId());
 
-                        // Gọi handler để xử lý đáo hạn
-                        maturityHandler.processMaturedDeposits(customer, session);
+     
 
                         response.sendRedirect("customer/Customer.jsp");
                         return;
