@@ -1,6 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<form style="display:inline-block" action="customer-manager" method="post" enctype="multipart/form-data" id="editCustomer-${param.id}">
+<form style="display:inline-block" action="accountant-admin-management" method="post" enctype="multipart/form-data" id="editAccountant-${param.id}">
     <div class="modal fade" tabindex="-1" id="editModal${param.id}" aria-labelledby="editModalLabel${param.id}" aria-hidden="true">
         <input name="updateId" type="hidden" value="${param.id}" />
         <div class="modal-dialog modal-xl">

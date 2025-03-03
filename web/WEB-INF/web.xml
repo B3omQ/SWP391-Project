@@ -65,6 +65,30 @@
         <servlet-class>controller.consultant.ChatSupportServlet</servlet-class>
     </servlet>
     <servlet>    
+        <servlet-name>CustomerAdminManagement</servlet-name>
+        <servlet-class>controller.userManagementAdmin.CustomerAdminManagement</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AccountantAdminManagement</servlet-name>
+        <servlet-class>controller.userManagementAdmin.AccountantAdminManagement</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ConsultantAdminManagement</servlet-name>
+        <servlet-class>controller.userManagementAdmin.ConsultantAdminManagement</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ManagerAdminManagement</servlet-name>
+        <servlet-class>controller.userManagementAdmin.ManagerAdminManagement</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProfileAdmin</servlet-name>
+        <servlet-class>controller.userManagementAdmin.ProfileAdmin</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddSavingOption</servlet-name>
+        <servlet-class>controller.manager.AddSavingOption</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>CustomerManagement</servlet-name>
         <servlet-class>controller.ceo.CustomerManagement</servlet-class>
     </servlet>
@@ -93,17 +117,9 @@
         <url-pattern>/consultant-customer</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-name>CustomerManager</servlet-name>
-        <servlet-class>controller.manager.CustomerManager</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>ProfileManager</servlet-name>
         <servlet-class>controller.manager.ProfileManager</servlet-class>
     </servlet>
-    <servlet-mapping>
-        <servlet-name>CustomerManager</servlet-name>
-        <url-pattern>/customer-manager</url-pattern>
-    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ProfileManager</servlet-name>
         <url-pattern>/profile-manager</url-pattern>
@@ -211,6 +227,30 @@
     <servlet-mapping>
         <servlet-name>ChatSupportServlet</servlet-name>
         <url-pattern>/ChatSupportServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CustomerAdminManagement</servlet-name>
+        <url-pattern>/customer-admin-management</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AccountantAdminManagement</servlet-name>
+        <url-pattern>/accountant-admin-management</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ConsultantAdminManagement</servlet-name>
+        <url-pattern>/consultant-admin-management</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManagerAdminManagement</servlet-name>
+        <url-pattern>/manager-admin-management</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProfileAdmin</servlet-name>
+        <url-pattern>/profile-admin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddSavingOption</servlet-name>
+        <url-pattern>/add-saving-option</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CustomerManagement</servlet-name>

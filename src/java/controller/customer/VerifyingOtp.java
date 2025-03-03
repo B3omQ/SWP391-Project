@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import model.Staff;
 
 /**
  *
@@ -93,7 +94,22 @@ public class VerifyingOtp extends HttpServlet {
             if (userOtp != null && userOtp.equals(generatedOtp)) {
                 session.removeAttribute("otp");
                 if (session.getAttribute("staff") != null) {
-                    response.sendRedirect("profile-manager");
+                    Staff staff = (Staff)session.getAttribute("staff");
+                    if(staff.getRoleId().getId() == 1) {
+                        response.sendRedirect("");
+                    }                    
+                    if(staff.getRoleId().getId() == 2) {
+                        response.sendRedirect("");
+                    }
+                    if(staff.getRoleId().getId() == 3) {
+                        response.sendRedirect("profile-manager");
+                    }
+                    if(staff.getRoleId().getId() == 4) {
+                        response.sendRedirect("profile-admin");
+                    }
+                    if(staff.getRoleId().getId() == 5) {
+                        response.sendRedirect("");
+                    }                    
                 } else {
                     response.sendRedirect("customer/template/Customer.jsp");
                 }

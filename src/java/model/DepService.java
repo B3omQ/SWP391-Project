@@ -18,18 +18,20 @@ public class DepService {
     private int duringTime;
     private double savingRate;
     private double savingRateMinimum;
+    private String pendingStatus;
 
     public DepService() {
         
     }
 
-    public DepService(int id, String description, BigDecimal minimumDep, int duringTime, double savingRate, double savingRateMinimum) {
+    public DepService(int id, String description, BigDecimal minimumDep, int duringTime, double savingRate, double savingRateMinimum, String pendingStatus) {
         this.id = id;
         this.description = description;
         this.minimumDep = minimumDep;
         this.duringTime = duringTime;
         this.savingRate = savingRate;
         this.savingRateMinimum = savingRateMinimum;
+        this.pendingStatus = pendingStatus;
     }
 
     public int getId() {
@@ -56,6 +58,10 @@ public class DepService {
         return savingRateMinimum;
     }
 
+    public String getPendingStatus() {
+        return pendingStatus;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -79,6 +85,16 @@ public class DepService {
     public void setSavingRateMinimum(double savingRateMinimum) {
         this.savingRateMinimum = savingRateMinimum;
     }
+
+    public void setPendingStatus(String pendingStatus) {
+        this.pendingStatus = pendingStatus;
+    }
+
+    @Override
+    public String toString() {
+        return "DepService{" + "id=" + id + ", description=" + description + ", minimumDep=" + minimumDep + ", duringTime=" + duringTime + ", savingRate=" + savingRate + ", savingRateMinimum=" + savingRateMinimum + ", pendingStatus=" + pendingStatus + '}';
+    }
+
     
     
 }

@@ -9,10 +9,71 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Deposit Option Details</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 20px;
+                background-color: #f5f5f5;
+            }
+            .container {
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 30px;
+                background-color: white;
+                border-radius: 8px;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            }
+            .title {
+                text-align: center;
+                color: #333;
+                margin-bottom: 20px;
+                font-size: 24px;
+                font-weight: bold;
+            }
+            .description {
+                text-align: center;
+                color: #666;
+                font-size: 16px;
+                line-height: 1.6;
+                padding: 20px;
+                background-color: #fafafa;
+                border-radius: 5px;
+            }
+            .logo {
+                display: block;
+                margin: 0 auto 20px;
+                max-width: 150px;
+                height: auto;
+            }
+            .back-button {
+                display: block;
+                width: 120px;
+                padding: 10px;
+                margin: 20px 0 0 auto;
+                text-align: center;
+                background-color: #ff0000;
+                color: white;
+                text-decoration: none;
+                border-radius: 5px;
+                font-size: 16px;
+            }
+            .back-button:hover {
+                background-color: #cc0000;
+            }
+        </style>
     </head>
     <body>
-        <main>
-            ${deposite.description}
-        </main>
+        <div class="container">
+            <img src="https://www.saokim.com.vn/wp-content/uploads/2023/01/Bieu-Tuong-Logo-Ngan-Hang-Techcombank.png" alt="Techcombank Logo" class="logo">
+            <h1 class="title">Deposit Option Information</h1>
+            <div class="description">
+                ${deposite.description}
+            </div>
+        </div>
     </body>
 </html>
+
+
+
