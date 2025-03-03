@@ -33,16 +33,145 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
         <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css">
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="resources/script/animate.min.css">
 
+        <style>
+            /* Tổng thể layout */
+            .layout-specing {
+                max-width: 1600px;
+                margin: 0 auto;
+                padding: 20px;
+            }
 
+            /* Tiêu đề chính */
+            h2.text-primary {
+                font-family: 'Poppins', sans-serif;
+                font-size: 2rem;
+                font-weight: 600;
+                color: #ff6f61;
+                text-align: center;
+                margin-bottom: 30px;
+            }
 
+            /* Dropdown */
+            .form-select {
+                font-family: 'Poppins', sans-serif;
+                font-size: 1rem;
+                padding: 10px 15px;
+                border: 2px solid #e0e0e0;
+                border-radius: 10px;
+                background: #fafafa;
+                transition: all 0.3s ease;
+            }
+
+            .form-select:focus {
+                border-color: #ff6f61;
+                box-shadow: 0 0 5px rgba(255, 111, 97, 0.3);
+                outline: none;
+            }
+
+            /* Card bubble */
+            .bubble {
+                cursor: pointer;
+                background: #fff;
+                border-radius: 15px;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+                transition: transform 0.2s ease, box-shadow 0.2s ease, border 0.2s ease;
+                overflow: hidden;
+                font-family: 'Poppins', sans-serif;
+                position: relative; /* Để định vị icon tuyệt đối */
+            }
+
+            .bubble:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+                border: 1px solid #ff6f61; /* Viền đỏ khi hover */
+            }
+
+            .card-body {
+                padding: 20px;
+                position: relative;
+            }
+
+            /* Icon xóa */
+            .delete-icon {
+                color: #ff6f61;
+                font-size: 1.2rem;
+                position: absolute;
+                top: 15px;
+                right: 15px;
+                transition: transform 0.2s ease;
+            }
+
+            .delete-icon:hover {
+                transform: scale(1.2);
+            }
+
+            /* Icon piggy */
+            .piggy-icon {
+                color: #ff6f61;
+                font-size: 1.2rem;
+                position: absolute;
+                top: 15px;
+                left: 15px;
+                transition: transform 0.2s ease;
+            }
+
+            .piggy-icon:hover {
+                transform: scale(1.2);
+            }
+
+            /* Nội dung trong card */
+            .bubble .row {
+                align-items: center;
+            }
+
+            .bubble .col-4 a {
+                font-size: 3.5rem;
+                font-weight: 700;
+                color: #333;
+            }
+
+            .bubble .col-4 p {
+                font-size: 1rem;
+                color: #777;
+                margin: 0;
+            }
+
+            .bubble .col-4 {
+                border-right: 2px solid #e0e0e0;
+                text-align: center;
+            }
+
+            .bubble .col-8 {
+                text-align: right;
+                padding-left: 20px;
+            }
+
+            .bubble .col-8 p {
+                font-size: 1.1rem;
+                color: #555;
+                margin: 5px 0;
+            }
+
+            .bubble .col-8 p strong {
+                color: #333;
+                font-weight: 600;
+            }
+
+            /* Thông báo khi danh sách rỗng */
+            .text-muted.fw-bold {
+                font-family: 'Poppins', sans-serif;
+                font-size: 1.2rem;
+                color: #777;
+                text-align: center;
+                padding: 20px;
+            }
+        </style>
     </head>
-    <style>
-
-    </style>
 
     <body>
-
         <!-- Loader -->
         <div id="preloader">
             <div id="status">
@@ -60,136 +189,80 @@
 
             <!-- Start Page Content -->
             <main class="page-content bg-light">   
-
                 <c:set value="${sessionScope.staff}" var="staff"/>
                 <jsp:include page="template/header.jsp"/>
 
                 <div class="container-fluid">
                     <div class="layout-specing">
                         <!-- Header Section -->
-                        <div class="row align-items-center">
-                            <!-- Title & Breadcrumb -->
-                            <div class="row justify-content-center">
-                                <div class="col-auto">
-                                    <button data-bs-toggle="modal" data-bs-target="#addDepositeModal" 
-                                            class="btn btn-primary btn-md">
-                                        <a>ADD</a>
-                                    </button>
-                                </div>
-
+                        </br>
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h2 class="text-primary">Deposit Options</h2>
                             </div>
-                            <jsp:include page="template/addDepOptionService.jsp"/>
-
                         </div>
-                        <!-- Customer Table -->
 
-                        <style>
-                            .table {
-                                border-collapse: collapse; /* Đảm bảo viền không bị gãy */
-                                width: 100%;
-                                border: 1px solid black; /* Viền bên ngoài */
-                                background-color: white; /* Nền trắng */
-                                border-collapse: separate; /* Để box-shadow hiển thị đúng */
-                                border-spacing: 0; /* Loại bỏ khoảng cách giữa các ô */
-                                border-radius: 10px; /* Bo góc */
-                                overflow: hidden; /* Đảm bảo góc bo tròn không bị mất */
-                                background: white; /* Đảm bảo bảng có màu nền để bóng đẹp hơn */
-                                box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.15),
-                                    0px 0px 8px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng xung quanh */
-                            }
-
-                            .table th, .table td {
-                                border: 1px solid black; /* Viền bên trong */
-                                color: black; /* Màu chữ đen */
-                                padding: 10px; /* Khoảng cách trong các ô */
-                                text-align: center; /* Căn giữa chữ */
-                            }
-
-                            .table th {
-                                background-color: white; /* Nền trắng cho header */
-                                font-weight: bold; /* Chữ in đậm cho tiêu đề */
-                            }
-
-                            .table tbody tr:hover {
-                                background-color: #f2f2f2; /* Nền màu khi hover */
-                            }
-
-                            .thead-dark {
-                                background-color: white; /* Đảm bảo màu nền header là trắng */
-                                color: black; /* Màu chữ header là đen */
-                            }
-
-                            .table td, .table th {
-                                vertical-align: middle; /* Căn giữa theo chiều dọc */
-                            }
-                        </style>
-
-
-                        <div class="table-responsive mt-4">
-                            <table class="table table-striped table-bordered table-hover">
-                                <thead class="thead-dark bg-dark text-black" style ="text-align:center">
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Deposite Minimum</th>
-                                        <th>During Time (Months)</th>
-                                        <th>Saving Rate (%)</th>
-                                        <th>Saving Rate Minimum (%)</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <c:choose>
-                                        <c:when test="${empty depOptionServiceList}">
-                                            <tr>
-                                                <td colspan="100%" class="text-center text-muted fw-bold">Search list is empty</td>
-                                            </tr>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <c:forEach var="dep" items="${depOptionServiceList}">
-                                                <tr>
-                                                    <td>${dep.id}</td>
-                                                    <td>${dep.minimumDep}</td>
-                                                    <td>${dep.duringTime}</td>
-                                                    <td>${dep.savingRate}</td>
-                                                    <td>${dep.savingRateMinimum}</td>
-                                                    <td class="text-center align-middle" style="display:flex">
-                                                        <div class="col-auto">
-                                                            <a href="view-dep-option?depId=${dep.id}" class="btn btn-info btn-md">
-                                                                <i class="fas fa-eye"></i>
-                                                            </a>
+                        <!-- Title & Dropdown -->
+                        <div class="row align-items-center mb-4">
+                            <form id="sort" action="dep-option-service" method="get" class="d-flex">
+                                <select class="form-select me-2" name="pendingStatus" onchange="onChangeSubmit('sort')" id="status">
+                                    <option value="Approved" ${currentStatus == 'Approved' || empty currentStatus ? 'selected' : ''}>Approved</option>
+                                    <option value="Denied" ${currentStatus == 'Denied' ? 'selected' : ''}>Denied</option>
+                                    <option value="Pending" ${currentStatus == 'Pending' ? 'selected' : ''}>Pending</option>
+                                </select>   
+                                <select class="form-select me-2" name="sortBy" onchange="onChangeSubmit('sort')" id="sorBy">
+                                    <option value="DuringTime" ${currentSort == 'DuringTime' || empty currentSort ? 'selected' : ''}>Months</option>
+                                    <option value="MinimumDep" ${currentSort == 'MinimumDep' ? 'selected' : ''}>MinMoneyDep</option>
+                                </select>     
+                                <select class="form-select me-2" name="order" onchange="onChangeSubmit('sort')" id="order">
+                                    <option value="ASC" ${currentOrder == 'ASC' || empty currentOrder ? 'selected' : ''}>Asc</option>
+                                    <option value="DESC" ${currentOrder == 'DESC' ? 'selected' : ''}>Desc</option>
+                                </select> 
+                            </form>
+                        </div>
+                        <!-- Deposit Options List -->                     
+                        <div class="row">
+                            <c:choose>
+                                <c:when test="${empty depOptionServiceList}">
+                                    <div class="col-12 text-center text-muted fw-bold">Search list is empty</div>
+                                </c:when>
+                                <c:otherwise>
+                                    <c:forEach var="dep" items="${depOptionServiceList}" varStatus="status">
+                                        <div class="col-md-6 mb-4">
+                                            <div class="card bubble wow fadeInUp" data-id="${dep.id}" data-wow-delay="${status.index * 0.1}s">
+                                                <div class="card-body position-relative" >
+                                                    <!-- Biểu tượng xóa -->
+                                                    <c:if test="${dep.pendingStatus != 'Approved'}">
+                                                        <i class="fas fa-trash delete-icon" style="position: absolute; top: 10px; right: 10px; cursor: pointer;"></i>
+                                                    </c:if>
+                                                    <div class="row align-items-center">
+                                                        <div class="col-4 text-center" style="border-right: 2px solid rgba(0, 0, 0, 0.1); ">
+                                                            <a class="" style="font-size: 4rem; font-weight: bold; color: black"> ${dep.duringTime}</a>
+                                                            <p class="text-muted">tháng</p>
                                                         </div>
-                                                        <div class="col-auto">
-                                                            <form action="dep-option-service" method="post" id="deleteDepOptionService-${dep.id}">
-                                                                <input name="delete" value="${dep.id}" type="hidden">
-                                                                <button class="btn btn-danger btn-md" type="submit">
-                                                                    <i class="fas fa-trash-alt"></i>
-                                                                </button>
-                                                            </form>
+                                                        <div class="col-8" style="text-align: right">
+                                                            <p><strong>Số tiền tối thiểu (VNĐ):</strong> ${dep.minimumDep}</p>
+                                                            <p><strong>Lãi suất thấp nhất:</strong> ${dep.savingRateMinimum}%</p>
+                                                            <p><strong>Lãi suất:</strong> ${dep.savingRate}%</p> 
                                                         </div>
-                                                    </td>
-                                                </tr>
-                                            </c:forEach>
-                                        </c:otherwise>
-                                    </c:choose>
-
-                                </tbody>
-                            </table>
-
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </c:forEach>
+                                </c:otherwise>
+                            </c:choose>
                         </div>
                     </div>
                 </div>
-
-
-
-
                 <!-- Footer Start -->
                 <jsp:include page="template/footer.jsp"/>
                 <!-- End -->
             </main>
             <!--End page-content-->
-
         </div>
-        <script src ="resources/script/jquery-3.7.1.min.js"></script>
+        <script src="resources/script/wow.min.js"></script>
+        <script src="resources/script/jquery-3.7.1.min.js"></script>
         <script src="./assets/tinymce/tinymce.min.js"></script>
         <script src="./resources/script/tinymceConfig.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
@@ -198,58 +271,64 @@
         <script src="./resources/script/script.js"></script>
 
         <script>
-            $(document).ready(function () {
+                                            new WOW().init();
 
-                $('form[id^="deleteDepOptionService-"]').on('submit', function (event) {
-                    event.preventDefault();
+                                            $(document).ready(function () {
 
-                    let form = $(this);
-                    let depId = form.find('input[name="delete"]').val();
+                                                showToastrAfterReload();
+                                                // Handle bubble click to review
+                                                $('.bubble').on('click', function () {
+                                                    var depId = $(this).data('id');
+                                                    window.location.href = 'view-dep-option?depId=' + depId;
+                                                });
 
-                    if (confirm("Are you sure you want to delete this option?")) {
-                        $.ajax({
-                            url: 'dep-option-service',
-                            type: 'POST',
-                            data: {delete: depId},
-                            success: function (response) {
-                                if (response.success) {
-                                    showSuccessMessage("Success", "Deleted!");
-                                    form.closest('tr').remove();
-                                } else {
-                                    showErrorMessage("Error", "Something wrong here");
-                                }
-                            },
-                            error: function () {
-                                showErrorMessage("Error", "Server is busy right now. Please try again later.");
-                            }
-                        });
-                    }
-                });
-            });
-
+                                                // Handle delete icon click
+                                                $('.delete-icon').on('click', function (event) {
+                                                    event.stopPropagation(); // Prevent bubble click event
+                                                    var depId = $(this).closest('.bubble').data('id');
+                                                    var column = $(this).closest('.col-md-6');
+                                                    if (confirm("Are you sure you want to delete this option?")) {
+                                                        $.ajax({
+                                                            url: 'dep-option-service',
+                                                            type: 'POST',
+                                                            data: {delete: depId},
+                                                            success: function (response) {
+                                                                if (response.success) {
+                                                                    reloadWithMessage("success", "Success", "Deleted!");
+                                                                } else {
+                                                                    showErrorMessage("Error", "Something wrong here");
+                                                                }
+                                                            },
+                                                            error: function () {
+                                                                showErrorMessage("Error", "Server is busy right now. Please try again later.");
+                                                            }
+                                                        });
+                                                    }
+                                                });
+                                            });
         </script>
-
 
         <!-- page-wrapper -->
         <script src="<%= request.getContextPath() %>/assets/js/jquery.min.js"></script>
         <script src="<%= request.getContextPath() %>/assets/js/bootstrap.bundle.min.js"></script>
-
         <!-- simplebar -->
         <script src="<%= request.getContextPath() %>/assets/js/simplebar.min.js"></script>
         <!-- Select2 -->
         <script src="<%= request.getContextPath() %>/assets/js/select2.min.js"></script>
         <script src="<%= request.getContextPath() %>/assets/js/select2.init.js"></script>
         <!-- Datepicker -->
+        <!-- SLIDER -->
+        <script src="assets/js/tiny-slider.js"></script>
+        <script src="assets/js/tiny-slider-init.js"></script>
+        <!-- Counter -->
+        <script src="assets/js/counter.init.js"></script>
         <script src="<%= request.getContextPath() %>/assets/js/flatpickr.min.js"></script>
         <script src="<%= request.getContextPath() %>/assets/js/flatpickr.init.js"></script>
-        <!-- Datepicker -->
         <script src="<%= request.getContextPath() %>/assets/js/jquery.timepicker.min.js"></script>
         <script src="<%= request.getContextPath() %>/assets/js/timepicker.init.js"></script>
         <!-- Icons -->
         <script src="<%= request.getContextPath() %>/assets/js/feather.min.js"></script>
         <!-- Main Js -->
         <script src="<%= request.getContextPath() %>/assets/js/app.js"></script>
-
     </body>
-
 </html>

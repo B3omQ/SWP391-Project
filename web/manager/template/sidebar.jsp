@@ -1,9 +1,3 @@
-<%-- 
-    Document   : sidebar
-    Created on : Jan 31, 2025, 12:38:49 PM
-    Author     : JIGGER
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <nav id="sidebar" class="sidebar-wrapper">
     <div class="sidebar-content" data-simplebar style="height: calc(100% - 60px);">
@@ -17,11 +11,17 @@
         <ul class="sidebar-menu pt-3">
             <li><a href="index.html"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
 
-            <li><a href="profile-manager"><i class="uil uil-user me-2 d-inline-block"></i>My profile</a></li>
+            <li><a href="profile-manager"><i class="uil uil-user me-2 d-inline-block"></i>My profile</a></li>         
 
-            <li><a href="customer-manager"><i class="uil uil-cube me-2 d-inline-block"></i>Customer list</a></li>            
-
-            <li><a href="dep-option-service"><i class="uil uil-file me-2 d-inline-block"></i>Deposite Service</a></li>
+            <li class="sidebar-dropdown">
+                <a href="javascript:void(0)"><i class="uil uil-file me-2 d-inline-block"></i>Deposite Service</a>
+                <div class="sidebar-submenu">
+                    <ul>
+                        <li><a href="dep-option-service">View option</a></li>
+                        <li><a href="add-saving-option">Create option</a></li>                        
+                    </ul>
+                </div>
+            </li>            
 
             <li><a href="javascript:void(0)"><i class="uil uil-file me-2 d-inline-block"></i>Loan Service</a></li>
 
@@ -53,8 +53,7 @@
             </li>
 
             <li class="sidebar-dropdown">
-                <a href="javascript:void(0)"><i
-                        class="uil uil-sign-in-alt me-2 d-inline-block"></i>Authentication</a>
+                <a href="javascript:void(0)"><i class="uil uil-sign-in-alt me-2 d-inline-block"></i>Authentication</a>
                 <div class="sidebar-submenu">
                     <ul>
                         <li><a href="login.html">Login</a></li>
@@ -66,8 +65,7 @@
                 </div>
             </li>            
 
-            <li><a href="home.jsp"><i
-                        class="uil uil-window me-2 d-inline-block"></i>Home page</a></li>
+            <li><a href="home.jsp"><i class="uil uil-window me-2 d-inline-block"></i>Home page</a></li>
         </ul>
         <!-- sidebar-menu  -->
     </div>
@@ -80,4 +78,3 @@
         </li>
     </ul>
 </nav>
-

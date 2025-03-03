@@ -53,7 +53,18 @@ public class Staff {
         this.phone = phone;
         this.Address = Address;
     }
-    
+
+    public Staff(int id, String image, String email, String firstname, String lastname, String gender, LocalDate dob, String phone, String Address) {
+        this.id = id;
+        this.image = image;
+        this.email = email;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.gender = gender;
+        this.dob = dob;
+        this.phone = phone;
+        this.Address = Address;
+    }    
     
 
     public Staff(int id, String username, String password, String image, String email, String firstname, String lastname, String gender, LocalDate dob, String phone, String Address, Role roleId) {
