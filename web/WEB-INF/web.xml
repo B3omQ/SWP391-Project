@@ -33,6 +33,10 @@
         <servlet-class>controller.consultant.ConsultantProfile</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>AiChatBotServlet</servlet-name>
+        <servlet-class>controller.AiChatBotServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>LoanOptionService</servlet-name>
         <servlet-class>controller.manager.LoanOptionService</servlet-class>
     </servlet>
@@ -57,6 +61,10 @@
         <servlet-class>controller.customer.Transfer</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>ChatSupportServlet</servlet-name>
+        <servlet-class>controller.consultant.ChatSupportServlet</servlet-class>
+    </servlet>
+    <servlet>    
         <servlet-name>CustomerAdminManagement</servlet-name>
         <servlet-class>controller.userManagementAdmin.CustomerAdminManagement</servlet-class>
     </servlet>
@@ -189,6 +197,10 @@
         <url-pattern>/ConsultantProfile</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>AiChatBotServlet</servlet-name>
+        <url-pattern>/AiChatBotServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>LoanOptionService</servlet-name>
         <url-pattern>/Loan-Option-Service</url-pattern>
     </servlet-mapping>
@@ -211,6 +223,10 @@
     <servlet-mapping>
         <servlet-name>Transfer</servlet-name>
         <url-pattern>/Transfer</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChatSupportServlet</servlet-name>
+        <url-pattern>/ChatSupportServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CustomerAdminManagement</servlet-name>
