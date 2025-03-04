@@ -31,6 +31,7 @@
         <!-- Css -->
         <link href="<%= request.getContextPath() %>/assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
         <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css">
+        <link rel="stylesheet" href="resources/script/animate.min.css">
 
     </head>
 
@@ -80,7 +81,7 @@
                         <div class="container">
                             <div class="row">
                                 <div class="col-xl-4 col-lg-4 col-md-5 col-12">
-                                    <div class="rounded shadow overflow-hidden sticky-bar">
+                                    <div class="rounded shadow overflow-hidden sticky-bar wow fadeInUp">
                                         <div class="card border-0">
                                             <img src="<%= request.getContextPath() %>/assets/images/doctors/profile-bg.jpg" class="img-fluid" alt="">
                                         </div>
@@ -100,7 +101,7 @@
 
 
                                 <div class="col-xl-8 col-lg-8 col-md-7 mt-4 pt-2 mt-sm-0 pt-sm-0">
-                                    <div class="card-body">
+                                    <div class="card-body wow fadeInUp">
                                         <h3 style="font-weight: bold">
                                             Edit information
                                         </h3>
@@ -237,12 +238,13 @@
             </main>
 
         </div>
-
+        <script src="resources/script/wow.min.js"></script>
         <script src ="resources/script/jquery-3.7.1.min.js"></script>
         <script src="https://unpkg.com/@popperjs/core@2"></script>
         <script src="https://unpkg.com/tippy.js@6"></script>
 
         <script>
+                                                                        new WOW().init();
                                                                         document.addEventListener("DOMContentLoaded", function () {
                                                                             tippy('#newPassword', {
                                                                                 content: "Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, a special character and not contains space characters.",
@@ -361,6 +363,7 @@
                                                                             }
                                                                         }
         </script>
+
         <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
         <script src="./resources/script/script.js"></script>
 

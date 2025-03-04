@@ -40,12 +40,22 @@ public class ManagerAdminManagement extends HttpServlet {
         AdminDAO adao = new AdminDAO();
         String pageParam = request.getParameter("page");
         String phoneSearch = request.getParameter("phoneSearch");
-        String recordsEntries = request.getParameter("recordsPerPage");
         try {
             int page = (pageParam == null) ? 1 : Integer.parseInt(pageParam);
-            int recordsPerPage = (recordsEntries == null) ? 8 : Integer.parseInt(recordsEntries);
-            int offset = (page - 1) * recordsPerPage;
+            int recordsPerPage;
             int totalRecords = adao.countTotalStaffRecords(3);
+
+            if (totalRecords <= 50) {
+                recordsPerPage = Math.max(1, totalRecords * 50 / 100);
+            } else if (totalRecords <= 100) {
+                recordsPerPage = totalRecords * 30 / 100;
+            } else if (totalRecords <= 300) {
+                recordsPerPage = totalRecords * 20 / 100;
+            } else {
+                recordsPerPage = totalRecords * 10 / 100;
+            }
+
+            int offset = (page - 1) * recordsPerPage;
             int totalPages = (int) Math.ceil(totalRecords * 1.0 / recordsPerPage);
 
             List<Staff> staffList = adao.getAllStaff(offset, recordsPerPage, phoneSearch, 3);

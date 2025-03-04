@@ -73,7 +73,7 @@
                                         <li class="breadcrumb-item">
                                             <a href="index.html" class="text-decoration-none text-danger">SmartBanking</a>
                                         </li>
-                                        <li class="breadcrumb-item active" aria-current="page">Customers</li>
+                                        <li class="breadcrumb-item active" aria-current="page">Managers</li>
                                     </ul>
                                 </nav>
                             </div>
