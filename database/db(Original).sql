@@ -30,12 +30,21 @@ create table Customer (
 	FirstName nvarchar(50) not null,
 	LastName nvarchar(50) not null,
 	Gender nvarchar(50) not null,
-	Dob datetime not null,
+	Dob datetime not null,	
 	Phone nvarchar(255) not null,
 	[Address] nvarchar(max) not null,
 	failAttempts int not null default 0,
 	LockTime datetime null,
 	Wallet decimal(10,2) not null default 50000.00
+)
+
+Create table IdentityInformation (
+	Id int identity(1,1) primary key,
+	CusId int references Customer(Id),
+	IdentityCardFrontSide nvarchar(max),
+	IdentityCardBackSide nvarchar(max),
+	PortraitPhoto nvarchar(max),
+	PendingStatus nvarchar(max) not null default 'Pending'
 )
 
 Create Table tokenForgetPassword(
@@ -57,7 +66,8 @@ create table DepService (
 	MinimumDep decimal(10,2) not null,	
 	DuringTime int null,
 	SavingRate decimal(10,2) null,
-	SavingRateMinimum decimal(10,2) null 
+	SavingRateMinimum decimal(10,2) null,
+	PendingStatus nvarchar(255) not null default 'Pending'
 )
 
 create table DepServiceUsed (
