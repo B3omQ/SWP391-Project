@@ -49,7 +49,7 @@
                         <a href="javascript:void(0)"><i class="uil uil-apps me-2 d-inline-block"></i>Apps</a>
                         <div class="sidebar-submenu">
                             <ul>
-                                <li><a href="chat.html">Chat</a></li>
+                                <li><a href="OnlineSupport">Chat</a></li>
                                 <li><a href="email.html">Email</a></li>
                                 <li><a href="calendar.html">Calendar</a></li>
                             </ul>
