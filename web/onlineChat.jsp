@@ -875,7 +875,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                 });
             });
         </script>
-        <script>
+<!--        <script>
             $(document).ready(function () {
                 $(".form-create-account").submit(function (event) {
                     event.preventDefault();
@@ -883,29 +883,35 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                     var formData = new FormData(this);
 
                     $.ajax({
-                        url: "OnlineSupport",
+                        url: "OnlineSupport", // Ensure this matches your servlet mapping
                         type: "POST",
                         data: formData,
                         processData: false,
                         contentType: false,
                         success: function (response) {
                             console.log("Response từ backend:", response);
-                            if (response.trim() === "errorPhoneExist") {
+                            if (response === "errorPhoneExist") {
                                 alert("Số điện thoại đã có người sử dụng, vui lòng nhập số điện thoại khác.");
-                            } else if (response.trim() === "errorEmailexist") {
+                            } else if (response === "errorEmailexist") {
                                 alert("Email đã có người sử dụng, vui lòng nhập email khác.");
-                            } else {
+                            } else if (response === "success") {
                                 alert("Tạo tài khoản thành công!");
-                                document.getElementById("addAccount").reset();
+                                var form = document.getElementById("addAccount");
+                                if (form) {
+                                    form.reset(); // Reset the form only if it exists
+                                }
+                            } else {
+                                alert("Phản hồi không xác định từ server: " + response);
                             }
                         },
-                        error: function () {
-                            alert("Có lỗi xảy ra, vui lòng thử lại.");
+                        error: function (xhr, status, error) {
+                            console.log("AJAX Error:", xhr.responseText, status, error);
+                            alert("Có lỗi xảy ra, vui lòng thử lại. Chi tiết: " + error);
                         }
                     });
                 });
             });
-        </script>
+        </script>-->
 
     </body>
 </html>

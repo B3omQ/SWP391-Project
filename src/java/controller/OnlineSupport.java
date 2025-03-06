@@ -92,6 +92,7 @@ public class OnlineSupport extends HttpServlet {
                 } else {
                     response.getWriter().write("error");
                 }
+                System.out.println(response);
             } catch (Exception e) {
                 e.printStackTrace();
             }
