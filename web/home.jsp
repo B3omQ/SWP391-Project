@@ -36,108 +36,108 @@
     </head>
     <style>
         .chat-icon{
-                position: fixed;
-                bottom: 40px;
-                right: 5px;
-                background: transparent;
-                padding: 0;
-                border-radius: 50%;
-                cursor: pointer;
-                border: none;
-            }
+            position: fixed;
+            bottom: 40px;
+            right: 5px;
+            background: transparent;
+            padding: 0;
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+        }
 
-            /* Hộp thoại chat */
-            .chat-container {
-                display: none;
-                position: fixed;
-                bottom: 80px;
-                right: 20px;
-                width: 300px;
-                background: white;
-                border-radius: 10px;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-                overflow: hidden;
-            }
+        /* Hộp thoại chat */
+        .chat-container {
+            display: none;
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 300px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
 
-            /* Tiêu đề chat */
-            .chat-header {
-                background: #dc3545;
-                color: white;
-                padding: 10px;
-                display: flex;
-                justify-content: space-between; /* Đặt khoảng cách giữa title và nút đóng */
-                align-items: center;
-                font-size: 16px;
-                position: relative;
-                font-weight: bold;
-            }
+        /* Tiêu đề chat */
+        .chat-header {
+            background: #dc3545;
+            color: white;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between; /* Đặt khoảng cách giữa title và nút đóng */
+            align-items: center;
+            font-size: 16px;
+            position: relative;
+            font-weight: bold;
+        }
 
-            /* Nút đóng */
-            .close-btn {
-                background: none;
-                border: none;
-                cursor: pointer;
-                padding: 0;
-            }
-            .close-btn img {
-                width: 10px; /* Adjust width as needed */
-                height: 20px; /* Adjust height as needed */
-                /* or */
-                width: 1.5rem; /* Use relative units like rem or em for better scaling */
-                height: 1.5rem;
-            }
+        /* Nút đóng */
+        .close-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+        }
+        .close-btn img {
+            width: 10px; /* Adjust width as needed */
+            height: 20px; /* Adjust height as needed */
+            /* or */
+            width: 1.5rem; /* Use relative units like rem or em for better scaling */
+            height: 1.5rem;
+        }
 
-            /* Nội dung chat */
-            .chat-box {
-                height: 250px;
-                overflow-y: auto;
-                padding: 10px;
-                background: #f9f9f9;
-            }
+        /* Nội dung chat */
+        .chat-box {
+            height: 250px;
+            overflow-y: auto;
+            padding: 10px;
+            background: #f9f9f9;
+        }
 
-            /* Tin nhắn */
-            .chat-box p {
-                padding: 8px;
-                border-radius: 5px;
-                margin: 5px 0;
-            }
+        /* Tin nhắn */
+        .chat-box p {
+            padding: 8px;
+            border-radius: 5px;
+            margin: 5px 0;
+        }
 
-            /* Tin nhắn người dùng */
-            .user-message {
-                background: #dc3545;
-                color: white;
-                text-align: left;
-            }
+        /* Tin nhắn người dùng */
+        .user-message {
+            background: #dc3545;
+            color: white;
+            text-align: left;
+        }
 
-            /* Tin nhắn AI */
-            .ai-message {
-                background: #e9ecef;
-                text-align: left;
-            }
+        /* Tin nhắn AI */
+        .ai-message {
+            background: #e9ecef;
+            text-align: left;
+        }
 
-            /* Ô nhập tin nhắn */
-            .chat-input {
-                display: flex;
-                padding: 10px;
-                border-top: 1px solid #ddd;
-            }
+        /* Ô nhập tin nhắn */
+        .chat-input {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #ddd;
+        }
 
-            .chat-input input {
-                flex: 1;
-                padding: 8px;
-                border: 1px solid #ddd;
-                border-radius: 5px;
-            }
+        .chat-input input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
 
-            .chat-input button {
-                background: #dc3545;
-                color: white;
-                border: none;
-                padding: 8px 15px;
-                margin-left: 5px;
-                cursor: pointer;
-                border-radius: 5px;
-            }
+        .chat-input button {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            margin-left: 5px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
     </style>    
     <body>
         <!-- Loader -->
@@ -401,7 +401,7 @@
                                 giao dịch an toàn hoặc tư vấn quản lý tài khoản đơn giản.</p>
 
                             <div class="mt-4 pt-2">
-                                <a href="booking-appointment.html" class="btn btn-primary">Hỗ trợ tạo tài khoản ngay</a>
+                                <a href="onlineChat.jsp" class="btn btn-primary">Hỗ trợ tạo tài khoản ngay</a>
                                 <p class="text-white-50 mb-0 mt-2">T&C apply. Please read <a href="#"
                                                                                              class="text-white-50">Terms and Conditions <i
                                             class="ri-arrow-right-line align-middle"></i></a></p>
@@ -746,7 +746,7 @@
         <!-- End -->
 
         <!-- Start -->
-<section class="section pt-0">
+        <section class="section pt-0">
             <div class="container">
                 <div class="row justify-content-center wow fadeInUp">
                     <div class="col-12 text-center">
@@ -1113,76 +1113,109 @@
                 <button onclick="sendMessage()">Gửi</button>
             </div>
         </div>
-                    <script>
-                function toggleChat() {
-                    const chatBox = document.getElementById("chatContainer");
-                    chatBox.style.display = (chatBox.style.display === "none" || chatBox.style.display === "") ? "block" : "none";
+        <script>
+            function toggleChat() {
+                const chatBox = document.getElementById("chatContainer");
+                chatBox.style.display = (chatBox.style.display === "none" || chatBox.style.display === "") ? "block" : "none";
+            }
+
+            function handleKeyPress(event) {
+                if (event.key === "Enter") {
+                    sendMessage();
                 }
+            }
 
-                function handleKeyPress(event) {
-                    if (event.key === "Enter") {
-                        sendMessage();
-                    }
+            let badWords = [];
+
+            fetch("http://localhost:9999/BankingSystem/ChatFilter", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
                 }
-
-                function sendMessage() {
-                    const userMessageInput = document.getElementById("userMessage");
-                    let userMessage = userMessageInput.value.trim();
-
-                    if (!userMessage) {
-                        return;
-                    }
-
-                    displayMessage(userMessage, true);
-                    userMessageInput.value = "";
-                    showLoadingIndicator(true);
-
-                    fetch("http://localhost:9999/BankingSystem/AiChatBotServlet", {
-                        method: "POST",
-                        headers: {"Content-Type": "application/x-www-form-urlencoded"},
-                        body: new URLSearchParams({message: userMessage}) // Gửi tin nhắn trực tiếp
+            })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error("Network response was not ok");
+                        }
+                        return response.json();
                     })
-                            .then(response => {
-                                if (!response.ok) {
-                                    throw new Error("Network response was not ok");
-                                }
-                                return response.json();
-                            })
-                            .then(data => {
-                                showLoadingIndicator(false);
-                                if (data && data.reply) {
-                                    displayMessage(data.reply, false);
-                                } else {
-                                    displayMessage("Lỗi: AI không phản hồi hoặc dữ liệu không hợp lệ.", false, "error");
-                                    console.error("Invalid AI response:", data);
-                                }
-                            })
-                            .catch(error => {
-                                showLoadingIndicator(false);
-                                displayMessage("Lỗi: Không thể kết nối tới AI.", false, "error");
-                                console.error("Error:", error);
-                            });
+                    .then(data => {
+                        badWords = data; // Lưu danh sách từ cấm
+                        console.log("Bad words loaded:", badWords);
+                    })
+                    .catch(error => {
+                        console.error("Error loading bad words:", error);
+                    });
+
+            function filterBadWords(text) {
+                let filteredText = text;
+                badWords.forEach(word => {
+                    const regex = new RegExp("(?<!\\w)"+word+"(?!\\w)", "gi");
+                    filteredText = filteredText.replace(regex, "*".repeat(word.length));
+                });
+                return filteredText;
+            }
+
+            function sendMessage() {
+                const userMessageInput = document.getElementById("userMessage");
+                let userMessage = userMessageInput.value.trim();
+
+                if (!userMessage) {
+                    return;
+                }
+                const filteredMessage = filterBadWords(userMessage);
+                displayMessage(filteredMessage, true);
+                console.log("Before filter:", userMessage, "After filter:", filteredMessage);
+                userMessageInput.value = "";
+                showLoadingIndicator(true);
+
+                fetch("http://localhost:9999/BankingSystem/AiChatBotServlet", {
+                    method: "POST",
+                    headers: {"Content-Type": "application/x-www-form-urlencoded"},
+                    body: new URLSearchParams({message: filteredMessage})
+                })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error("Network response was not ok");
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            showLoadingIndicator(false);
+                            if (data && data.reply) {
+                                displayMessage(data.reply, false);
+                            } else {
+                                displayMessage("Lỗi: AI không phản hồi hoặc dữ liệu không hợp lệ.", false, "error");
+                                console.error("Invalid AI response:", data);
+                            }
+                        })
+                        .catch(error => {
+                            showLoadingIndicator(false);
+                            displayMessage("Lỗi: Không thể kết nối tới AI.", false, "error");
+                            console.error("Error:", error);
+                        });
+            }
+
+            function displayMessage(message, isUser, messageType = "normal") {
+                const chatBox = document.getElementById("chatBox");
+                const messageElement = document.createElement("p");
+                messageElement.classList.add(isUser ? "user-message" : "ai-message");
+                if (messageType === "error") {
+                    messageElement.style.color = "red";
                 }
 
-                function displayMessage(message, isUser, messageType = "normal") {
-                    const chatBox = document.getElementById("chatBox");
-                    const messageElement = document.createElement("p");
-                    messageElement.classList.add(isUser ? "user-message" : "ai-message");
-                    if (messageType === "error") {
-                        messageElement.style.color = "red";
-                    }
+                // Sử dụng innerHTML để hỗ trợ HTML trong tin nhắn
+                messageElement.innerHTML = (isUser ? "Bạn: " : "Digibot: ") + message;
+                chatBox.appendChild(messageElement);
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }
 
-                    messageElement.textContent = (isUser ? "Bạn: " : "Digibot: ") + message; // Hiển thị tin nhắn trực tiếp
-                    chatBox.appendChild(messageElement);
-                    chatBox.scrollTop = chatBox.scrollHeight;
-                }
+            function showLoadingIndicator(show) {
+                const loadingIndicator = document.getElementById("loading");
+                loadingIndicator.style.display = show ? "block" : "none";
+            }
 
-                function showLoadingIndicator(show) {
-                    const loadingIndicator = document.getElementById("loading");
-                    loadingIndicator.style.display = show ? "block" : "none";
-                }
-
-            </script>
+        </script>
 
         <!-- Back to top -->
         <a href="#" onclick="topFunction()" id="back-to-top" class="btn btn-icon btn-pills btn-primary back-to-top"><i

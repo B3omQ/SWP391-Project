@@ -64,7 +64,7 @@
         <servlet-name>ChatSupportServlet</servlet-name>
         <servlet-class>controller.consultant.ChatSupportServlet</servlet-class>
     </servlet>
-    <servlet>    
+    <servlet>
         <servlet-name>CustomerAdminManagement</servlet-name>
         <servlet-class>controller.userManagementAdmin.CustomerAdminManagement</servlet-class>
     </servlet>
@@ -107,6 +107,14 @@
     <servlet>
         <servlet-name>CeoProfileServlet</servlet-name>
         <servlet-class>controller.ceo.CeoProfileServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>OnlineSupport</servlet-name>
+        <servlet-class>controller.OnlineSupport</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ChatFilter</servlet-name>
+        <servlet-class>filter.ChatFilter</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>HomeServlet</servlet-name>
@@ -271,6 +279,14 @@
     <servlet-mapping>
         <servlet-name>CeoProfileServlet</servlet-name>
         <url-pattern>/ceoProfileServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OnlineSupport</servlet-name>
+        <url-pattern>/OnlineSupport</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChatFilter</servlet-name>
+        <url-pattern>/ChatFilter</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>1440</session-timeout>

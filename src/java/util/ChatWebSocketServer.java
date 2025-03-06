@@ -160,7 +160,7 @@ public void onMessage(String message, Session session) {
             sendMessageToSession(receiverSession, sender + ": " + chatMessage); // Gửi tin nhắn văn bản
         }
         // Gửi xác nhận cho sender
-        sendMessageToSession(session, "Hệ thống: Tin nhắn đã được gửi tới " + receiver);
+//        sendMessageToSession(session, "Hệ thống: Tin nhắn đã được gửi tới " + receiver);
     } else {
         sendMessageToSession(session, "Bạn không thể gửi tin nhắn đến người này.");
     }

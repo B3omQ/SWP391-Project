@@ -46,7 +46,18 @@ public class Customer {
         this.phone = phone;
         this.Address = Address;
     } 
-    
+    public Customer(String username, String password, String email, String firstname, String lastname, String gender, LocalDate dob, String phone, String Address) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.gender = gender;
+        this.dob = dob;
+        this.phone = phone;
+        this.Address = Address;
+        this.wallet = BigDecimal.valueOf(50000.00);
+    }
     
     
     public Customer(int id, String username, String password, String image, String email, String firstname, String lastname, String gender, LocalDate dob, String phone, String Address, int failAttempt, LocalDateTime locktime, BigDecimal wallet) {
