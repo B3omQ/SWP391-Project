@@ -11,8 +11,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.Part;
-import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import model.Customer;
@@ -68,13 +66,16 @@ public class OnlineSupport extends HttpServlet {
                 if (cdao.isDuplicatedEmail(email)) {
                     response.setContentType("text/plain");
                     response.getWriter().write("errorEmailexist");
+                    response.flushBuffer();
                     System.out.println("đã block email");
+                    System.out.println(response);
                     return;
                 }
                 if (cdao.isDuplicatedPhoneNumber(phoneNumber)) {
                     response.setContentType("text/plain");
                     response.getWriter().write("errorPhoneExist");
                     System.out.println("đã block phone");
+                    System.out.println(response);
                     return;
                 }
                 if (dobStr != null && !dobStr.isEmpty()) {
@@ -88,11 +89,10 @@ public class OnlineSupport extends HttpServlet {
                 boolean success = cdao.booleanCreateNewAccount(customer);
 
                 if (success) {
+                    response.setContentType("text/plain");
                     response.getWriter().write("success");
-                } else {
-                    response.getWriter().write("error");
+                    System.out.println(response);
                 }
-                System.out.println(response);
             } catch (Exception e) {
                 e.printStackTrace();
             }

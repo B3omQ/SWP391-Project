@@ -13,27 +13,38 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>SmartBank Chat</title>
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
         <style>
             body {
-                max-width: 1400px;
+                font-family: 'Arial', sans-serif; /* Font đơn giản, chuyên nghiệp */
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                margin: 0;
+
+            }
+            #content-container { /* Đây là div chứa nội dung chính */
+                width: 1700px;
                 font-family: 'Arial', sans-serif; /* Font đơn giản, chuyên nghiệp */
                 margin: 0;
                 padding: 0;
-                height: 95vh;
+                height: 80vh;
                 display: flex;
                 background-color: #ffffff; /* Màu nền trắng giống Techcombank */
                 overflow: hidden;
                 padding-top: 40px; /* Khoảng cách để header không đè lên nội dung */
                 background-color: #ffffff; /* Đảm bảo màu nền trắng */
-                justify-content: center;
+                padding: 20px;
+                border-radius: 50px;
+                box-shadow: 0 0 10px rgba(0, 0, 0.1, 0.1);
             }
             #user-list {
                 width: 17%; /* Giữ độ rộng hợp lý để hiển thị danh sách */
                 background-color: #ffffff; /* Màu nền trắng cho danh sách người dùng */
                 border-right: 1px solid #e0e0e0; /* Đường viền nhẹ màu xám */
-                border-top: 1px solid #e0e0e0;
                 padding:10px;
                 overflow-y: auto;
                 max-height: 100vh;
@@ -42,7 +53,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
             #user-list h3 {
                 font-size: 16px;
                 color: #d32f2f; /* Màu đỏ giống logo Techcombank */
-                margin: 0 0 15px 0;
                 font-weight: 600;
                 text-transform: uppercase; /* Chữ in hoa giống Techcombank */
             }
@@ -81,7 +91,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                 display: flex;
                 flex-direction: column;
                 background-color: #ffffff; /* Màu nền trắng cho khung chat */
-                padding: 50px;
+                padding: 30px;
             }
 
             #chat-box h2 {
@@ -351,10 +361,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                 display: flex;
                 justify-content: space-between;
             }
-            #addAccount{
-                margin-top: 60px;
-                margin-right: 20px
-            }
         </style>
     </head>
     <body>
@@ -366,7 +372,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
 
                 <!-- Menu điều hướng -->
                 <div class="nav-menu">
-                    <a href="/news">Bảng tin</a>
+                    <a href="home">về trang chủ</a>
                     <a href="/rates">Tỷ giá</a>
                     <a href="/forms">Biểu phí & Biểu mẫu</a>
                     <a href="/interest">Lãi suất</a>
@@ -386,100 +392,30 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
             </div>
         </header>
         <!-- Danh sách người dùng online -->
-        <div id="user-list">
-            <c:if test="${sessionScope.staff == null}">
-                <h3>Consultant online</h3>
-            </c:if>
-            <c:if test="${sessionScope.staff.roleId.id == 2}">
-                <h3>Guess và customer đang truy cập</h3>
-            </c:if>
-            <ul id="online-users"></ul>
+        <div id="content-container">
+            <div id="user-list">
+                <c:if test="${sessionScope.staff == null}">
+                    <h3>Consultant online</h3>
+                </c:if>
+                <c:if test="${sessionScope.staff.roleId.id == 2}">
+                    <h3>Guess và customer đang truy cập</h3>
+                </c:if>
+                <ul id="online-users"></ul>
 
 
-        </div>
-        <div id="chat-box">
-            <h2>SmartBank Support - Chat System</h2>
-            <h3 id="chat-with">Chưa chọn người để chat</h3>
-            <div id="messages"></div>
-            <div class="flex">
-                <input type="text" id="message-input" placeholder="Nhập tin nhắn...">
-                <input type="file" id="file-input" style="display: none;">
-                <!--                <button id="upload-button" onclick="triggerFileUpload()">Upload Ảnh</button>-->
-                <button onclick="sendMessage()">Gửi</button>
+            </div>
+            <div id="chat-box">
+                <h2>SmartBank Support - Chat System</h2>
+                <h3 id="chat-with">Chưa chọn người để chat</h3>
+                <div id="messages"></div>
+                <div class="flex">
+                    <input type="text" id="message-input" placeholder="Nhập tin nhắn...">
+                    <input type="file" id="file-input" style="display: none;">
+                    <!--                <button id="upload-button" onclick="triggerFileUpload()">Upload Ảnh</button>-->
+                    <button onclick="sendMessage()">Gửi</button>
+                </div>
             </div>
         </div>
-        <c:if test="${sessionScope.staff.roleId.id == 2}">
-            <form id="addAccount"class="mt-4 form-create-account" action="OnlineSupport" method="post">
-                <div class="container">
-                    <input value="add" type="hidden" name="add">
-                    <div class="form-header">
-                        <h2 id="chat-with">Thêm mới Account</h2>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="mb-3">
-                            <label class="form-label">Username <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control username" placeholder="Username" name="username" required="">
-                            <small class="text-danger usernameError" style="display: none;">Username không được chứa space hoặc kí tự đặc biệt.</small>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="mb-3">                                               
-                            <label class="form-label">First name <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control firstname" placeholder="First Name" name="firstname" required="">
-                            <small class="text-danger firstnameError" style="display: none;">First name không được chứa số và kí tự được biệt</small>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="mb-3">                                                 
-                            <label class="form-label">Last name <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control lastname" placeholder="Last Name" name="lastname" required="">
-                            <small class="text-danger lastnameError" style="display: none;">Last name không được chứa số và kí tự được biệt</small>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="mb-3">
-                            <label class="form-label">Your Email <span class="text-danger">*</span></label>
-                            <input type="email" id="email" class="form-control email" name="email" placeholder="Email" required="">
-                            <small class="text-danger emailError" style="display: none;">Email không đúng format</small>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="mb-3">
-                            <label class="form-label">Day of birth <span class="text-danger">*</span></label>
-                            <input type="date" class="form-control dob" name="dob" required="">
-                            <small class="dobError text-danger" style="display: none;">Customer phải ít nhất 18 tuổi trở lên.</small>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="mb-3">
-                            <label class="form-label">Gender <span class="text-danger">*    </span></label>
-                            <select type="text" class="form-control" name="gender" required="">
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="mb-3">
-                            <label class="form-label">Address <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" placeholder="Address" name="address" required="">
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="mb-3">
-                            <label class="form-label">Phone Number <span class="text-danger">*</span></label>
-                            <input type="tel" class="form-control phone" name="phone" placeholder="Enter phone number" required="" pattern="0[1-9]\d{7,8}" title="">
-                            <small class="text-danger phoneError" style="display: none;">Vui lòng nhập đúng format số điện thoại (9-10 số và không kí tự đặc biệt)</small>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <div class="">
-                            <button type="submit" class="btn btn-primary w-100">CREATE</button>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </c:if>
         <script>
             let badWords = [];
 
@@ -747,171 +683,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                 }
             }
         </script>
-
-        <script>
-            document.querySelectorAll(".form-create-account, .form-update-account, .form-search-account").forEach(function (form) {
-                // Username Validation
-                form.querySelectorAll(".username").forEach(function (input) {
-                    input.addEventListener("input", function () {
-                        const username = this.value;
-                        const usernamePattern = /^[\p{L}0-9]+$/u;
-                        const errorMsg = form.querySelector(".usernameError");
-
-                        if (!usernamePattern.test(username)) {
-                            errorMsg.style.display = "block";
-                            this.setCustomValidity("Username must not contain spaces or special characters.");
-                        } else {
-                            errorMsg.style.display = "none";
-                            this.setCustomValidity("");
-                        }
-                    });
-                });
-
-                // First Name Validation
-                form.querySelectorAll(".firstname").forEach(function (input) {
-                    input.addEventListener("input", function () {
-                        const firstname = this.value;
-                        const namePattern = /^[\p{L}0-9]+$/u;
-                        const errorMsg = form.querySelector(".firstnameError");
-
-                        if (!namePattern.test(firstname)) {
-                            errorMsg.style.display = "block";
-                            this.setCustomValidity("First name must only contain letters.");
-                        } else {
-                            errorMsg.style.display = "none";
-                            this.setCustomValidity("");
-                        }
-                    });
-                });
-
-                // Last Name Validation
-                form.querySelectorAll(".lastname").forEach(function (input) {
-                    input.addEventListener("input", function () {
-                        const lastname = this.value;
-                        const namePattern = /^[\p{L}0-9]+$/u;
-                        const errorMsg = form.querySelector(".lastnameError");
-
-                        if (!namePattern.test(lastname)) {
-                            errorMsg.style.display = "block";
-                            this.setCustomValidity("Last name must only contain letters.");
-                        } else {
-                            errorMsg.style.display = "none";
-                            this.setCustomValidity("");
-                        }
-                    });
-                });
-
-                // Phone Validation
-                form.querySelectorAll(".phone").forEach(function (input) {
-                    input.addEventListener("input", function () {
-                        let phoneInput = this.value;
-                        let phonePattern = /^0[1-9]\d{7,8}$/;
-                        let errorMsg = form.querySelector(".phoneError");
-
-                        if (phonePattern.test(phoneInput)) {
-                            this.setCustomValidity("");
-                            errorMsg.style.display = "none";
-                        } else {
-                            this.setCustomValidity("Phone number không đúng format");
-                            errorMsg.style.display = "block";
-                        }
-                    });
-                });
-
-                // Email Validation
-                form.querySelectorAll(".email").forEach(function (input) {
-                    input.addEventListener("input", function () {
-                        let email = this.value;
-                        let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-                        let errorMsg = form.querySelector(".emailError");
-
-                        if (emailPattern.test(email)) {
-                            this.setCustomValidity(""); // ✅ Allow form submission
-                            errorMsg.style.display = "none"; // ✅ Hide error message
-                        } else {
-                            this.setCustomValidity("Email không đúng format"); // ❌ Prevent form submission
-                            errorMsg.style.display = "block"; // ❌ Show error message
-                        }
-                    });
-                });
-                form.querySelectorAll(".dob").forEach(function (input) {
-                    input.addEventListener("change", function () {
-                        const dobInput = this.value;
-                        const dobError = form.querySelector(".dobError");
-
-                        if (dobInput) {
-                            const dob = new Date(dobInput);
-                            const today = new Date();
-                            const age = today.getFullYear() - dob.getFullYear();
-                            const monthDiff = today.getMonth() - dob.getMonth();
-                            const dayDiff = today.getDate() - dob.getDate();
-
-                            const actualAge = (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) ? age - 1 : age;
-
-                            if (actualAge < 18) {
-                                dobError.style.display = "block";
-                                this.setCustomValidity("You must be at least 18 years old.");
-                            } else {
-                                dobError.style.display = "none";
-                                this.setCustomValidity("");
-                            }
-                        }
-                    });
-                });
-            });
-            form.querySelectorAll(".password").forEach(function (input) {
-                input.addEventListener("input", function () {
-                    const password = this.value;
-                    const passwordPattern = /^[A-Z](?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{7,}$/;
-                    const errorMsg = form.querySelector(".passwordError");
-
-                    if (passwordPattern.test(password)) {
-                        this.setCustomValidity("");
-                        errorMsg.style.display = "none";
-                    } else {
-                        this.setCustomValidity("Password must be at least 8 characters long, start with an uppercase letter, include at least one number, and one special character.");
-                        errorMsg.style.display = "block";
-                    }
-                });
-            });
-        </script>
-<!--        <script>
-            $(document).ready(function () {
-                $(".form-create-account").submit(function (event) {
-                    event.preventDefault();
-
-                    var formData = new FormData(this);
-
-                    $.ajax({
-                        url: "OnlineSupport", // Ensure this matches your servlet mapping
-                        type: "POST",
-                        data: formData,
-                        processData: false,
-                        contentType: false,
-                        success: function (response) {
-                            console.log("Response từ backend:", response);
-                            if (response === "errorPhoneExist") {
-                                alert("Số điện thoại đã có người sử dụng, vui lòng nhập số điện thoại khác.");
-                            } else if (response === "errorEmailexist") {
-                                alert("Email đã có người sử dụng, vui lòng nhập email khác.");
-                            } else if (response === "success") {
-                                alert("Tạo tài khoản thành công!");
-                                var form = document.getElementById("addAccount");
-                                if (form) {
-                                    form.reset(); // Reset the form only if it exists
-                                }
-                            } else {
-                                alert("Phản hồi không xác định từ server: " + response);
-                            }
-                        },
-                        error: function (xhr, status, error) {
-                            console.log("AJAX Error:", xhr.responseText, status, error);
-                            alert("Có lỗi xảy ra, vui lòng thử lại. Chi tiết: " + error);
-                        }
-                    });
-                });
-            });
-        </script>-->
 
     </body>
 </html>
