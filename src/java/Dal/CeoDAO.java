@@ -485,12 +485,99 @@ public class CeoDAO extends DBContext {
         } catch (Exception e) {
         }
     }
+     public int getTotalDepositRecords(String status, String search) {
+        int total = 0;
+
+        String sql = """
+        SELECT COUNT(*) 
+        FROM BankingSystem.dbo.DepService 
+        WHERE PendingStatus = ?""";
+        List<Object> params = new ArrayList<>();
+        params.add(status);
+
+        // Thêm điều kiện tìm kiếm
+        if (search != null && !search.trim().isEmpty()) {
+            sql += " AND (MinimumDep = ? OR DuringTime = ? OR SavingRate = ? OR SavingRateMinimum = ?)";
+            Collections.addAll(params, search, search, search, search);
+        }
+
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            // Thiết lập tham số
+            for (int i = 0; i < params.size(); i++) {
+                st.setObject(i + 1, params.get(i));
+            }
+
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    total = rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return total;
+    }
+
+    public List<DepService> getAllDepServiceByStatus(String status, String sortBy, String order, String search, int page, int pageSize) {
+        List<DepService> list = new ArrayList<>();
+
+        String sql = """
+         SELECT Id, Description, MinimumDep, DuringTime, SavingRate, SavingRateMinimum, PendingStatus
+         FROM BankingSystem.dbo.DepService
+         WHERE PendingStatus = ?""";
+        List<Object> params = new ArrayList<>();
+
+        // Thêm điều kiện tìm kiếm
+        if (search != null && !search.trim().isEmpty()) {
+            sql += " AND (MinimumDep = ? OR DuringTime = ? OR SavingRate = ? OR SavingRateMinimum = ?)";
+            String likeTerm = search;
+            Collections.addAll(params, likeTerm, likeTerm, likeTerm, likeTerm);
+        }
+
+        if ("DuringTime".equalsIgnoreCase(sortBy)) {
+            sql += " ORDER BY [DuringTime] " + order;
+        } else {
+            sql += " ORDER BY [MinimumDep] " + order;
+        }
+        // Phân trang cho SQL Server
+        sql += " OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        params.add((page - 1) * pageSize);
+        params.add(pageSize);
+
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setString(1, status);
+            // Thiết lập tham số
+            for (int i = 0; i < params.size(); i++) {
+                st.setObject(i + 2, params.get(i));
+            }
+            try (ResultSet rs = st.executeQuery()) {
+                while (rs.next()) {
+                    DepService depService = new DepService(
+                            rs.getInt("Id"),
+                            rs.getString("Description"),
+                            rs.getBigDecimal("MinimumDep"),
+                            rs.getInt("DuringTime"),
+                            rs.getDouble("SavingRate"),
+                            rs.getDouble("SavingRateMinimum"),
+                            rs.getString("PendingStatus")
+                    );
+                    list.add(depService);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return list;
+    }
 
     public static void main(String[] args) {
         CeoDAO c = new CeoDAO();
-        c.deleteStaff(40);
-        for (Staff x : c.searchStaffs("", "", 1, 5)) {
-            System.out.println(x.toString());
-        }
+//        c.deleteStaff(40);
+//        for (Staff x : c.searchStaffs("", "", 1, 5)) {
+//            System.out.println(x.toString());
+//        }
+        System.out.println(c.getStaffById(1).toString());
     }
 }

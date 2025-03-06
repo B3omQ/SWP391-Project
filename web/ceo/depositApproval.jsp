@@ -197,32 +197,86 @@
 
                 <div class="container-fluid">
                     <div class="layout-specing">
-                        <!-- Header Section -->
-                        </br>
-                        <div class="row mb-4">
-                            <div class="col-12">
-                                <h4 class="text-primary">Deposit Lists</h4>
-                            </div>
-                        </div>
+                        <div class="row">
+                            <div class="col-xl-6 col-lg-6 col-md-4">
+                                <h5 class="mb-0">Banking System</h5>
+                                <nav aria-label="breadcrumb" class="d-inline-block mt-2">
+                                    <ul class="breadcrumb breadcrumb-muted bg-transparent rounded mb-0 p-0">
+                                        <li class="breadcrumb-item"><a href="index.html">Ceo</a></li>
+                                        <li class="breadcrumb-item active" aria-current="page">Deposit Approval Lists</li>
+                                    </ul>
+                                </nav>
+                            </div><!--end col-->
+                            <div class="col-xl-6 col-lg-6 col-md-8 mt-4 mt-md-0">
+                                <div class="justify-content-md-end">
+                                    <form action="<%= request.getContextPath() %>/depositApproval" method="get" id="sort">
+                                        <div class="row g-3 justify-content-between align-items-center">
+                                            <!-- Search Input -->
+                                            <div class="col-md-12 col-sm-12">
+                                                <div class="input-group">
+                                                    <input type="text" 
+                                                           name="search" 
+                                                           class="form-control" 
+                                                           placeholder="Search "
+                                                           value="${searchValue}">
+                                                    <button type="submit" class="btn btn-primary">
+                                                        <i class="uil uil-search"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
 
-                        <!-- Title & Dropdown -->
-                        <div class="row align-items-center mb-4">
-                            <form id="sort" action="depositApproval" method="get" class="d-flex">
-                                <select class="form-select me-2" name="pendingStatus" onchange="onChangeSubmit('sort')" id="status">
-                                    <option value="Approved" ${currentStatus == 'Approved' || empty currentStatus ? 'selected' : ''}>Approved</option>
-                                    <option value="Denied" ${currentStatus == 'Denied' ? 'selected' : ''}>Denied</option>
-                                    <option value="Pending" ${currentStatus == 'Pending' ? 'selected' : ''}>Pending</option>
-                                </select>   
-                                <select class="form-select me-2" name="sortBy" onchange="onChangeSubmit('sort')" id="sorBy">
-                                    <option value="DuringTime" ${currentSort == 'DuringTime' || empty currentSort ? 'selected' : ''}>Months</option>
-                                    <option value="MinimumDep" ${currentSort == 'MinimumDep' ? 'selected' : ''}>MinMoneyDep</option>
-                                </select>     
-                                <select class="form-select me-2" name="order" onchange="onChangeSubmit('sort')" id="order">
-                                    <option value="ASC" ${currentOrder == 'ASC' || empty currentOrder ? 'selected' : ''}>Asc</option>
-                                    <option value="DESC" ${currentOrder == 'DESC' ? 'selected' : ''}>Desc</option>
-                                </select> 
-                            </form>
-                        </div>
+                                            <!-- Status Filter -->
+                                            <div class="col-md-6">
+                                                <div class="mb-0 position-relative d-flex align-items-center justify-content-center">
+                                                    <label class="form-label me-2 mb-0">Status:</label>
+                                                    <select class="form-control border-primary rounded-pill" name="pendingStatus" onchange="onChangeSubmit('sort')" id="status">
+                                                        <option value="Approved" ${currentStatus == 'Approved' || empty currentStatus ? 'selected' : ''}>Approved</option>
+                                                        <option value="Denied" ${currentStatus == 'Denied' ? 'selected' : ''}>Denied</option>
+                                                        <option value="Pending" ${currentStatus == 'Pending' ? 'selected' : ''}>Pending</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <!-- Pagination Input -->
+                                            <div class="col-md-6">
+                                                <div class="mb-0 position-relative d-flex align-items-center justify-content-center">
+                                                    <label class="form-label me-2 mb-0">Items/page:</label>
+                                                    <div class="position-relative">
+                                                        <input type="number" 
+                                                               name="perPage" 
+                                                               value="${perPage}"
+                                                               class="form-control border-primary rounded-pill"
+                                                               min="1"
+                                                               step="1"
+                                                               onchange="document.getElementById('sort').submit()">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Order Filter -->
+                                            <div class="col-md-6">
+                                                <div class="mb-0 position-relative d-flex align-items-center justify-content-center">
+                                                    <label class="form-label me-2 mb-0">Sort:</label>
+                                                    <select class="form-control border-primary rounded-pill" name="sortBy" onchange="onChangeSubmit('sort')" id="sorBy">
+                                                        <option value="DuringTime" ${currentSort == 'DuringTime' || empty currentSort ? 'selected' : ''}>Months</option>
+                                                        <option value="MinimumDep" ${currentSort == 'MinimumDep' ? 'selected' : ''}>MinMoneyDep</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="mb-0 position-relative d-flex align-items-center justify-content-center">
+                                                    <label class="form-label me-2 mb-0"></label>
+                                                    <select class="form-control border-primary rounded-pill" name="order" onchange="onChangeSubmit('sort')" id="order">
+                                                        <option value="ASC" ${currentOrder == 'ASC' || empty currentOrder ? 'selected' : ''}>Asc</option>
+                                                        <option value="DESC" ${currentOrder == 'DESC' ? 'selected' : ''}>Desc</option>
+                                                    </select>
+                                                </div>
+                                            </div>      
+                                        </div>
+                                    </form>
+                                </div>
+                            </div><!--end col-->
+                        </div><!--end row-->
+                        <br>
                         <!-- Deposit Options List -->                     
                         <div class="row">
                             <c:choose>
@@ -264,7 +318,7 @@
                                                                     <a href="depositApproval?id=${dep.id}&changeStatus=Denied" class="btn btn-icon btn-pills btn-danger">
                                                                         <i class="fas fa-times"></i>
                                                                     </a>
-                                                                    </c:if>
+                                                                </c:if>
                                                             </td>
                                                         </tr>
                                                     </c:forEach>
@@ -272,10 +326,63 @@
                                             </table>
                                         </div>
                                     </form>
-
                                 </c:otherwise>
                             </c:choose>
                         </div>
+                        <div class="row text-center">
+                            <!-- PAGINATION START -->
+                            <div class="col-12 mt-4">
+                                <div class="d-md-flex align-items-center text-center justify-content-between">
+                                    <span class="text-muted me-3">
+                                        Total: ${numberOfRecords}
+                                    </span>                                  
+                                    <span class="mx-3">
+                                        <input type="text" style="text-align: right; max-width: 60px" value="${page}" class="form-control d-inline w-auto"                                               
+                                               onchange="location.href = '${pageContext.request.contextPath}/depositApproval?page=' + this.value">
+                                        / ${endPage}
+                                    </span>
+                                    <ul class="pagination justify-content-center mb-0 mt-3 mt-sm-0">
+                                        <!-- Previous -->
+                                        <c:if test="${page != 1}">
+                                            <li class="page-item"><a class="page-link" href="<%= request.getContextPath() %>/depositApproval?page=${page - 1}" aria-label="Previous">Prev</a></li>
+                                            </c:if>  
+                                        <!-- Current Page -->  
+                                        <!-- Start process -->
+                                        <c:if test="${endPage < 8}">
+                                            <c:forEach var="i" begin="1" end="${endPage}">
+                                                <li class="page-item ${page == i? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/depositApproval?page=${i}" aria-label="Pages">${i}</a></li>
+                                                </c:forEach>
+                                            </c:if>
+                                            <c:if test="${endPage >= 8}">
+                                            <li class="page-item ${page == 1? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/depositApproval?page=1" aria-label="Pages">1</a></li>
+                                                <c:if test="${page < 4 || page > endPage - 3}">
+                                                <li class="page-item ${page == 2? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/depositApproval?page=2" aria-label="Pages">2</a></li>
+                                                <li class="page-item ${page == 3? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/depositApproval?page=3" aria-label="Pages">3</a></li>
+                                                </c:if>
+                                                <c:if test="${page > 3 && page < endPage - 2}">
+                                                <li class="page-item"><span class="page-link" aria-label="Pages">...</span></li>
+                                                <li class="page-item ${page == page - 1 ? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/depositApproval?page=${page - 1}" aria-label="Pages">${page - 1}</a></li>
+                                                <li class="page-item ${page == page? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/depositApproval?&page=${page}" aria-label="Pages">${page}</a></li>
+                                                <li class="page-item ${page == page + 1 ? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/depositApproval?page=${page + 1}" aria-label="Pages">${page + 1}</a></li>
+                                                <li class="page-item"><span class="page-link" aria-label="Pages">...</span></li>
+                                                </c:if>
+                                                <c:if test="${page < 4 || page > endPage - 3}">
+                                                <li class="page-item"><span class="page-link" aria-label="Pages">...</span></li>
+                                                <li class="page-item ${page == endPage - 2? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/depositApproval?page=${endPage - 2}" aria-label="Pages">${endPage - 2}</a></li>
+                                                <li class="page-item ${page == endPage - 1? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/depositApproval?page=${endPage - 1}" aria-label="Pages">${endPage - 1}</a></li>
+                                                </c:if> 
+                                            <li class="page-item ${page == endPage? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/depositApproval?page=${endPage}" aria-label="Pages">${endPage}</a></li>
+                                            </c:if>                                              
+                                        <!-- End process -->
+                                        <!-- Next -->
+                                        <c:if test="${page lt endPage}">
+                                            <li class="page-item"><a class="page-link" href="<%= request.getContextPath() %>/depositApproval?page=${page + 1}" aria-label="Next">Next</a></li>
+                                            </c:if>
+                                    </ul>
+                                </div>
+                            </div><!--end col-->
+                            <!-- PAGINATION END -->
+                        </div><!--end row-->
                     </div>
                 </div>
                 <!-- Footer Start -->
@@ -292,44 +399,6 @@
         <script src="https://unpkg.com/@popperjs/core@2"></script>
         <script src="https://unpkg.com/tippy.js@6"></script>
         <script src="./resources/script/script.js"></script>
-
-        <script>
-                                    new WOW().init();
-
-                                    $(document).ready(function () {
-
-                                        showToastrAfterReload();
-                                        // Handle bubble click to review
-                                        $('.bubble').on('click', function () {
-                                            var depId = $(this).data('id');
-                                            window.location.href = 'depositApproval?depId=' + depId;
-                                        });
-
-                                        // Handle delete icon click
-                                        $('.delete-icon').on('click', function (event) {
-                                            event.stopPropagation(); // Prevent bubble click event
-                                            var depId = $(this).closest('.bubble').data('id');
-                                            var column = $(this).closest('.col-md-6');
-                                            if (confirm("Are you sure you want to update this deposit?")) {
-                                                $.ajax({
-                                                    url: 'depositApproval',
-                                                    type: 'POST',
-                                                    data: {delete: depId},
-                                                    success: function (response) {
-                                                        if (response.success) {
-                                                            reloadWithMessage("success", "Success", "Deleted!");
-                                                        } else {
-                                                            showErrorMessage("Error", "Something wrong here");
-                                                        }
-                                                    },
-                                                    error: function () {
-                                                        showErrorMessage("Error", "Server is busy right now. Please try again later.");
-                                                    }
-                                                });
-                                            }
-                                        });
-                                    });
-        </script>
 
         <!-- page-wrapper -->
         <script src="<%= request.getContextPath() %>/assets/js/jquery.min.js"></script>
