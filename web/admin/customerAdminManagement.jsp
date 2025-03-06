@@ -473,8 +473,8 @@
                                                         data: {deleteId: customerId},
                                                         success: function (response) {
                                                             if (response.success) {
-                                                                reloadWithMessage("success", "Success", "Deleted!");                                                               
-                                                                
+                                                                showSuccessMessage("Success", "Deleted!");
+                                                                form.closest('tr').remove();
                                                             } else {
                                                                 showErrorMessage("Error", "Something wrong here");
                                                             }
@@ -490,7 +490,6 @@
                                                 event.preventDefault(); // Chặn form submit mặc định
 
                                                 let form = $(this);
-                                                let customerId = form.find('input[name="updateId"]').val(); // Lấy ID từ input hidden
                                                 let formData = new FormData(this); // Lấy dữ liệu form (bao gồm file)
 
                                                 if (confirm("Are you sure you want to update this customer?")) {

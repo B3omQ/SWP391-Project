@@ -64,7 +64,7 @@
         <servlet-name>ChatSupportServlet</servlet-name>
         <servlet-class>controller.consultant.ChatSupportServlet</servlet-class>
     </servlet>
-    <servlet>    
+    <servlet>
         <servlet-name>CustomerAdminManagement</servlet-name>
         <servlet-class>controller.userManagementAdmin.CustomerAdminManagement</servlet-class>
     </servlet>
@@ -107,6 +107,18 @@
     <servlet>
         <servlet-name>CeoProfileServlet</servlet-name>
         <servlet-class>controller.ceo.CeoProfileServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>IdentityInformationController</servlet-name>
+        <servlet-class>controller.customer.IdentityInformationController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>IdentityCustomerManagement</servlet-name>
+        <servlet-class>controller.userManagementAdmin.IdentityCustomerManagement</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>IdentityInformationSwitchCase</servlet-name>
+        <servlet-class>controller.customer.IdentityInformationSwitchCase</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>HomeServlet</servlet-name>
@@ -271,6 +283,18 @@
     <servlet-mapping>
         <servlet-name>CeoProfileServlet</servlet-name>
         <url-pattern>/ceoProfileServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>IdentityInformationController</servlet-name>
+        <url-pattern>/identity-information-controller</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>IdentityCustomerManagement</servlet-name>
+        <url-pattern>/identity-customer-management</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>IdentityInformationSwitchCase</servlet-name>
+        <url-pattern>/identity-information-switch-case</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>1440</session-timeout>

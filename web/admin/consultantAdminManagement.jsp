@@ -89,14 +89,6 @@
                                         id="phoneSearch"
                                         name="phoneSearch"
                                         />
-                                    <select class="btn border-custome me-2" name="recordsPerPage" onchange="onChangeSubmit('search')" id="entries">
-                                        <option value="3" ${currentRecords == 3 ? 'selected' : ''}>3</option>
-                                        <option value="5" ${currentRecords == 5 ? 'selected' : ''}>5</option>
-                                        <option value="8" ${currentRecords == 8 ? 'selected' : ''}>8</option>
-                                        <option value="10" ${currentRecords == 10 ? 'selected' : ''}>10</option>
-                                        <option value="12" ${currentRecords == 12 ? 'selected' : ''}>12</option>
-                                        <option value="15" ${currentRecords == 15 ? 'selected' : ''}>15</option>
-                                    </select>
                                     <a href="?page=1&phoneSearch=&recordsPerPage=${currentRecords}" class="btn border-custome me-2">Reset</a>
                                     <button class="btn btn-danger" type="submit">Search</button>
                                 </form>

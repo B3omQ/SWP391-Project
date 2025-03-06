@@ -7,17 +7,16 @@ package controller.userManagementAdmin;
 import dal.AdminDAO;
 import dal.ManagerDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.Part;
 import java.io.File;
 import java.time.LocalDate;
 import java.util.List;
 import model.Customer;
-import model.Staff;
 import org.json.JSONException;
 import org.json.JSONObject;
 import util.AccountValidation;
@@ -26,6 +25,7 @@ import util.AccountValidation;
  *
  * @author JIGGER
  */
+@MultipartConfig
 public class CustomerAdminManagement extends HttpServlet {
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
 
