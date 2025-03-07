@@ -218,6 +218,10 @@
                                     <option value="ASC" ${currentOrder == 'ASC' || empty currentOrder ? 'selected' : ''}>Asc</option>
                                     <option value="DESC" ${currentOrder == 'DESC' ? 'selected' : ''}>Desc</option>
                                 </select> 
+                                <button class="btn btn-outline-primary w-100" type="button" 
+                                        onclick="window.location.href = './dep-option-service?pendingStatus=&sortBy=&order='">
+                                    Reset
+                                </button>
                             </form>
                         </div>
                         <!-- Deposit Options List -->                     
@@ -252,11 +256,7 @@
                                     </c:forEach>
                                 </c:otherwise>
                             </c:choose>
-                        </div>
-                        <button class="btn btn-outline-primary w-100" type="button" 
-                                onclick="window.location.href = './dep-option-service?pendingStatus=&sortBy=&order='">
-                            Reset
-                        </button>
+                        </div>                        
                     </div>
                 </div>
                 <!-- Footer Start -->
@@ -275,41 +275,41 @@
         <script src="./resources/script/script.js"></script>
 
         <script>
-                                    new WOW().init();
+                                            new WOW().init();
 
-                                    $(document).ready(function () {
+                                            $(document).ready(function () {
 
-                                        showToastrAfterReload();
-                                        // Handle bubble click to review
-                                        $('.bubble').on('click', function () {
-                                            var depId = $(this).data('id');
-                                            window.location.href = 'view-dep-option?depId=' + depId;
-                                        });
+                                                showToastrAfterReload();
+                                                // Handle bubble click to review
+                                                $('.bubble').on('click', function () {
+                                                    var depId = $(this).data('id');
+                                                    window.location.href = 'view-dep-option?depId=' + depId;
+                                                });
 
-                                        // Handle delete icon click
-                                        $('.delete-icon').on('click', function (event) {
-                                            event.stopPropagation(); // Prevent bubble click event
-                                            var depId = $(this).closest('.bubble').data('id');
-                                            var column = $(this).closest('.col-md-6');
-                                            if (confirm("Are you sure you want to delete this option?")) {
-                                                $.ajax({
-                                                    url: 'dep-option-service',
-                                                    type: 'POST',
-                                                    data: {delete: depId},
-                                                    success: function (response) {
-                                                        if (response.success) {
-                                                            reloadWithMessage("success", "Success", "Deleted!");
-                                                        } else {
-                                                            showErrorMessage("Error", "Something wrong here");
-                                                        }
-                                                    },
-                                                    error: function () {
-                                                        showErrorMessage("Error", "Server is busy right now. Please try again later.");
+                                                // Handle delete icon click
+                                                $('.delete-icon').on('click', function (event) {
+                                                    event.stopPropagation(); // Prevent bubble click event
+                                                    var depId = $(this).closest('.bubble').data('id');
+                                                    var column = $(this).closest('.col-md-6');
+                                                    if (confirm("Are you sure you want to delete this option?")) {
+                                                        $.ajax({
+                                                            url: 'dep-option-service',
+                                                            type: 'POST',
+                                                            data: {delete: depId},
+                                                            success: function (response) {
+                                                                if (response.success) {
+                                                                    reloadWithMessage("success", "Success", "Deleted!");
+                                                                } else {
+                                                                    showErrorMessage("Error", "Something wrong here");
+                                                                }
+                                                            },
+                                                            error: function () {
+                                                                showErrorMessage("Error", "Server is busy right now. Please try again later.");
+                                                            }
+                                                        });
                                                     }
                                                 });
-                                            }
-                                        });
-                                    });
+                                            });
         </script>
 
         <!-- page-wrapper -->

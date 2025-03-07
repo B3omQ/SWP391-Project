@@ -88,7 +88,7 @@
         <servlet-name>WithdrawDepositServlet</servlet-name>
         <servlet-class>controller.customer.WithdrawDepositServlet</servlet-class>
     </servlet>
-    <servlet> 
+    <servlet>
         <servlet-name>ChatSupportServlet</servlet-name>
         <servlet-class>controller.consultant.ChatSupportServlet</servlet-class>
     </servlet>
@@ -147,7 +147,7 @@
     <servlet>
         <servlet-name>IdentityInformationSwitchCase</servlet-name>
         <servlet-class>controller.customer.IdentityInformationSwitchCase</servlet-class>
-        </servlet>
+    </servlet>
     <servlet>
         <servlet-name>OnlineSupport</servlet-name>
         <servlet-class>controller.OnlineSupport</servlet-class>
@@ -155,6 +155,22 @@
     <servlet>
         <servlet-name>ChatFilter</servlet-name>
         <servlet-class>filter.ChatFilter</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddLoanOption</servlet-name>
+        <servlet-class>controller.manager.AddLoanOption</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewLoanOption</servlet-name>
+        <servlet-class>controller.manager.ViewLoanOption</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CustomerLoanServiceManagement</servlet-name>
+        <servlet-class>controller.manager.CustomerLoanServiceManagement</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CustomerDepServiceManagement</servlet-name>
+        <servlet-class>controller.manager.CustomerDepServiceManagement</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>HomeServlet</servlet-name>
@@ -250,7 +266,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>LoanOptionService</servlet-name>
-        <url-pattern>/Loan-Option-Service</url-pattern>
+        <url-pattern>/loan-option-service</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>DepOptionService</servlet-name>
@@ -299,7 +315,7 @@
     <servlet-mapping>
         <servlet-name>WithdrawDepositServlet</servlet-name>
         <url-pattern>/WithdrawDepositServlet</url-pattern>
-</servlet-mapping>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ChatSupportServlet</servlet-name>
         <url-pattern>/ChatSupportServlet</url-pattern>
@@ -359,7 +375,7 @@
     <servlet-mapping>
         <servlet-name>IdentityInformationSwitchCase</servlet-name>
         <url-pattern>/identity-information-switch-case</url-pattern>
-        </servlet-mapping>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>OnlineSupport</servlet-name>
         <url-pattern>/OnlineSupport</url-pattern>
@@ -367,6 +383,22 @@
     <servlet-mapping>
         <servlet-name>ChatFilter</servlet-name>
         <url-pattern>/ChatFilter</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddLoanOption</servlet-name>
+        <url-pattern>/add-loan-option</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewLoanOption</servlet-name>
+        <url-pattern>/view-loan-option</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CustomerLoanServiceManagement</servlet-name>
+        <url-pattern>/customer-loan-service-management</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CustomerDepServiceManagement</servlet-name>
+        <url-pattern>/customer-dep-service-management</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>1440</session-timeout>
@@ -382,6 +414,6 @@
         <location>/error/404.jsp</location>
     </error-page>
     <listener>
-    <listener-class>controller.customer.MaturitySchedulerListener</listener-class>
-</listener>
+        <listener-class>controller.customer.MaturitySchedulerListener</listener-class>
+    </listener>
 </web-app>
