@@ -11,7 +11,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import model.Customer;
+import model.DepService;
 import util.AccountValidation;
 
 /**
@@ -40,7 +43,24 @@ public class CustomerDAO extends DBContext {
         rs.getBigDecimal("Wallet")
     );
 }
- 
+ public List<Customer> getAllCustomers() {
+        List<Customer> customers = new ArrayList<>();
+        String sql = "SELECT Id, Wallet FROM Customer"; // Chỉ lấy các cột cần thiết
+        try (PreparedStatement p = connection.prepareStatement(sql);
+             ResultSet rs = p.executeQuery()) {
+            while (rs.next()) {
+                Customer customer = new Customer();
+                customer.setId(rs.getInt("Id"));
+                customer.setWallet(rs.getBigDecimal("Wallet"));
+                customers.add(customer);
+            }
+        } catch (SQLException e) {
+            System.err.println("❌ Error querying all customers: " + e.getMessage());
+            e.printStackTrace();
+        }
+        System.out.println("Found " + customers.size() + " customers");
+        return customers;
+    }
     public Customer getCustomerById(int id) {
         String sql = "SELECT * FROM Customer WHERE Id = ?";
         try (PreparedStatement p = connection.prepareStatement(sql)) {
@@ -55,6 +75,29 @@ public class CustomerDAO extends DBContext {
         }
         return null;
     }
+    public List<Customer> getAllCustomersPlus() {
+    List<Customer> customers = new ArrayList<>();
+    String sql = "SELECT Id, Username, Password, Email, Image, Address, Wallet FROM Customer";
+    try (PreparedStatement p = connection.prepareStatement(sql);
+         ResultSet rs = p.executeQuery()) {
+        while (rs.next()) {
+            Customer customer = new Customer();
+            customer.setId(rs.getInt("Id"));
+            customer.setUsername(rs.getString("Username"));
+            customer.setPassword(rs.getString("Password"));
+            customer.setEmail(rs.getString("Email"));
+            customer.setImage(rs.getString("Image"));
+            customer.setAddress(rs.getString("Address"));
+            customer.setWallet(rs.getBigDecimal("Wallet"));
+            customers.add(customer);
+        }
+    } catch (SQLException e) {
+        System.err.println("Error querying all customers: " + e.getMessage());
+        e.printStackTrace();
+    }
+    System.out.println("Found " + customers.size() + " customers");
+    return customers;
+}
      public BigDecimal getWalletByCustomerId(int customerId) {
         String sql = "SELECT Wallet FROM Customer WHERE Id = ?";
         try (PreparedStatement p = connection.prepareStatement(sql)) {
@@ -297,5 +340,26 @@ public boolean updateWallet(int customerId, BigDecimal newBalance) {
             e.printStackTrace();
         }
     }
- 
+ public List<DepService> getAllDepServices() {
+    List<DepService> depServices = new ArrayList<>();
+    String sql = "SELECT * FROM DepService ORDER BY duringTime ASC";
+
+    try (PreparedStatement ps = connection.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+
+        while (rs.next()) {
+            DepService depService = new DepService(
+                rs.getInt("id"),
+                rs.getString("description"),
+                rs.getBigDecimal("minimumDep"),
+                rs.getInt("duringTime"),
+                rs.getDouble("savingRate") 
+            );
+            depServices.add(depService);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return depServices;
+}
 }
