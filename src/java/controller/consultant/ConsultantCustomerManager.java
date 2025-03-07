@@ -197,6 +197,7 @@ public class ConsultantCustomerManager extends HttpServlet {
                     response.setContentType("text/plain");
                     response.getWriter().write("errorEmailexist");
                     System.out.println("đã block email");
+                    System.out.println(response);
                     return;
                 }
                 if (cdao.isDuplicatedPhoneNumber(phoneNumber)) {
@@ -214,7 +215,7 @@ public class ConsultantCustomerManager extends HttpServlet {
 
                 // Add the customer via DAO
                 cdao.booleanCreateNewAccount(customer);
-
+                System.out.println(response);
             } catch (Exception e) {
                 e.printStackTrace();
             }
