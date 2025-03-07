@@ -1,6 +1,7 @@
 package controller.customer;
 
 import dal.ConsultantDAO;
+import dal.CustomerDAO;
 import dal.StaffDAO;
 import model.Customer;
 import model.Staff;
@@ -39,7 +40,7 @@ public class UploadImageServlet extends HttpServlet {
         
         // Xác định trang đích dựa trên loại người dùng (Customer hay Staff)
         String targetPage = (account != null) 
-                ? "/customer/template/account-profile.jsp" 
+                ? "/customer/account-profile.jsp" 
                 : "/staff/template/staff-profile.jsp";
 
         Part filePart = request.getPart("image");
@@ -74,7 +75,7 @@ public class UploadImageServlet extends HttpServlet {
         if (account != null) {  
             Customer customer = (Customer) account;
             customer.setImage(fileName);  
-            ConsultantDAO customerDAO = new ConsultantDAO();
+            CustomerDAO customerDAO = new CustomerDAO();
             customerDAO.updateCustomerImage(customer.getId(), fileName);  
             
             session.setAttribute("account", customer);

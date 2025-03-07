@@ -1,75 +1,36 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <nav id="sidebar" class="sidebar-wrapper">
     <div class="sidebar-content" data-simplebar style="height: calc(100% - 60px);">
         <div class="sidebar-brand">
-            <a href="index.html">
-                <img src="<%= request.getContextPath() %>/assets/images/logo-dark.png" height="24" class="logo-light-mode" alt="">
-                <img src="<%= request.getContextPath() %>/assets/images/logo-light.png" height="24" class="logo-dark-mode" alt="">
+            <a href="Customer.jsp">
+                <img src="${pageContext.request.contextPath}/assets/images/logo-dark.png" height="24" class="logo-light-mode" alt="">
+                <img src="${pageContext.request.contextPath}/assets/images/logo-light.png" height="24" class="logo-dark-mode" alt="">
             </a>
         </div>
-
         <ul class="sidebar-menu pt-3">
-            <li><a href="index.html"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
-
-            <li><a href="profile-manager"><i class="uil uil-user me-2 d-inline-block"></i>My profile</a></li>         
-
+            <li><a href="Customer.jsp"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
+            <li><a href="account-profile.jsp"><i class="uil uil-cog me-2 d-inline-block"></i>Account-Settings</a></li>
             <li class="sidebar-dropdown">
-                <a href="javascript:void(0)"><i class="uil uil-file me-2 d-inline-block"></i>Deposite Service</a>
+                <a href="javascript:void(0)"><i class="uil uil-university me-2 d-inline-block"></i>Manage Account Bank</a>
                 <div class="sidebar-submenu">
                     <ul>
-                        <li><a href="dep-option-service">View option</a></li>
-                        <li><a href="add-saving-option">Create option</a></li>                        
-                    </ul>
-                </div>
-            </li>            
-
-            <li><a href="javascript:void(0)"><i class="uil uil-file me-2 d-inline-block"></i>Loan Service</a></li>
-
-            <li class="sidebar-dropdown">
-                <a href="javascript:void(0)"><i class="uil uil-apps me-2 d-inline-block"></i>Apps</a>
-                <div class="sidebar-submenu">
-                    <ul>
-                        <li><a href="chat.html">Chat</a></li>
-                        <li><a href="email.html">Email</a></li>
-                        <li><a href="calendar.html">Calendar</a></li>
+                        <li><a href="blogs.html">Trang chủ</a></li>
+                        <li><a href="deposit.jsp">Nạp tiền</a></li>
+                        <li><a href="Saving.jsp">Gửi tiết kiệm</a></li>
                     </ul>
                 </div>
             </li>
-
             <li class="sidebar-dropdown">
-                <a href="javascript:void(0)"><i class="uil uil-file me-2 d-inline-block"></i>Pages</a>
+                <a href="javascript:void(0)"><i class="uil uil-flip-h me-2 d-inline-block"></i>Blogs</a>
                 <div class="sidebar-submenu">
                     <ul>
-                        <li><a href="faqs.html">FAQs</a></li>
-                        <li><a href="review.html">Reviews</a></li>
-                        <li><a href="invoice-list.html">Invoice List</a></li>
-                        <li><a href="invoice.html">Invoice</a></li>
-                        <li><a href="terms.html">Terms & Policy</a></li>
-                        <li><a href="privacy.html">Privacy Policy</a></li>
-                        <li><a href="error.html">404 !</a></li>
-                        <li><a href="blank-page.html">Blank Page</a></li>
+                        <li><a href="blogs.html">Blogs</a></li>
+                        <li><a href="blog-detail.html">Blog Detail</a></li>
                     </ul>
                 </div>
             </li>
-
-            <li class="sidebar-dropdown">
-                <a href="javascript:void(0)"><i class="uil uil-sign-in-alt me-2 d-inline-block"></i>Authentication</a>
-                <div class="sidebar-submenu">
-                    <ul>
-                        <li><a href="login.html">Login</a></li>
-                        <li><a href="signup.html">Signup</a></li>
-                        <li><a href="forgot-password.html">Forgot Password</a></li>
-                        <li><a href="lock-screen.html">Lock Screen</a></li>
-                        <li><a href="thankyou.html">Thank you...!</a></li>
-                    </ul>
-                </div>
-            </li>            
-
-            <li><a href="home.jsp"><i class="uil uil-window me-2 d-inline-block"></i>Home page</a></li>
         </ul>
-        <!-- sidebar-menu  -->
     </div>
-    <!-- sidebar-content  -->
     <ul class="sidebar-footer list-unstyled mb-0">
         <li class="list-inline-item mb-0 ms-1">
             <a href="#" class="btn btn-icon btn-pills btn-soft-primary">
