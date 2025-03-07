@@ -75,6 +75,29 @@ public class CustomerDAO extends DBContext {
         }
         return null;
     }
+    public List<Customer> getAllCustomersPlus() {
+    List<Customer> customers = new ArrayList<>();
+    String sql = "SELECT Id, Username, Password, Email, Image, Address, Wallet FROM Customer";
+    try (PreparedStatement p = connection.prepareStatement(sql);
+         ResultSet rs = p.executeQuery()) {
+        while (rs.next()) {
+            Customer customer = new Customer();
+            customer.setId(rs.getInt("Id"));
+            customer.setUsername(rs.getString("Username"));
+            customer.setPassword(rs.getString("Password"));
+            customer.setEmail(rs.getString("Email"));
+            customer.setImage(rs.getString("Image"));
+            customer.setAddress(rs.getString("Address"));
+            customer.setWallet(rs.getBigDecimal("Wallet"));
+            customers.add(customer);
+        }
+    } catch (SQLException e) {
+        System.err.println("Error querying all customers: " + e.getMessage());
+        e.printStackTrace();
+    }
+    System.out.println("Found " + customers.size() + " customers");
+    return customers;
+}
      public BigDecimal getWalletByCustomerId(int customerId) {
         String sql = "SELECT Wallet FROM Customer WHERE Id = ?";
         try (PreparedStatement p = connection.prepareStatement(sql)) {
