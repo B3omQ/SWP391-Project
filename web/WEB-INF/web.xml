@@ -137,17 +137,16 @@
         <servlet-class>controller.ceo.CeoProfileServlet</servlet-class>
     </servlet>
     <servlet>
-<<<<<<< HEAD
         <servlet-name>OnlineSupport</servlet-name>
         <servlet-class>controller.OnlineSupport</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ChatFilter</servlet-name>
         <servlet-class>filter.ChatFilter</servlet-class>
-=======
+    </servlet>
+    <servlet>
         <servlet-name>DepositApproval</servlet-name>
         <servlet-class>controller.ceo.DepositApproval</servlet-class>
->>>>>>> 00ee015521074a1d0bcca29f44fb4198197583b1
     </servlet>
     <servlet-mapping>
         <servlet-name>HomeServlet</servlet-name>
@@ -292,7 +291,7 @@
     <servlet-mapping>
         <servlet-name>WithdrawDepositServlet</servlet-name>
         <url-pattern>/WithdrawDepositServlet</url-pattern>
-</servlet-mapping>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ChatSupportServlet</servlet-name>
         <url-pattern>/ChatSupportServlet</url-pattern>
@@ -342,17 +341,16 @@
         <url-pattern>/ceoProfileServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-<<<<<<< HEAD
         <servlet-name>OnlineSupport</servlet-name>
         <url-pattern>/OnlineSupport</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ChatFilter</servlet-name>
         <url-pattern>/ChatFilter</url-pattern>
-=======
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>DepositApproval</servlet-name>
         <url-pattern>/depositApproval</url-pattern>
->>>>>>> 00ee015521074a1d0bcca29f44fb4198197583b1
     </servlet-mapping>
     <session-config>
         <session-timeout>1440</session-timeout>
@@ -368,6 +366,6 @@
         <location>/error/404.jsp</location>
     </error-page>
     <listener>
-    <listener-class>controller.customer.MaturitySchedulerListener</listener-class>
-</listener>
+        <listener-class>controller.customer.MaturitySchedulerListener</listener-class>
+    </listener>
 </web-app>
