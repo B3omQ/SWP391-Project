@@ -88,7 +88,7 @@
         <servlet-name>WithdrawDepositServlet</servlet-name>
         <servlet-class>controller.customer.WithdrawDepositServlet</servlet-class>
     </servlet>
-    <servlet>
+    <servlet> 
         <servlet-name>ChatSupportServlet</servlet-name>
         <servlet-class>controller.consultant.ChatSupportServlet</servlet-class>
     </servlet>
@@ -291,7 +291,7 @@
     <servlet-mapping>
         <servlet-name>WithdrawDepositServlet</servlet-name>
         <url-pattern>/WithdrawDepositServlet</url-pattern>
-    </servlet-mapping>
+</servlet-mapping>
     <servlet-mapping>
         <servlet-name>ChatSupportServlet</servlet-name>
         <url-pattern>/ChatSupportServlet</url-pattern>
@@ -366,6 +366,6 @@
         <location>/error/404.jsp</location>
     </error-page>
     <listener>
-        <listener-class>controller.customer.MaturitySchedulerListener</listener-class>
-    </listener>
+    <listener-class>controller.customer.MaturitySchedulerListener</listener-class>
+</listener>
 </web-app>
