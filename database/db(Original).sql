@@ -15,6 +15,7 @@ create table [Staff] (
 	Dob datetime null,
 	Phone nvarchar(255) null,
 	[Address] nvarchar(max) null,
+	Salary decimal(18,0) not null default 50000,
 	failAttempts int null default 0,
 	LockTime datetime null,
 	RoleId int references [Role](Id)
