@@ -137,12 +137,17 @@
         <servlet-class>controller.ceo.CeoProfileServlet</servlet-class>
     </servlet>
     <servlet>
+<<<<<<< HEAD
         <servlet-name>OnlineSupport</servlet-name>
         <servlet-class>controller.OnlineSupport</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ChatFilter</servlet-name>
         <servlet-class>filter.ChatFilter</servlet-class>
+=======
+        <servlet-name>DepositApproval</servlet-name>
+        <servlet-class>controller.ceo.DepositApproval</servlet-class>
+>>>>>>> 00ee015521074a1d0bcca29f44fb4198197583b1
     </servlet>
     <servlet-mapping>
         <servlet-name>HomeServlet</servlet-name>
@@ -337,12 +342,17 @@
         <url-pattern>/ceoProfileServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+<<<<<<< HEAD
         <servlet-name>OnlineSupport</servlet-name>
         <url-pattern>/OnlineSupport</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ChatFilter</servlet-name>
         <url-pattern>/ChatFilter</url-pattern>
+=======
+        <servlet-name>DepositApproval</servlet-name>
+        <url-pattern>/depositApproval</url-pattern>
+>>>>>>> 00ee015521074a1d0bcca29f44fb4198197583b1
     </servlet-mapping>
     <session-config>
         <session-timeout>1440</session-timeout>
