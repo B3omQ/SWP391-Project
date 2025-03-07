@@ -1,32 +1,21 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package controller.customer;
 
-import dal.ConsultantDAO;
 import dal.CustomerDAO;
 import dal.ManagerDAO;
 import dal.StaffDAO;
-import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.Random;
+import model.Customer;
+import model.GoogleAccount;
+import model.Staff;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.util.Random;
-import model.Customer;
-import model.GoogleAccount;
-import model.Staff;
 import util.AccountValidation;
 
-/**
- *
- * @author emkob
- */
 public class AuthServlet extends HttpServlet {
 
     private CustomerDAO customerDAO = new CustomerDAO();
@@ -34,75 +23,42 @@ public class AuthServlet extends HttpServlet {
     private AccountValidation av = new AccountValidation();
     private resetService resetService = new resetService();
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet AuthServlet</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet AuthServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
 
-        // Kiểm tra nếu người dùng đăng nhập bằng Google
         if ("loginGG".equals(action)) {
             String googleCode = request.getParameter("code");
             if (googleCode != null) {
-                // Xử lý đăng nhập Google
                 try {
                     String accessToken = GoogleLogin.getToken(googleCode);
                     GoogleAccount googleAccount = GoogleLogin.getUserInfo(accessToken);
                     String email = googleAccount.getEmail();
 
-                    // Kiểm tra nếu email có tồn tại trong hệ thống
                     boolean emailExists = customerDAO.emailExists(email) || staffDAO.emailExists(email);
                     if (!emailExists) {
-                        // Nếu email chưa tồn tại, chuyển lại login và thông báo lỗi
                         request.getSession().setAttribute("errorAccount", "Tài khoản chưa tồn tại.");
                         response.sendRedirect("auth/template/login.jsp");
                         return;
                     }
 
-                    // Đăng nhập thành công
                     Customer customer = customerDAO.getCustomerByEmail(email);
                     Staff staff = staffDAO.getStaffByEmail(email);
+                    HttpSession session = request.getSession();
 
                     if (customer != null) {
-                        request.getSession().setAttribute("account", customer);
-                        response.sendRedirect("customer/template/Customer.jsp"); // Chuyển hướng người dùng
+                        session.setAttribute("account", customer);
+                        session.setAttribute("userId", customer.getId());
+
+     
+
+                        response.sendRedirect("customer/Customer.jsp");
                         return;
                     } else if (staff != null) {
-                        request.getSession().setAttribute("staff", staff);
-                        response.sendRedirect("staff/template/Staff.jsp"); // Chuyển hướng staff
+                        session.setAttribute("staff", staff);
+                        session.setAttribute("staffId", staff.getId());
+                        response.sendRedirect("staff/template/Staff.jsp");
                         return;
                     }
 
@@ -111,24 +67,13 @@ public class AuthServlet extends HttpServlet {
                     response.sendRedirect("auth/template/login.jsp");
                 }
             } else {
-                // Không có code thì quay về trang login
                 response.sendRedirect("auth/template/login.jsp");
             }
         } else {
-            // Các hành động khác
             response.sendRedirect("auth/template/login.jsp");
         }
-
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -172,20 +117,8 @@ public class AuthServlet extends HttpServlet {
         String email = request.getParameter("email");
         String passWord = request.getParameter("password");
         String rememberMe = request.getParameter("remember");
-        String googleCode = request.getParameter("code");
         HttpSession session = request.getSession();
-        if (googleCode != null) {
-            // Google login process
-            try {
-                String accessToken = GoogleLogin.getToken(googleCode);
-                GoogleAccount googleAccount = GoogleLogin.getUserInfo(accessToken);
-                email = googleAccount.getEmail(); // Get email from Google account info
-            } catch (Exception e) {
-                session.setAttribute("errorAccount", "Đăng nhập bằng Google thất bại.");
-                response.sendRedirect("auth/template/login.jsp");
-                return;
-            }
-        }
+
         if (email == null || passWord == null) {
             session.setAttribute("errorAccount", "Vui lòng nhập email và mật khẩu.");
             response.sendRedirect("auth/template/login.jsp");
@@ -199,7 +132,6 @@ public class AuthServlet extends HttpServlet {
         }
 
         boolean emailExists = customerDAO.emailExists(email) || staffDAO.emailExists(email);
-
         if (!emailExists) {
             session.setAttribute("errorAccount", "Tài khoản không tồn tại.");
             response.sendRedirect("auth/template/login.jsp");
@@ -211,23 +143,22 @@ public class AuthServlet extends HttpServlet {
 
         if (customer != null && av.checkPassword(passWord, customer.getPassword())) {
             session.setAttribute("account", customer);
+            session.setAttribute("userId", customer.getId());
 
             String otp = String.format("%06d", new Random().nextInt(999999));
             session.setAttribute("otp", otp);
             session.setAttribute("email", email);
 
-            // Gửi OTP qua email
-            resetService resetService = new resetService();
             String otpMessage = "Mã OTP của bạn là: " + otp + ". OTP có hiệu lực trong 10 phút.";
             resetService.sendOtpEmail(email, otpMessage, customer.getFirstname());
 
-            // Chuyển hướng đến trang nhập OTP
             response.sendRedirect("auth/template/otp.jsp");
             return;
         }
 
         if (staff != null && av.checkPassword(passWord, staff.getPassword())) {
             session.setAttribute("staff", staff);
+            session.setAttribute("staffId", staff.getId());
 
             String otp = resetService.generateOTP();
             session.setAttribute("otp", otp);
@@ -239,6 +170,7 @@ public class AuthServlet extends HttpServlet {
             response.sendRedirect("auth/template/otp.jsp");
             return;
         }
+
         int failedAttempts = customerDAO.getFailedAttempts(email);
         if (failedAttempts == 0) {
             failedAttempts = staffDAO.getFailedAttempts(email);
@@ -253,8 +185,7 @@ public class AuthServlet extends HttpServlet {
         response.sendRedirect("auth/template/login.jsp");
     }
 
-    private void handleLogout(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
+    private void handleLogout(HttpServletRequest request, HttpServletResponse response) throws IOException {
         request.getSession().invalidate();
         response.sendRedirect("auth/template/login.jsp");
     }
@@ -267,7 +198,6 @@ public class AuthServlet extends HttpServlet {
             return;
         }
 
-        // Kiểm tra có account hay staff trong session không
         Customer customer = (Customer) session.getAttribute("account");
         Staff staff = (Staff) session.getAttribute("staff");
         boolean isCustomer = customer != null;
@@ -277,31 +207,19 @@ public class AuthServlet extends HttpServlet {
             return;
         }
 
-        // Xác định đường dẫn trang profile
-        String profilePage = isCustomer ? "customer/template/account-profile.jsp" : "staff/staff-profile.jsp";
+        String profilePage = isCustomer ? "customer/account-profile.jsp" : "staff/staff-profile.jsp";
 
-        // Lấy dữ liệu từ form
         String oldPass = request.getParameter("oldPassword");
         String newPass = request.getParameter("newPassword");
         String retypePass = request.getParameter("retypeNewPassword");
 
-        System.out.println("Old Password (raw): " + oldPass);
-        System.out.println("New Password (raw): " + newPass);
-        System.out.println("Retype Password (raw): " + retypePass);
-
-        // Kiểm tra nhập đủ thông tin
         if (oldPass == null || newPass == null || retypePass == null) {
             request.setAttribute("error", "Vui lòng nhập đầy đủ thông tin.");
             request.getRequestDispatcher(profilePage).forward(request, response);
             return;
         }
 
-        // Mã hóa mật khẩu cũ để kiểm tra
-        String encodedPassword = av.hashPassword(oldPass);
         String storedPassword = isCustomer ? customer.getPassword() : staff.getPassword();
-
-        System.out.println("Hashed Input Password: " + encodedPassword);
-        System.out.println("Stored Password in DB: " + storedPassword);
 
         if (!av.checkPassword(oldPass, storedPassword)) {
             request.setAttribute("error", "Mật khẩu cũ không đúng!");
@@ -321,11 +239,7 @@ public class AuthServlet extends HttpServlet {
             return;
         }
 
-        // Mã hóa mật khẩu mới
         String hashedNewPass = av.hashPassword(newPass);
-        System.out.println("Hashed New Password: " + hashedNewPass);
-
-        // Cập nhật mật khẩu cho Customer hoặc Staff
         if (isCustomer) {
             customerDAO.updatePassword(hashedNewPass, customer.getEmail());
             customer.setPassword(hashedNewPass);
@@ -336,49 +250,16 @@ public class AuthServlet extends HttpServlet {
             session.setAttribute("staff", staff);
         }
 
-        // Thông báo thành công
         request.setAttribute("success", "Đổi mật khẩu thành công!");
         request.getRequestDispatcher(profilePage).forward(request, response);
     }
 
-    private void handleRememberMe(HttpServletResponse response, String email, String password, String rememberMe) {
-        if (rememberMe != null) {
-            Cookie emailCookie = new Cookie("email", email);
-            emailCookie.setMaxAge(60 * 60 * 24 * 7);
-            response.addCookie(emailCookie);
-
-            Cookie passWordCookie = new Cookie("password", password);
-            passWordCookie.setMaxAge(60 * 60 * 24 * 7);
-            response.addCookie(passWordCookie);
-        } else {
-            Cookie emailCookie = new Cookie("email", "");
-            emailCookie.setMaxAge(0);
-            response.addCookie(emailCookie);
-
-            Cookie passWordCookie = new Cookie("password", "");
-            passWordCookie.setMaxAge(0);
-            response.addCookie(passWordCookie);
-        }
-    }
-
     private boolean isAccountLocked(String email) {
-        if (customerDAO.isAccountLocked(email)) {
-            return true;
-        }
-        if (staffDAO.isAccountLocked(email)) {
-            return true;
-        }
-        return false;
+        return customerDAO.isAccountLocked(email) || staffDAO.isAccountLocked(email);
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
-
+    }
 }

@@ -101,17 +101,17 @@ public class UpdateInfo extends HttpServlet {
 
         if (!validator.isValidEmail(email)) {
             session.setAttribute("error3", "Email không hợp lệ.");
-            response.sendRedirect(request.getContextPath() + "/customer/template/account-profile.jsp");
+            response.sendRedirect(request.getContextPath() + "/customer/account-profile.jsp");
             return;
         }
         if (!validator.isValidPhone(phone)) {
             session.setAttribute("error3", "Số điện thoại không hợp lệ.");
-            response.sendRedirect(request.getContextPath() + "/customer/template/account-profile.jsp");
+            response.sendRedirect(request.getContextPath() + "/customer/account-profile.jsp");
             return;
         }
         if (!validator.isValidAddress(address)) {
             session.setAttribute("error3", "Địa chỉ không hợp lệ.");
-            response.sendRedirect(request.getContextPath() + "/customer/template/account-profile.jsp");
+            response.sendRedirect(request.getContextPath() + "/customer/account-profile.jsp");
             return;
         }
 
@@ -120,12 +120,12 @@ public class UpdateInfo extends HttpServlet {
             CustomerDAO customerDAO = new CustomerDAO();
             if (!email.equalsIgnoreCase(customer.getEmail()) && customerDAO.emailExists(email)) {
                 session.setAttribute("error3", "Email đã được sử dụng bởi người dùng khác.");
-                response.sendRedirect(request.getContextPath() + "/customer/template/account-profile.jsp");
+                response.sendRedirect(request.getContextPath() + "/customer/account-profile.jsp");
                 return;
             }
             if (!phone.equals(customer.getPhone()) && customerDAO.phoneExists(phone)) {
                 session.setAttribute("error3", "Số điện thoại đã được sử dụng bởi người dùng khác.");
-                response.sendRedirect(request.getContextPath() + "/customer/template/account-profile.jsp");
+                response.sendRedirect(request.getContextPath() + "/customer/account-profile.jsp");
                 return;
             }
             customer.setEmail(email);
@@ -134,7 +134,7 @@ public class UpdateInfo extends HttpServlet {
             customerDAO.updateCustomer(customer);
             session.setAttribute("account", customer);
             session.setAttribute("success3", "Cập nhật thông tin thành công.");
-            response.sendRedirect(request.getContextPath() + "/customer/template/account-profile.jsp");
+            response.sendRedirect(request.getContextPath() + "/customer/account-profile.jsp");
         } else {
             Staff staff = (Staff) user;
             StaffDAO staffDAO = new StaffDAO();

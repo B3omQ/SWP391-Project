@@ -61,6 +61,34 @@
         <servlet-class>controller.customer.Transfer</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>DepositValidationServlet</servlet-name>
+        <servlet-class>controller.customer.DepositValidationServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Calculation</servlet-name>
+        <servlet-class>controller.customer.Calculation</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProcessTermOptions</servlet-name>
+        <servlet-class>controller.customer.ProcessTermOptions</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ConfirmDepositServlet</servlet-name>
+        <servlet-class>controller.customer.ConfirmDepositServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MaturityHandlerServlet</servlet-name>
+        <servlet-class>controller.customer.MaturityHandlerServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SavingServlet</servlet-name>
+        <servlet-class>controller.customer.SavingServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>WithdrawDepositServlet</servlet-name>
+        <servlet-class>controller.customer.WithdrawDepositServlet</servlet-class>
+    </servlet>
+    <servlet> 
         <servlet-name>ChatSupportServlet</servlet-name>
         <servlet-class>controller.consultant.ChatSupportServlet</servlet-class>
     </servlet>
@@ -233,6 +261,34 @@
         <url-pattern>/Transfer</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>DepositValidationServlet</servlet-name>
+        <url-pattern>/DepositValidationServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Calculation</servlet-name>
+        <url-pattern>/Calculation</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProcessTermOptions</servlet-name>
+        <url-pattern>/ProcessTermOptions</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ConfirmDepositServlet</servlet-name>
+        <url-pattern>/ConfirmDepositServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MaturityHandlerServlet</servlet-name>
+        <url-pattern>/MaturityHandlerServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SavingServlet</servlet-name>
+        <url-pattern>/SavingServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>WithdrawDepositServlet</servlet-name>
+        <url-pattern>/WithdrawDepositServlet</url-pattern>
+</servlet-mapping>
+    <servlet-mapping>
         <servlet-name>ChatSupportServlet</servlet-name>
         <url-pattern>/ChatSupportServlet</url-pattern>
     </servlet-mapping>
@@ -301,4 +357,7 @@
         <error-code>404</error-code>
         <location>/error/404.jsp</location>
     </error-page>
+    <listener>
+    <listener-class>controller.customer.MaturitySchedulerListener</listener-class>
+</listener>
 </web-app>
