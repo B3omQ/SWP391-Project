@@ -12,23 +12,24 @@ import java.sql.Timestamp;
  * @author LAPTOP
  */
 public class LoanServiceUsed {
+
     private int id;
     private LoanService loanId;
     private Customer cusId;
     private BigDecimal amount;
     private Timestamp startDate;
     private Timestamp endDate;
-    private int dateExpiredCount;  // Có thể null
-    private BigDecimal debtRepayAmount;    // Có thể null
+    private int dateExpiredCount;
+    private BigDecimal debtRepayAmount;
     private String incomeVertification;
-    private String loanStatus;         // Có thể null
+    private String loanStatus;
 
     public LoanServiceUsed() {
     }
 
-    public LoanServiceUsed(int id, LoanService loanId, Customer cusId, BigDecimal amount, 
+    public LoanServiceUsed(int id, LoanService loanId, Customer cusId, BigDecimal amount,
             Timestamp startDate, Timestamp endDate,
-            int dateExpiredCount, BigDecimal debtRepayAmount, String loanStatus, String incomeVertification) {
+            int dateExpiredCount, BigDecimal debtRepayAmount,String incomeVertification, String loanStatus) {
         this.id = id;
         this.loanId = loanId;
         this.cusId = cusId;
@@ -37,8 +38,8 @@ public class LoanServiceUsed {
         this.endDate = endDate;
         this.dateExpiredCount = dateExpiredCount;
         this.debtRepayAmount = debtRepayAmount;
-        this.loanStatus = loanStatus;
         this.incomeVertification = incomeVertification;
+        this.loanStatus = loanStatus;
     }
 
     public int getId() {
@@ -120,12 +121,10 @@ public class LoanServiceUsed {
     public void setIncomeVertification(String incomeVertification) {
         this.incomeVertification = incomeVertification;
     }
-        
-    
+
     @Override
     public String toString() {
         return "LoanServiceUsed{" + "id=" + id + ", loanId=" + loanId + ", cusId=" + cusId + ", amount=" + amount + ", startDate=" + startDate + ", endDate=" + endDate + ", dateExpiredCount=" + dateExpiredCount + ", debtRepayAmount=" + debtRepayAmount + ", loanStatus=" + loanStatus + '}';
     }
-    
-    
+
 }
