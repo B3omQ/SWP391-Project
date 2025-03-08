@@ -111,8 +111,10 @@ create table LoanServiceUsed (
 	EndDate datetime null,
 	DateExpiredCount int null,
 	DebtRepayAmount decimal(18,0) null,
+	IncomeVertification nvarchar(max) not null,
 	LoanStatus nvarchar(255) null
 )
+
 
 create table LoanPayment(
 	Id int identity(1,1) primary key,

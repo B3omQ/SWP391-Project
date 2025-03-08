@@ -286,7 +286,7 @@
                                                     confirmButtonText: 'OK'
                                                 }).then((result) => {
                                                     if (result.isConfirmed) {
-                                                        window.location.href = "identity-information-list";
+                                                        window.location.href = "identity-information-switch-case";
                                                     }
                                                 });
                                             },

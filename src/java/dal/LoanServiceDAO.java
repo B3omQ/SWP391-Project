@@ -63,7 +63,7 @@ public class LoanServiceDAO extends DBContext {
         return list;
     }
 
-    public LoanService getDepServiceById(int id) {
+    public LoanService getLoanServiceById(int id) {
         String sql = """
                      SELECT * 
                      FROM BankingSystem.dbo.LoanService

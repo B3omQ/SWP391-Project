@@ -89,202 +89,79 @@
                                         id="phoneSearch"
                                         name="phoneSearch"
                                         />
+                                    <select class="btn border-custome me-2" name="recordsPerPage" onchange="onChangeSubmit('search')" id="entries">
+                                        <option value="3" ${currentRecords == 3 ? 'selected' : ''}>3</option>
+                                        <option value="5" ${currentRecords == 5 ? 'selected' : ''}>5</option>
+                                        <option value="8" ${currentRecords == 8 ? 'selected' : ''}>8</option>
+                                        <option value="10" ${currentRecords == 10 ? 'selected' : ''}>10</option>
+                                        <option value="12" ${currentRecords == 12 ? 'selected' : ''}>12</option>
+                                        <option value="15" ${currentRecords == 15 ? 'selected' : ''}>15</option>
+                                    </select>
                                     <a href="?page=1&phoneSearch=&recordsPerPage=${currentRecords}" class="btn border-custome me-2">Reset</a>
                                     <button class="btn btn-danger" type="submit">Search</button>
                                 </form>
                             </div>
                         </div>
-                        <!-- Customer Table -->
-                        <style>
 
-                            /* CSS cho bảng */
+                        <style>
                             .table_component {
-                                overflow-x: auto; /* Đảm bảo bảng cuộn ngang trên màn hình nhỏ */
+                                overflow: auto;
                                 width: 100%;
-                                margin-top: 1.5rem;
                             }
 
                             .table_component table {
+                                border: 2px solid #cfcfd3;
+                                height: 100%;
                                 width: 100%;
-                                border-collapse: collapse; /* Loại bỏ khoảng cách giữa các ô */
+                                table-layout: fixed;
+                                border-collapse: collapse;
+                                border-spacing: 1px;
                                 text-align: center;
-                                background-color: #fff;
-                                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Thêm bóng nhẹ để nổi bật */
                             }
 
-                            .table_component th,
-                            .table_component td {
-                                padding: 12px 15px; /* Tăng padding để thoáng hơn */
-                                border: 2px solid #cfcfd3; /* Viền nhẹ nhàng hơn #cfcfd3 */
-                                vertical-align: middle; /* Căn giữa theo chiều dọc */
+                            .table_component caption {
+                                caption-side: top;
+                                text-align: center;
                             }
 
                             .table_component th {
-                                background-color: #f8f9fa; /* Màu nền nhẹ cho tiêu đề */
-                                color: #333; /* Màu chữ đậm hơn */
-                                font-weight: 600; /* Chữ đậm cho tiêu đề */
+                                border: 2px solid #cfcfd3;
+                                background-color: #ffffff;
+                                color: #000000;
+                                padding: 5px;
                             }
 
                             .table_component td {
-                                color: #555; /* Màu chữ nhẹ nhàng hơn */
-                            }
-
-                            /* Chỉnh ô chứa ảnh */
-                            .table_component .photo-div {
-                                display: flex;
-                                justify-content: center;
-                                align-items: center;
-                            }
-
-                            .table_component .photo {
-                                width: 100px; /* Giảm kích thước ảnh để vừa vặn hơn */
-                                height: 100px;
-                                object-fit: cover; /* Đảm bảo ảnh không bị méo */
-                                border-radius: 5px; /* Bo góc nhẹ cho ảnh */
-                                border: 1px solid #dee2e6; /* Viền nhẹ cho ảnh */
-                            }
-
-                            /* Tối ưu chiều rộng cột */
-                            .table_component td.text-truncate {
-                                max-width: 150px; /* Tăng chiều rộng tối đa cho cột Fullname và Phone */
-                                white-space: nowrap; /* Ngăn xuống dòng */
-                                overflow: hidden;
-                                text-overflow: ellipsis; /* Thêm dấu ... khi bị cắt */
-                            }
-
-                            /* Hiệu ứng hover cho hàng */
-                            .table_component tbody tr:hover {
-                                background-color: #f5f6f8; /* Màu nền khi hover */
-                                transition: background-color 0.2s ease; /* Hiệu ứng mượt mà */
-                            }
-
-                            /* Tùy chỉnh nút trong cột Actions */
-                            .table_component .btn {
-                                font-size: 0.9rem;
-                                margin: 0 2px; /* Khoảng cách giữa các nút */
-                            }
-
-                            .profile-header {
-                                background-color: #f8f9fa;
-                                padding: 20px;
-                                border-bottom: 1px solid #dee2e6;
-                            }
-                            .profile-image {
-                                border-radius: 10%;
-                                width: 150px;
-                                height: 150px;
-                            }
-                            .profile-info {
-                                padding: 20px;
-                            }
-                            .profile-info p {
-                                margin-bottom: 10px;
-                            }
-                            .border-custome {
-                                border-color : #c9c9c9;
+                                border: 2px solid #cfcfd3;
+                                background-color: #ffffff;
+                                color: #000000;
+                                padding: 5px;
                             }
                         </style>
-
                         <div class="table_component mt-4" role="region" tabindex="0">
                             <table>
-                                <thead style ="text-align:center">
+                                <thead>
                                     <tr>
-                                        <th>ID</th>
+                                        <th>Id</th>
                                         <th>Ảnh đại diện</th>
-                                        <th>Họ và tên</th>
+                                        <th>Id khách hàng</th>
                                         <th>Số điện thoại</th>
-                                        <th>Giới tính</th>
-                                        <th></th>
+                                        <th>Thông tin</th>
+                                        <th>Trạng thái</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <c:choose>
-                                        <c:when test="${empty customerList}">
-                                            <tr>
-                                                <td colspan="100%" class="text-center text-muted fw-bold">Search list is empty</td>
-                                            </tr>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <c:forEach var="customer" items="${customerList}">
-                                                <tr>
-                                                    <td>${customer.id}</td>
-                                                    <td style="max-width: 100px;">
-                                                        <div class ="photo-div">
-                                                            <img src="${customer.image}" class="photo" alt="Customer Image" />
-                                                        </div>
-                                                    </td>
-                                                    <td class="text-truncate" style="max-width: 120px;">${customer.fullname}</td>
-                                                    <td class="text-truncate" style="max-width: 120px;">${customer.phone}</td>
-                                                    <td>${customer.gender}</td>
-                                                    <td class="text-center align-middle">
-                                                        <div class="row justify-content-center">
-                                                            <div class="col-auto">
-                                                                <button type="button" class="btn btn-info btn-md" data-bs-toggle="modal"
-                                                                        data-bs-target="#detailsModal${customer.id}">
-                                                                    <i class="fas fa-eye"></i>
-                                                                </button>
-                                                            </div>
-                                                            <div class="col-auto">
-                                                                <button data-bs-toggle="modal" data-bs-target="#editModal${customer.id}" 
-                                                                        class="btn btn-primary btn-md">
-                                                                    <i class="fas fa-edit"></i>
-                                                                </button>
-                                                            </div>
-                                                            <div class="col-auto">
-                                                                <form action="customer-admin-management" method="post" id="deleteCustomer-${customer.id}">
-                                                                    <input name="deleteId" value="${customer.id}" type="hidden">
-                                                                    <button class="btn btn-danger btn-md" type="submit">
-                                                                        <i class="fas fa-trash-alt"></i>
-                                                                    </button>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                        <jsp:include page="template/editCustomer.jsp">
-                                                            <jsp:param name="id" value="${customer.id}" />
-                                                            <jsp:param name="email" value="${customer.email}" />
-                                                            <jsp:param name="firstname" value="${customer.firstname}" />
-                                                            <jsp:param name="lastname" value="${customer.lastname}" />
-                                                            <jsp:param name="gender" value="${customer.gender}" />
-                                                            <jsp:param name="dob" value="${customer.dob}" />
-                                                            <jsp:param name="phone" value="${customer.phone}" />
-                                                            <jsp:param name="address" value="${customer.address}" />
-                                                        </jsp:include>           
-                                                    </td>
-                                                </tr>
-                                                <!-- Details Modal -->
-                                            <div class="modal fade" id="detailsModal${customer.id}" tabindex="-1" aria-labelledby="detailsModalLabel${customer.id}" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header bg-danger text-white">
-                                                            <h1 class="modal-title fs-5" id="detailsModalLabel${customer.id}">Customer's Detail</h1>
-                                                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <div class="profile-header text-center">
-                                                                <img src="${customer.image}" alt="Customer Image" class="profile-image">
-                                                                <h2>${customer.firstname} ${customer.lastname}</h2>
-                                                                <p class="text-muted">Customer</p>
-                                                            </div>
-                                                            <div class="profile-info">
-                                                                <p><strong>Id:</strong> ${customer.id}</p>
-                                                                <p><strong>Email contact:</strong> ${customer.email}</p>
-                                                                <p><strong>Address:</strong> ${customer.address}</p>
-                                                                <p><strong>Phone:</strong> ${customer.phone}</p>
-                                                                <p><strong>Date of Birth:</strong> ${customer.dob}</p>
-
-                                                            </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn text-white bg-danger" data-bs-dismiss="modal">Close</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </c:forEach>
-                                    </c:otherwise>
-                                </c:choose>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>                                    
                                 </tbody>
                             </table>
+                            
                         </div>
                     </div>
                 </div>

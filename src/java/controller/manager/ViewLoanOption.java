@@ -38,7 +38,7 @@ public class ViewLoanOption extends HttpServlet {
         try {
             String loanIdStr = request.getParameter("loanId");
             int loanId = Integer.parseInt(loanIdStr);
-            LoanService loan = ldao.getDepServiceById(loanId);
+            LoanService loan = ldao.getLoanServiceById(loanId);
             request.setAttribute("loan", loan);
         } catch (Exception e) {
             System.out.println(e);
