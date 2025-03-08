@@ -171,6 +171,10 @@
     <servlet>
         <servlet-name>CustomerDepServiceManagement</servlet-name>
         <servlet-class>controller.manager.CustomerDepServiceManagement</servlet-class>
+        </servlet>
+    <servlet>
+        <servlet-name>Disbursement</servlet-name>
+        <servlet-class>controller.accountant.Disbursement</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>HomeServlet</servlet-name>
@@ -399,6 +403,10 @@
     <servlet-mapping>
         <servlet-name>CustomerDepServiceManagement</servlet-name>
         <url-pattern>/customer-dep-service-management</url-pattern>
+        </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Disbursement</servlet-name>
+        <url-pattern>/Disbursement</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>1440</session-timeout>
