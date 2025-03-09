@@ -105,7 +105,7 @@ public class VerifyingOtp extends HttpServlet {
                 if (session.getAttribute("staff") != null) {
                     Staff staff = (Staff)session.getAttribute("staff");
                     if(staff.getRoleId().getId() == 1) {
-                        response.sendRedirect("");
+                        response.sendRedirect("accountant/home.jsp");
                     }                    
                     if(staff.getRoleId().getId() == 2) {
                         response.sendRedirect("");
@@ -141,7 +141,6 @@ public class VerifyingOtp extends HttpServlet {
                 // Customer: Xử lý đáo hạn trước khi chuyển hướng
                 Customer customer = (Customer) session.getAttribute("account");
                 if (customer != null) {
-                    processMaturedDeposits(customer, session);
                 }
                 response.sendRedirect("customer/Customer.jsp");
             }
@@ -151,81 +150,5 @@ public class VerifyingOtp extends HttpServlet {
         }
     }
 
-    private void processMaturedDeposits(Customer customer, HttpSession session) {
-        List<DepServiceUsed> maturedDeposits = depServiceUsedDAO.getDepServiceUsedByCustomerId(customer.getId());
-        LocalDateTime now = LocalDateTime.now();
-        boolean hasProcessed = false;
 
-        for (DepServiceUsed deposit : maturedDeposits) {
-            if ("ACTIVE".equals(deposit.getDepStatus()) && deposit.getEndDate().toLocalDateTime().isBefore(now)) {
-                processMaturedDeposit(deposit, customer);
-                hasProcessed = true;
-            }
-        }
-
-        if (hasProcessed) {
-            session.setAttribute("success", "Đã tự động xử lý các khoản tiết kiệm đáo hạn!");
-        }
-
-        customer.setWallet(customerDAO.getWalletByCustomerId(customer.getId()));
-        session.setAttribute("account", customer);
-    }
-
-    private void processMaturedDeposit(DepServiceUsed deposit, Customer customer) {
-        BigDecimal principal = deposit.getAmount();
-        BigDecimal savingRate = depServiceUsedDAO.getSavingRateByDepId(deposit.getDepId());
-        int termMonths = calculateTermMonths(deposit.getStartDate(), deposit.getEndDate());
-        BigDecimal interest = InterestCalculator.calculateInterest(principal, savingRate.doubleValue(), termMonths);
-        BigDecimal totalAmount = principal.add(interest);
-
-        String maturityAction = deposit.getMaturityAction() != null ? deposit.getMaturityAction() : "withdrawAll";
-
-        depServiceUsedDAO.updateDepStatus(deposit.getId(), "COMPLETED");
-
-        switch (maturityAction) {
-            case "withdrawInterest":
-                BigDecimal newBalance = customerDAO.getWalletByCustomerId(customer.getId()).add(interest);
-                customerDAO.updateWallet(customer.getId(), newBalance);
-                renewDeposit(deposit, principal, customer);
-                depHistoryDAO.addDepHistory(deposit.getId(), "Đáo hạn tự động: Rút lãi " + interest + " VND, gửi lại gốc " + principal + " VND");
-                break;
-
-            case "renewAll":
-                renewDeposit(deposit, totalAmount, customer);
-                depHistoryDAO.addDepHistory(deposit.getId(), "Đáo hạn tự động: Gửi lại toàn bộ " + totalAmount + " VND");
-                break;
-
-            case "withdrawAll":
-                newBalance = customerDAO.getWalletByCustomerId(customer.getId()).add(totalAmount);
-                customerDAO.updateWallet(customer.getId(), newBalance);
-                depHistoryDAO.addDepHistory(deposit.getId(), "Đáo hạn tự động: Rút toàn bộ " + totalAmount + " VND");
-                break;
-
-            default:
-                newBalance = customerDAO.getWalletByCustomerId(customer.getId()).add(totalAmount);
-                customerDAO.updateWallet(customer.getId(), newBalance);
-                depHistoryDAO.addDepHistory(deposit.getId(), "Đáo hạn tự động: Rút toàn bộ (mặc định) " + totalAmount + " VND");
-        }
-    }
-
-    private void renewDeposit(DepServiceUsed oldDeposit, BigDecimal amount, Customer customer) {
-        DepServiceUsed newDep = new DepServiceUsed(
-            0, oldDeposit.getDepId(), customer.getId(), oldDeposit.getDepTypeId(),
-            amount, Timestamp.valueOf(LocalDateTime.now()),
-            Timestamp.valueOf(LocalDateTime.now().plusMonths(calculateTermMonths(oldDeposit.getStartDate(), oldDeposit.getEndDate()))),
-            "ACTIVE", oldDeposit.getMaturityAction()
-        );
-        depServiceUsedDAO.addDepServiceUsed(newDep);
-    }
-
-    private int calculateTermMonths(Timestamp start, Timestamp end) {
-        LocalDateTime startDate = start.toLocalDateTime();
-        LocalDateTime endDate = end.toLocalDateTime();
-        return (int) java.time.temporal.ChronoUnit.MONTHS.between(startDate, endDate);
-    }
-
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }
 }

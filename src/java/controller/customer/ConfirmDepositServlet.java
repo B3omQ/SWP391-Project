@@ -99,8 +99,7 @@ public class ConfirmDepositServlet extends HttpServlet {
             System.out.println("✅ DSUId vừa tạo: " + dsuId);
 
             // Lưu lịch sử giao dịch
-            boolean historyAdded = depHistoryDAO.addDepHistory(dsuId, "Gửi tiết kiệm kỳ hạn " + selectedTerm + " tháng");
-            if (!historyAdded) {
+boolean historyAdded = depHistoryDAO.addDepHistory(dsuId, "Gửi tiết kiệm kỳ hạn " + selectedTerm + " tháng", depositAmount);            if (!historyAdded) {
                 System.out.println("❌ Lỗi: Không thể thêm lịch sử giao dịch cho người dùng " + account.getId() + " với DSUId: " + dsuId);
                 response.sendRedirect(request.getContextPath() + "/customer/confirmTermAction.jsp?error=history_failed");
                 return;
