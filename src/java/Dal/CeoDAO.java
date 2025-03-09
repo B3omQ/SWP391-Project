@@ -4,6 +4,7 @@
  */
 package dal;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,6 +16,7 @@ import java.util.Collections;
 import java.util.List;
 import model.Customer;
 import model.DepService;
+import model.LoanService;
 import model.Role;
 import model.Staff;
 import util.AccountValidation;
@@ -485,7 +487,8 @@ public class CeoDAO extends DBContext {
         } catch (Exception e) {
         }
     }
-     public int getTotalDepositRecords(String status, String search) {
+
+    public int getTotalDepositRecords(String status, String search) {
         int total = 0;
 
         String sql = """
@@ -572,12 +575,115 @@ public class CeoDAO extends DBContext {
         return list;
     }
 
+    public void updatLoanServiceStatusById(int id, String changeStatus) {
+        String sql = """
+                     UPDATE BankingSystem.dbo.LoanService SET PendingStatus = ? WHERE Id = ?""";
+
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setString(1, changeStatus);
+            st.setInt(2, id);
+            st.executeUpdate();
+        } catch (Exception e) {
+        }
+    }
+
+    public int getTotalLoanServiceRecords(String status, String search) {
+        int total = 0;
+
+        String sql = """
+        SELECT COUNT(*) 
+        FROM BankingSystem.dbo.LoanService 
+        WHERE PendingStatus = ?""";
+        List<Object> params = new ArrayList<>();
+        params.add(status);
+
+        // Thêm điều kiện tìm kiếm
+        if (search != null && !search.trim().isEmpty()) {
+            sql += " AND (MinimumLoan = ? OR DuringTime = ? OR OnTermRate = ? OR MaximumLoan = ?)";
+            Collections.addAll(params, search, search, search, search);
+        }
+
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            // Thiết lập tham số
+            for (int i = 0; i < params.size(); i++) {
+                st.setObject(i + 1, params.get(i));
+            }
+
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    total = rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return total;
+    }
+
+    public List<LoanService> getAllLoanServiceByStatus(String status, String sortBy, String order, String search, int page, int pageSize) {
+        List<LoanService> list = new ArrayList<>();
+
+        String sql = """
+         SELECT Id, LoanServiceName, Description, DuringTime, OnTermRate, PenaltyRate, MinimumLoan, MaximumLoan, PendingStatus
+         FROM BankingSystem.dbo.LoanService
+         WHERE PendingStatus = ?""";
+        List<Object> params = new ArrayList<>();
+
+        // Thêm điều kiện tìm kiếm
+        if (search != null && !search.trim().isEmpty()) {
+            sql += " AND (MinimumLoan = ? OR DuringTime = ? OR OnTermRate = ? OR MaximumLoan = ?)";
+            String likeTerm = search;
+            Collections.addAll(params, likeTerm, likeTerm, likeTerm, likeTerm);
+        }
+
+        if ("DuringTime".equalsIgnoreCase(sortBy)) {
+            sql += " ORDER BY [DuringTime] " + order;
+        } else {
+            sql += " ORDER BY [OnTermRate] " + order;
+        }
+        // Phân trang cho SQL Server
+        sql += " OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        params.add((page - 1) * pageSize);
+        params.add(pageSize);
+
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setString(1, status);
+            // Thiết lập tham số
+            for (int i = 0; i < params.size(); i++) {
+                st.setObject(i + 2, params.get(i));
+            }
+            try (ResultSet rs = st.executeQuery()) {
+                while (rs.next()) {
+                    LoanService loanService = new LoanService(
+                            rs.getInt("Id"),
+                            rs.getString("LoanServiceName"),
+                            rs.getString("Description"),
+                            rs.getInt("DuringTime"),
+                            rs.getDouble("OnTermRate"),
+                            rs.getDouble("PenaltyRate"),
+                            rs.getBigDecimal("MinimumLoan"),
+                            rs.getBigDecimal("MaximumLoan"),
+                            rs.getString("PendingStatus")
+                    );
+                    list.add(loanService);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return list;
+    }
+
     public static void main(String[] args) {
         CeoDAO c = new CeoDAO();
 //        c.deleteStaff(40);
 //        for (Staff x : c.searchStaffs("", "", 1, 5)) {
 //            System.out.println(x.toString());
 //        }
-        System.out.println(c.getStaffById(1).toString());
+        for(LoanService x : c.getAllLoanServiceByStatus("Pending", "DuringTime", "ASC", "", 1, 5)) {
+            System.out.println(x.toString());
+        }
     }
 }

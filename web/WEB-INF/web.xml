@@ -88,7 +88,7 @@
         <servlet-name>WithdrawDepositServlet</servlet-name>
         <servlet-class>controller.customer.WithdrawDepositServlet</servlet-class>
     </servlet>
-    <servlet> 
+    <servlet>
         <servlet-name>ChatSupportServlet</servlet-name>
         <servlet-class>controller.consultant.ChatSupportServlet</servlet-class>
     </servlet>
@@ -147,6 +147,10 @@
     <servlet>
         <servlet-name>DepositApproval</servlet-name>
         <servlet-class>controller.ceo.DepositApproval</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoanApproval</servlet-name>
+        <servlet-class>controller.ceo.LoanApproval</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>HomeServlet</servlet-name>
@@ -351,6 +355,10 @@
     <servlet-mapping>
         <servlet-name>DepositApproval</servlet-name>
         <url-pattern>/depositApproval</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoanApproval</servlet-name>
+        <url-pattern>/loanApproval</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>1440</session-timeout>

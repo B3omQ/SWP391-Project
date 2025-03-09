@@ -16,8 +16,8 @@ public class LoanService {
     private String loanServiceName;
     private String description;
     private int duringTime;
-    private float onTermRate;
-    private float penaltyRate;
+    private double onTermRate;
+    private double penaltyRate;
     private BigDecimal minimumLoan;
     private BigDecimal maximumLoan;
     private String pendingStatus;
@@ -25,8 +25,7 @@ public class LoanService {
     public LoanService() {
     }
 
-    public LoanService(int id, String loanServiceName, String description, int duringTime,
-            float onTermRate, float penaltyRate, BigDecimal minimumLoan, BigDecimal maximumLoan, String pendingStatus) {
+    public LoanService(int id, String loanServiceName, String description, int duringTime, double onTermRate, double penaltyRate, BigDecimal minimumLoan, BigDecimal maximumLoan, String pendingStatus) {
         this.id = id;
         this.loanServiceName = loanServiceName;
         this.description = description;
@@ -37,6 +36,8 @@ public class LoanService {
         this.maximumLoan = maximumLoan;
         this.pendingStatus = pendingStatus;
     }
+
+    
 
     public int getId() {
         return id;
@@ -70,7 +71,7 @@ public class LoanService {
         this.duringTime = duringTime;
     }
 
-    public float getOnTermRate() {
+    public double getOnTermRate() {
         return onTermRate;
     }
 
@@ -78,7 +79,7 @@ public class LoanService {
         this.onTermRate = onTermRate;
     }
 
-    public float getPenaltyRate() {
+    public double getPenaltyRate() {
         return penaltyRate;
     }
 

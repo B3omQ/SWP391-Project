@@ -13,6 +13,7 @@
 
             <li><a href="<%= request.getContextPath() %>/ceo/ceoProfile.jsp"><i class="uil uil-user me-2 d-inline-block"></i>My profile</a></li>         
             <li><a href="<%= request.getContextPath() %>/depositApproval"><i class="uil uil-user me-2 d-inline-block"></i>Deposite Service</a></li>         
+            <li><a href="<%= request.getContextPath() %>/loanApproval"><i class="uil uil-user me-2 d-inline-block"></i>Loan Service</a></li>         
 
             <li><a href="<%= request.getContextPath() %>/staffManagement"><i class="uil uil-file me-2 d-inline-block"></i>Staff Management</a></li>
             <li><a href="<%= request.getContextPath() %>/customerManagement"><i class="uil uil-file me-2 d-inline-block"></i>Customer Management</a></li>

@@ -70,13 +70,13 @@
                                 <nav aria-label="breadcrumb" class="d-inline-block mt-2">
                                     <ul class="breadcrumb breadcrumb-muted bg-transparent rounded mb-0 p-0">
                                         <li class="breadcrumb-item"><a href="index.html">Ceo</a></li>
-                                        <li class="breadcrumb-item active" aria-current="page">Deposit Approval Lists</li>
+                                        <li class="breadcrumb-item active" aria-current="page">Loan Approval Lists</li>
                                     </ul>
                                 </nav>
                             </div><!--end col-->
                             <div class="col-xl-6 col-lg-6 col-md-8 mt-4 mt-md-0">
                                 <div class="justify-content-md-end">
-                                    <form action="<%= request.getContextPath() %>/depositApproval" method="get" id="sort">
+                                    <form action="<%= request.getContextPath() %>/loanApproval" method="get" id="sort">
                                         <div class="row g-3 justify-content-between align-items-center">
                                             <!-- Search Input -->
                                             <div class="col-md-12 col-sm-12">
@@ -147,20 +147,22 @@
                         <!-- Deposit Options List -->                     
                         <div class="row">
                             <c:choose>
-                                <c:when test="${empty depOptionServiceList}">
+                                <c:when test="${empty loanServiceList}">
                                     <div class="col-12 text-center text-muted fw-bold">Empty</div>
                                 </c:when>
                                 <c:otherwise>
 
-                                    <form action="<%= request.getContextPath() %>/depositApproval" method="get">
+                                    <form action="<%= request.getContextPath() %>/loanApproval" method="get">
                                         <div class="table-responsive bg-white shadow rounded">
                                             <table class="table table-bordered table-hover">
                                                 <thead class="thead-dark">
                                                     <tr>
                                                         <th>#</th>
-                                                        <th>MinimumDep</th>
-                                                        <th>SavingRateMinimum</th>
-                                                        <th>SavingRate</th>
+                                                        <th>Name</th>
+                                                        <th>Minimum Loan</th>
+                                                        <th>Maximum Loan</th>
+                                                        <th>On Term Rate</th>
+                                                        <th>Penalty Rate</th>
                                                         <th>Term (Months)</th> 
                                                         <!-- Action -->
                                                         <c:if test="${currentStatus == 'Pending'}">
@@ -169,20 +171,21 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <c:forEach var="dep" items="${depOptionServiceList}">
+                                                    <c:forEach var="loan" items="${loanServiceList}">
                                                         <tr>
-                                                            <td>${dep.id}</td>
-
-                                                            <td>${dep.minimumDep}</td>  
-                                                            <td>${dep.savingRateMinimum}</td>  
-                                                            <td>${dep.savingRate}</td>  
-                                                            <td>${dep.duringTime}</td>  
+                                                            <td>${loan.id}</td>
+                                                            <td>${loan.loanServiceName}</td>
+                                                            <td>${loan.minimumLoan}</td>  
+                                                            <td>${loan.maximumLoan}</td>  
+                                                            <td>${loan.onTermRate}</td>
+                                                            <td>${loan.penaltyRate}</td>
+                                                            <td>${loan.duringTime}</td>  
                                                             <td>                              
                                                                 <c:if test="${currentStatus == 'Pending'}">
-                                                                    <a href="depositApproval?id=${dep.id}&changeStatus=Approved" class="btn btn-icon btn-pills btn-soft-success">
+                                                                    <a href="loanApproval?id=${loan.id}&changeStatus=Approved" class="btn btn-icon btn-pills btn-soft-success">
                                                                         <i class="fas fa-check"></i>
                                                                     </a>
-                                                                    <a href="depositApproval?id=${dep.id}&changeStatus=Denied" class="btn btn-icon btn-pills btn-danger">
+                                                                    <a href="loanApproval?id=${loan.id}&changeStatus=Denied" class="btn btn-icon btn-pills btn-danger">
                                                                         <i class="fas fa-times"></i>
                                                                     </a>
                                                                 </c:if>
@@ -205,45 +208,45 @@
                                     </span>                                  
                                     <span class="mx-3">
                                         <input type="text" style="text-align: right; max-width: 60px" value="${page}" class="form-control d-inline w-auto"                                               
-                                               onchange="location.href = '${pageContext.request.contextPath}/depositApproval?page=' + this.value">
+                                               onchange="location.href = '${pageContext.request.contextPath}/loanApproval?page=' + this.value">
                                         / ${endPage}
                                     </span>
                                     <ul class="pagination justify-content-center mb-0 mt-3 mt-sm-0">
                                         <!-- Previous -->
                                         <c:if test="${page != 1}">
-                                            <li class="page-item"><a class="page-link" href="<%= request.getContextPath() %>/depositApproval?page=${page - 1}" aria-label="Previous">Prev</a></li>
+                                            <li class="page-item"><a class="page-link" href="<%= request.getContextPath() %>/loanApproval?page=${page - 1}" aria-label="Previous">Prev</a></li>
                                             </c:if>  
                                         <!-- Current Page -->  
                                         <!-- Start process -->
                                         <c:if test="${endPage < 8}">
                                             <c:forEach var="i" begin="1" end="${endPage}">
-                                                <li class="page-item ${page == i? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/depositApproval?page=${i}" aria-label="Pages">${i}</a></li>
+                                                <li class="page-item ${page == i? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/loanApproval?page=${i}" aria-label="Pages">${i}</a></li>
                                                 </c:forEach>
                                             </c:if>
                                             <c:if test="${endPage >= 8}">
-                                            <li class="page-item ${page == 1? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/depositApproval?page=1" aria-label="Pages">1</a></li>
+                                            <li class="page-item ${page == 1? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/loanApproval?page=1" aria-label="Pages">1</a></li>
                                                 <c:if test="${page < 4 || page > endPage - 3}">
-                                                <li class="page-item ${page == 2? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/depositApproval?page=2" aria-label="Pages">2</a></li>
-                                                <li class="page-item ${page == 3? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/depositApproval?page=3" aria-label="Pages">3</a></li>
+                                                <li class="page-item ${page == 2? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/loanApproval?page=2" aria-label="Pages">2</a></li>
+                                                <li class="page-item ${page == 3? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/loanApproval?page=3" aria-label="Pages">3</a></li>
                                                 </c:if>
                                                 <c:if test="${page > 3 && page < endPage - 2}">
                                                 <li class="page-item"><span class="page-link" aria-label="Pages">...</span></li>
-                                                <li class="page-item ${page == page - 1 ? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/depositApproval?page=${page - 1}" aria-label="Pages">${page - 1}</a></li>
-                                                <li class="page-item ${page == page? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/depositApproval?&page=${page}" aria-label="Pages">${page}</a></li>
-                                                <li class="page-item ${page == page + 1 ? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/depositApproval?page=${page + 1}" aria-label="Pages">${page + 1}</a></li>
+                                                <li class="page-item ${page == page - 1 ? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/loanApproval?page=${page - 1}" aria-label="Pages">${page - 1}</a></li>
+                                                <li class="page-item ${page == page? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/loanApproval?&page=${page}" aria-label="Pages">${page}</a></li>
+                                                <li class="page-item ${page == page + 1 ? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/loanApproval?page=${page + 1}" aria-label="Pages">${page + 1}</a></li>
                                                 <li class="page-item"><span class="page-link" aria-label="Pages">...</span></li>
                                                 </c:if>
                                                 <c:if test="${page < 4 || page > endPage - 3}">
                                                 <li class="page-item"><span class="page-link" aria-label="Pages">...</span></li>
-                                                <li class="page-item ${page == endPage - 2? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/depositApproval?page=${endPage - 2}" aria-label="Pages">${endPage - 2}</a></li>
-                                                <li class="page-item ${page == endPage - 1? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/depositApproval?page=${endPage - 1}" aria-label="Pages">${endPage - 1}</a></li>
+                                                <li class="page-item ${page == endPage - 2? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/loanApproval?page=${endPage - 2}" aria-label="Pages">${endPage - 2}</a></li>
+                                                <li class="page-item ${page == endPage - 1? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/loanApproval?page=${endPage - 1}" aria-label="Pages">${endPage - 1}</a></li>
                                                 </c:if> 
-                                            <li class="page-item ${page == endPage? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/depositApproval?page=${endPage}" aria-label="Pages">${endPage}</a></li>
+                                            <li class="page-item ${page == endPage? "active" : ""}"><a class="page-link" href="<%= request.getContextPath() %>/loanApproval?page=${endPage}" aria-label="Pages">${endPage}</a></li>
                                             </c:if>                                              
                                         <!-- End process -->
                                         <!-- Next -->
                                         <c:if test="${page lt endPage}">
-                                            <li class="page-item"><a class="page-link" href="<%= request.getContextPath() %>/depositApproval?page=${page + 1}" aria-label="Next">Next</a></li>
+                                            <li class="page-item"><a class="page-link" href="<%= request.getContextPath() %>/loanApproval?page=${page + 1}" aria-label="Next">Next</a></li>
                                             </c:if>
                                     </ul>
                                 </div>
