@@ -83,10 +83,16 @@ public class VNpayReturn extends HttpServlet {
                     return;
                 }
 
-                // Lưu lịch sử nạp tiền
+                // Lưu lịch sử nạp tiền vào DepHistory với DSUId = null
                 DepHistoryDAO depHistoryDAO = new DepHistoryDAO();
                 String description = "Nạp tiền qua VNPay - Mã GD: " + txnRef;
-                Timestamp createdAt = new Timestamp(System.currentTimeMillis());
+                // Sử dụng null cho DSUId thay vì -1
+                boolean historySaved = depHistoryDAO.addDepHistory(null, description, amount);
+                if (!historySaved) {
+                    System.out.println("❌ Lỗi: Không thể lưu lịch sử nạp tiền cho giao dịch " + txnRef);
+                } else {
+                    System.out.println("✅ Đã lưu lịch sử nạp tiền: " + description + ", Amount: " + amount);
+                }
 
                 Customer updatedCustomer = customerDAO.getCustomerById(customerId);
                 request.getSession().setAttribute("account", updatedCustomer);

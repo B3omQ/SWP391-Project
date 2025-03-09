@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import controller.calculation.InterestCalculator;
 
-public class MaturityHandlerServlet {
+public class MaturityHandlerServlet {  // Đổi tên thành MaturityHandler vì không phải Servlet
 
     private final CustomerDAO customerDAO = new CustomerDAO();
     private final DepServiceUsedDAO depServiceUsedDAO = new DepServiceUsedDAO();
@@ -41,7 +41,6 @@ public class MaturityHandlerServlet {
         BigDecimal interest = InterestCalculator.calculateInterest(principal, savingRate.doubleValue(), termMonths);
         BigDecimal totalAmount = principal.add(interest);
 
-        // Log để kiểm tra giá trị
         System.out.println("✅ Principal của deposit " + deposit.getId() + ": " + principal);
         System.out.println("✅ SavingRate: " + savingRate);
         System.out.println("✅ TermMonths: " + termMonths);
@@ -49,7 +48,6 @@ public class MaturityHandlerServlet {
         System.out.println("✅ TotalAmount: " + totalAmount);
 
         String maturityAction = deposit.getMaturityAction();
-        System.out.println("✅ MaturityAction của deposit " + deposit.getId() + ": " + maturityAction);
         if (maturityAction == null) {
             System.out.println("⚠️ MaturityAction là null, gán mặc định 'withdrawAll'");
             maturityAction = "withdrawAll";
@@ -57,18 +55,17 @@ public class MaturityHandlerServlet {
 
         depServiceUsedDAO.updateDepStatus(deposit.getId(), "COMPLETED");
 
-        // Xử lý theo maturityAction
         switch (maturityAction) {
             case "withdrawInterest":
                 BigDecimal newBalanceWithdrawInterest = customerDAO.getWalletByCustomerId(customer.getId()).add(interest);
                 customerDAO.updateWallet(customer.getId(), newBalanceWithdrawInterest);
                 renewDeposit(deposit, principal, customer);
-                depHistoryDAO.addDepHistory(deposit.getId(), "Rút lãi", principal, interest, interest);
+                depHistoryDAO.addDepHistory(deposit.getId(), "Rút lãi", principal, interest, interest); // Amount là lãi
                 break;
 
             case "renewAll":
                 renewDeposit(deposit, totalAmount, customer);
-                depHistoryDAO.addDepHistory(deposit.getId(), "Gửi lại toàn bộ", principal, interest, totalAmount);
+                depHistoryDAO.addDepHistory(deposit.getId(), "Gửi lại toàn bộ", principal, interest, totalAmount); // Amount là tổng
                 break;
 
             case "withdrawAll":
@@ -80,13 +77,13 @@ public class MaturityHandlerServlet {
                 } else {
                     System.out.println("✅ Đã cộng " + totalAmount + " (gốc + lãi) vào ví, số dư mới: " + newBalanceWithdrawAll);
                 }
-                depHistoryDAO.addDepHistory(deposit.getId(), "Rút toàn bộ", principal, interest, totalAmount);
+                depHistoryDAO.addDepHistory(deposit.getId(), "Rút toàn bộ", principal, interest, totalAmount); // Amount là tổng
                 break;
 
             default:
                 BigDecimal newBalanceDefault = customerDAO.getWalletByCustomerId(customer.getId()).add(totalAmount);
                 customerDAO.updateWallet(customer.getId(), newBalanceDefault);
-                depHistoryDAO.addDepHistory(deposit.getId(), "Rút toàn bộ (mặc định)", principal, interest, totalAmount);
+                depHistoryDAO.addDepHistory(deposit.getId(), "Rút toàn bộ (mặc định)", principal, interest, totalAmount); // Amount là tổng
                 break;
         }
     }
