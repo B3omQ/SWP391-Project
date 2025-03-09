@@ -80,7 +80,7 @@
 
                             <!-- Search form -->
                             <div class="col-md-6">
-                                <form id="search" action="customer-admin-management" method="get" class="d-flex">
+                                <form id="search" action="customer-loan-service-management" method="get" class="d-flex">
                                     <input
                                         value="${currentPhoneSearch}"
                                         class="form-control border-custome me-2"
@@ -89,54 +89,85 @@
                                         id="phoneSearch"
                                         name="phoneSearch"
                                         />
-                                    <select class="btn border-custome me-2" name="recordsPerPage" onchange="onChangeSubmit('search')" id="entries">
-                                        <option value="3" ${currentRecords == 3 ? 'selected' : ''}>3</option>
-                                        <option value="5" ${currentRecords == 5 ? 'selected' : ''}>5</option>
-                                        <option value="8" ${currentRecords == 8 ? 'selected' : ''}>8</option>
-                                        <option value="10" ${currentRecords == 10 ? 'selected' : ''}>10</option>
-                                        <option value="12" ${currentRecords == 12 ? 'selected' : ''}>12</option>
-                                        <option value="15" ${currentRecords == 15 ? 'selected' : ''}>15</option>
+                                    <select class="form-select me-2" name="pendingStatus" onchange="onChangeSubmit('search')" id="pendingStatus">
+                                        <option value="Pending" ${currentStatus == 'Pending' || empty currentStatus ? 'selected' : ''}>Pending</option>
+                                        <option value="Denied" ${currentStatus == 'Denied' ? 'selected' : ''}>Denied</option>
+                                        <option value="Approved" ${currentStatus == 'Approved' ? 'selected' : ''}>Approved</option>
                                     </select>
-                                    <a href="?page=1&phoneSearch=&recordsPerPage=${currentRecords}" class="btn border-custome me-2">Reset</a>
+                                    <a href="?page=1&phoneSearch=&pendingStatus=&recordsPerPage=${currentRecords}" class="btn border-custome me-2">Reset</a>
                                     <button class="btn btn-danger" type="submit">Search</button>
                                 </form>
                             </div>
                         </div>
 
                         <style>
+                            /* CSS cho bảng */
                             .table_component {
-                                overflow: auto;
+                                overflow-x: auto; /* Đảm bảo bảng cuộn ngang trên màn hình nhỏ */
                                 width: 100%;
+                                margin-top: 1.5rem;
                             }
 
                             .table_component table {
-                                border: 2px solid #cfcfd3;
-                                height: 100%;
                                 width: 100%;
-                                table-layout: fixed;
-                                border-collapse: collapse;
-                                border-spacing: 1px;
+                                border-collapse: collapse; /* Loại bỏ khoảng cách giữa các ô */
                                 text-align: center;
+                                background-color: #fff;
+                                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Thêm bóng nhẹ để nổi bật */
                             }
 
-                            .table_component caption {
-                                caption-side: top;
-                                text-align: center;
+                            .table_component th,
+                            .table_component td {
+                                padding: 12px 15px; /* Tăng padding để thoáng hơn */
+                                border: 2px solid #cfcfd3; /* Viền nhẹ nhàng hơn #cfcfd3 */
+                                vertical-align: middle; /* Căn giữa theo chiều dọc */
                             }
 
                             .table_component th {
-                                border: 2px solid #cfcfd3;
-                                background-color: #ffffff;
-                                color: #000000;
-                                padding: 5px;
+                                background-color: #f8f9fa; /* Màu nền nhẹ cho tiêu đề */
+                                color: #333; /* Màu chữ đậm hơn */
+                                font-weight: 600; /* Chữ đậm cho tiêu đề */
                             }
 
                             .table_component td {
-                                border: 2px solid #cfcfd3;
-                                background-color: #ffffff;
-                                color: #000000;
-                                padding: 5px;
+                                color: #555; /* Màu chữ nhẹ nhàng hơn */
                             }
+
+                            /* Chỉnh ô chứa ảnh */
+                            .table_component .photo-div {
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                            }
+
+                            .table_component .photo {
+                                width: 100px; /* Giảm kích thước ảnh để vừa vặn hơn */
+                                height: 100px;
+                                object-fit: cover; /* Đảm bảo ảnh không bị méo */
+                                border-radius: 5px; /* Bo góc nhẹ cho ảnh */
+                                border: 1px solid #dee2e6; /* Viền nhẹ cho ảnh */
+                            }
+
+                            /* Tối ưu chiều rộng cột */
+                            .table_component td.text-truncate {
+                                max-width: 150px; /* Tăng chiều rộng tối đa cho cột Fullname và Phone */
+                                white-space: nowrap; /* Ngăn xuống dòng */
+                                overflow: hidden;
+                                text-overflow: ellipsis; /* Thêm dấu ... khi bị cắt */
+                            }
+
+                            /* Hiệu ứng hover cho hàng */
+                            .table_component tbody tr:hover {
+                                background-color: #f5f6f8; /* Màu nền khi hover */
+                                transition: background-color 0.2s ease; /* Hiệu ứng mượt mà */
+                            }
+
+                            /* Tùy chỉnh nút trong cột Actions */
+                            .table_component .btn {
+                                font-size: 0.9rem;
+                                margin: 0 2px; /* Khoảng cách giữa các nút */
+                            }
+
                         </style>
                         <div class="table_component mt-4" role="region" tabindex="0">
                             <table>
@@ -144,24 +175,52 @@
                                     <tr>
                                         <th>Id</th>
                                         <th>Ảnh đại diện</th>
-                                        <th>Id khách hàng</th>
+                                        <th>Họ và tên</th>
                                         <th>Số điện thoại</th>
-                                        <th>Thông tin</th>
-                                        <th>Trạng thái</th>
+                                        <th>trạng thái</th>
+                                        <th>Thông tin chi tiết</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>                                    
+                                    <c:forEach var="loan" items="${loanList}">
+                                        <tr>
+                                            <td>${loan.id}</td>
+                                            <td style="max-width: 100px;">
+                                                <div class ="photo-div">
+                                                    <img src="${loan.cusId.image}" class="photo" alt="Customer Image" />
+                                                </div>
+                                            </td>
+                                            <td>${loan.cusId.fullname}</td>
+                                            <td style="max-width: 100px;">${loan.cusId.phone}</td>
+                                            <td style="max-width: 100px;">${loan.loanStatus}</td>
+                                            <td class="text-center align-middle">
+                                                <div class="row justify-content-center">                                                            
+                                                    <div class="col-auto">
+                                                        <button data-bs-toggle="modal" data-bs-target="#editModal${loan.id}" 
+                                                                class="btn btn-primary btn-md">
+                                                            <i class="fas fa-eye"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <jsp:include page="template/editApprovalCustomerLoanService.jsp">
+                                                    <jsp:param name="id" value="${loan.id}"/>
+                                                    <jsp:param name="customerFullname" value="${loan.cusId.fullname}"/>
+                                                    <jsp:param name="customerDateOfBirth" value="${loan.cusId.dob}"/>
+                                                    <jsp:param name="customerIncomeVertification" value="${loan.incomeVertification}"/>
+                                                    <jsp:param name="customerEmail" value="${loan.cusId.email}"/>
+                                                    <jsp:param name="customerPhone" value="${loan.cusId.phone}"/>
+                                                    <jsp:param name="customerAddress" value="${loan.cusId.address}"/>
+                                                    <jsp:param name="customerPhoto" value="${loan.cusId.image}"/>
+                                                    <jsp:param name="pendingStatus" value="${loan.loanStatus}"/>
+                                                </jsp:include>           
+                                            </td>
+                                        </tr> 
+                                    </c:forEach>
                                 </tbody>
                             </table>
-                            
+                            <c:if test="${empty loanList}">
+                                <div colspan="100%" class="text-center text-muted fw-bold mt-4">Search list is empty</div>
+                            </c:if>
                         </div>
                     </div>
                 </div>
@@ -290,109 +349,109 @@
         </div>
 
         <script src ="resources/script/jquery-3.7.1.min.js"></script>
-        <script>
-                                        document.addEventListener("DOMContentLoaded", function () {
-                                            tippy('#entries', {
-                                                content: "Entries",
-                                                animation: 'fade',
-                                                duration: [300, 300],
-                                                placement: 'top',
-                                                theme: 'light-border'
-                                            });
-
-                                            tippy('#newImg', {
-                                                content: "Only accept file jpg, jpeg, png, gif and size smaller than 5mbs",
-                                                animation: 'fade',
-                                                duration: [300, 300],
-                                                placement: 'top',
-                                                theme: 'light-border'
-                                            });
-
-                                            tippy('#newPhone', {
-                                                content: "Phone must be 10 - 11 digits number",
-                                                animation: 'fade',
-                                                duration: [300, 300],
-                                                placement: 'top',
-                                                theme: 'light-border'
-                                            });
-                                        });
-
-                                        function validatePhoneSearch() {
-                                            var phoneInput = document.getElementById("phoneSearch");
-                                            var phoneValue = phoneInput.value.trim();
-                                            var phonePattern = /^\d{10,11}$/; // Chỉ chứa 10-11 số
-
-                                            if (!phonePattern.test(phoneValue)) {
-                                                showErrorMessage("Error", "Invalid phone number")
-                                                phoneInput.focus();
-                                                return false;
-                                            }
-                                            return true;
-                                        }
-
-                                        document.getElementById("search").addEventListener("submit", function (event) {
-                                            if (!validatePhoneSearch()) {
-                                                event.preventDefault(); // Ngăn chặn form submit nếu không hợp lệ
-                                            }
-                                        });
-
-                                        $(document).ready(function () {
-                                            showToastrAfterReload();
-
-                                            $('form[id^="deleteCustomer-"]').on('submit', function (event) {
-                                                event.preventDefault();
-
-                                                let form = $(this);
-                                                let customerId = form.find('input[name="deleteId"]').val();
-
-                                                if (confirm("Are you sure you want to delete this customer?")) {
-                                                    $.ajax({
-                                                        url: 'customer-admin-management',
-                                                        type: 'POST',
-                                                        data: {deleteId: customerId},
-                                                        success: function (response) {
-                                                            if (response.success) {
-                                                                showSuccessMessage("Success", "Deleted!");
-                                                                form.closest('tr').remove();
-                                                            } else {
-                                                                showErrorMessage("Error", "Something wrong here");
-                                                            }
-                                                        },
-                                                        error: function () {
-                                                            showErrorMessage("Error", "Server is busy right now. Please try again later.");
+        <!--        <script>
+                                                document.addEventListener("DOMContentLoaded", function () {
+                                                    tippy('#entries', {
+                                                        content: "Entries",
+                                                        animation: 'fade',
+                                                        duration: [300, 300],
+                                                        placement: 'top',
+                                                        theme: 'light-border'
+                                                    });
+        
+                                                    tippy('#newImg', {
+                                                        content: "Only accept file jpg, jpeg, png, gif and size smaller than 5mbs",
+                                                        animation: 'fade',
+                                                        duration: [300, 300],
+                                                        placement: 'top',
+                                                        theme: 'light-border'
+                                                    });
+        
+                                                    tippy('#newPhone', {
+                                                        content: "Phone must be 10 - 11 digits number",
+                                                        animation: 'fade',
+                                                        duration: [300, 300],
+                                                        placement: 'top',
+                                                        theme: 'light-border'
+                                                    });
+                                                });
+        
+                                                function validatePhoneSearch() {
+                                                    var phoneInput = document.getElementById("phoneSearch");
+                                                    var phoneValue = phoneInput.value.trim();
+                                                    var phonePattern = /^\d{10,11}$/; // Chỉ chứa 10-11 số
+        
+                                                    if (!phonePattern.test(phoneValue)) {
+                                                        showErrorMessage("Error", "Invalid phone number")
+                                                        phoneInput.focus();
+                                                        return false;
+                                                    }
+                                                    return true;
+                                                }
+        
+                                                document.getElementById("search").addEventListener("submit", function (event) {
+                                                    if (!validatePhoneSearch()) {
+                                                        event.preventDefault(); // Ngăn chặn form submit nếu không hợp lệ
+                                                    }
+                                                });
+        
+                                                $(document).ready(function () {
+                                                    showToastrAfterReload();
+        
+                                                    $('form[id^="deleteCustomer-"]').on('submit', function (event) {
+                                                        event.preventDefault();
+        
+                                                        let form = $(this);
+                                                        let customerId = form.find('input[name="deleteId"]').val();
+        
+                                                        if (confirm("Are you sure you want to delete this customer?")) {
+                                                            $.ajax({
+                                                                url: 'customer-admin-management',
+                                                                type: 'POST',
+                                                                data: {deleteId: customerId},
+                                                                success: function (response) {
+                                                                    if (response.success) {
+                                                                        showSuccessMessage("Success", "Deleted!");
+                                                                        form.closest('tr').remove();
+                                                                    } else {
+                                                                        showErrorMessage("Error", "Something wrong here");
+                                                                    }
+                                                                },
+                                                                error: function () {
+                                                                    showErrorMessage("Error", "Server is busy right now. Please try again later.");
+                                                                }
+                                                            });
                                                         }
                                                     });
-                                                }
-                                            });
-
-                                            $('form[id^="editCustomer-"]').on('submit', function (event) {
-                                                event.preventDefault(); // Chặn form submit mặc định
-
-                                                let form = $(this);
-                                                let formData = new FormData(this); // Lấy dữ liệu form (bao gồm file)
-
-                                                if (confirm("Are you sure you want to update this customer?")) {
-                                                    $.ajax({
-                                                        url: form.attr('action'), // Lấy URL action từ form
-                                                        type: form.attr('method'), // Lấy method từ form
-                                                        data: formData,
-                                                        processData: false, // Không xử lý dữ liệu (FormData sẽ làm việc này)
-                                                        contentType: false, // Để browser tự động chọn content type
-                                                        success: function (response) {
-                                                            if (response.success) {
-                                                                reloadWithMessage("success", "Success", "Edit successful");
-                                                            } else {
-                                                                showErrorMessage("Error", response.message);
-                                                            }
-                                                        },
-                                                        error: function () {
-                                                            showErrorMessage("Error", "Server is busy right now. Please try again later.");
+        
+                                                    $('form[id^="editCustomer-"]').on('submit', function (event) {
+                                                        event.preventDefault(); // Chặn form submit mặc định
+        
+                                                        let form = $(this);
+                                                        let formData = new FormData(this); // Lấy dữ liệu form (bao gồm file)
+        
+                                                        if (confirm("Are you sure you want to update this customer?")) {
+                                                            $.ajax({
+                                                                url: form.attr('action'), // Lấy URL action từ form
+                                                                type: form.attr('method'), // Lấy method từ form
+                                                                data: formData,
+                                                                processData: false, // Không xử lý dữ liệu (FormData sẽ làm việc này)
+                                                                contentType: false, // Để browser tự động chọn content type
+                                                                success: function (response) {
+                                                                    if (response.success) {
+                                                                        reloadWithMessage("success", "Success", "Edit successful");
+                                                                    } else {
+                                                                        showErrorMessage("Error", response.message);
+                                                                    }
+                                                                },
+                                                                error: function () {
+                                                                    showErrorMessage("Error", "Server is busy right now. Please try again later.");
+                                                                }
+                                                            });
                                                         }
                                                     });
-                                                }
-                                            });
-                                        });
-        </script>
+                                                });
+                </script>-->
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
         <script src="https://unpkg.com/@popperjs/core@2"></script>

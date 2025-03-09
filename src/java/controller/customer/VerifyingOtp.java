@@ -84,6 +84,23 @@ public class VerifyingOtp extends HttpServlet {
         String userOtp = request.getParameter("otp");
         String generatedOtp = (String) session.getAttribute("otp");
         try {
+            String otpChangePass = request.getParameter("otpChangePass");
+            if (otpChangePass != null) {
+                if (userOtp != null && userOtp.equals(generatedOtp)) {
+                    session.removeAttribute("otp");
+                    response.sendRedirect("change-email");
+                    return;
+                } else {
+                    session.setAttribute("otpError", "Mã OTP không đúng, vui lòng thử lại!");
+                    response.sendRedirect(request.getContextPath() + "/auth/template/otpEmail.jsp");
+                }
+            }
+
+            if (generatedOtp == null) {
+                response.sendRedirect("auth/template/login.jsp");
+                return;
+            }            
+
             if (userOtp != null && userOtp.equals(generatedOtp)) {
                 session.removeAttribute("otp");
 

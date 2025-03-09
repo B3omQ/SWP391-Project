@@ -18,8 +18,8 @@ import java.util.List;
 import model.Customer;
 import model.LoanService;
 
-
 public class LoanServiceUsedDAO extends DBContext {
+
     private LoanServiceDAO loanServiceDAO = new LoanServiceDAO();
     private CustomerDAO customerDAO = new CustomerDAO();
 
@@ -49,9 +49,9 @@ public class LoanServiceUsedDAO extends DBContext {
             try (ResultSet rs = st.executeQuery()) {
                 while (rs.next()) {
                     int loanServiceId = rs.getInt("LoanId");
-                LoanService loanService = loanServiceDAO.getLoanServiceById(loanServiceId);
+                    LoanService loanService = loanServiceDAO.getLoanServiceById(loanServiceId);
                     int customerId = rs.getInt("CusId");
-                Customer customer = customerDAO.getCustomerById(customerId);
+                    Customer customer = customerDAO.getCustomerById(customerId);
                     LoanServiceUsed loan = new LoanServiceUsed(
                             rs.getInt("Id"),
                             loanService,
@@ -60,9 +60,9 @@ public class LoanServiceUsedDAO extends DBContext {
                             rs.getTimestamp("StartDate"),
                             rs.getTimestamp("EndDate"),
                             rs.getInt("DateExpiredCount"),
-                            rs.getBigDecimal("DebtRepayAmount"),
-                            rs.getString("LoanStatus"),
-                            rs.getString("IncomeVertification")
+                            rs.getBigDecimal("DebtRepayAmount"),                            
+                            rs.getString("IncomeVertification"),
+                            rs.getString("LoanStatus")
                     );
                     loanList.add(loan);
                 }
@@ -79,7 +79,7 @@ public class LoanServiceUsedDAO extends DBContext {
         boolean hasstatus = (status != null && !status.trim().isEmpty());
 
         if (hasstatus) {
-            sql += " WHERE Phone = ?";
+            sql += " WHERE Status = ?";
         }
 
         int count = 0;
@@ -119,17 +119,16 @@ public class LoanServiceUsedDAO extends DBContext {
         }
         return false;
     }
-    
-    public void updateLoanServiceUsedStatusAndDate(int loanId, String status) {
-    String sql = "UPDATE LoanServiceUsed SET LoanStatus = ?, StartDate = GETDATE() WHERE Id = ?";
-    try (PreparedStatement st = connection.prepareStatement(sql)) {
-        st.setString(1, status);
-        st.setInt(2, loanId);
-        st.executeUpdate();
-    } catch (SQLException ex) {
-        ex.printStackTrace();
-    }
-}
 
+    public void updateLoanServiceUsedStatusAndDate(int loanId, String status) {
+        String sql = "UPDATE LoanServiceUsed SET LoanStatus = ?, StartDate = GETDATE() WHERE Id = ?";
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setString(1, status);
+            st.setInt(2, loanId);
+            st.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
 
 }

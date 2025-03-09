@@ -189,6 +189,8 @@
                                         <th>ID</th>
                                         <th>Ảnh đại diện</th>
                                         <th>Họ và tên</th>
+                                        <th>Số điện thoại</th>
+                                        <th>Giới tính</th>
                                         <th>Hồ sơ danh tính</th>
                                     </tr>
                                 </thead>
@@ -208,7 +210,9 @@
                                                             <img src="${identity.cusId.image}" class="photo" alt="Customer Image" />
                                                         </div>
                                                     </td>
-                                                    <td class="text-truncate" style="max-width: 120px;">${identity.cusId.fullname}</td>                                                   
+                                                    <td class="text-truncate" style="max-width: 120px;">${identity.cusId.fullname}</td>  
+                                                    <td class="text-truncate" style="max-width: 120px;">${identity.cusId.phone}</td>        
+                                                    <td class="text-truncate" style="max-width: 120px;">${identity.cusId.gender}</td>        
                                                     <td class="text-center align-middle">
                                                         <div class="row justify-content-center">                                                            
                                                             <div class="col-auto">
@@ -222,6 +226,7 @@
                                                             <jsp:param name="id" value="${identity.id}"/>
                                                             <jsp:param name="identityCardFrontSide" value="${identity.identityCardFrontSide}"/>
                                                             <jsp:param name="identityCardBackSide" value="${identity.identityCardBackSide}" />
+                                                            <jsp:param name="identityCardNumber" value="${identity.identityCardNumber}" />
                                                             <jsp:param name="portraitPhoto" value="${identity.portraitPhoto}" />
                                                             <jsp:param name="fullnameCustomer" value="${identity.cusId.fullname}" />
                                                             <jsp:param name="pendingStatus" value="${identity.pendingStatus}" />

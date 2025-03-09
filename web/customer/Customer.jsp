@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ page import="dal.DepHistoryDAO" %>
 <%@ page import="model.DepHistory" %>
+<%@ page import="model.Customer" %>
 <%@ page import="java.util.List" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -11,7 +12,7 @@
 <%@ include file="template/sidebar.jsp" %>
 
 <%
-    List<DepHistory> depHistoryList = depHistoryDAO.getDepHistoryByCustomerId(((model.Customer) session.getAttribute("account")).getId());
+    List<DepHistory> depHistoryList = depHistoryDAO.getDepHistoryByCustomerId(((Customer) session.getAttribute("account")).getId());
     pageContext.setAttribute("depHistoryList", depHistoryList);
 %>
 

@@ -107,7 +107,7 @@ create table LoanServiceUsed (
 	LoanId int references LoanService(Id),
 	CusId int references Customer(Id),
 	Amount decimal(18,0) not null,
-	StartDate datetime not null default getdate(),
+	StartDate datetime null,
 	EndDate datetime null,
 	DateExpiredCount int null,
 	DebtRepayAmount decimal(18,0) null,
