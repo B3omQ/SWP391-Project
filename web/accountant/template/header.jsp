@@ -1,5 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ page import="model.Staff" %>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
 <% 
     // Không khai báo lại biến session, sử dụng implicit object session có sẵn
     if (session == null || session.getAttribute("staff") == null) {

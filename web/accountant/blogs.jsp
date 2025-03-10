@@ -216,5 +216,11 @@
     });
 });
     </script>
+    <script>
+    $('#saveNewBlog').on('click', function() {
+        console.log("Saving new blog");
+        $('#addBlogForm').submit();
+    });
+</script>
 </body>
 </html>

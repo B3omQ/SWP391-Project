@@ -60,6 +60,10 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
                     return;
                 } else if (staff != null) {
                     session.setAttribute("staff", staff);
+    session.setAttribute("staffId", staff.getId());
+    System.out.println("Google Login - staffId set: " + staff.getId());
+    System.out.println("Session ID after Google login: " + session.getId());
+                    session.setAttribute("staff", staff);
                     session.setAttribute("staffId", staff.getId());
 
                     // Lấy RoleId để điều hướng trang phù hợp

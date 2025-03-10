@@ -33,8 +33,6 @@ public class MaturityHandlerServlet {
                 hasProcessed = true;
             }
         }
-
-        // Cập nhật wallet của customer
         customer.setWallet(customerDAO.getWalletByCustomerId(customer.getId()));
     }
 
