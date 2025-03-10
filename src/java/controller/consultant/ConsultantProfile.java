@@ -4,7 +4,6 @@
  */
 package controller.consultant;
 
-import controller.customer.PasswordHasher;
 import dal.ConsultantDAO;
 import java.io.IOException;
 import jakarta.servlet.ServletException;

@@ -17,6 +17,10 @@ import java.util.List;
 import java.util.Map;
 import util.VNPayUtils;
 
+/**
+ *
+ * @author emkob
+ */
 public class VNpayServlet extends HttpServlet {
     private static final String VNP_TMN_CODE = "ZEXZKZK8";
     private static final String VNP_HASH_SECRET = "GN5MEE6Q6ZYG941UUB76FYAA786W6NAX";
