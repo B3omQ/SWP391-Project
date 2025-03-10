@@ -99,35 +99,8 @@ public class VerifyingOtp extends HttpServlet {
                 response.sendRedirect("auth/template/login.jsp");
                 return;
             }
-
-            if (userOtp != null && userOtp.equals(generatedOtp)) {
-                session.removeAttribute("otp");
-                if (session.getAttribute("staff") != null) {
-                    Staff staff = (Staff)session.getAttribute("staff");
-                    if(staff.getRoleId().getId() == 1) {
-                        response.sendRedirect("");
-                    }                    
-                    if(staff.getRoleId().getId() == 2) {
-                        response.sendRedirect("");
-                    }
-                    if(staff.getRoleId().getId() == 3) {
-                        response.sendRedirect("profile-manager");
-                    }
-                    if(staff.getRoleId().getId() == 4) {
-                        response.sendRedirect("profile-admin");
-                    }
-                    if(staff.getRoleId().getId() == 5) {
-                        response.sendRedirect("");
-                    }                    
-                } else {
-                    response.sendRedirect("customer/template/Customer.jsp");
-                }
-            } else {
-                session.setAttribute("otpError", "Mã OTP không đúng, vui lòng thử lại!");
-                response.sendRedirect(request.getContextPath() + "/auth/template/otp.jsp");
-            }
-
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             System.out.println(e);
         }
 
@@ -136,7 +109,7 @@ public class VerifyingOtp extends HttpServlet {
 
             if (session.getAttribute("staff") != null) {
                 // Staff không có tiết kiệm, chuyển hướng thẳng
-                response.sendRedirect("profile-manager");
+                response.sendRedirect("home");
             } else {
                 // Customer: Xử lý đáo hạn trước khi chuyển hướng
                 Customer customer = (Customer) session.getAttribute("account");

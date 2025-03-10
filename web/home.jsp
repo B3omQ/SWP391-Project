@@ -206,7 +206,7 @@
                                                                                                    class="fea icon-sm"></i></div>
                                             </a>
                                         </li>-->
-                    <c:if test="${sessionScope.sustomer == null && sessionScope.staff == null}">
+                    <c:if test="${sessionScope.account == null && sessionScope.staff == null}">
 
                         <!--                    <li class="list-inline-item mb-0 ms-1">
                                                 <a href="javascript:void(0)" class="btn btn-icon btn-pills btn-primary" data-bs-toggle="offcanvas"
@@ -221,7 +221,7 @@
                             </a>
                         </li>
                     </c:if>
-                    <c:if test="${sessionScope.customer != null}">
+                    <c:if test="${sessionScope.account != null}">
                         <li class="list-inline-item mb-0 ms-1">
                             <div class="dropdown dropdown-primary">
                                 <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0"
@@ -237,14 +237,14 @@
                                             <span class="d-block mb-1">${Customer.username}</span>
                                         </div>
                                     </a>
-                                    <a class="dropdown-item text-dark" href="doctor-dashboard.html"><span
+                                    <a class="dropdown-item text-dark" href="./customer/Customer.jsp"><span
                                             class="mb-0 d-inline-block me-1"><i
                                                 class="uil uil-dashboard align-middle h6"></i></span> Dashboard</a>
-                                    <a class="dropdown-item text-dark" href="doctor-profile-setting.html"><span
+                                    <a class="dropdown-item text-dark" href="./customer/account-profile.jsp"><span
                                             class="mb-0 d-inline-block me-1"><i
                                                 class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
                                     <div class="dropdown-divider border-top"></div>
-                                    <a class="dropdown-item text-dark" href="login.jsp"><span
+                                    <a class="dropdown-item text-dark" href="logout"><span
                                             class="mb-0 d-inline-block me-1"><i
                                                 class="uil uil-sign-out-alt align-middle h6"></i></span> Đăng xuất</a>
                                 </div>
@@ -275,7 +275,7 @@
                                                 class="mb-0 d-inline-block me-1"><i
                                                     class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
                                         <div class="dropdown-divider border-top"></div>
-                                        <a class="dropdown-item text-dark" href="AuthServlet" name ="action" value="logout"><span
+                                        <a class="dropdown-item text-dark" href="logout" name ="action" value="logout"><span
                                                 class="mb-0 d-inline-block me-1"><i
                                                     class="uil uil-sign-out-alt align-middle h6"></i></span> Đăng xuất</a>
                                     </div>
@@ -301,7 +301,7 @@
                                                 class="mb-0 d-inline-block me-1"><i
                                                     class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
                                         <div class="dropdown-divider border-top"></div>
-                                        <a class="dropdown-item text-dark" href="AuthServlet" name ="action" value="logout"><span
+                                        <a class="dropdown-item text-dark" href="logout" name ="action" value="logout"><span
                                                 class="mb-0 d-inline-block me-1"><i
                                                     class="uil uil-sign-out-alt align-middle h6"></i></span> Đăng xuất</a>
                                     </div>
@@ -327,7 +327,7 @@
                                                 class="mb-0 d-inline-block me-1"><i
                                                     class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
                                         <div class="dropdown-divider border-top"></div>
-                                        <a class="dropdown-item text-dark" href="AuthServlet" name ="action" value="logout"><span
+                                        <a class="dropdown-item text-dark" href="logout" name ="action" value="logout"><span
                                                 class="mb-0 d-inline-block me-1"><i
                                                     class="uil uil-sign-out-alt align-middle h6"></i></span> Đăng xuất</a>
                                     </div>
@@ -353,7 +353,7 @@
                                                 class="mb-0 d-inline-block me-1"><i
                                                     class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
                                         <div class="dropdown-divider border-top"></div>
-                                        <a class="dropdown-item text-dark" href="AuthServlet" name ="action" value="logout"><span
+                                        <a class="dropdown-item text-dark" href="logout" name ="action" value="logout"><span
                                                 class="mb-0 d-inline-block me-1"><i
                                                     class="uil uil-sign-out-alt align-middle h6"></i></span> Đăng xuất</a>
                                     </div>
@@ -704,55 +704,23 @@
                         </div>
                     </div><!--end col-->
                 </div><!--end row-->
-
                 <div class="row justify-content-center wow fadeInUp">
                     <div class="col-lg-8 mt-4 pt-2 text-center">
                         <div class="client-review-slider">
-                            <div class="tiny-slide text-center">
-                                <p class="text-muted h6 fw-normal fst-italic">" It seems that only fragments of the original
-                                    text remain in the Lorem Ipsum texts used today. The most well-known dummy text is the
-                                    'Lorem Ipsum', which is said to have originated in the 16th century. "</p>
-                                <img src="https://placehold.co/600x400" class="img-fluid" alt="">
-                                <ul class="list-unstyled mb-0">
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                </ul>
-                                <h6 class="text-primary">- Thomas Israel <small class="text-muted">C.E.O</small></h6>
-                            </div><!--end customer testi-->
-
-                            <div class="tiny-slide text-center">
-                                <p class="text-muted h6 fw-normal fst-italic">" The advantage of its Latin origin and the
-                                    relative meaninglessness of Lorum Ipsum is that the text does not attract attention to
-                                    itself or distract the viewer's attention from the layout. "</p>
-                                <img src="https://placehold.co/600x400" class="img-fluid" alt="">
-                                <ul class="list-unstyled mb-0">
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                </ul>
-                                <h6 class="text-primary">- Carl Oliver <small class="text-muted">P.A</small></h6>
-                            </div><!--end customer testi-->
-
-                            <div class="tiny-slide text-center">
-                                <p class="text-muted h6 fw-normal fst-italic">" There is now an abundance of readable dummy
-                                    texts. These are usually used when a text is required purely to fill a space. These
-                                    alternatives to the classic Lorem Ipsum texts are often amusing and tell short, funny or
-                                    nonsensical stories. "</p>
-                                <img src="https://placehold.co/600x400" class="img-fluid" alt="">
-                                <ul class="list-unstyled mb-0">
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                </ul>
-                                <h6 class="text-primary">- Barbara McIntosh <small class="text-muted">M.D</small></h6>
-                            </div><!--end customer testi-->
+                            <c:forEach var="r" items="${rlist}">
+                                <div class="tiny-slide text-center">
+                                    <p class="text-muted h6 fw-normal fst-italic">${r.review}</p>
+                                    <img src="https://placehold.co/600x400" class="img-fluid" alt="">
+                                    <ul class="list-unstyled mb-0">
+                                        <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                        <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                        <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                        <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                        <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                    </ul>
+                                    <h6 class="text-primary">- <small class="text-muted"></small></h6>
+                                </div><!--end customer testi-->
+                            </c:forEach>
                         </div><!--end carousel-->
                     </div><!--end col-->
                 </div><!--end row-->

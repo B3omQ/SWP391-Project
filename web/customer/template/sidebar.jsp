@@ -29,6 +29,7 @@
                     </ul>
                 </div>
             </li>
+            <li><a href="http://localhost:9999/BankingSystem/CustomerReview"><i class="uil uil-cog me-2 d-inline-block"></i>đánh giá</a></li>
         </ul>
     </div>
     <ul class="sidebar-footer list-unstyled mb-0">

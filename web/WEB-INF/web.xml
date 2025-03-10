@@ -88,7 +88,7 @@
         <servlet-name>WithdrawDepositServlet</servlet-name>
         <servlet-class>controller.customer.WithdrawDepositServlet</servlet-class>
     </servlet>
-    <servlet> 
+    <servlet>
         <servlet-name>ChatSupportServlet</servlet-name>
         <servlet-class>controller.consultant.ChatSupportServlet</servlet-class>
     </servlet>
@@ -147,6 +147,10 @@
     <servlet>
         <servlet-name>Disbursement</servlet-name>
         <servlet-class>controller.accountant.Disbursement</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CustomerReview</servlet-name>
+        <servlet-class>controller.customer.CustomerReview</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>HomeServlet</servlet-name>
@@ -291,7 +295,7 @@
     <servlet-mapping>
         <servlet-name>WithdrawDepositServlet</servlet-name>
         <url-pattern>/WithdrawDepositServlet</url-pattern>
-</servlet-mapping>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ChatSupportServlet</servlet-name>
         <url-pattern>/ChatSupportServlet</url-pattern>
@@ -352,6 +356,10 @@
         <servlet-name>Disbursement</servlet-name>
         <url-pattern>/Disbursement</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CustomerReview</servlet-name>
+        <url-pattern>/CustomerReview</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>1440</session-timeout>
         <!-- 1440 phút = 24 giờ -->
@@ -366,6 +374,6 @@
         <location>/error/404.jsp</location>
     </error-page>
     <listener>
-    <listener-class>controller.customer.MaturitySchedulerListener</listener-class>
-</listener>
+        <listener-class>controller.customer.MaturitySchedulerListener</listener-class>
+    </listener>
 </web-app>
