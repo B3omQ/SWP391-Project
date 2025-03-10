@@ -152,7 +152,8 @@
                 <div class="layout-specing">
 
                     <div class="container">
-                        <c:set value="${sessionScope.account}" var="customer"/>    
+                        <c:set value="${sessionScope.account}" var="customer"/>   
+                        
                         <c:if test="${sessionScope.status == 'denied'}">
                             <div class="col-md-6">
                                 <label for="identityCardNumber" class="form-label">Đơn của bạn đã bị từ chối </label>   

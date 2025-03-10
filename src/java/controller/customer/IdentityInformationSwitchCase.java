@@ -49,7 +49,7 @@ public class IdentityInformationSwitchCase extends HttpServlet {
             return;
         }
         session.setAttribute("status", "none");
-        request.getRequestDispatcher("./customer/identityInformation.jsp").forward(request, response);
+        request.getRequestDispatcher("./customer/addIdentityInformation.jsp").forward(request, response);
     }
 
     @Override
