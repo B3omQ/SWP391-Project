@@ -49,9 +49,7 @@ public class AuthServlet extends HttpServlet {
 
                     if (customer != null) {
                         session.setAttribute("account", customer);
-                        session.setAttribute("userId", customer.getId());
-
-     
+                        session.setAttribute("userId", customer.getId());     
 
                         response.sendRedirect("customer/Customer.jsp");
                         return;

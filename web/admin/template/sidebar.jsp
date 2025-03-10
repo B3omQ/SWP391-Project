@@ -19,7 +19,15 @@
 
             <li><a href="profile-admin"><i class="uil uil-user me-2 d-inline-block"></i>My profile</a></li>
 
-            <li><a href="customer-admin-management"><i class="uil uil-cube me-2 d-inline-block"></i>Customer list</a></li>            
+            <li class="sidebar-dropdown">
+                <a href="javascript:void(0)"><i class="uil uil-file me-2 d-inline-block"></i>Customer information</a>
+                <div class="sidebar-submenu">
+                    <ul>
+                        <li><a href="customer-admin-management">Customer list</a></li>
+                        <li><a href="identity-customer-management">Identity list</a></li>                        
+                    </ul>
+                </div>
+            </li>            
 
             <li><a href="accountant-admin-management"><i class="uil uil-file me-2 d-inline-block"></i>Accountant List</a></li>
 

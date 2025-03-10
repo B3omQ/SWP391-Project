@@ -76,7 +76,6 @@
                 <jsp:include page="template/header.jsp"/>                
                 <div class="container-fluid">
                     <div class="layout-specing">
-
                         <div class="container">
                             <div class="row">
                                 <div class="col-xl-4 col-lg-4 col-md-5 col-12">

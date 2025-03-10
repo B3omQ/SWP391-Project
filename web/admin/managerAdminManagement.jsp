@@ -73,7 +73,7 @@
                                         <li class="breadcrumb-item">
                                             <a href="index.html" class="text-decoration-none text-danger">SmartBanking</a>
                                         </li>
-                                        <li class="breadcrumb-item active" aria-current="page">Customers</li>
+                                        <li class="breadcrumb-item active" aria-current="page">Managers</li>
                                     </ul>
                                 </nav>
                             </div>
@@ -89,14 +89,6 @@
                                         id="phoneSearch"
                                         name="phoneSearch"
                                         />
-                                    <select class="btn border-custome me-2" name="recordsPerPage" onchange="onChangeSubmit('search')" id="entries">
-                                        <option value="3" ${currentRecords == 3 ? 'selected' : ''}>3</option>
-                                        <option value="5" ${currentRecords == 5 ? 'selected' : ''}>5</option>
-                                        <option value="8" ${currentRecords == 8 ? 'selected' : ''}>8</option>
-                                        <option value="10" ${currentRecords == 10 ? 'selected' : ''}>10</option>
-                                        <option value="12" ${currentRecords == 12 ? 'selected' : ''}>12</option>
-                                        <option value="15" ${currentRecords == 15 ? 'selected' : ''}>15</option>
-                                    </select>
                                     <a href="?page=1&phoneSearch=&recordsPerPage=${currentRecords}" class="btn border-custome me-2">Reset</a>
                                     <button class="btn btn-danger" type="submit">Search</button>
                                 </form>
@@ -105,61 +97,71 @@
                         <!-- Customer Table -->
                         <style>
 
-                            .table {
-                                border-collapse: separate; /* Để box-shadow hiển thị đúng */
-                                border-spacing: 0; /* Loại bỏ khoảng cách giữa các ô */
-                                border-radius: 20px; /* Bo góc */
-                                overflow: hidden; /* Đảm bảo góc bo tròn không bị mất */
-                                background: white; /* Đảm bảo bảng có màu nền để bóng đẹp hơn */
-                                box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.15),
-                                    0px 0px 8px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng xung quanh */
-                            }
-                            /* Cố định kích thước hàng */
-                            .table tbody tr {
-                                height: 60px; /* Đặt chiều cao hàng cố định */
+                            /* CSS cho bảng */
+                            .table_component {
+                                overflow-x: auto; /* Đảm bảo bảng cuộn ngang trên màn hình nhỏ */
+                                width: 100%;
+                                margin-top: 1.5rem;
                             }
 
-                            /* Cột có nội dung dài sẽ bị cắt bớt với dấu "..." */
-                            .table tbody td {
-                                white-space: nowrap; /* Không xuống dòng */
-                                overflow: hidden; /* Ẩn phần dư */
-                                text-overflow: ellipsis; /* Hiển thị "..." nếu quá dài */
-                                max-width: 150px; /* Giới hạn độ rộng */
-                            }
-
-                            /* Chỉnh lại ô hình ảnh */
-                            .table img {
-                                width: 100px;
-                                height: 100px;
-                                object-fit: cover; /* Giữ tỷ lệ ảnh, không méo */
-                            }
-                            .modal-body .row div {
-                                text-align: left !important; /* Đưa dữ liệu về căn trái */
-                            }
-
-                            .head {
-                                font-weight: bold;
-                            }
-
-                            .mb-4 {
-                                margin-bottom: 1.5rem !important;
-                            }
-
-                            .mt-3 {
-                                margin-top: 1rem !important;
-                            }
-
-                            .mt-2 {
-                                margin-top: 0.5rem !important;
-                            }
-
-                            .table-responsive {
-                                padding : 1rem;
+                            .table_component table {
+                                width: 100%;
+                                border-collapse: collapse; /* Loại bỏ khoảng cách giữa các ô */
                                 text-align: center;
+                                background-color: #fff;
+                                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Thêm bóng nhẹ để nổi bật */
                             }
 
-                            .photo {
-                                border-radius: 50%;
+                            .table_component th,
+                            .table_component td {
+                                padding: 12px 15px; /* Tăng padding để thoáng hơn */
+                                border: 2px solid #cfcfd3; /* Viền nhẹ nhàng hơn #cfcfd3 */
+                                vertical-align: middle; /* Căn giữa theo chiều dọc */
+                            }
+
+                            .table_component th {
+                                background-color: #f8f9fa; /* Màu nền nhẹ cho tiêu đề */
+                                color: #333; /* Màu chữ đậm hơn */
+                                font-weight: 600; /* Chữ đậm cho tiêu đề */
+                            }
+
+                            .table_component td {
+                                color: #555; /* Màu chữ nhẹ nhàng hơn */
+                            }
+
+                            /* Chỉnh ô chứa ảnh */
+                            .table_component .photo-div {
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                            }
+
+                            .table_component .photo {
+                                width: 100px; /* Giảm kích thước ảnh để vừa vặn hơn */
+                                height: 100px;
+                                object-fit: cover; /* Đảm bảo ảnh không bị méo */
+                                border-radius: 5px; /* Bo góc nhẹ cho ảnh */
+                                border: 1px solid #dee2e6; /* Viền nhẹ cho ảnh */
+                            }
+
+                            /* Tối ưu chiều rộng cột */
+                            .table_component td.text-truncate {
+                                max-width: 150px; /* Tăng chiều rộng tối đa cho cột Fullname và Phone */
+                                white-space: nowrap; /* Ngăn xuống dòng */
+                                overflow: hidden;
+                                text-overflow: ellipsis; /* Thêm dấu ... khi bị cắt */
+                            }
+
+                            /* Hiệu ứng hover cho hàng */
+                            .table_component tbody tr:hover {
+                                background-color: #f5f6f8; /* Màu nền khi hover */
+                                transition: background-color 0.2s ease; /* Hiệu ứng mượt mà */
+                            }
+
+                            /* Tùy chỉnh nút trong cột Actions */
+                            .table_component .btn {
+                                font-size: 0.9rem;
+                                margin: 0 2px; /* Khoảng cách giữa các nút */
                             }
 
                             .profile-header {
@@ -183,9 +185,9 @@
                             }
                         </style>
 
-                        <div class="table-responsive mt-4">
-                            <table class="table table-striped table-bordered table-hover">
-                                <thead class="thead-dark bg-dark text-white" style ="text-align:center">
+                        <div class="table_component mt-4" role="region" tabindex="0">
+                            <table>
+                                <thead style ="text-align:center">
                                     <tr>
                                         <th>ID</th>
                                         <th>Image</th>

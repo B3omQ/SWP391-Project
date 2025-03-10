@@ -161,10 +161,10 @@
                             </div>
 
                             <ul class="list-unstyled sidebar-nav mb-0">
-                                <li class="navbar-item"><a href="Customer.jsp" class="navbar-link"><i class="ri-airplay-line align-middle navbar-icon"></i> Dashboard</a></li>
+                                <li class="navbar-item"><a href="Customer.jsp" class="navbar-link"><i class="ri-airplay-line align-middle navbar-icon"></i>Dashboard</a></li>
                                 <li class="navbar-item"><a href="manage-bank.jsp" class="navbar-link"><i class="ri-airplay-line align-middle navbar-icon"></i>Manage Account Bank</a></li>
-                                <li class="navbar-item"><a href="account-profile.jsp" class="navbar-link"><i class="ri-user-settings-line align-middle navbar-icon"></i> Profile Settings</a></li>
-
+                                <li class="navbar-item"><a href="account-profile.jsp" class="navbar-link"><i class="ri-user-settings-line align-middle navbar-icon"></i>Profile Settings</a></li>
+                                <li class="navbar-item"><a href="<%= request.getContextPath() %>/identity-information-controller" class="navbar-link"><i class="ri-user-settings-line align-middle navbar-icon"></i>Xác thực tài khoản</a></li>
                             </ul>
                         </div>
                     </div><!--end col-->

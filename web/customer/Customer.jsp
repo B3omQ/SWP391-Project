@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ page import="dal.DepHistoryDAO" %>
 <%@ page import="model.DepHistory" %>
+<%@ page import="model.Customer" %>
 <%@ page import="java.util.List" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -11,7 +12,7 @@
 <%@ include file="template/sidebar.jsp" %>
 
 <%
-    List<DepHistory> depHistoryList = depHistoryDAO.getDepHistoryByCustomerId(((model.Customer) session.getAttribute("account")).getId());
+    List<DepHistory> depHistoryList = depHistoryDAO.getDepHistoryByCustomerId(((Customer) session.getAttribute("account")).getId());
     pageContext.setAttribute("depHistoryList", depHistoryList);
 %>
 
@@ -98,17 +99,17 @@
                     <div style="position: relative; width: 100%; max-width: 300px; margin: auto;">
                         <canvas id="assetChart"></canvas>
                         <div id="chart-center" style="
-                            position: absolute;
-                            top: 50%;
-                            left: 35%;
-                            transform: translate(-50%, -50%);
-                            font-size: 20px;
-                            font-weight: bold;
-                            color: #333;
-                            text-align: center;
-                            width: 100%;
-                            max-width: 200px;
-                            white-space: nowrap;"></div>
+                             position: absolute;
+                             top: 50%;
+                             left: 35%;
+                             transform: translate(-50%, -50%);
+                             font-size: 20px;
+                             font-weight: bold;
+                             color: #333;
+                             text-align: center;
+                             width: 100%;
+                             max-width: 200px;
+                             white-space: nowrap;"></div>
                     </div>
                 </div>
             </div><!--end col-->
@@ -122,25 +123,25 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/Chart.js"></script>
 <script>
-    function sortHistory(criteria) {
-        let table = document.getElementById("historyTable");
-        let rows = Array.from(table.getElementsByTagName("tr"));
+                                function sortHistory(criteria) {
+                                    let table = document.getElementById("historyTable");
+                                    let rows = Array.from(table.getElementsByTagName("tr"));
 
-        rows.sort((a, b) => {
-            let aValue, bValue;
-            if (criteria === "time") {
-                aValue = new Date(a.cells[1].textContent);
-                bValue = new Date(b.cells[1].textContent);
-            } else if (criteria === "amount") {
-                aValue = parseFloat(a.cells[2].textContent.replace(/[^\d.-]/g, ''));
-                bValue = parseFloat(b.cells[2].textContent.replace(/[^\d.-]/g, ''));
-            } else if (criteria === "description") {
-                aValue = a.cells[3].textContent;
-                bValue = b.cells[3].textContent;
-            }
-            return aValue > bValue ? 1 : -1;
-        });
+                                    rows.sort((a, b) => {
+                                        let aValue, bValue;
+                                        if (criteria === "time") {
+                                            aValue = new Date(a.cells[1].textContent);
+                                            bValue = new Date(b.cells[1].textContent);
+                                        } else if (criteria === "amount") {
+                                            aValue = parseFloat(a.cells[2].textContent.replace(/[^\d.-]/g, ''));
+                                            bValue = parseFloat(b.cells[2].textContent.replace(/[^\d.-]/g, ''));
+                                        } else if (criteria === "description") {
+                                            aValue = a.cells[3].textContent;
+                                            bValue = b.cells[3].textContent;
+                                        }
+                                        return aValue > bValue ? 1 : -1;
+                                    });
 
-        rows.forEach(row => table.appendChild(row));
-    }
+                                    rows.forEach(row => table.appendChild(row));
+                                }
 </script>

@@ -15,7 +15,7 @@ create table [Staff] (
 	Dob datetime null,
 	Phone nvarchar(255) null,
 	[Address] nvarchar(max) null,
-	Salary decimal(10,2) null default 0.00,
+	Salary decimal(18,0) not null default 50000,
 	failAttempts int null default 0,
 	LockTime datetime null,
 	RoleId int references [Role](Id)
@@ -30,12 +30,23 @@ create table Customer (
 	FirstName nvarchar(50) not null,
 	LastName nvarchar(50) not null,
 	Gender nvarchar(50) not null,
-	Dob datetime not null,
+	Dob datetime not null,	
 	Phone nvarchar(255) not null,
 	[Address] nvarchar(max) not null,
 	failAttempts int not null default 0,
 	LockTime datetime null,
-	Wallet decimal(10,2) not null default 50000.00
+	Wallet decimal(18,0) not null default 50000
+)
+
+Create table verifyIdentityInformation (
+	Id int identity(1,1) primary key,
+	CusId int references Customer(Id),
+	IdentityCardNumber nvarchar(255) not null,
+	IdentityCardFrontSide nvarchar(max) not null,
+	IdentityCardBackSide nvarchar(max) not null,
+	ReasonReject nvarchar(max) null,
+	PortraitPhoto nvarchar(max) not null,
+	PendingStatus nvarchar(max) not null default 'Pending'
 )
 
 Create Table tokenForgetPassword(
@@ -54,10 +65,12 @@ create table DepType (
 create table DepService (
 	Id int identity(1,1) primary key,
 	Description nvarchar(max) null,
-	MinimumDep decimal(10,2) not null,	
+	MinimumDep decimal(18,0) not null,	
 	DuringTime int null,
-	SavingRate decimal(10,2) null,
-	SavingRateMinimum decimal(10,2) null 
+	SavingRate float null,
+	SavingRateMinimum float null,
+	MaturityOption varchar(50) not null,
+	PendingStatus nvarchar(255) not null default 'Pending'
 )
 
 create table DepServiceUsed (
@@ -65,7 +78,7 @@ create table DepServiceUsed (
 	DepId int references DepService(Id),
 	CusId int references Customer(Id),
 	DepTypeId int references DepType(Id),
-	Amount decimal(10,2) not null,
+	Amount decimal(18,0) not null,
 	StartDate datetime not null default getdate(),
 	EndDate datetime null,
 	DepStatus nvarchar(255) null
@@ -79,29 +92,34 @@ create table DepHistory (
 
 create table LoanService (
 	Id int identity(1,1) primary key,
+	LoanServiceName nvarchar(max) not null,
 	Description nvarchar(max) null,
-	DuringTime int null,
-	PenaltyRate decimal(10,2) not null,
-	MinimumLoan decimal(10,2) not null,
-	MaximumLoan decimal(10,2) not null
+	DuringTime int not null,
+	OnTermRate float not null,
+	PenaltyRate float not null,
+	MinimumLoan decimal(18,0) not null,
+	MaximumLoan decimal(18,0) not null,
+	PendingStatus nvarchar(255) not null default 'Pending'
 )
 
 create table LoanServiceUsed (
 	Id int identity(1,1) primary key,
 	LoanId int references LoanService(Id),
 	CusId int references Customer(Id),
-	Amount decimal(10,2) not null,
-	StartDate datetime not null default getdate(),
+	Amount decimal(18,0) not null,
+	StartDate datetime null,
 	EndDate datetime null,
 	DateExpiredCount int null,
-	DebtRepayAmount decimal(10,2) null,
+	DebtRepayAmount decimal(18,0) null,
+	IncomeVertification nvarchar(max) not null,
 	LoanStatus nvarchar(255) null
 )
+
 
 create table LoanPayment(
 	Id int identity(1,1) primary key,
 	LSUId int references LoanServiceUsed(Id),
-	PaymentAmount decimal(10,2) not null,
+	PaymentAmount decimal(18,0) not null,
 	PaidDate datetime not null default getdate()
 )
 

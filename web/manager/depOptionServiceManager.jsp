@@ -218,6 +218,10 @@
                                     <option value="ASC" ${currentOrder == 'ASC' || empty currentOrder ? 'selected' : ''}>Asc</option>
                                     <option value="DESC" ${currentOrder == 'DESC' ? 'selected' : ''}>Desc</option>
                                 </select> 
+                                <button class="btn btn-outline-primary w-100" type="button" 
+                                        onclick="window.location.href = './dep-option-service?pendingStatus=&sortBy=&order='">
+                                    Reset
+                                </button>
                             </form>
                         </div>
                         <!-- Deposit Options List -->                     
@@ -252,7 +256,7 @@
                                     </c:forEach>
                                 </c:otherwise>
                             </c:choose>
-                        </div>
+                        </div>                        
                     </div>
                 </div>
                 <!-- Footer Start -->
