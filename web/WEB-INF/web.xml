@@ -156,6 +156,10 @@
         <servlet-name>SortTransactionHistory</servlet-name>
         <servlet-class>controller.customer.SortTransactionHistory</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>BlogServlet</servlet-name>
+        <servlet-class>controller.accountant.BlogServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>HomeServlet</servlet-name>
         <url-pattern>/home</url-pattern>
@@ -367,6 +371,10 @@
     <servlet-mapping>
         <servlet-name>SortTransactionHistory</servlet-name>
         <url-pattern>/SortTransactionHistory</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BlogServlet</servlet-name>
+        <url-pattern>/BlogServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>1440</session-timeout>

@@ -14,6 +14,10 @@ import java.util.TreeMap;
 import model.Customer;
 import util.VNPayUtils;
 
+/**
+ *
+ * @author emkob
+ */
 public class VNpayReturn extends HttpServlet {
     private static final String VNP_HASH_SECRET = "GN5MEE6Q6ZYG941UUB76FYAA786W6NAX";
 

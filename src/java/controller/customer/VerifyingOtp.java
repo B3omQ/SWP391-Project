@@ -23,6 +23,10 @@ import controller.calculation.InterestCalculator;
 import java.io.PrintWriter;
 import model.Staff;
 
+/**
+ *
+ * @author emkob
+ */
 public class VerifyingOtp extends HttpServlet {
     private CustomerDAO customerDAO = new CustomerDAO();
     private DepServiceUsedDAO depServiceUsedDAO = new DepServiceUsedDAO();

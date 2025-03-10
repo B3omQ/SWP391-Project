@@ -16,8 +16,9 @@ import util.Iconstant;
 
 /**
  *
- * @author thang
+ * @author emkob
  */
+
 public class GoogleLogin {
 
     public static String getToken(String code) throws ClientProtocolException, IOException {

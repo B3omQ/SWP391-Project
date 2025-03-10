@@ -13,6 +13,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ *
+ * @author emkob
+ */
 public class SortTransactionHistory extends HttpServlet {
 
     private DepHistoryDAO depHistoryDAO;

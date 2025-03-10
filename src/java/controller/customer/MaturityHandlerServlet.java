@@ -11,13 +11,17 @@ import java.time.LocalDateTime;
 import java.util.List;
 import controller.calculation.InterestCalculator;
 
-public class MaturityHandlerServlet {  // Đổi tên thành MaturityHandler vì không phải Servlet
+/**
+ *
+ * @author emkob
+ */
+
+public class MaturityHandlerServlet {  
 
     private final CustomerDAO customerDAO = new CustomerDAO();
     private final DepServiceUsedDAO depServiceUsedDAO = new DepServiceUsedDAO();
     private final DepHistoryDAO depHistoryDAO = new DepHistoryDAO();
 
-    // Phương thức chính để xử lý các khoản đáo hạn (không cần session)
     public void processMaturedDeposits(Customer customer) {
         List<DepServiceUsed> maturedDeposits = depServiceUsedDAO.getDepServiceUsedByCustomerId(customer.getId());
         LocalDateTime now = LocalDateTime.now();

@@ -11,6 +11,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ *
+ * @author emkob
+ */
 public class SearchTransactionHistory extends HttpServlet {
 
     private DepHistoryDAO depHistoryDAO;

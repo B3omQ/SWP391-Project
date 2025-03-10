@@ -16,6 +16,10 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import java.io.File;
 
+/**
+ *
+ * @author emkob
+ */
 @MultipartConfig(maxFileSize = 1024 * 1024 * 5) // Giới hạn file 5MB
 public class UploadImageServlet extends HttpServlet {
     private static final String UPLOAD_DIRECTORY = "uploads";
