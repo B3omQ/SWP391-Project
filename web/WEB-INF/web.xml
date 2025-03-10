@@ -160,6 +160,14 @@
         <servlet-name>BlogServlet</servlet-name>
         <servlet-class>controller.accountant.BlogServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>NewsServlet</servlet-name>
+        <servlet-class>controller.NewsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>NewsDetailServlet</servlet-name>
+        <servlet-class>controller.NewsDetailServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>HomeServlet</servlet-name>
         <url-pattern>/home</url-pattern>
@@ -178,7 +186,7 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>AuthServlet</servlet-name>
-        <servlet-class>controller.customer.AuthServlet</servlet-class>
+        <servlet-class>controller.AuthServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>UpdateInfo</servlet-name>
@@ -375,6 +383,14 @@
     <servlet-mapping>
         <servlet-name>BlogServlet</servlet-name>
         <url-pattern>/BlogServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>NewsServlet</servlet-name>
+        <url-pattern>/NewsServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>NewsDetailServlet</servlet-name>
+        <url-pattern>/NewsDetailServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>1440</session-timeout>

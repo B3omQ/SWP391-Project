@@ -9,17 +9,81 @@ import java.util.ArrayList;
 import java.util.List;
 import util.DBContext;
 
-/**
- * Data Access Object (DAO) cho bảng Articles, xử lý các thao tác CRUD và truy vấn dữ liệu.
- */
 public class ArticleDAO extends DBContext {
 
+      private String stripHtml(String html) {
+        if (html == null) return null;
+        // Loại bỏ thẻ HTML
+        String stripped = html.replaceAll("<[^>]+>", "")
+                             // Thay ký tự không gian đặc biệt (non-breaking space) bằng khoảng trắng
+                             .replaceAll(" ", " ")
+                             // Chuẩn hóa khoảng trắng (giữ nguyên nội dung, chỉ xử lý dư thừa)
+                             .replaceAll("\\s{2,}", " ")
+                             .trim();
+        return stripped;
+    }
+
+    // Giải mã các HTML entities cơ bản
+    private String decodeHtmlEntities(String text) {
+        if (text == null) return null;
+        String decoded = text
+                // Chữ cái có dấu tiếng Việt (bổ sung đầy đủ)
+                .replaceAll("&aacute;", "á")
+                .replaceAll("&Aacute;", "Á")
+                .replaceAll("&agrave;", "à")
+                .replaceAll("&Agrave;", "À")
+                .replaceAll("&acirc;", "â")
+                .replaceAll("&Acirc;", "Â")
+                .replaceAll("&atilde;", "ã")
+                .replaceAll("&Atilde;", "Ã")
+                .replaceAll("&eacute;", "é")
+                .replaceAll("&Eacute;", "É")
+                .replaceAll("&egrave;", "è")
+                .replaceAll("&Egrave;", "È")
+                .replaceAll("&ecirc;", "ê")
+                .replaceAll("&Ecirc;", "Ê")
+                .replaceAll("&iacute;", "í")
+                .replaceAll("&Iacute;", "Í")
+                .replaceAll("&igrave;", "ì")
+                .replaceAll("&Igrave;", "Ì")
+                .replaceAll("&oacute;", "ó")
+                .replaceAll("&Oacute;", "Ó")
+                .replaceAll("&ograve;", "ò")
+                .replaceAll("&Ograve;", "Ò")
+                .replaceAll("&ocirc;", "ô")
+                .replaceAll("&Ocirc;", "Ô")
+                .replaceAll("&uacute;", "ú")
+                .replaceAll("&Uacute;", "Ú")
+                .replaceAll("&ugrave;", "ù")
+                .replaceAll("&Ugrave;", "Ù")
+                .replaceAll("&yacute;", "ý")
+                .replaceAll("&Yacute;", "Ý")
+                // Ký tự cơ bản
+                .replaceAll("&amp;", "&")
+                .replaceAll("&nbsp;", " ")
+                .replaceAll("&quot;", "\"")
+                .replaceAll("&apos;", "'")
+                .replaceAll("&lt;", "<")
+                .replaceAll("&gt;", ">")
+                // Chuẩn hóa khoảng trắng sau khi decode
+                .replaceAll("\\s+", " ")
+                .trim();
+        return decoded;
+    }
+
     // Phương thức ánh xạ ResultSet sang đối tượng Article
-    private static Article mapResultSetToArticle(ResultSet rs) throws SQLException {
+    private Article mapResultSetToArticle(ResultSet rs) throws SQLException {
+        String description = rs.getString("Description");
+        if (description != null) {
+            description = stripHtml(description); // Loại bỏ HTML
+            description = decodeHtmlEntities(description); // Giải mã entities
+            // Log để debug
+            System.out.println("Processed description for ID " + rs.getInt("Id") + ": " + description);
+        }
         return new Article(
                 rs.getInt("Id"),
                 rs.getString("Title"),
-                rs.getString("Description"),
+                description,
                 rs.getString("Category"),
                 rs.getTimestamp("PublishDate"),
                 rs.getInt("AuthorId"),
@@ -29,10 +93,6 @@ public class ArticleDAO extends DBContext {
         );
     }
 
-    /**
-     * Lấy tất cả bài viết từ database.
-     * @return List<Article> danh sách các bài viết.
-     */
     public List<Article> getAllArticles() {
         List<Article> articles = new ArrayList<>();
         String sql = "SELECT Id, Title, Description, Category, PublishDate, AuthorId, ImageUrl, CreatedAt, UpdatedAt FROM Articles ORDER BY PublishDate DESC";
@@ -50,10 +110,7 @@ public class ArticleDAO extends DBContext {
         return articles;
     }
 
-    /**
-     * Thêm bài viết mới vào database.
-     * @param article Đối tượng Article cần thêm.
-     */
+    // Các phương thức khác (addArticle, updateArticle, deleteArticle, getArticleById) giữ nguyên
     public void addArticle(Article article) {
         String sql = "INSERT INTO Articles (Title, Description, Category, AuthorId, ImageUrl, PublishDate, CreatedAt) VALUES (?, ?, ?, ?, ?, GETDATE(), GETDATE())";
 
@@ -71,10 +128,6 @@ public class ArticleDAO extends DBContext {
         }
     }
 
-    /**
-     * Cập nhật thông tin bài viết.
-     * @param article Đối tượng Article cần cập nhật.
-     */
     public void updateArticle(Article article) {
         String sql = "UPDATE Articles SET Title = ?, Description = ?, Category = ?, ImageUrl = ?, UpdatedAt = GETDATE() WHERE Id = ?";
 
@@ -96,10 +149,6 @@ public class ArticleDAO extends DBContext {
         }
     }
 
-    /**
-     * Xóa bài viết theo ID.
-     * @param id ID của bài viết cần xóa.
-     */
     public void deleteArticle(int id) {
         String sql = "DELETE FROM Articles WHERE Id = ?";
 
@@ -117,11 +166,6 @@ public class ArticleDAO extends DBContext {
         }
     }
 
-    /**
-     * Lấy bài viết theo ID.
-     * @param id ID của bài viết cần lấy.
-     * @return Article đối tượng bài viết, hoặc null nếu không tìm thấy.
-     */
     public Article getArticleById(int id) {
         String sql = "SELECT Id, Title, Description, Category, PublishDate, AuthorId, ImageUrl, CreatedAt, UpdatedAt FROM Articles WHERE Id = ?";
         Article article = null;
@@ -141,16 +185,5 @@ public class ArticleDAO extends DBContext {
             e.printStackTrace();
         }
         return article;
-    }
-
-    public static void main(String[] args) {
-        ArticleDAO dao = new ArticleDAO();
-        
-        // Test getAllArticles()
-        List<Article> articles = dao.getAllArticles();
-        System.out.println("🔍 Found " + articles.size() + " articles.");
-        for (Article a : articles) {
-            System.out.println("📝 ID: " + a.getId() + ", Title: " + a.getTitle());
-        }
     }
 }

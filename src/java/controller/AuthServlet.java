@@ -1,5 +1,6 @@
-package controller.customer;
+package controller;
 
+import controller.resetService;
 import dal.CustomerDAO;
 import dal.ManagerDAO;
 import dal.StaffDAO;
