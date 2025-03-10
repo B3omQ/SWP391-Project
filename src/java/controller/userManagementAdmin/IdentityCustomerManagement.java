@@ -40,6 +40,8 @@ public class IdentityCustomerManagement extends HttpServlet {
         IdentityDAO idao = new IdentityDAO();
         String pageParam = request.getParameter("page");
         String status = request.getParameter("pendingStatus");
+        String phone = request.getParameter("phoneSearch");
+        String identityCardNumber = request.getParameter("identityCardNumberSearch");
 
         if (status == null || status.trim().isEmpty()) {
             status = "Pending";
@@ -65,8 +67,10 @@ public class IdentityCustomerManagement extends HttpServlet {
             int offset = (page - 1) * recordsPerPage;
             int totalPages = (int) Math.ceil(totalRecords * 1.0 / recordsPerPage);
 
-            List<VerifyIdentityInformation> identityList = idao.getAllVerifyIdentityInformation(offset, recordsPerPage, status);
+            List<VerifyIdentityInformation> identityList = idao.getAllVerifyIdentityInformation(offset, recordsPerPage, status, phone, identityCardNumber);
+            request.setAttribute("currentIdentityCardNumberSearch", identityCardNumber);
             request.setAttribute("identityList", identityList);
+            request.setAttribute("currentPhoneSearch", phone);
             request.setAttribute("currentPage", page);
             request.setAttribute("totalPages", totalPages);
             request.setAttribute("currentRecords", recordsPerPage);

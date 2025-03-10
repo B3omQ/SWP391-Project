@@ -195,40 +195,58 @@
                 <div class="container-fluid">
                     <div class="layout-specing">
                         <!-- Header Section -->
-                        </br>
-                        <div class="row mb-4">
-                            <div class="col-12">
-                                <h2 class="text-primary">Deposit Options</h2>
+
+                        <div class="row align-items-center">
+                            <!-- Title & Breadcrumb -->
+                            <div class="col-md-6">
+                                <h5 class="mb-0">Trang quản lí dịch vụ gói gửi tiết kiệm</h5>
+                                <nav aria-label="breadcrumb" class="mt-2">
+                                    <ul class="breadcrumb breadcrumb-muted bg-transparent rounded mb-0 p-0">
+                                        <li class="breadcrumb-item">
+                                            <a href="#" class="text-decoration-none text-danger">SmartBanking</a>
+                                        </li>
+                                        <li class="breadcrumb-item">
+                                            <a href="#" class="text-decoration-none text-danger">Dịch vụ gửi tiết kiệm</a>
+                                        </li>
+                                        <li class="breadcrumb-item active" aria-current="page">Danh sách các gói dịch vụ</li>
+                                    </ul>
+                                </nav>
+                            </div>
+
+                            <!-- Search form -->
+                            <div class="col-md-6">
+                                <form id="sort" action="dep-option-service" method="get" class="d-flex">
+                                    <select class="form-select me-2" name="pendingStatus" onchange="onChangeSubmit('sort')" id="status">
+                                        <option value="Approved" ${currentStatus == 'Approved' || empty currentStatus ? 'selected' : ''}>Phê duyệt</option>
+                                        <option value="Denied" ${currentStatus == 'Denied' ? 'selected' : ''}>Từ chối</option>
+                                        <option value="Pending" ${currentStatus == 'Pending' ? 'selected' : ''}>Đang chờ</option>
+                                    </select>   
+                                    <select class="form-select me-2" name="sortBy" onchange="onChangeSubmit('sort')" id="sorBy">
+                                        <option value="DuringTime" ${currentSort == 'DuringTime' || empty currentSort ? 'selected' : ''}>Tháng</option>
+                                        <option value="MinimumDep" ${currentSort == 'MinimumDep' ? 'selected' : ''}>Giá trị gửi tối thiểu</option>
+                                    </select>     
+                                    <select class="form-select me-2" name="order" onchange="onChangeSubmit('sort')" id="order">
+                                        <option value="ASC" ${currentOrder == 'ASC' || empty currentOrder ? 'selected' : ''}>Tăng dần</option>
+                                        <option value="DESC" ${currentOrder == 'DESC' ? 'selected' : ''}>Giảm dần</option>
+                                    </select> 
+                                    <button class="btn btn-outline-primary w-100" type="button" 
+                                            onclick="window.location.href = './dep-option-service?pendingStatus=&sortBy=&order='">
+                                        Đặt lại
+                                    </button>
+                                </form>
                             </div>
                         </div>
+                        </br>                        
 
                         <!-- Title & Dropdown -->
-                        <div class="row align-items-center mb-4">
-                            <form id="sort" action="dep-option-service" method="get" class="d-flex">
-                                <select class="form-select me-2" name="pendingStatus" onchange="onChangeSubmit('sort')" id="status">
-                                    <option value="Approved" ${currentStatus == 'Approved' || empty currentStatus ? 'selected' : ''}>Approved</option>
-                                    <option value="Denied" ${currentStatus == 'Denied' ? 'selected' : ''}>Denied</option>
-                                    <option value="Pending" ${currentStatus == 'Pending' ? 'selected' : ''}>Pending</option>
-                                </select>   
-                                <select class="form-select me-2" name="sortBy" onchange="onChangeSubmit('sort')" id="sorBy">
-                                    <option value="DuringTime" ${currentSort == 'DuringTime' || empty currentSort ? 'selected' : ''}>Months</option>
-                                    <option value="MinimumDep" ${currentSort == 'MinimumDep' ? 'selected' : ''}>MinMoneyDep</option>
-                                </select>     
-                                <select class="form-select me-2" name="order" onchange="onChangeSubmit('sort')" id="order">
-                                    <option value="ASC" ${currentOrder == 'ASC' || empty currentOrder ? 'selected' : ''}>Asc</option>
-                                    <option value="DESC" ${currentOrder == 'DESC' ? 'selected' : ''}>Desc</option>
-                                </select> 
-                                <button class="btn btn-outline-primary w-100" type="button" 
-                                        onclick="window.location.href = './dep-option-service?pendingStatus=&sortBy=&order='">
-                                    Reset
-                                </button>
-                            </form>
-                        </div>
+
+
+
                         <!-- Deposit Options List -->                     
                         <div class="row">
                             <c:choose>
                                 <c:when test="${empty depOptionServiceList}">
-                                    <div class="col-12 text-center text-muted fw-bold">Search list is empty</div>
+                                    <div class="col-12 text-center text-muted fw-bold">Danh sách trống.</div>
                                 </c:when>
                                 <c:otherwise>
                                     <c:forEach var="dep" items="${depOptionServiceList}" varStatus="status">
@@ -275,41 +293,41 @@
         <script src="./resources/script/script.js"></script>
 
         <script>
-                                            new WOW().init();
+                                                new WOW().init();
 
-                                            $(document).ready(function () {
+                                                $(document).ready(function () {
 
-                                                showToastrAfterReload();
-                                                // Handle bubble click to review
-                                                $('.bubble').on('click', function () {
-                                                    var depId = $(this).data('id');
-                                                    window.location.href = 'view-dep-option?depId=' + depId;
-                                                });
+                                                    showToastrAfterReload();
+                                                    // Handle bubble click to review
+                                                    $('.bubble').on('click', function () {
+                                                        var depId = $(this).data('id');
+                                                        window.location.href = 'view-dep-option?depId=' + depId;
+                                                    });
 
-                                                // Handle delete icon click
-                                                $('.delete-icon').on('click', function (event) {
-                                                    event.stopPropagation(); // Prevent bubble click event
-                                                    var depId = $(this).closest('.bubble').data('id');
-                                                    var column = $(this).closest('.col-md-6');
-                                                    if (confirm("Are you sure you want to delete this option?")) {
-                                                        $.ajax({
-                                                            url: 'dep-option-service',
-                                                            type: 'POST',
-                                                            data: {delete: depId},
-                                                            success: function (response) {
-                                                                if (response.success) {
-                                                                    reloadWithMessage("success", "Success", "Deleted!");
-                                                                } else {
-                                                                    showErrorMessage("Error", "Something wrong here");
+                                                    // Handle delete icon click
+                                                    $('.delete-icon').on('click', function (event) {
+                                                        event.stopPropagation(); // Prevent bubble click event
+                                                        var depId = $(this).closest('.bubble').data('id');
+                                                        var column = $(this).closest('.col-md-6');
+                                                        if (confirm("Are you sure you want to delete this option?")) {
+                                                            $.ajax({
+                                                                url: 'dep-option-service',
+                                                                type: 'POST',
+                                                                data: {delete: depId},
+                                                                success: function (response) {
+                                                                    if (response.success) {
+                                                                        reloadWithMessage("success", "Success", "Deleted!");
+                                                                    } else {
+                                                                        showErrorMessage("Error", "Something wrong here");
+                                                                    }
+                                                                },
+                                                                error: function () {
+                                                                    showErrorMessage("Error", "Server is busy right now. Please try again later.");
                                                                 }
-                                                            },
-                                                            error: function () {
-                                                                showErrorMessage("Error", "Server is busy right now. Please try again later.");
-                                                            }
-                                                        });
-                                                    }
+                                                            });
+                                                        }
+                                                    });
                                                 });
-                                            });
         </script>
 
         <!-- page-wrapper -->

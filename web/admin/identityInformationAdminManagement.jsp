@@ -67,27 +67,45 @@
                         <!-- Header Section -->
                         <div class="row align-items-center">
                             <!-- Title & Breadcrumb -->
-                            <div class="col-md-6">
-                                <h5 class="mb-0">Customer's Identity Management</h5>
+                            <div class="col-md-4">
+                                <h5 class="mb-0">Trang thông tin định danh khách hàng</h5>
                                 <nav aria-label="breadcrumb" class="mt-2">
                                     <ul class="breadcrumb breadcrumb-muted bg-transparent rounded mb-0 p-0">
                                         <li class="breadcrumb-item">
                                             <a href="index.html" class="text-decoration-none text-danger">SmartBanking</a>
                                         </li>
-                                        <li class="breadcrumb-item active" aria-current="page">Customers</li>
-                                        <li class="breadcrumb-item active" aria-current="page">Identity</li>
+                                        <li class="breadcrumb-item active" aria-current="page">Danh sách khách hàng</li>
+                                        <li class="breadcrumb-item active" aria-current="page">Danh sách thông tin định danh</li>
                                     </ul>
                                 </nav>
                             </div>
 
                             <!-- Search form -->
-                            <div class="row align-items-center mb-4">
+                            <div class="col-md-8">
                                 <form id="sort" action="identity-customer-management" method="get" class="d-flex">
-                                    <select class="form-select me-2" name="pendingStatus" onchange="onChangeSubmit('sort')" id="pendingStatus">
-                                        <option value="Pending" ${currentStatus == 'Pending' || empty currentStatus ? 'selected' : ''}>Pending</option>
-                                        <option value="Denied" ${currentStatus == 'Denied' ? 'selected' : ''}>Denied</option>
-                                        <option value="Approved" ${currentStatus == 'Approved' ? 'selected' : ''}>Approved</option>
+                                    <select class="form-control border-custome me-2" name="pendingStatus" onchange="onChangeSubmit('sort')" id="pendingStatus">
+                                        <option value="Pending" ${currentStatus == 'Pending' || empty currentStatus ? 'selected' : ''}>Đang chờ</option>
+                                        <option value="Denied" ${currentStatus == 'Denied' ? 'selected' : ''}>Từ chối</option>
+                                        <option value="Approved" ${currentStatus == 'Approved' ? 'selected' : ''}>Đã duyệt</option>
                                     </select>
+                                    <input
+                                        value="${currentPhoneSearch}"
+                                        class="form-control border-custome me-2"
+                                        type="text"
+                                        placeholder="Tìm kiếm bằng số điện thoại"
+                                        id="phoneSearch"
+                                        name="phoneSearch"
+                                        />
+                                    <input
+                                        value="${currentIdentityCardNumberSearch}"
+                                        class="form-control border-custome me-2"
+                                        type="text"
+                                        placeholder="Tìm kiếm bằng số CCCD/CMND"
+                                        id="identityCardNumberSearch"
+                                        name="identityCardNumberSearch"
+                                        />
+                                    <a href="?page=1&phoneSearch=&identityCardNumberSearch=&recordsPerPage=${currentRecords}" class="btn border-custome me-2">Reset</a>
+                                    <button class="btn btn-danger" type="submit">Tìm</button>
                                 </form>
                             </div>
                         </div>
@@ -190,7 +208,9 @@
                                         <th>Ảnh đại diện</th>
                                         <th>Họ và tên</th>
                                         <th>Số điện thoại</th>
+                                        <th>Số CCCD/CMND</th>
                                         <th>Giới tính</th>
+                                        <th>Trạng thái</th>
                                         <th>Hồ sơ danh tính</th>
                                     </tr>
                                 </thead>
@@ -198,7 +218,7 @@
                                     <c:choose>
                                         <c:when test="${empty identityList}">
                                             <tr>
-                                                <td colspan="100%" class="text-center text-muted fw-bold">Search list is empty</td>
+                                                <td colspan="100%" class="text-center text-muted fw-bold">Danh sách trống.</td>
                                             </tr>
                                         </c:when>
                                         <c:otherwise>
@@ -211,8 +231,10 @@
                                                         </div>
                                                     </td>
                                                     <td class="text-truncate" style="max-width: 120px;">${identity.cusId.fullname}</td>  
-                                                    <td class="text-truncate" style="max-width: 120px;">${identity.cusId.phone}</td>        
-                                                    <td class="text-truncate" style="max-width: 120px;">${identity.cusId.gender}</td>        
+                                                    <td class="text-truncate" style="max-width: 120px;">${identity.cusId.phone}</td>    
+                                                    <td class="text-truncate" style="max-width: 120px;">${identity.identityCardNumber}</td>    
+                                                    <td class="text-truncate" style="max-width: 120px;">${identity.cusId.gender}</td> 
+                                                    <td class="text-truncate" style="max-width: 120px;">${identity.pendingStatus}</td>   
                                                     <td class="text-center align-middle">
                                                         <div class="row justify-content-center">                                                            
                                                             <div class="col-auto">
@@ -230,6 +252,7 @@
                                                             <jsp:param name="portraitPhoto" value="${identity.portraitPhoto}" />
                                                             <jsp:param name="fullnameCustomer" value="${identity.cusId.fullname}" />
                                                             <jsp:param name="pendingStatus" value="${identity.pendingStatus}" />
+                                                            <jsp:param name="reasonReject" value="${identity.reasonReject}" />
                                                         </jsp:include>           
                                                     </td>
                                                 </tr>
@@ -245,12 +268,12 @@
                 <!-- Pagination -->                 
                 <nav aria-label="Page navigation" class="mt-4">
                     <ul class="pagination justify-content-center">
-                        <!-- Nút First và Previous -->
+                        <!-- Nút Đầu và Trước -->
                         <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
-                            <a class="page-link text-danger" href="?page=1&pendingStatus=${currentStatus}&recordsPerPage=${currentRecords}">First</a>
+                            <a class="page-link text-danger" href="?page=1&pendingStatus=${currentStatus}&recordsPerPage=${currentRecords}">Đầu</a>
                         </li>
                         <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
-                            <a class="page-link text-danger" href="?page=${currentPage - 1}&pendingStatus=${currentStatus}&recordsPerPage=${currentRecords}">Previous</a>
+                            <a class="page-link text-danger" href="?page=${currentPage - 1}&pendingStatus=${currentStatus}&recordsPerPage=${currentRecords}">Trước</a>
                         </li>
 
                         <c:choose>
@@ -334,12 +357,12 @@
                             </c:otherwise>
                         </c:choose>
 
-                        <!-- Nút Next và Last -->
+                        <!-- Nút Tiếp và Sau -->
                         <li class="page-item ${currentPage == totalPages ? 'disabled' : ''}">
-                            <a class="page-link text-danger" href="?page=${currentPage + 1}&pendingStatus=${currentStatus}&recordsPerPage=${currentRecords}">Next</a>
+                            <a class="page-link text-danger" href="?page=${currentPage + 1}&pendingStatus=${currentStatus}&recordsPerPage=${currentRecords}">Tiếp</a>
                         </li>
                         <li class="page-item ${currentPage == totalPages ? 'disabled' : ''}">
-                            <a class="page-link text-danger" href="?page=${totalPages}&pendingStatus=${currentStatus}&recordsPerPage=${currentRecords}">Last</a>
+                            <a class="page-link text-danger" href="?page=${totalPages}&pendingStatus=${currentStatus}&recordsPerPage=${currentRecords}">Sau</a>
                         </li>
                     </ul>
                     <c:choose>
@@ -350,7 +373,7 @@
                                 <input type="number" name="page" min="1" max="${totalPages}" 
                                        placeholder="Page" 
                                        class="form-control w-auto text-center px-2">
-                                <button type="submit" class="btn btn-primary ms-2">Go</button>
+                                <button type="submit" class="btn btn-primary ms-2">Đi</button>
                             </form>
                         </c:when>
                     </c:choose>                

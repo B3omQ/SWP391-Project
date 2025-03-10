@@ -29,6 +29,7 @@ public class IdentityInformationSwitchCase extends HttpServlet {
         HttpSession session = request.getSession();
         Customer customer = (Customer) session.getAttribute("account");
         List<VerifyIdentityInformation> identityList = idao.getListVerifyIdentityInformationByCusId(customer.getId());
+        VerifyIdentityInformation reasonRejectIdentity = idao.getTop1(customer.getId(), "Denied");
         request.setAttribute("identityList", identityList);
 
         if (idao.countStatus(customer.getId(), "Approved") == 1) {
@@ -44,6 +45,7 @@ public class IdentityInformationSwitchCase extends HttpServlet {
         }
 
         if (idao.countStatus(customer.getId(), "Denied") > 0) {
+            session.setAttribute("reasonRejectIdentity", reasonRejectIdentity);
             session.setAttribute("status", "denied");
             request.getRequestDispatcher("./customer/identityInformation.jsp").forward(request, response);
             return;

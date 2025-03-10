@@ -1,4 +1,6 @@
 <%@ page import="model.Customer" %>
+<%@ page import="model.VerifyIdentityInformation" %>
+<%@ page import="dal.IdentityDAO" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
@@ -42,19 +44,11 @@
    } else {
        imagePath = request.getContextPath() + "/assets/images/default-avatar.jpg";
    }
+
     %>
 
     <body>
-        <!-- Loader -->
-        <div id="preloader">
-            <div id="status">
-                <div class="spinner">
-                    <div class="double-bounce1"></div>
-                    <div class="double-bounce2"></div>
-                </div>
-            </div>
-        </div>
-        <!-- Loader -->
+
 
         <!-- Navbar STart -->
         <header id="topnav" class="defaultscroll sticky">
@@ -135,8 +129,6 @@
                                 <li><a href="index-three.html" class="sub-menu-item">Index Three</a></li>
                             </ul>
                         </li>
-
-
                     </ul><!--end navigation menu-->
                 </div><!--end navigation-->
             </div><!--end container-->
@@ -153,23 +145,44 @@
 
                     <div class="container">
                         <c:set value="${sessionScope.account}" var="customer"/>   
-                        
+
                         <c:if test="${sessionScope.status == 'denied'}">
+
+                            <c:set value="${sessionScope.reasonRejectIdentity}" var="reasonReject"/>  
                             <div class="col-md-6">
-                                <label for="identityCardNumber" class="form-label">Đơn của bạn đã bị từ chối </label>   
+                                <label for="identityCardNumber" class="form-label">Đơn của bạn đã bị từ chối</label> 
+
                                 <div class="col-md-4 text-center">
                                     <a href="identity-information-controller" class="btn btn-primary">Tạo mới duyệt</a>
                                 </div>
+                                <div class="row justify-content-center">                                                            
+                                    <div class="col-auto">
+                                        <button data-bs-toggle="modal" data-bs-target="#editModal" 
+                                                class="btn btn-primary btn-md">
+                                            Xem nguyên nhân
+                                        </button>
+                                    </div>
+                                </div>
+                                <jsp:include page="template/viewReasonReject.jsp">
+                                    <jsp:param name="id" value="${reasonReject.id}"/>
+                                    <jsp:param name="identityCardFrontSide" value="${reasonReject.identityCardFrontSide}"/>
+                                    <jsp:param name="identityCardBackSide" value="${reasonReject.identityCardBackSide}" />
+                                    <jsp:param name="identityCardNumber" value="${reasonReject.identityCardNumber}" />
+                                    <jsp:param name="portraitPhoto" value="${reasonReject.portraitPhoto}" />
+                                    <jsp:param name="fullnameCustomer" value="${reasonReject.cusId.fullname}" />
+                                    <jsp:param name="pendingStatus" value="${reasonReject.pendingStatus}" />
+                                    <jsp:param name="reasonReject" value="${reasonReject.reasonReject}" />
+                                </jsp:include>  
                             </div>
                         </c:if>  
                         <c:if test="${sessionScope.status == 'approved'}">
-                            <div class="col-md-6">
-                                <label for="identityCardNumber" class="form-label">Đơn của bạn đã được duyệt </label>                                
-                            </div>
+                            <script>
+                                sessionStorage.setItem("status", "approved");
+                            </script>
                         </c:if> 
                         <c:if test="${sessionScope.status == 'pending'}">
                             <div class="col-md-6">
-                                <label for="identityCardNumber" class="form-label">Đơn của bạn đang được kiểm duyệt </label>                    
+                                <label for="identityCardNumber" class="form-label">Đơn của bạn đang được kiểm duyệt</label>                    
                             </div>
                         </c:if>
                         <c:if test="${sessionScope.status == 'none'}">
@@ -188,28 +201,6 @@
         </section><!--end section-->
         <!-- End -->
 
-        <!-- Footer Start -->
-        <footer class="bg-footer py-4">
-            <div class="container-fluid">
-                <div class="row align-items-center">
-                    <div class="col-sm-6">
-                        <div class="text-sm-start text-center">
-                            <p class="mb-0"><script>document.write(new Date().getFullYear())</script> © Doctris. Design with <i class="mdi mdi-heart text-danger"></i> by <a href="../../../index.jsp" target="_blank" class="text-reset">Shreethemes</a>.</p>
-                        </div>
-                    </div><!--end col-->
-
-                    <div class="col-sm-6 mt-4 mt-sm-0">
-                        <ul class="list-unstyled footer-list text-sm-end text-center mb-0">
-                            <li class="list-inline-item"><a href="terms.html" class="text-foot me-2">Terms</a></li>
-                            <li class="list-inline-item"><a href="privacy.html" class="text-foot me-2">Privacy</a></li>
-                            <li class="list-inline-item"><a href="aboutus.html" class="text-foot me-2">About</a></li>
-                            <li class="list-inline-item"><a href="contact.html" class="text-foot me-2">Contact</a></li>
-                        </ul>
-                    </div><!--end col-->
-                </div><!--end row-->
-            </div><!--end container-->
-        </footer><!--end footer-->
-        <!-- End -->       
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
         <script src ="resources/script/jquery-3.7.1.min.js"></script>
         <script src="./resources/script/script.js"></script>
@@ -271,6 +262,35 @@
                                         });
                                     });
                                 });
+
+                                if (sessionStorage.getItem("status") === "approved") {
+                                    Swal.fire({
+                                        title: "Thành công!",
+                                        text: "Tài khoản của bạn đã được xác minh",
+                                        icon: "success"
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            sessionStorage.removeItem("status");
+                                            window.location.href = "customer/account-profile.jsp";
+                                        }
+                                    });
+                                }
+
+//                                if (sessionStorage.getItem("status") === "approved") {
+//                                    Swal.fire({
+//                                        icon: "error",
+//                                        title: "Oops...",
+//                                        text: "Something went wrong!",
+//                                        footer: '<a href="#">Why do I have this issue?</a>'
+//                                    }).then((result) => {
+//                                        if (result.isConfirmed) {
+//                                            sessionStorage.removeItem("status");
+//                                            window.location.href = "customer/account-profile.jsp";
+//                                        }
+//                                    });
+//                                }
+
+
         </script>
     </body>
 

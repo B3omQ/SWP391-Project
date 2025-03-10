@@ -109,8 +109,6 @@ public class LoanService {
         this.pendingStatus = pendingStatus;
     }
 
-
-
     @Override
     public String toString() {
         return "LoanService{" + "id=" + id + ", loanServiceName=" + loanServiceName + ", description=" + description + ", duringTime=" + duringTime + ", onTermRate=" + onTermRate + ", penaltyRate=" + penaltyRate + ", minimumLoan=" + minimumLoan + ", maximumLoan=" + maximumLoan + ", pendingStatus=" + pendingStatus + '}';

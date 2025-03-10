@@ -67,13 +67,16 @@
                         <div class="row align-items-center">
                             <!-- Title & Breadcrumb -->
                             <div class="col-md-6">
-                                <h5 class="mb-0">Customer Management</h5>
+                                <h5 class="mb-0">Trang dịch vụ khách hàng</h5>
                                 <nav aria-label="breadcrumb" class="mt-2">
                                     <ul class="breadcrumb breadcrumb-muted bg-transparent rounded mb-0 p-0">
                                         <li class="breadcrumb-item">
-                                            <a href="index.html" class="text-decoration-none text-danger">SmartBanking</a>
+                                            <a href="#" class="text-decoration-none text-danger">SmartBanking</a>
                                         </li>
-                                        <li class="breadcrumb-item active" aria-current="page">Customers</li>
+                                        <li class="breadcrumb-item">
+                                            <a href="#" class="text-decoration-none text-danger">Dịch vụ khách hàng</a>
+                                        </li>
+                                        <li class="breadcrumb-item active" aria-current="page">Dịch vụ cho vay</li>
                                     </ul>
                                 </nav>
                             </div>
@@ -85,17 +88,17 @@
                                         value="${currentPhoneSearch}"
                                         class="form-control border-custome me-2"
                                         type="text"
-                                        placeholder="Search by phone number"
+                                        placeholder="Tìm kiếm bằng số điện thoại"
                                         id="phoneSearch"
                                         name="phoneSearch"
                                         />
-                                    <select class="form-select me-2" name="pendingStatus" onchange="onChangeSubmit('search')" id="pendingStatus">
-                                        <option value="Pending" ${currentStatus == 'Pending' || empty currentStatus ? 'selected' : ''}>Pending</option>
-                                        <option value="Denied" ${currentStatus == 'Denied' ? 'selected' : ''}>Denied</option>
-                                        <option value="Approved" ${currentStatus == 'Approved' ? 'selected' : ''}>Approved</option>
+                                    <select class="form-control border-custome me-2" name="pendingStatus" onchange="onChangeSubmit('search')" id="pendingStatus">
+                                        <option value="Pending" ${currentStatus == 'Pending' || empty currentStatus ? 'selected' : ''}>Đang đợi</option>
+                                        <option value="Denied" ${currentStatus == 'Denied' ? 'selected' : ''}>Từ chối</option>
+                                        <option value="Approved" ${currentStatus == 'Approved' ? 'selected' : ''}>Phê duyệt</option>
                                     </select>
-                                    <a href="?page=1&phoneSearch=&pendingStatus=&recordsPerPage=${currentRecords}" class="btn border-custome me-2">Reset</a>
-                                    <button class="btn btn-danger" type="submit">Search</button>
+                                    <a href="?page=1&phoneSearch=&pendingStatus=&recordsPerPage=${currentRecords}" class="btn border-custome me-2">Đặt lại</a>
+                                    <button class="btn btn-danger" type="submit">Tìm kiếm</button>
                                 </form>
                             </div>
                         </div>

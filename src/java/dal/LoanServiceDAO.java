@@ -62,6 +62,14 @@ public class LoanServiceDAO extends DBContext {
 
         return list;
     }
+    
+    public static void main(String[] args) {
+        LoanServiceDAO l = new LoanServiceDAO();
+        List<LoanService> list = l.getAllLoanServiceByStatus("Pending", "DuringTime", "DESC");
+        for(LoanService o : list) {
+            System.out.println(o);
+        }
+    }
 
     public LoanService getLoanServiceById(int id) {
         String sql = """
@@ -91,13 +99,6 @@ public class LoanServiceDAO extends DBContext {
         return null;
     }
 
-    public static void main(String[] args) {
-        LoanServiceDAO ldao = new LoanServiceDAO();
-        List<LoanService> list = ldao.getAllLoanServiceByStatus("Pending", "MaximumLoan", "DESC");
-        for (LoanService o : list) {
-            System.out.println(o);
-        }
-    }
 
     public boolean deleteLoan(int id) {
         String sql = "DELETE FROM LoanService WHERE Id=?";

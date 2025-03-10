@@ -36,6 +36,7 @@ public class CustomerLoanServiceManagement extends HttpServlet {
             throws ServletException, IOException {
         String pageParam = request.getParameter("page");
         String status = request.getParameter("pendingStatus");
+        String phone = request.getParameter("phoneSearch");
         LoanServiceUsedDAO ludao = new LoanServiceUsedDAO();
 
         if (status == null || status.trim().isEmpty()) {
@@ -62,8 +63,9 @@ public class CustomerLoanServiceManagement extends HttpServlet {
             int offset = (page - 1) * recordsPerPage;
             int totalPages = (int) Math.ceil(totalRecords * 1.0 / recordsPerPage);
 
-            List<LoanServiceUsed> loanList = ludao.getLoanServiceUsedByStatus(offset, recordsPerPage, status);
+            List<LoanServiceUsed> loanList = ludao.getLoanServiceUsed(offset, recordsPerPage, status, phone);
             request.setAttribute("loanList", loanList);
+            request.setAttribute("currentPhoneSearch", phone);
             request.setAttribute("currentPage", page);
             request.setAttribute("totalPages", totalPages);
             request.setAttribute("currentRecords", recordsPerPage);

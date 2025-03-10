@@ -88,11 +88,11 @@
                                             <img src="${staff.image}" class="rounded-circle shadow-md avatar avatar-md-md" alt="">
                                             <h5 class="mt-3 mb-1"> ${staff.fullname}</h5>
 
-                                            <p class="text-muted mb-0">Orthopedic</p>
+                                            <p class="text-muted mb-0">Quản lí</p>
                                         </div>
 
                                         <ul class="list-unstyled sidebar-nav mb-0">                                            
-                                            <li class="navbar-item"><a href="account-profile.jsp" class="navbar-link"><i class="ri-user-settings-line align-middle navbar-icon"></i>Contact: ${staff.email}</a></li>
+                                            <li class="navbar-item"><a href="#" class="navbar-link"><i class="ri-user-settings-line align-middle navbar-icon"></i>Email liên hệ: ${staff.email}</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -101,7 +101,7 @@
                                 <div class="col-xl-8 col-lg-8 col-md-7 mt-4 pt-2 mt-sm-0 pt-sm-0">
                                     <div class="card-body">
                                         <h3 style="font-weight: bold">
-                                            Edit information
+                                            Trang cá nhân
                                         </h3>
 
                                         <form action="profile-manager" method="post" id="profileManagerForm" enctype="multipart/form-data">
@@ -113,42 +113,42 @@
                                                             <!-- Image Upload Section -->
                                                             <div class="">
                                                                 <div class="mb-4 mt-3">
-                                                                    <label for="newImg" class="form-label text-muted">Upload a new avatar. Larger images will be resized automatically. Maximum upload size is 5 MB. Only accept jpg, jpeg, png, gif file</label>
+                                                                    <label for="newImg" class="form-label text-muted">Ảnh có size nhỏ hơn 5mb vả chỉ chấp nhận các file có đuôi jpg, jpeg, png, gif.</label>
                                                                     <input type="file" id="newImg" accept=".jpg,.png,.jpeg,.gif" name="newImg" class="form-control mb-4">
                                                                 </div>
 
                                                                 <div class="row mt-3">
                                                                     <div class="col-md-6">
-                                                                        <label for="newFirstname" class="form-label head">First Name</label>
+                                                                        <label for="newFirstname" class="form-label head">Tên đầu</label>
                                                                         <input value="${staff.firstname}" type="text" id="newFirstname" name="newFirstname" class="form-control" required>
                                                                     </div>
                                                                     <div class="col-md-6">
-                                                                        <label for="newLastname" class="form-label head">Last Name</label>
+                                                                        <label for="newLastname" class="form-label head">Tên họ</label>
                                                                         <input value="${staff.lastname}" type="text" id="newLastname" name="newLastname" class="form-control" required>
                                                                     </div>
                                                                 </div>
                                                                 <div class="row mt-3">
                                                                     <div class="col-md-6">
-                                                                        <label for="newPhone" class="form-label head">Phone</label>
+                                                                        <label for="newPhone" class="form-label head">Số điện thoại</label>
                                                                         <input value="${staff.phone}" type="text" id="newPhone" name="newPhone" class="form-control" required>
                                                                         <p class="text-danger">${errorPhoneMess}</p>
                                                                     </div>
                                                                     <div class="col-md-6">
-                                                                        <label for="newAddress" class="form-label head">Address</label>
+                                                                        <label for="newAddress" class="form-label head">Địa chỉ</label>
                                                                         <input value="${staff.address}" type="text" id="newAddress" name="newAddress" class="form-control" required>
                                                                     </div>
                                                                 </div>
                                                                 <div class="row mt-3">
                                                                     <div class="col-md-6">
-                                                                        <label for="newGender" class="form-label head">Gender</label>
+                                                                        <label for="newGender" class="form-label head">Giới tính</label>
                                                                         <select id="newGender" name="newGender" class="form-control">
-                                                                            <option value="Male" ${staff.gender == 'Male' ? 'selected' : ''}>Male</option>
-                                                                            <option value="Female" ${staff.gender == 'Female' ? 'selected' : ''}>Female</option>
-                                                                            <option value="Other" ${staff.gender == 'Other' ? 'selected' : ''}>Other</option>
+                                                                            <option value="Male" ${staff.gender == 'Male' ? 'selected' : ''}>Nam</option>
+                                                                            <option value="Female" ${staff.gender == 'Female' ? 'selected' : ''}>Nữ</option>
+                                                                            <option value="Other" ${staff.gender == 'Other' ? 'selected' : ''}>Khác</option>
                                                                         </select>
                                                                     </div>
                                                                     <div class="col-md-6">
-                                                                        <label for="newDob" class="form-label head">Date of Birth</label>
+                                                                        <label for="newDob" class="form-label head">Ngày khai sinh</label>
                                                                         <input type="date" id="newDob" name="newDob" value="${staff.dob}" class="form-control">
                                                                     </div>
                                                                 </div>
@@ -157,7 +157,7 @@
                                                                         <p id="error-message-info" class="text-danger"></p>
                                                                     </div>
                                                                     <div class="col-md-4 text-center">
-                                                                        <button type="submit" class="btn btn-primary">Save changes</button>
+                                                                        <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
                                                                     </div>
                                                                 </div>                                                                       
 
@@ -170,7 +170,7 @@
                                         </form>
 
                                         <h3 style="font-weight: bold">
-                                            Edit password
+                                            Thay mật khẩu
                                         </h3>
 
                                         <form action="profile-manager" method="post" id="changePasswordForm">
@@ -182,8 +182,8 @@
                                                         <div class="mb-4">
                                                             <div class="row mt-3">
                                                                 <div class="col-md-12">
-                                                                    <label for="currentPassword" class="head form-label">Current Password</label>
-                                                                    <input type="password" id="currentPassword" name="currentPassword" class="form-control" placeholder="Current Password" required>
+                                                                    <label for="currentPassword" class="head form-label">Mật khẩu hiện tại</label>
+                                                                    <input type="password" id="currentPassword" name="currentPassword" class="form-control" placeholder="Mật khẩu hiện tại" required>
                                                                     <span class="position-absolute top-50 end-0 translate-middle-y pe-3 cursor-pointer" onclick="togglePassword('currentPassword', 'toggleCurrentPasswordIcon')" style="padding-top: 30px;">
                                                                         <i id="toggleCurrentPasswordIcon" class="mdi mdi-eye-outline"></i>
                                                                     </span>
@@ -191,8 +191,8 @@
                                                             </div>
                                                             <div class="row mt-3">
                                                                 <div class="col-md-12">
-                                                                    <label for="newPassword" class="head form-label">New Password</label>
-                                                                    <input type="password" id="newPassword" name="newPassword" class="form-control" placeholder="New password" required>
+                                                                    <label for="newPassword" class="head form-label">Mật khẩu mới</label>
+                                                                    <input type="password" id="newPassword" name="newPassword" class="form-control" placeholder="Mật khẩu mới" required>
                                                                     <span class="position-absolute top-50 end-0 translate-middle-y pe-3 cursor-pointer" onclick="togglePassword('newPassword', 'toggleNewPasswordIcon')" style="padding-top: 30px;">
                                                                         <i id="toggleNewPasswordIcon" class="mdi mdi-eye-outline"></i>
                                                                     </span>
@@ -200,8 +200,8 @@
                                                             </div>
                                                             <div class="row mt-3">
                                                                 <div class="col-md-12">
-                                                                    <label for="confirmPassword" class="head form-label">Confirm Password</label>
-                                                                    <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" placeholder="Confirm your password" required>
+                                                                    <label for="confirmPassword" class="head form-label">Nhập lại mật khẩu mới</label>
+                                                                    <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" placeholder="Nhập lại mật khẩu mới" required>
                                                                     <span class="position-absolute top-50 end-0 translate-middle-y pe-3 cursor-pointer" onclick="togglePassword('confirmPassword', 'toggleConfirmPasswordIcon')" style="padding-top: 30px;">
                                                                         <i id="toggleConfirmPasswordIcon" class="mdi mdi-eye-outline"></i>
                                                                     </span>
@@ -212,7 +212,7 @@
                                                                     <p id="error-message" class="text-danger"></p>
                                                                 </div>
                                                                 <div class="col-md-4 text-center">
-                                                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                                                    <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
                                                                 </div>
                                                             </div>
 

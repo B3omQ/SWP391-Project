@@ -68,13 +68,13 @@
                         <div class="row align-items-center">
                             <!-- Title & Breadcrumb -->
                             <div class="col-md-6">
-                                <h5 class="mb-0">Customer Management</h5>
+                                <h5 class="mb-0">Trang thông tin kế toán</h5>
                                 <nav aria-label="breadcrumb" class="mt-2">
                                     <ul class="breadcrumb breadcrumb-muted bg-transparent rounded mb-0 p-0">
                                         <li class="breadcrumb-item">
                                             <a href="index.html" class="text-decoration-none text-danger">SmartBanking</a>
                                         </li>
-                                        <li class="breadcrumb-item active" aria-current="page">Accountants</li>
+                                        <li class="breadcrumb-item active" aria-current="page">Danh sách kế toán</li>
                                     </ul>
                                 </nav>
                             </div>
@@ -86,12 +86,12 @@
                                         value="${currentPhoneSearch}"
                                         class="form-control border-custome me-2"
                                         type="text"
-                                        placeholder="Search by phone number"
+                                        placeholder="Tìm kiếm bằng số điện thoại"
                                         id="phoneSearch"
                                         name="phoneSearch"
                                         />
                                     <a href="?page=1&phoneSearch=&recordsPerPage=${currentRecords}" class="btn border-custome me-2">Reset</a>
-                                    <button class="btn btn-danger" type="submit">Search</button>
+                                    <button class="btn btn-danger" type="submit">Tìm</button>
                                 </form>
                             </div>
                         </div>
@@ -191,18 +191,18 @@
                                 <thead style ="text-align:center">
                                     <tr>
                                         <th>ID</th>
-                                        <th>Image</th>
-                                        <th>Fullname</th>
-                                        <th>Phone</th>
-                                        <th>Gender</th>
-                                        <th>Actions</th>
+                                        <th>Ảnh đại diện</th>
+                                        <th>Họ và tên</th>
+                                        <th>Số điện thoại</th>
+                                        <th>Giới tính</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <c:choose>
                                         <c:when test="${empty staffList}">
                                             <tr>
-                                                <td colspan="100%" class="text-center text-muted fw-bold">Search list is empty</td>
+                                                <td colspan="100%" class="text-center text-muted fw-bold">Danh sách trống</td>
                                             </tr>
                                         </c:when>
                                         <c:otherwise>
@@ -257,26 +257,26 @@
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-header bg-danger text-white">
-                                                            <h1 class="modal-title fs-5" id="detailsModalLabel${accountant.id}">Customer's Detail</h1>
+                                                            <h1 class="modal-title fs-5" id="detailsModalLabel${accountant.id}">Thông tin chung</h1>
                                                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
                                                             <div class="profile-header text-center">
                                                                 <img src="${accountant.image}" alt="Customer Image" class="profile-image">
                                                                 <h2>${accountant.firstname} ${accountant.lastname}</h2>
-                                                                <p class="text-muted">Customer</p>
+                                                                <p class="text-muted">Vai trò: kế toán</p>
                                                             </div>
                                                             <div class="profile-info">
-                                                                <p><strong>Id:</strong> ${accountant.id}</p>
-                                                                <p><strong>Email contact:</strong> ${accountant.email}</p>
-                                                                <p><strong>Address:</strong> ${accountant.address}</p>
-                                                                <p><strong>Phone:</strong> ${accountant.phone}</p>
-                                                                <p><strong>Date of Birth:</strong> ${accountant.dob}</p>
+                                                                <p><strong>Mã id:</strong> ${accountant.id}</p>
+                                                                <p><strong>Email liên hệ:</strong> ${accountant.email}</p>
+                                                                <p><strong>Địa chỉ:</strong> ${accountant.address}</p>
+                                                                <p><strong>Số điện thoại:</strong> ${accountant.phone}</p>
+                                                                <p><strong>Ngày khai sinh:</strong> ${accountant.dob}</p>
 
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn text-white bg-danger" data-bs-dismiss="modal">Close</button>
+                                                            <button type="button" class="btn text-white bg-danger" data-bs-dismiss="modal">Đóng</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -293,12 +293,12 @@
                 <!-- Pagination -->                 
                 <nav aria-label="Page navigation" class="mt-4">
                     <ul class="pagination justify-content-center">
-                        <!-- Nút First và Previous -->
+                        <!-- Nút Đầu và Trước -->
                         <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
-                            <a class="page-link text-danger" href="?page=1&phoneSearch=${currentPhoneSearch}&recordsPerPage=${currentRecords}">First</a>
+                            <a class="page-link text-danger" href="?page=1&phoneSearch=${currentPhoneSearch}&recordsPerPage=${currentRecords}">Đầu</a>
                         </li>
                         <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
-                            <a class="page-link text-danger" href="?page=${currentPage - 1}&phoneSearch=${currentPhoneSearch}&recordsPerPage=${currentRecords}">Previous</a>
+                            <a class="page-link text-danger" href="?page=${currentPage - 1}&phoneSearch=${currentPhoneSearch}&recordsPerPage=${currentRecords}">Trước</a>
                         </li>
 
                         <c:choose>
@@ -382,12 +382,12 @@
                             </c:otherwise>
                         </c:choose>
 
-                        <!-- Nút Next và Last -->
+                        <!-- Nút Tiếp và Cuối -->
                         <li class="page-item ${currentPage == totalPages ? 'disabled' : ''}">
-                            <a class="page-link text-danger" href="?page=${currentPage + 1}&phoneSearch=${currentPhoneSearch}&recordsPerPage=${currentRecords}">Next</a>
+                            <a class="page-link text-danger" href="?page=${currentPage + 1}&phoneSearch=${currentPhoneSearch}&recordsPerPage=${currentRecords}">Tiếp</a>
                         </li>
                         <li class="page-item ${currentPage == totalPages ? 'disabled' : ''}">
-                            <a class="page-link text-danger" href="?page=${totalPages}&phoneSearch=${currentPhoneSearch}&recordsPerPage=${currentRecords}">Last</a>
+                            <a class="page-link text-danger" href="?page=${totalPages}&phoneSearch=${currentPhoneSearch}&recordsPerPage=${currentRecords}">Cuối</a>
                         </li>
                     </ul>
                     <c:choose>
@@ -398,7 +398,7 @@
                                 <input type="number" name="page" min="1" max="${totalPages}" 
                                        placeholder="Page" 
                                        class="form-control w-auto text-center px-2">
-                                <button type="submit" class="btn btn-primary ms-2">Go</button>
+                                <button type="submit" class="btn btn-primary ms-2">Đi</button>
                             </form>
                         </c:when>
                     </c:choose>                

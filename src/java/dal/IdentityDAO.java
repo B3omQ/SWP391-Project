@@ -10,15 +10,28 @@ public class IdentityDAO extends DBContext {
 
     CustomerDAO cdao = new CustomerDAO();
 
-    public List<VerifyIdentityInformation> getAllVerifyIdentityInformation(int offset, int recordsPerPage, String pendingStatus) {
+    public List<VerifyIdentityInformation> getAllVerifyIdentityInformation(int offset, int recordsPerPage, String pendingStatus, String phone, String identityCardNumber) {
         List<VerifyIdentityInformation> list = new ArrayList<>();
         String sql = """
-            SELECT * FROM verifyIdentityInformation
-            WHERE PendingStatus = ?
-            ORDER BY Id
-            OFFSET ? ROWS
-            FETCH NEXT ? ROWS ONLY;
+            SELECT * FROM verifyIdentityInformation v join Customer c on v.CusId = c.Id
+            WHERE v.PendingStatus = ?
             """;
+
+        if (phone != null && !phone.isEmpty()) {
+            sql += " AND c.Phone = '" + phone + "'";
+        }
+
+        if (identityCardNumber != null && !identityCardNumber.isEmpty()) {
+            sql += " AND v.IdentityCardNumber = '" + identityCardNumber + "'";
+        }
+
+        String pagination = """
+                    ORDER BY v.Id
+                    OFFSET ? ROWS
+                    FETCH NEXT ? ROWS ONLY;
+                    """;
+
+        sql += pagination;
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, pendingStatus);
@@ -44,6 +57,37 @@ public class IdentityDAO extends DBContext {
             e.printStackTrace();
         }
         return list;
+    }
+
+    //hàm này tạo ra để lấy ra thằng verifyIdentityInformation bị deny, 
+    //mục đích là để mỗi lần người dùng vào check xác thực tài khoản nếu bị từ 
+    //chối đơn duyệt sẽ có thể xem được lí do vì sao mình k được duyệt đơn
+    public VerifyIdentityInformation getTop1(int customerId, String status) {
+        String sql = """
+                     SELECT TOP 1 * 
+                     FROM verifyIdentityInformation 
+                     WHERE CusID = ? AND PendingStatus = ?
+                     ORDER BY id DESC;""";
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, customerId);
+            st.setString(2, status);
+            try (ResultSet rs = st.executeQuery()) {
+                while (rs.next()) {
+                    return new VerifyIdentityInformation(
+                            rs.getInt("Id"),
+                            cdao.getCustomerById(rs.getInt("CusId")),
+                            rs.getString("IdentityCardNumber"),
+                            rs.getString("IdentityCardFrontSide"),
+                            rs.getString("identityCardBackSide"),
+                            rs.getString("ReasonReject"),
+                            rs.getString("PortraitPhoto"),
+                            rs.getString("PendingStatus")
+                    );
+                }
+            }
+        } catch (Exception e) {
+        }
+        return null;
     }
 
     public int countStatus(int id, String status) {
@@ -119,13 +163,14 @@ public class IdentityDAO extends DBContext {
 
     public static void main(String[] args) {
         IdentityDAO d = new IdentityDAO();
-        List<VerifyIdentityInformation> list = d.getAllVerifyIdentityInformation(0, 1, "Pending");
+        List<VerifyIdentityInformation> list = d.getAllVerifyIdentityInformation(0, 10, "Denied", "", "");
         for (VerifyIdentityInformation o : list) {
             System.out.println(o);
         }
         System.out.println(d.countTotalVerifyIdentityInformation());
         System.out.println(d.countTotalVerifyIdentityInformationByStatus("Wait"));
         System.out.println(d.countStatus(42, "Pending"));
+        System.out.println(d.getTop1(42, "Denied"));
     }
 
     public VerifyIdentityInformation getVerifyIdentityInformationByCusId(int id) {

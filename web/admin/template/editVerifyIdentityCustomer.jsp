@@ -51,8 +51,19 @@
                             </div>
                         </div>
                     </div>
+                            
+                    <div class="row">
+                        <c:if test="${param.pendingStatus == 'Denied'}">
+                            <div class="form-group row mt-3">
+                                <label for="reasonReject" class="col-sm-4 col-form-label">Lí do từ chối (nếu có):</label>
+                                <div class="col-sm-8">
+                                    <input readonly id="reasonReject" class="form-control" value="${param.reasonReject}">
+                                </div>
+                            </div>
+                        </c:if>
+                    </div>
 
-                    <div class="row mt-3">
+                    <div class="row">
                         <c:if test="${param.pendingStatus == 'Pending'}">
                             <div class="form-group row mt-3">
                                 <label for="reasonReject" class="col-sm-4 col-form-label">Lí do từ chối (nếu có):</label>
@@ -68,7 +79,7 @@
                 <!-- Modal Footer -->
                 <div class="modal-footer">
                     <p id="error-message-${param.id}" class="text-warning me-auto"></p>
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Đóng</button>
                     <c:if test="${param.pendingStatus == 'Pending'}">
                         <button type="submit" name="status" value="Approved" class="btn btn-success">Chấp nhận</button>
                         <button type="submit" name="status" value="Denied" class="btn btn-danger">Từ chối</button>

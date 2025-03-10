@@ -33,7 +33,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
         <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css">
-
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
 
     </head>
@@ -161,6 +161,24 @@
 
                 <div class="container-fluid">                    
                     <div class="layout-specing">
+                        <div class="row align-items-center">
+                            <!-- Title & Breadcrumb -->
+                            <div class="col-md-6">
+                                <h5 class="mb-0">Trang quản lí dịch vụ gói vay</h5>
+                                <nav aria-label="breadcrumb" class="mt-2">
+                                    <ul class="breadcrumb breadcrumb-muted bg-transparent rounded mb-0 p-0">
+                                        <li class="breadcrumb-item">
+                                            <a href="#" class="text-decoration-none text-danger">SmartBanking</a>
+                                        </li>
+                                        <li class="breadcrumb-item">
+                                            <a href="#" class="text-decoration-none text-danger">Dịch vụ cho vay</a>
+                                        </li>
+                                        <li class="breadcrumb-item active" aria-current="page">Tạo mới gói dịch vụ</li>
+                                    </ul>
+                                </nav>
+                            </div>                           
+                        </div>
+                        </br>
                         <div class="kofi-inspired-container">
                             <h5 class="kofi-title">
                                 <i class="fas fa-piggy-bank me-2" style="color: red;"></i>
@@ -242,7 +260,7 @@
                                 <div class="kofi-footer mt-2">                                    
                                     <button type="submit" class="kofi-btn">
                                         <i class="fas fa-paper-plane me-2"></i>
-                                        Gửi đơn phê duyệt
+                                        Gửi phê duyệt
                                     </button>
                                 </div>
 
@@ -271,7 +289,7 @@
                 <jsp:include page="template/footer.jsp"/>
             </main>
         </div>
-
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
         <script src ="resources/script/jquery-3.7.1.min.js"></script>
         <script src="./assets/tinymce/tinymce.min.js"></script>
         <script src="./resources/script/tinymceConfig.js"></script>
@@ -344,8 +362,16 @@
                         dataType: 'json',
                         success: function (response) {
                             if (response.success) {
-                                showSuccessMessage("Success", "Success");
-                                $('#loanForm')[0].reset(); // Reset form sau khi gửi thành công
+                                Swal.fire({
+                                    title: 'Thành công!',
+                                    text: 'Gửi yêu cầu phê duyệt thành công',
+                                    icon: 'success',
+                                    confirmButtonText: 'OK'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.reload();
+                                    }
+                                });
                                 formDirty = false;
                             } else {
                                 showErrorMessage("Error", response.message);

@@ -158,19 +158,18 @@
                             <input name="customerId" type="hidden" value="${customer.id}" />
                             <div class="row d-flex flex-row">
                                 <div class="col-lg-12">                                                                                    
-                                    <div class="row">
-                                        Image Upload Section 
+                                    <div class="row">                                        
                                         <div class="">
                                             <div class="mb-4 mt-3" style="display: flex">
                                                 <div class="col-md-6">
-                                                    <label for="identityCardNumber" class="form-label">Identity card number: </label>
-                                                    <input type="text" id="identityCardNumber" name="identityCardNumber" class="form-control mb-4">
+                                                    <label for="identityCardNumber" class="form-label">Mã số CCCD/CMND: </label>
+                                                    <input type="text" id="identityCardNumber" name="identityCardNumber" class="form-control mb-4" placeholder="Nhập số CCCD/CMND">
                                                 </div>
                                             </div>
                                             <div class="mb-4 mt-3" style="display: flex">
                                                 <div class="col-md-6">
-                                                    <label for="identityCardFrontSide" class="form-label">Identity card front side: </label>
-                                                    <label for="identityCardFrontSide" class="form-label text-muted">Upload a new avatar. Larger images will be resized automatically. Maximum upload size is 5 MB. Only accept jpg, jpeg, png, gif file</label>
+                                                    <label for="identityCardFrontSide" class="form-label">Ảnh CCCD/CMND mặt trước: </label>
+                                                    <label for="identityCardFrontSide" class="form-label text-muted">Ảnh có size nhỏ hơn 5mb vả chỉ chấp nhận các file có đuôi jpg, jpeg, png, gif.</label>
                                                     <input type="file" id="identityCardFrontSide" accept=".jpg,.png,.jpeg,.gif" name="identityCardFrontSide" class="form-control mb-4" onchange="previewImage(event, 'preview1')">
                                                 </div>
                                                 <div class="col-md-6">
@@ -179,8 +178,8 @@
                                             </div>
                                             <div class="mb-4 mt-3" style="display: flex">
                                                 <div class="col-md-6">
-                                                    <label for="identityCardBackSide" class="form-label">Identity card back side: </label>
-                                                    <label for="identityCardBackSide" class="form-label text-muted">Upload a new avatar. Larger images will be resized automatically. Maximum upload size is 5 MB. Only accept jpg, jpeg, png, gif file</label>
+                                                    <label for="identityCardBackSide" class="form-label">Ảnh CCCD/CMND mặt sau: </label>
+                                                    <label for="identityCardBackSide" class="form-label text-muted">Ảnh có size nhỏ hơn 5mb vả chỉ chấp nhận các file có đuôi jpg, jpeg, png, gif.</label>
                                                     <input type="file" id="identityCardBackSide" accept=".jpg,.png,.jpeg,.gif" name="identityCardBackSide" class="form-control mb-4" onchange="previewImage(event, 'preview2')">
                                                 </div>
                                                 <div class="col-md-6">
@@ -189,8 +188,8 @@
                                             </div>
                                             <div class="mb-4 mt-3" style="display: flex">
                                                 <div class="col-md-6">
-                                                    <label for="portraitPhoto" class="form-label">Portrait photo: </label>
-                                                    <label for="portraitPhoto" class="form-label text-muted">Upload a new avatar. Larger images will be resized automatically. Maximum upload size is 5 MB. Only accept jpg, jpeg, png, gif file</label>
+                                                    <label for="portraitPhoto" class="form-label">Ảnh chân dung: </label>
+                                                    <label for="portraitPhoto" class="form-label text-muted">Ảnh có size nhỏ hơn 5mb vả chỉ chấp nhận các file có đuôi jpg, jpeg, png, gif.</label>
                                                     <input type="file" id="portraitPhoto" accept=".jpg,.png,.jpeg,.gif" name="portraitPhoto" class="form-control mb-4" onchange="previewImage(event, 'preview3')">
                                                 </div>
                                                 <div class="col-md-6">
@@ -202,7 +201,7 @@
                                                     <p id="error-message-info" class="text-danger"></p>
                                                 </div>
                                                 <div class="col-md-4 text-center">
-                                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                                    <button type="submit" class="btn btn-primary">Gửi phê duyệt</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -281,7 +280,7 @@
                                             success: function (response) {
                                                 Swal.fire({
                                                     title: 'Thành công!',
-                                                    text: 'Thông tin đã được lưu thành công.',
+                                                    text: 'Thông tin đã được gửi để phê duyệt.',
                                                     icon: 'success',
                                                     confirmButtonText: 'OK'
                                                 }).then((result) => {

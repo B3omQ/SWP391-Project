@@ -67,13 +67,16 @@
                         <div class="row align-items-center">
                             <!-- Title & Breadcrumb -->
                             <div class="col-md-6">
-                                <h5 class="mb-0">Customer Management</h5>
+                                <h5 class="mb-0">Trang thông tin khách hàng</h5>
                                 <nav aria-label="breadcrumb" class="mt-2">
                                     <ul class="breadcrumb breadcrumb-muted bg-transparent rounded mb-0 p-0">
                                         <li class="breadcrumb-item">
-                                            <a href="index.html" class="text-decoration-none text-danger">SmartBanking</a>
+                                            <a href="#" class="text-decoration-none text-danger">SmartBanking</a>
                                         </li>
-                                        <li class="breadcrumb-item active" aria-current="page">Customers</li>
+                                        <li class="breadcrumb-item">
+                                            <a href="#" class="text-decoration-none text-danger">Danh sách khách hàng</a>
+                                        </li>
+                                        <li class="breadcrumb-item active" aria-current="page">Danh sách thông tin cá nhân</li>
                                     </ul>
                                 </nav>
                             </div>
@@ -85,12 +88,12 @@
                                         value="${currentPhoneSearch}"
                                         class="form-control border-custome me-2"
                                         type="text"
-                                        placeholder="Search by phone number"
+                                        placeholder="Tìm kiếm bằng số điện thoại"
                                         id="phoneSearch"
                                         name="phoneSearch"
                                         />
-                                    <a href="?page=1&phoneSearch=&recordsPerPage=${currentRecords}" class="btn border-custome me-2">Reset</a>
-                                    <button class="btn btn-danger" type="submit">Search</button>
+                                    <a href="?page=1&phoneSearch=&recordsPerPage=${currentRecords}" class="btn border-custome me-2">Đặt lại</a>
+                                    <button class="btn btn-danger" type="submit">Tìm kiếm</button>
                                 </form>
                             </div>
                         </div>
@@ -201,7 +204,7 @@
                                     <c:choose>
                                         <c:when test="${empty customerList}">
                                             <tr>
-                                                <td colspan="100%" class="text-center text-muted fw-bold">Search list is empty</td>
+                                                <td colspan="100%" class="text-center text-muted fw-bold">Danh sách trống</td>
                                             </tr>
                                         </c:when>
                                         <c:otherwise>
@@ -256,26 +259,26 @@
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-header bg-danger text-white">
-                                                            <h1 class="modal-title fs-5" id="detailsModalLabel${customer.id}">Customer's Detail</h1>
+                                                            <h1 class="modal-title fs-5" id="detailsModalLabel${customer.id}">Thông tin chung</h1>
                                                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
                                                             <div class="profile-header text-center">
                                                                 <img src="${customer.image}" alt="Customer Image" class="profile-image">
                                                                 <h2>${customer.firstname} ${customer.lastname}</h2>
-                                                                <p class="text-muted">Customer</p>
+                                                                <p class="text-muted">Vai trò: khách hàng</p>
                                                             </div>
                                                             <div class="profile-info">
-                                                                <p><strong>Id:</strong> ${customer.id}</p>
-                                                                <p><strong>Email contact:</strong> ${customer.email}</p>
-                                                                <p><strong>Address:</strong> ${customer.address}</p>
-                                                                <p><strong>Phone:</strong> ${customer.phone}</p>
-                                                                <p><strong>Date of Birth:</strong> ${customer.dob}</p>
+                                                                <p><strong>Mã id:</strong> ${customer.id}</p>
+                                                                <p><strong>Email liên hệ:</strong> ${customer.email}</p>
+                                                                <p><strong>Địa chỉ:</strong> ${customer.address}</p>
+                                                                <p><strong>Số điện thoại:</strong> ${customer.phone}</p>
+                                                                <p><strong>Ngày khai sinh:</strong> ${customer.dob}</p>
 
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn text-white bg-danger" data-bs-dismiss="modal">Close</button>
+                                                            <button type="button" class="btn text-white bg-danger" data-bs-dismiss="modal">Đóng</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -292,12 +295,12 @@
                 <!-- Pagination -->                 
                 <nav aria-label="Page navigation" class="mt-4">
                     <ul class="pagination justify-content-center">
-                        <!-- Nút First và Previous -->
+                        <!-- Nút Đầu và Trước -->
                         <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
-                            <a class="page-link text-danger" href="?page=1&phoneSearch=${currentPhoneSearch}&recordsPerPage=${currentRecords}">First</a>
+                            <a class="page-link text-danger" href="?page=1&phoneSearch=${currentPhoneSearch}&recordsPerPage=${currentRecords}">Đầu</a>
                         </li>
                         <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
-                            <a class="page-link text-danger" href="?page=${currentPage - 1}&phoneSearch=${currentPhoneSearch}&recordsPerPage=${currentRecords}">Previous</a>
+                            <a class="page-link text-danger" href="?page=${currentPage - 1}&phoneSearch=${currentPhoneSearch}&recordsPerPage=${currentRecords}">Trước</a>
                         </li>
 
                         <c:choose>
@@ -381,12 +384,12 @@
                             </c:otherwise>
                         </c:choose>
 
-                        <!-- Nút Next và Last -->
+                        <!-- Nút Tiếp và Cuối -->
                         <li class="page-item ${currentPage == totalPages ? 'disabled' : ''}">
-                            <a class="page-link text-danger" href="?page=${currentPage + 1}&phoneSearch=${currentPhoneSearch}&recordsPerPage=${currentRecords}">Next</a>
+                            <a class="page-link text-danger" href="?page=${currentPage + 1}&phoneSearch=${currentPhoneSearch}&recordsPerPage=${currentRecords}">Tiếp</a>
                         </li>
                         <li class="page-item ${currentPage == totalPages ? 'disabled' : ''}">
-                            <a class="page-link text-danger" href="?page=${totalPages}&phoneSearch=${currentPhoneSearch}&recordsPerPage=${currentRecords}">Last</a>
+                            <a class="page-link text-danger" href="?page=${totalPages}&phoneSearch=${currentPhoneSearch}&recordsPerPage=${currentRecords}">Cuối</a>
                         </li>
                     </ul>
                     <c:choose>
@@ -397,7 +400,7 @@
                                 <input type="number" name="page" min="1" max="${totalPages}" 
                                        placeholder="Page" 
                                        class="form-control w-auto text-center px-2">
-                                <button type="submit" class="btn btn-primary ms-2">Go</button>
+                                <button type="submit" class="btn btn-primary ms-2">Đi đến</button>
                             </form>
                         </c:when>
                     </c:choose>                
@@ -424,7 +427,7 @@
                                             });
 
                                             tippy('#newImg', {
-                                                content: "Only accept file jpg, jpeg, png, gif and size smaller than 5mbs",
+                                                content: "Chỉ chấp nhận các file jpg, jpeg, png, gif và dung lượng nhỏ hơn 5mb",
                                                 animation: 'fade',
                                                 duration: [300, 300],
                                                 placement: 'top',
@@ -432,7 +435,7 @@
                                             });
 
                                             tippy('#newPhone', {
-                                                content: "Phone must be 10 - 11 digits number",
+                                                content: "Số điện thoại bao gồm từ 10 - 11 số",
                                                 animation: 'fade',
                                                 duration: [300, 300],
                                                 placement: 'top',
@@ -446,7 +449,7 @@
                                             var phonePattern = /^\d{10,11}$/; // Chỉ chứa 10-11 số
 
                                             if (!phonePattern.test(phoneValue)) {
-                                                showErrorMessage("Error", "Invalid phone number")
+                                                showErrorMessage("Error", "Định dạng số điện thoại sai")
                                                 phoneInput.focus();
                                                 return false;
                                             }
@@ -475,7 +478,7 @@
                                                         data: {deleteId: customerId},
                                                         success: function (response) {
                                                             if (response.success) {
-                                                                showSuccessMessage("Success", "Deleted!");
+                                                                showSuccessMessage("Success", "Đã xóa!");
                                                                 form.closest('tr').remove();
                                                             } else {
                                                                 showErrorMessage("Error", "Something wrong here");
@@ -503,7 +506,7 @@
                                                         contentType: false, // Để browser tự động chọn content type
                                                         success: function (response) {
                                                             if (response.success) {
-                                                                reloadWithMessage("success", "Success", "Edit successful");
+                                                                reloadWithMessage("success", "Success", "Đã cập nhật!");
                                                             } else {
                                                                 showErrorMessage("Error", response.message);
                                                             }
