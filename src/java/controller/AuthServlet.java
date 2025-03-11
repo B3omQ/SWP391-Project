@@ -1,5 +1,6 @@
-package controller.customer;
+package controller;
 
+import controller.resetService;
 import dal.CustomerDAO;
 import dal.ManagerDAO;
 import dal.StaffDAO;
@@ -16,6 +17,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import util.AccountValidation;
 
+/**
+ *
+ * @author emkob
+ */
+
 public class AuthServlet extends HttpServlet {
 
     private CustomerDAO customerDAO = new CustomerDAO();
@@ -23,56 +29,75 @@ public class AuthServlet extends HttpServlet {
     private AccountValidation av = new AccountValidation();
     private resetService resetService = new resetService();
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String action = request.getParameter("action");
+@Override
+protected void doGet(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+    String action = request.getParameter("action");
 
-        if ("loginGG".equals(action)) {
-            String googleCode = request.getParameter("code");
-            if (googleCode != null) {
-                try {
-                    String accessToken = GoogleLogin.getToken(googleCode);
-                    GoogleAccount googleAccount = GoogleLogin.getUserInfo(accessToken);
-                    String email = googleAccount.getEmail();
+    if ("loginGG".equals(action)) {
+        String googleCode = request.getParameter("code");
+        if (googleCode != null) {
+            try {
+                String accessToken = GoogleLogin.getToken(googleCode);
+                GoogleAccount googleAccount = GoogleLogin.getUserInfo(accessToken);
+                String email = googleAccount.getEmail();
 
-                    boolean emailExists = customerDAO.emailExists(email) || staffDAO.emailExists(email);
-                    if (!emailExists) {
-                        request.getSession().setAttribute("errorAccount", "Tài khoản chưa tồn tại.");
-                        response.sendRedirect("auth/template/login.jsp");
-                        return;
-                    }
-
-                    Customer customer = customerDAO.getCustomerByEmail(email);
-                    Staff staff = staffDAO.getStaffByEmail(email);
-                    HttpSession session = request.getSession();
-
-                    if (customer != null) {
-                        session.setAttribute("account", customer);
-                        session.setAttribute("userId", customer.getId());
-
-     
-
-                        response.sendRedirect("customer/Customer.jsp");
-                        return;
-                    } else if (staff != null) {
-                        session.setAttribute("staff", staff);
-                        session.setAttribute("staffId", staff.getId());
-                        response.sendRedirect("staff/template/Staff.jsp");
-                        return;
-                    }
-
-                } catch (Exception e) {
-                    request.getSession().setAttribute("errorAccount", "Đăng nhập Google thất bại.");
+                boolean emailExists = customerDAO.emailExists(email) || staffDAO.emailExists(email);
+                if (!emailExists) {
+                    request.getSession().setAttribute("errorAccount", "Tài khoản chưa tồn tại.");
                     response.sendRedirect("auth/template/login.jsp");
+                    return;
                 }
-            } else {
+
+                Customer customer = customerDAO.getCustomerByEmail(email);
+                Staff staff = staffDAO.getStaffByEmail(email);
+                HttpSession session = request.getSession();
+
+                if (customer != null) {
+                    session.setAttribute("account", customer);
+                    session.setAttribute("userId", customer.getId());
+                    response.sendRedirect("customer/Customer.jsp");
+                    return;
+                } else if (staff != null) {
+                    session.setAttribute("staff", staff);
+    session.setAttribute("staffId", staff.getId());
+    System.out.println("Google Login - staffId set: " + staff.getId());
+    System.out.println("Session ID after Google login: " + session.getId());
+                    session.setAttribute("staff", staff);
+                    session.setAttribute("staffId", staff.getId());
+
+                    // Lấy RoleId để điều hướng trang phù hợp
+int roleId = staff.getRoleId().getId();
+
+                    switch (roleId) {
+                        case 1: // Admin
+                            response.sendRedirect("accountant/home.jsp");
+                            break;
+                        case 2: // Manager
+                            response.sendRedirect("staff/template/Manager.jsp");
+                            break;
+                        case 3: // Employee
+                            response.sendRedirect("staff/template/Employee.jsp");
+                            break;
+                        default:
+                            response.sendRedirect("staff/template/Staff.jsp");
+                            break;
+                    }
+                    return;
+                }
+
+            } catch (Exception e) {
+                request.getSession().setAttribute("errorAccount", "Đăng nhập Google thất bại.");
                 response.sendRedirect("auth/template/login.jsp");
             }
         } else {
             response.sendRedirect("auth/template/login.jsp");
         }
+    } else {
+        response.sendRedirect("auth/template/login.jsp");
     }
+}
+
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

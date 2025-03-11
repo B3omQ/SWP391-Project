@@ -10,27 +10,17 @@
 
         <ul class="sidebar-menu pt-3">
             <li><a href="index.html"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
-
             <li><a href="profile-manager"><i class="uil uil-user me-2 d-inline-block"></i>My profile</a></li>         
-
             <li class="sidebar-dropdown">
                 <a href="javascript:void(0)"><i class="uil uil-file me-2 d-inline-block"></i>Deposite Service</a>
                 <div class="sidebar-submenu">
                     <ul>
-                        <li><a href="dep-option-service">View option</a></li>                      
+                        <li><a href="dep-option-service">View option</a></li>
+                        <li><a href="add-saving-option">Create option</a></li>                        
                     </ul>
                 </div>
             </li>            
-
-            <li class="sidebar-dropdown">
-                <a href="javascript:void(0)"><i class="uil uil-file me-2 d-inline-block"></i>Loan Service</a>
-                <div class="sidebar-submenu">
-                    <ul>
-                        <li><a href="Disbursement">Disbursements Management</a></li>                      
-                    </ul>
-                </div>
-            </li>
-
+            <li><a href="javascript:void(0)"><i class="uil uil-file me-2 d-inline-block"></i>Loan Service</a></li>
             <li class="sidebar-dropdown">
                 <a href="javascript:void(0)"><i class="uil uil-apps me-2 d-inline-block"></i>Apps</a>
                 <div class="sidebar-submenu">
@@ -41,7 +31,6 @@
                     </ul>
                 </div>
             </li>
-
             <li class="sidebar-dropdown">
                 <a href="javascript:void(0)"><i class="uil uil-file me-2 d-inline-block"></i>Pages</a>
                 <div class="sidebar-submenu">
@@ -57,7 +46,6 @@
                     </ul>
                 </div>
             </li>
-
             <li class="sidebar-dropdown">
                 <a href="javascript:void(0)"><i class="uil uil-sign-in-alt me-2 d-inline-block"></i>Authentication</a>
                 <div class="sidebar-submenu">
@@ -70,12 +58,10 @@
                     </ul>
                 </div>
             </li>            
-
-            <li><a href="home.jsp"><i class="uil uil-window me-2 d-inline-block"></i>Home page</a></li>
+            <!-- Sửa mục Blogs -->
+            <li><a href="<%= request.getContextPath() %>/BlogServlet"><i class="uil uil-blogger me-2 d-inline-block"></i>Blogs</a></li>            <li><a href="home.jsp"><i class="uil uil-window me-2 d-inline-block"></i>Home page</a></li>
         </ul>
-        <!-- sidebar-menu  -->
     </div>
-    <!-- sidebar-content  -->
     <ul class="sidebar-footer list-unstyled mb-0">
         <li class="list-inline-item mb-0 ms-1">
             <a href="#" class="btn btn-icon btn-pills btn-soft-primary">

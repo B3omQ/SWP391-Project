@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller.customer;
+package controller;
 
 import dal.CustomerDAO;
 import dal.DepServiceUsedDAO;
@@ -23,6 +23,10 @@ import controller.calculation.InterestCalculator;
 import java.io.PrintWriter;
 import model.Staff;
 
+/**
+ *
+ * @author emkob
+ */
 public class VerifyingOtp extends HttpServlet {
     private CustomerDAO customerDAO = new CustomerDAO();
     private DepServiceUsedDAO depServiceUsedDAO = new DepServiceUsedDAO();
@@ -99,8 +103,35 @@ public class VerifyingOtp extends HttpServlet {
                 response.sendRedirect("auth/template/login.jsp");
                 return;
             }
-        }
-        catch (Exception e) {
+
+            if (userOtp != null && userOtp.equals(generatedOtp)) {
+                session.removeAttribute("otp");
+                if (session.getAttribute("staff") != null) {
+                    Staff staff = (Staff)session.getAttribute("staff");
+                    if(staff.getRoleId().getId() == 1) {
+                        response.sendRedirect("accountant/home.jsp");
+                    }                    
+                    if(staff.getRoleId().getId() == 2) {
+                        response.sendRedirect("");
+                    }
+                    if(staff.getRoleId().getId() == 3) {
+                        response.sendRedirect("profile-manager");
+                    }
+                    if(staff.getRoleId().getId() == 4) {
+                        response.sendRedirect("profile-admin");
+                    }
+                    if(staff.getRoleId().getId() == 5) {
+                        response.sendRedirect("");
+                    }                    
+                } else {
+                    response.sendRedirect("customer/template/Customer.jsp");
+                }
+            } else {
+                session.setAttribute("otpError", "Mã OTP không đúng, vui lòng thử lại!");
+                response.sendRedirect(request.getContextPath() + "/auth/template/otp.jsp");
+            }
+
+        } catch (Exception e) {
             System.out.println(e);
         }
 
@@ -114,7 +145,6 @@ public class VerifyingOtp extends HttpServlet {
                 // Customer: Xử lý đáo hạn trước khi chuyển hướng
                 Customer customer = (Customer) session.getAttribute("account");
                 if (customer != null) {
-                    processMaturedDeposits(customer, session);
                 }
                 response.sendRedirect("customer/Customer.jsp");
             }
@@ -124,81 +154,5 @@ public class VerifyingOtp extends HttpServlet {
         }
     }
 
-    private void processMaturedDeposits(Customer customer, HttpSession session) {
-        List<DepServiceUsed> maturedDeposits = depServiceUsedDAO.getDepServiceUsedByCustomerId(customer.getId());
-        LocalDateTime now = LocalDateTime.now();
-        boolean hasProcessed = false;
 
-        for (DepServiceUsed deposit : maturedDeposits) {
-            if ("ACTIVE".equals(deposit.getDepStatus()) && deposit.getEndDate().toLocalDateTime().isBefore(now)) {
-                processMaturedDeposit(deposit, customer);
-                hasProcessed = true;
-            }
-        }
-
-        if (hasProcessed) {
-            session.setAttribute("success", "Đã tự động xử lý các khoản tiết kiệm đáo hạn!");
-        }
-
-        customer.setWallet(customerDAO.getWalletByCustomerId(customer.getId()));
-        session.setAttribute("account", customer);
-    }
-
-    private void processMaturedDeposit(DepServiceUsed deposit, Customer customer) {
-        BigDecimal principal = deposit.getAmount();
-        BigDecimal savingRate = depServiceUsedDAO.getSavingRateByDepId(deposit.getDepId());
-        int termMonths = calculateTermMonths(deposit.getStartDate(), deposit.getEndDate());
-        BigDecimal interest = InterestCalculator.calculateInterest(principal, savingRate.doubleValue(), termMonths);
-        BigDecimal totalAmount = principal.add(interest);
-
-        String maturityAction = deposit.getMaturityAction() != null ? deposit.getMaturityAction() : "withdrawAll";
-
-        depServiceUsedDAO.updateDepStatus(deposit.getId(), "COMPLETED");
-
-        switch (maturityAction) {
-            case "withdrawInterest":
-                BigDecimal newBalance = customerDAO.getWalletByCustomerId(customer.getId()).add(interest);
-                customerDAO.updateWallet(customer.getId(), newBalance);
-                renewDeposit(deposit, principal, customer);
-                depHistoryDAO.addDepHistory(deposit.getId(), "Đáo hạn tự động: Rút lãi " + interest + " VND, gửi lại gốc " + principal + " VND");
-                break;
-
-            case "renewAll":
-                renewDeposit(deposit, totalAmount, customer);
-                depHistoryDAO.addDepHistory(deposit.getId(), "Đáo hạn tự động: Gửi lại toàn bộ " + totalAmount + " VND");
-                break;
-
-            case "withdrawAll":
-                newBalance = customerDAO.getWalletByCustomerId(customer.getId()).add(totalAmount);
-                customerDAO.updateWallet(customer.getId(), newBalance);
-                depHistoryDAO.addDepHistory(deposit.getId(), "Đáo hạn tự động: Rút toàn bộ " + totalAmount + " VND");
-                break;
-
-            default:
-                newBalance = customerDAO.getWalletByCustomerId(customer.getId()).add(totalAmount);
-                customerDAO.updateWallet(customer.getId(), newBalance);
-                depHistoryDAO.addDepHistory(deposit.getId(), "Đáo hạn tự động: Rút toàn bộ (mặc định) " + totalAmount + " VND");
-        }
-    }
-
-    private void renewDeposit(DepServiceUsed oldDeposit, BigDecimal amount, Customer customer) {
-        DepServiceUsed newDep = new DepServiceUsed(
-            0, oldDeposit.getDepId(), customer.getId(), oldDeposit.getDepTypeId(),
-            amount, Timestamp.valueOf(LocalDateTime.now()),
-            Timestamp.valueOf(LocalDateTime.now().plusMonths(calculateTermMonths(oldDeposit.getStartDate(), oldDeposit.getEndDate()))),
-            "ACTIVE", oldDeposit.getMaturityAction()
-        );
-        depServiceUsedDAO.addDepServiceUsed(newDep);
-    }
-
-    private int calculateTermMonths(Timestamp start, Timestamp end) {
-        LocalDateTime startDate = start.toLocalDateTime();
-        LocalDateTime endDate = end.toLocalDateTime();
-        return (int) java.time.temporal.ChronoUnit.MONTHS.between(startDate, endDate);
-    }
-
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }
 }
