@@ -14,10 +14,6 @@ import java.util.TreeMap;
 import model.Customer;
 import util.VNPayUtils;
 
-/**
- *
- * @author emkob
- */
 public class VNpayReturn extends HttpServlet {
     private static final String VNP_HASH_SECRET = "GN5MEE6Q6ZYG941UUB76FYAA786W6NAX";
 
@@ -87,16 +83,10 @@ public class VNpayReturn extends HttpServlet {
                     return;
                 }
 
-                // Lưu lịch sử nạp tiền vào DepHistory với DSUId = null
+                // Lưu lịch sử nạp tiền
                 DepHistoryDAO depHistoryDAO = new DepHistoryDAO();
                 String description = "Nạp tiền qua VNPay - Mã GD: " + txnRef;
-                // Sử dụng null cho DSUId thay vì -1
-                boolean historySaved = depHistoryDAO.addDepHistory(null, description, amount);
-                if (!historySaved) {
-                    System.out.println("❌ Lỗi: Không thể lưu lịch sử nạp tiền cho giao dịch " + txnRef);
-                } else {
-                    System.out.println("✅ Đã lưu lịch sử nạp tiền: " + description + ", Amount: " + amount);
-                }
+                Timestamp createdAt = new Timestamp(System.currentTimeMillis());
 
                 Customer updatedCustomer = customerDAO.getCustomerById(customerId);
                 request.getSession().setAttribute("account", updatedCustomer);

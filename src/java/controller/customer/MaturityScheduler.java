@@ -7,11 +7,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-/**
- *
- * @author emkob
- */
-
 public class MaturityScheduler {
 
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
@@ -19,6 +14,9 @@ public class MaturityScheduler {
     private final MaturityHandlerServlet maturityHandler = new MaturityHandlerServlet();
 
     public void startScheduler() {
+        // Lập lịch chạy mỗi ngày (24 giờ)
+//        scheduler.scheduleAtFixedRate(this::processAllMaturedDeposits, 0, 24, TimeUnit.HOURS);
+        // Để test nhanh, có thể dùng mỗi phút:
          scheduler.scheduleAtFixedRate(this::processAllMaturedDeposits, 0, 1, TimeUnit.MINUTES);
     }
 

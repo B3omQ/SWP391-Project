@@ -14,11 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- *
- * @author emkob
- */
-
 public class Calculation extends HttpServlet {
 
     private final CustomerDAO customerDAO = new CustomerDAO();

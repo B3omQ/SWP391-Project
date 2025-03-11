@@ -12,12 +12,6 @@ import java.math.BigDecimal;
 import model.Customer;
 import org.json.JSONObject;
 
-/**
- *
- * @author emkob
- */
-
-
 public class FinancialChartServlet extends HttpServlet {
 
     @Override

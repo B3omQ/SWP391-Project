@@ -13,9 +13,6 @@
     <meta name="email" content="support@shreethemes.in" />
     <meta name="website" content="${pageContext.request.contextPath}/index.jsp" />
     <meta name="Version" content="v1.2.0" />
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-
     <!-- favicon -->
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/images/favicon.ico.png">
     <!-- Bootstrap -->

@@ -1,28 +1,18 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="dal.DepHistoryDAO" %>
 <%@ page import="model.DepHistory" %>
 <%@ page import="java.util.List" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<jsp:useBean id="depHistoryDAO" class="dal.DepHistoryDAO" scope="page"/>
 
 <%@ include file="template/header.jsp" %>
 <%@ include file="template/sidebar.jsp" %>
 
-<% 
-    // Lấy customer từ session
-    model.Customer customer = (model.Customer) session.getAttribute("account");
-    if (customer == null) {
-        response.sendRedirect(request.getContextPath() + "/login.jsp");
-        return;
-    }
-
-    // Kiểm tra và khởi tạo depHistoryList nếu chưa có trong session
-    List<DepHistory> depHistoryList = (List<DepHistory>) session.getAttribute("depHistoryList");
-    if (depHistoryList == null) {
-        DepHistoryDAO depHistoryDAO = new DepHistoryDAO();
-        depHistoryList = depHistoryDAO.getDepHistoryByCustomerId(customer.getId());
-        session.setAttribute("depHistoryList", depHistoryList);
-    }
+<%
+    List<DepHistory> depHistoryList = depHistoryDAO.getDepHistoryByCustomerId(((model.Customer) session.getAttribute("account")).getId());
+    pageContext.setAttribute("depHistoryList", depHistoryList);
 %>
 
 <div class="container-fluid">
@@ -35,25 +25,20 @@
                         <h6 class="align-items-center mb-0">Lịch sử giao dịch</h6>
                         <div class="search-bar p-0 d-none d-md-block ms-2">
                             <div id="search" class="menu-search mb-0">
-                                <form role="search" method="get" action="<%=request.getContextPath()%>/SearchTransactionHistory" id="searchform" class="searchform">
+                                <form role="search" method="get" id="searchform" class="searchform">
                                     <div>
-                                        <input type="text" class="form-control border rounded-pill" name="s" id="s" value="${param.s}" placeholder="Tra cứu giao dịch">
+                                        <input type="text" class="form-control border rounded-pill" name="s" id="s" placeholder="Tra cứu giao dịch">
                                         <input type="submit" id="searchsubmit" value="Search">
-                                        <input type="hidden" name="sort" value="${param.sort}">
                                     </div>
                                 </form>
                             </div>
                         </div>
                         <div class="mb-0 position-relative ms-3">
-                            <form method="get" action="<%=request.getContextPath()%>/SortTransactionHistory" id="sortform" style="display:inline;">
-                                <input type="hidden" name="s" value="${param.s}">
-                                <select class="form-select form-control" name="sort" onchange="this.form.submit()">
-                                    <option value="" ${empty param.sort ? 'selected' : ''}>-- Sắp xếp --</option>
-                                    <option value="time" ${param.sort == 'time' ? 'selected' : ''}>Theo Thời gian</option>
-                                    <option value="amount" ${param.sort == 'amount' ? 'selected' : ''}>Theo Số tiền</option>
-                                    <option value="description" ${param.sort == 'description' ? 'selected' : ''}>Theo Mô tả</option>
-                                </select>
-                            </form>
+                            <select class="form-select form-control" id="sort" onchange="sortHistory(this.value)">
+                                <option value="time">Sắp xếp theo Thời gian</option>
+                                <option value="amount">Sắp xếp theo Số tiền</option>
+                                <option value="description">Sắp xếp theo Mô tả</option>
+                            </select>
                         </div>
                     </div>
                     <!-- Bảng hiển thị lịch sử giao dịch -->
@@ -61,21 +46,24 @@
                         <table class="table table-hover table-striped">
                             <thead class="table-dark">
                                 <tr>
+                                    <th scope="col">ID Giao dịch</th>
                                     <th scope="col">Thời gian</th>
                                     <th scope="col">Số tiền</th>
                                     <th scope="col">Mô tả</th>
-                                    <th scope="col">Chi tiết</th>
                                 </tr>
                             </thead>
                             <tbody id="historyTable">
                                 <c:forEach var="history" items="${depHistoryList}">
                                     <tr>
+                                        <td>${history.id}</td>
                                         <td>
                                             <c:choose>
                                                 <c:when test="${history.createdAt != null}">
                                                     <fmt:formatDate value="${history.createdAt}" pattern="dd/MM/yyyy HH:mm:ss" />
                                                 </c:when>
-                                                <c:otherwise>Không xác định</c:otherwise>
+                                                <c:otherwise>
+                                                    Không xác định
+                                                </c:otherwise>
                                             </c:choose>
                                         </td>
                                         <td>
@@ -83,51 +71,13 @@
                                                 <c:when test="${history.amount != null}">
                                                     <fmt:formatNumber value="${history.amount}" type="number" groupingUsed="true" /> VND
                                                 </c:when>
-                                                <c:otherwise>Không xác định</c:otherwise>
+                                                <c:otherwise>
+                                                    Không xác định
+                                                </c:otherwise>
                                             </c:choose>
                                         </td>
                                         <td>${history.description}</td>
-                                        <td>
-                                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#transactionModal_${history.id}">
-                                                Xem chi tiết
-                                            </button>
-                                        </td>
                                     </tr>
-                                    <!-- Modal cho mỗi lịch sử -->
-                                    <div class="modal fade" id="transactionModal_${history.id}" tabindex="-1" aria-labelledby="transactionModalLabel_${history.id}" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="transactionModalLabel_${history.id}">Chi tiết giao dịch #${history.id}</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <p><strong>ID Giao dịch:</strong> ${history.id}</p>
-                                                    <p><strong>ID Dịch vụ (DSUId):</strong> ${history.dsuId}</p>
-                                                    <p><strong>Thời gian:</strong> 
-                                                        <c:choose>
-                                                            <c:when test="${history.createdAt != null}">
-                                                                <fmt:formatDate value="${history.createdAt}" pattern="dd/MM/yyyy HH:mm:ss" />
-                                                            </c:when>
-                                                            <c:otherwise>Không xác định</c:otherwise>
-                                                        </c:choose>
-                                                    </p>
-                                                    <p><strong>Số tiền:</strong> 
-                                                        <c:choose>
-                                                            <c:when test="${history.amount != null}">
-                                                                <fmt:formatNumber value="${history.amount}" type="number" groupingUsed="true" /> VND
-                                                            </c:when>
-                                                            <c:otherwise>Không xác định</c:otherwise>
-                                                        </c:choose>
-                                                    </p>
-                                                    <p><strong>Mô tả:</strong> ${history.description}</p>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </c:forEach>
                                 <c:if test="${empty depHistoryList}">
                                     <tr>
@@ -147,7 +97,18 @@
                     </div>
                     <div style="position: relative; width: 100%; max-width: 300px; margin: auto;">
                         <canvas id="assetChart"></canvas>
-                        <div id="chart-center" style="position: absolute; top: 50%; left: 35%; transform: translate(-50%, -50%); font-size: 20px; font-weight: bold; color: #333; text-align: center; width: 100%; max-width: 200px; white-space: nowrap;"></div>
+                        <div id="chart-center" style="
+                            position: absolute;
+                            top: 50%;
+                            left: 35%;
+                            transform: translate(-50%, -50%);
+                            font-size: 20px;
+                            font-weight: bold;
+                            color: #333;
+                            text-align: center;
+                            width: 100%;
+                            max-width: 200px;
+                            white-space: nowrap;"></div>
                     </div>
                 </div>
             </div><!--end col-->
@@ -157,6 +118,29 @@
 
 <%@ include file="template/footer.jsp" %>
 
+<!-- Script cho biểu đồ -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/Chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function sortHistory(criteria) {
+        let table = document.getElementById("historyTable");
+        let rows = Array.from(table.getElementsByTagName("tr"));
+
+        rows.sort((a, b) => {
+            let aValue, bValue;
+            if (criteria === "time") {
+                aValue = new Date(a.cells[1].textContent);
+                bValue = new Date(b.cells[1].textContent);
+            } else if (criteria === "amount") {
+                aValue = parseFloat(a.cells[2].textContent.replace(/[^\d.-]/g, ''));
+                bValue = parseFloat(b.cells[2].textContent.replace(/[^\d.-]/g, ''));
+            } else if (criteria === "description") {
+                aValue = a.cells[3].textContent;
+                bValue = b.cells[3].textContent;
+            }
+            return aValue > bValue ? 1 : -1;
+        });
+
+        rows.forEach(row => table.appendChild(row));
+    }
+</script>

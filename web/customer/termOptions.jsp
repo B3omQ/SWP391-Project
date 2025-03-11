@@ -2,6 +2,17 @@
 <%@ page import="java.time.LocalDate" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
 
+<%
+    Integer term = (Integer) session.getAttribute("selectedTerm");
+    if (term == null) {
+        term = 1; // Giá trị mặc định, ví dụ 1 tháng
+    }
+
+    LocalDate today = LocalDate.now();
+    int days = term * 30; // Tính theo 360 ngày/năm
+    LocalDate dueDate = today.plusDays(days);
+    String formattedDate = dueDate.format(DateTimeFormatter.ofPattern("dd MMMM yyyy"));
+%>
 
 <%@ include file="template/header.jsp" %>
 <%@ include file="template/sidebar.jsp" %>
@@ -10,7 +21,7 @@
     <div class="layout-specing">
         <div class="container mt-5" style="max-width: 600px;">
             <h3 class="text-center">Bạn muốn làm gì khi kỳ hạn gửi tiền kết thúc?</h3>
-<p class="text-center text-muted">Vào <strong><%= request.getAttribute("maturityDate") %></strong></p>
+            <p class="text-center text-muted">Vào <strong><%= formattedDate %></strong></p>
 
             <form action="${pageContext.request.contextPath}/ProcessTermOptions" method="POST">
                 <div class="option-box" onclick="selectOption(this)">

@@ -17,7 +17,6 @@ import model.Customer;
  *
  * @author emkob
  */
-
 public class DepositValidationServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -39,6 +38,7 @@ public class DepositValidationServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // Nếu cần xử lý GET, để trống hoặc redirect
     }
 
     @Override
@@ -51,6 +51,7 @@ public class DepositValidationServlet extends HttpServlet {
         }
         int customerId = customer.getId();
 
+        // Kiểm tra xem khách hàng đã có khoản gửi tiết kiệm đang hoạt động chưa
         DepServiceUsedDAO depServiceUsedDAO = new DepServiceUsedDAO();
         List<DepServiceUsed> activeDeposits = depServiceUsedDAO.getActiveDepositsByCustomerId(customerId);
         if (!activeDeposits.isEmpty()) {
@@ -59,6 +60,7 @@ public class DepositValidationServlet extends HttpServlet {
             return;
         }
 
+        // Lấy số tiền gửi từ request
         String amountStr = request.getParameter("depositAmount");
         BigDecimal amount;
         try {

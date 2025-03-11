@@ -1,6 +1,13 @@
+<%-- 
+    Document   : home
+    Created on : Feb 3, 2025, 6:51:37 PM
+    Author     : LAPTOP
+--%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<!DOCTYPE html>
+<html lang="en">
 
     <head>
         <meta charset="utf-8" />
@@ -444,7 +451,6 @@
             </div><!--end container-->
         </header><!--end header-->
         <!-- Navbar End -->
-<%@ include file="/template/header.jsp" %>
 
         <!-- Start Hero -->
         <section class="bg-half-260 d-table w-100" style="background: url('assets/images/bg/banner-home-pc') center;">

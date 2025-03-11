@@ -3,6 +3,7 @@
 <%@ page import="java.text.DecimalFormat" %>
 
 <%
+    // Lấy thông tin từ session do Calculation đã lưu
     Object rawDepositAmount = session.getAttribute("depositAmount");
     Object rawSelectedTerm = session.getAttribute("selectedTerm");
     Object rawInterest = session.getAttribute("calculatedInterest");
@@ -15,6 +16,7 @@
         return;
     }
 
+    // Ép kiểu dữ liệu
     BigDecimal depositAmount = (BigDecimal) rawDepositAmount;
     int selectedTerm = (Integer) rawSelectedTerm;
     BigDecimal interestAmount = (BigDecimal) rawInterest;
@@ -24,6 +26,7 @@
     String selectedAction = (String) session.getAttribute("selectedAction");
     selectedAction = (selectedAction != null) ? selectedAction : "withdrawAll";
 
+    // Định dạng số tiền
     DecimalFormat currencyFormat = new DecimalFormat("#,###");
 %>
 
