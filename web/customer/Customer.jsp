@@ -9,20 +9,16 @@
 <%@ include file="template/sidebar.jsp" %>
 
 <% 
-    // Lấy customer từ session
     model.Customer customer = (model.Customer) session.getAttribute("account");
     if (customer == null) {
         response.sendRedirect(request.getContextPath() + "/login.jsp");
         return;
     }
 
-    // Kiểm tra và khởi tạo depHistoryList nếu chưa có trong session
-    List<DepHistory> depHistoryList = (List<DepHistory>) session.getAttribute("depHistoryList");
-    if (depHistoryList == null) {
-        DepHistoryDAO depHistoryDAO = new DepHistoryDAO();
-        depHistoryList = depHistoryDAO.getDepHistoryByCustomerId(customer.getId());
-        session.setAttribute("depHistoryList", depHistoryList);
-    }
+    // Truy vấn trực tiếp từ cơ sở dữ liệu
+    DepHistoryDAO depHistoryDAO = new DepHistoryDAO();
+    List<DepHistory> depHistoryList = depHistoryDAO.getDepHistoryByCustomerId(customer.getId());
+    request.setAttribute("depHistoryList", depHistoryList); // Đặt vào request thay vì session
 %>
 
 <div class="container-fluid">
