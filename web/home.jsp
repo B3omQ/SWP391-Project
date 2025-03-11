@@ -710,15 +710,14 @@
                             <c:forEach var="r" items="${rlist}">
                                 <div class="tiny-slide text-center">
                                     <p class="text-muted h6 fw-normal fst-italic">${r.review}</p>
-                                    <img src="https://placehold.co/600x400" class="img-fluid" alt="">
                                     <ul class="list-unstyled mb-0">
-                                        <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                        <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                        <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                        <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                        <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
+                                        <c:forEach var="i" begin="1" end="5">
+                                            <li class="list-inline-item">
+                                                <i class="mdi mdi-star ${i <= r.rate ? 'text-warning' : 'text-secondary'}"></i>
+                                            </li>
+                                        </c:forEach>
                                     </ul>
-                                    <h6 class="text-primary">- <small class="text-muted"></small></h6>
+                                    <h6 class="text-primary">-${r.cusid.username}<small class="text-muted"></small></h6>
                                 </div><!--end customer testi-->
                             </c:forEach>
                         </div><!--end carousel-->

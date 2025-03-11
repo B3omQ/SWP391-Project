@@ -42,6 +42,8 @@ public class HomeServlet extends HttpServlet {
         try {
             List<CustomerReview> rlist = crdao.getTop5ReviewsByRate(5);
             request.setAttribute("rlist", rlist);
+            System.out.println("Servlet rlist size: " + rlist.size());
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
