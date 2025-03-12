@@ -26,7 +26,7 @@ public class IdentityInformationController extends HttpServlet {
     }
 
     private String getAndSaveImg(Part filePart) throws IOException {
-        String relativePath = "assets/images/";
+        String relativePath = "assets/images/identityInformation/";
         String uploadPath = getServletContext().getRealPath("");
         String projectRoot = uploadPath.replace("build" + File.separator + "web", "");
         String fileSavePath = projectRoot + "web" + File.separator + relativePath;
@@ -95,6 +95,13 @@ public class IdentityInformationController extends HttpServlet {
                 Part identityCardBackSide = request.getPart("identityCardBackSide");
                 Part portraitPhoto = request.getPart("portraitPhoto");
 
+                if (idao.isDuplicatedIdentityNumber(identityCardNumber, customerId)) {
+                    json.put("success", false);
+                    json.put("message", "Identity card number already existed");
+                    response.getWriter().write(json.toString());
+                    return;
+                }
+
                 // Validate file sizes
                 if (identityCardFrontSide.getSize() > 1024 * 1024 * 5
                         || identityCardBackSide.getSize() > 1024 * 1024 * 5
@@ -129,6 +136,14 @@ public class IdentityInformationController extends HttpServlet {
                         imageIdentityCardFrontSide,
                         imageIdentityCardBackSide,
                         imagePortraitPhoto);
+                
+                VerifyIdentityInformation deleteIdentity = idao.getVerifyIdentityInformationByIdAndStatus(customerId, "Denied");
+                if (deleteIdentity != null) {
+                    deleteFile(deleteIdentity.getIdentityCardBackSide());
+                    deleteFile(deleteIdentity.getIdentityCardFrontSide());
+                    deleteFile(deleteIdentity.getPortraitPhoto());
+                    idao.deleteVerifyIdentityInformation(customerId, "Denied");
+                }
 
                 json.put("success", true);
                 json.put("message", "Changes saved successfully");
@@ -139,30 +154,30 @@ public class IdentityInformationController extends HttpServlet {
             }
         }
 
-        if (delete != null) {
-            try {
-                int deleteId = Integer.parseInt(delete);
-                VerifyIdentityInformation identityInfo = idao.getVerifyIdentityInformationByCusId(deleteId);
-                if (identityInfo != null) {
-                    String identityCardFrontSide = identityInfo.getIdentityCardFrontSide();
-                    String identityCardBackSide = identityInfo.getIdentityCardBackSide();
-                    String portraitPhoto = identityInfo.getPortraitPhoto();
-
-                    deleteFile(identityCardFrontSide);
-                    deleteFile(identityCardBackSide);
-                    deleteFile(portraitPhoto);
-
-                    idao.deleteVerifyIdentityInformation(deleteId);
-                }
-                json.put("success", true);
-                json.put("message", "Information successfully deleted");
-                response.getWriter().write(json.toString());
-
-                return;
-            } catch (Exception e) {
-            }
-
-        }
+//        if (delete != null) {
+//            try {
+//                int deleteId = Integer.parseInt(delete);
+//                VerifyIdentityInformation identityInfo = idao.getVerifyIdentityInformationByCusId(deleteId);
+//                if (identityInfo != null) {
+//                    String identityCardFrontSide = identityInfo.getIdentityCardFrontSide();
+//                    String identityCardBackSide = identityInfo.getIdentityCardBackSide();
+//                    String portraitPhoto = identityInfo.getPortraitPhoto();
+//
+//                    deleteFile(identityCardFrontSide);
+//                    deleteFile(identityCardBackSide);
+//                    deleteFile(portraitPhoto);
+//
+//                    idao.deleteVerifyIdentityInformation(deleteId);
+//                }
+//                json.put("success", true);
+//                json.put("message", "Information successfully deleted");
+//                response.getWriter().write(json.toString());
+//
+//                return;
+//            } catch (Exception e) {
+//            }
+//
+//        }
     }
 
     @Override

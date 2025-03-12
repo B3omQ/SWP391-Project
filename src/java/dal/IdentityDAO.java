@@ -59,6 +59,25 @@ public class IdentityDAO extends DBContext {
         return list;
     }
 
+    public boolean isDuplicatedIdentityNumber(String identityNumber, int cusId) {
+        String sql = """
+                SELECT 1 FROM [BankingSystem].[dbo].[VerifyIdentityInformation] 
+                WHERE [CusID] <> ? AND [IdentityCardNumber] = ?
+                """;
+
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, cusId);
+            st.setString(2, identityNumber);
+
+            try (ResultSet rs = st.executeQuery()) {
+                return rs.next();
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+
     //hàm này tạo ra để lấy ra thằng verifyIdentityInformation bị deny, 
     //mục đích là để mỗi lần người dùng vào check xác thực tài khoản nếu bị từ 
     //chối đơn duyệt sẽ có thể xem được lí do vì sao mình k được duyệt đơn
@@ -171,13 +190,14 @@ public class IdentityDAO extends DBContext {
         System.out.println(d.countTotalVerifyIdentityInformationByStatus("Wait"));
         System.out.println(d.countStatus(42, "Pending"));
         System.out.println(d.getTop1(42, "Denied"));
+        System.out.println(d.getVerifyIdentityInformationByIdAndStatus(42, "Denied"));
     }
 
     public VerifyIdentityInformation getVerifyIdentityInformationByCusId(int id) {
         String sql = "SELECT * FROM verifyIdentityInformation WHERE CusId = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
-                ps.setInt(1, id);
                 while (rs.next()) {
                     return new VerifyIdentityInformation(
                             rs.getInt("Id"),
@@ -237,10 +257,11 @@ public class IdentityDAO extends DBContext {
         }
     }
 
-    public void deleteVerifyIdentityInformation(int id) {
-        String sql = "DELETE FROM verifyIdentityInformation WHERE Id = ?";
+    public void deleteVerifyIdentityInformation(int CusId, String status) {
+        String sql = "DELETE FROM verifyIdentityInformation WHERE CusId = ? AND PendingStatus = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, id);
+            ps.setInt(1, CusId);
+            ps.setString(2, status);
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -257,4 +278,30 @@ public class IdentityDAO extends DBContext {
             e.printStackTrace();
         }
     }
+
+    public VerifyIdentityInformation getVerifyIdentityInformationByIdAndStatus(int id, String status) {
+        String sql = "SELECT * FROM verifyIdentityInformation WHERE CusId = ? AND PendingStatus = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            ps.setString(2, status);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    return new VerifyIdentityInformation(
+                            rs.getInt("Id"),
+                            cdao.getCustomerById(rs.getInt("CusId")),
+                            rs.getString("IdentityCardNumber"),
+                            rs.getString("IdentityCardFrontSide"),
+                            rs.getString("IdentityCardBackSide"),
+                            rs.getString("ReasonReject"),
+                            rs.getString("PortraitPhoto"),
+                            rs.getString("PendingStatus")
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

@@ -144,47 +144,14 @@
                 <div class="layout-specing">
 
                     <div class="container">
-                        <c:set value="${sessionScope.account}" var="customer"/>   
+                        <c:set value="${sessionScope.account}" var="customer"/> 
 
-                        <c:if test="${sessionScope.status == 'denied'}">
-
-                            <c:set value="${sessionScope.reasonRejectIdentity}" var="reasonReject"/>  
-                            <div class="col-md-6">
-                                <label for="identityCardNumber" class="form-label">Đơn của bạn đã bị từ chối</label> 
-
-                                <div class="col-md-4 text-center">
-                                    <a href="identity-information-controller" class="btn btn-primary">Tạo mới duyệt</a>
-                                </div>
-                                <div class="row justify-content-center">                                                            
-                                    <div class="col-auto">
-                                        <button data-bs-toggle="modal" data-bs-target="#editModal" 
-                                                class="btn btn-primary btn-md">
-                                            Xem nguyên nhân
-                                        </button>
-                                    </div>
-                                </div>
-                                <jsp:include page="template/viewReasonReject.jsp">
-                                    <jsp:param name="id" value="${reasonReject.id}"/>
-                                    <jsp:param name="identityCardFrontSide" value="${reasonReject.identityCardFrontSide}"/>
-                                    <jsp:param name="identityCardBackSide" value="${reasonReject.identityCardBackSide}" />
-                                    <jsp:param name="identityCardNumber" value="${reasonReject.identityCardNumber}" />
-                                    <jsp:param name="portraitPhoto" value="${reasonReject.portraitPhoto}" />
-                                    <jsp:param name="fullnameCustomer" value="${reasonReject.cusId.fullname}" />
-                                    <jsp:param name="pendingStatus" value="${reasonReject.pendingStatus}" />
-                                    <jsp:param name="reasonReject" value="${reasonReject.reasonReject}" />
-                                </jsp:include>  
-                            </div>
-                        </c:if>  
                         <c:if test="${sessionScope.status == 'approved'}">
                             <script>
                                 sessionStorage.setItem("status", "approved");
                             </script>
                         </c:if> 
-                        <c:if test="${sessionScope.status == 'pending'}">
-                            <div class="col-md-6">
-                                <label for="identityCardNumber" class="form-label">Đơn của bạn đang được kiểm duyệt</label>                    
-                            </div>
-                        </c:if>
+
                         <c:if test="${sessionScope.status == 'none'}">
                             <div class="col-md-6">
                                 <label for="identityCardNumber" class="form-label">Tạo đơn xác thực danh tính</label>   
@@ -193,6 +160,48 @@
                                 </div>
                             </div>
                         </c:if>
+
+                        <c:if test="${sessionScope.status == 'pending'}">
+                            <script>
+                                sessionStorage.setItem("status", "pending");
+                            </script>
+                            <div class="col-md-12 text-center">
+                                <h3>Đơn của bạn đang được kiểm duyệt</h3>                    
+                            </div>
+                        </c:if>
+
+                        <c:if test="${sessionScope.status == 'denied'}">
+                            <script>
+                                sessionStorage.setItem("status", "denied");
+                            </script>
+
+                            <c:set value="${sessionScope.reasonRejectIdentity}" var="reasonReject"/>  
+                            <div class="row">
+                                <h3>Đơn của bạn đã bị từ chối</h3>
+
+                                <div class="col-md-2 text-center">
+                                    <a href="identity-information-controller" class="btn btn-primary">Tạo mới duyệt</a>
+                                </div>
+                                <div class="col-md-2 text-center">                                                            
+                                    <div class="col-auto">
+                                        <button data-bs-toggle="modal" data-bs-target="#editModal" class="btn btn-primary btn-md">Nguyên nhân</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <jsp:include page="template/viewReasonReject.jsp">
+                                <jsp:param name="id" value="${reasonReject.id}"/>
+                                <jsp:param name="identityCardFrontSide" value="${reasonReject.identityCardFrontSide}"/>
+                                <jsp:param name="identityCardBackSide" value="${reasonReject.identityCardBackSide}" />
+                                <jsp:param name="identityCardNumber" value="${reasonReject.identityCardNumber}" />
+                                <jsp:param name="portraitPhoto" value="${reasonReject.portraitPhoto}" />
+                                <jsp:param name="fullnameCustomer" value="${reasonReject.cusId.fullname}" />
+                                <jsp:param name="pendingStatus" value="${reasonReject.pendingStatus}" />
+                                <jsp:param name="reasonReject" value="${reasonReject.reasonReject}" />
+                            </jsp:include>
+                        </c:if>  
+
+
+
                     </div>
                 </div>
             </div>
@@ -228,40 +237,6 @@
                                     }
                                 }
 
-                                $(document).ready(function () {
-                                    $('#identityForm').submit(function (e) {
-                                        e.preventDefault();
-                                        const formData = new FormData(this);
-
-                                        $.ajax({
-                                            url: 'identity-information-controller',
-                                            type: 'POST',
-                                            data: formData,
-                                            contentType: false,
-                                            processData: false,
-                                            success: function (response) {
-                                                Swal.fire({
-                                                    title: 'Thành công!',
-                                                    text: 'Thông tin đã được lưu thành công.',
-                                                    icon: 'success',
-                                                    confirmButtonText: 'OK'
-                                                }).then((result) => {
-                                                    if (result.isConfirmed) {
-                                                        window.location.href = "identity-information-list";
-                                                    }
-                                                });
-                                            },
-                                            error: function (error) {
-                                                Swal.fire({
-                                                    title: 'Lỗi!',
-                                                    text: 'Có lỗi xảy ra khi lưu thông tin. Vui lòng thử lại.',
-                                                    icon: 'error',
-                                                    confirmButtonText: 'OK'
-                                                });
-                                            }
-                                        });
-                                    });
-                                });
 
                                 if (sessionStorage.getItem("status") === "approved") {
                                     Swal.fire({
@@ -276,19 +251,34 @@
                                     });
                                 }
 
-//                                if (sessionStorage.getItem("status") === "approved") {
-//                                    Swal.fire({
-//                                        icon: "error",
-//                                        title: "Oops...",
-//                                        text: "Something went wrong!",
-//                                        footer: '<a href="#">Why do I have this issue?</a>'
-//                                    }).then((result) => {
-//                                        if (result.isConfirmed) {
-//                                            sessionStorage.removeItem("status");
-//                                            window.location.href = "customer/account-profile.jsp";
-//                                        }
-//                                    });
-//                                }
+                                if (sessionStorage.getItem("status") === "pending") {
+                                    Swal.fire({
+                                        title: "Gửi thành công!",
+                                        text: "Đang chờ phê duyệt",
+                                        icon: "success"
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            sessionStorage.removeItem("status");
+                                            window.location.href = "customer/account-profile.jsp";
+                                        }
+                                    });
+                                }
+
+
+                                if (sessionStorage.getItem("status") === "denied") {
+                                    Swal.fire({
+                                        icon: "error",
+                                        title: "Thất bại!",
+                                        text: "Yêu cầu của bạn đã bị từ chối",
+                                        footer: '<a href="identity-information-controller">Tạo phê duyệt mới?</a>'
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            sessionStorage.removeItem("status");
+                                            window.location.href = "customer/account-profile.jsp";
+                                        }
+                                    });
+                                }
+
 
 
         </script>

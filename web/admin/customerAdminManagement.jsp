@@ -92,8 +92,8 @@
                                         id="phoneSearch"
                                         name="phoneSearch"
                                         />
-                                    <a href="?page=1&phoneSearch=&recordsPerPage=${currentRecords}" class="btn border-custome me-2">Đặt lại</a>
-                                    <button class="btn btn-danger" type="submit">Tìm kiếm</button>
+                                    <a href="?page=1&phoneSearch=&recordsPerPage=${currentRecords}" class="btn border-custome me-2">Reset</a>
+                                    <button class="btn btn-danger" type="submit">Tìm</button>
                                 </form>
                             </div>
                         </div>

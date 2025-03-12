@@ -26,6 +26,7 @@
         <!-- Css -->
         <link href="<%= request.getContextPath() %>/assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     </head>
     <%
    // Ki?m tra session
@@ -142,65 +143,119 @@
             </div><!--end container-->
         </header><!--end header-->
         <!-- Navbar End -->
+        <style>
+            .preview-img {
+                width: 150px;
+                height: 150px;
+                border: 1px solid #ddd;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                overflow: hidden;
+                border-radius: 5px;
+                position: relative;
+                margin: 0 auto; /* Căn giữa theo chiều ngang */
+            }
+
+
+            .preview-img img {
+                max-width: 100%;
+                max-height: 100%;
+                object-fit: cover;
+                display: block;
+
+            }
+
+
+        </style>
 
         <!-- Start -->
         <section class="bg-dashboard">
-
-
-
             <div class="container-fluid">
                 <div class="layout-specing">
-
                     <div class="container">
+                        <div class="col-md-6">
+                            <h5 class="mb-0">Trang thông tin định danh</h5>
+                            <nav aria-label="breadcrumb" class="mt-2">
+                                <ul class="breadcrumb breadcrumb-muted bg-transparent rounded mb-0 p-0">
+                                    <li class="breadcrumb-item">
+                                        <a href="#" class="text-decoration-none text-danger">SmartBanking</a>
+                                    </li>
+                                    <li class="breadcrumb-item">
+                                        <a href="#" class="text-decoration-none text-danger">Trang cá nhân</a>
+                                    </li>
+                                    <li class="breadcrumb-item active" aria-current="page">Xác thực tài khoản</li>
+                                </ul>
+                            </nav>
+                        </div>
+                        <br>
+
                         <c:set value="${sessionScope.account}" var="customer"/>    
                         <form action="identity-information-controller" method="POST" id="identityForm" enctype="multipart/form-data">
                             <input name="add" type="hidden" value="add" /> 
                             <input name="customerId" type="hidden" value="${customer.id}" />
-                            <div class="row d-flex flex-row">
+
+                            <div class=" row d-flex flex-row">
                                 <div class="col-lg-12">                                                                                    
-                                    <div class="row">                                        
+                                    <div class="row ">                                        
                                         <div class="">
-                                            <div class="mb-4 mt-3" style="display: flex">
+                                            <div class="mb-4 mt-3">
                                                 <div class="col-md-6">
                                                     <label for="identityCardNumber" class="form-label">Mã số CCCD/CMND: </label>
-                                                    <input type="text" id="identityCardNumber" name="identityCardNumber" class="form-control mb-4" placeholder="Nhập số CCCD/CMND">
+                                                    <input type="text" id="identityCardNumber" required name="identityCardNumber" class="form-control mb-4" placeholder="Nhập số CCCD/CMND">
                                                 </div>
                                             </div>
-                                            <div class="mb-4 mt-3" style="display: flex">
+
+                                            <!-- Ảnh mặt trước -->
+                                            <div class="mb-4 mt-3 d-flex">
                                                 <div class="col-md-6">
                                                     <label for="identityCardFrontSide" class="form-label">Ảnh CCCD/CMND mặt trước: </label>
-                                                    <label for="identityCardFrontSide" class="form-label text-muted">Ảnh có size nhỏ hơn 5mb vả chỉ chấp nhận các file có đuôi jpg, jpeg, png, gif.</label>
-                                                    <input type="file" id="identityCardFrontSide" accept=".jpg,.png,.jpeg,.gif" name="identityCardFrontSide" class="form-control mb-4" onchange="previewImage(event, 'preview1')">
+                                                    <label class="form-label text-muted">Ảnh có size nhỏ hơn 5MB, chỉ chấp nhận jpg, jpeg, png, gif. Chụp rõ ảnh, không làm mờ ảnh, không chấp nhận ảnh cũ</label>
+                                                    <input type="file" id="identityCardFrontSide" required accept=".jpg,.png,.jpeg,.gif" name="identityCardFrontSide" class="form-control mb-4" onchange="previewImage(event, 'preview1')">
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <img id="preview1" class="preview-img" src="#" alt="Image Preview" style="display:none;">
-                                                </div>
+                                                <!--                                                <div class="col-md-6 text-center">                                                    
+                                                                                                    <label class="form-label">Xem trước ảnh</label>
+                                                                                                    <div class="preview-img">
+                                                                                                        <img id="preview1" src="#" alt="Image Preview" style="display:none;">
+                                                                                                    </div>
+                                                                                                </div>-->
                                             </div>
-                                            <div class="mb-4 mt-3" style="display: flex">
+
+                                            <!-- Ảnh mặt sau -->
+                                            <div class="mb-4 mt-3 d-flex">
                                                 <div class="col-md-6">
                                                     <label for="identityCardBackSide" class="form-label">Ảnh CCCD/CMND mặt sau: </label>
-                                                    <label for="identityCardBackSide" class="form-label text-muted">Ảnh có size nhỏ hơn 5mb vả chỉ chấp nhận các file có đuôi jpg, jpeg, png, gif.</label>
-                                                    <input type="file" id="identityCardBackSide" accept=".jpg,.png,.jpeg,.gif" name="identityCardBackSide" class="form-control mb-4" onchange="previewImage(event, 'preview2')">
+                                                    <label class="form-label text-muted">Ảnh có size nhỏ hơn 5MB, chỉ chấp nhận jpg, jpeg, png, gif. Chụp rõ ảnh, không làm mờ ảnh, không chấp nhận ảnh cũ</label>
+                                                    <input type="file" id="identityCardBackSide" required accept=".jpg,.png,.jpeg,.gif" name="identityCardBackSide" class="form-control mb-4" onchange="previewImage(event, 'preview2')">
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <img id="preview2" class="preview-img" src="#" alt="Image Preview" style="display:none;">
-                                                </div>
+                                                <!--                                                <div class="col-md-6 text-center">                                                    
+                                                                                                    <label class="form-label">Xem trước ảnh</label>
+                                                                                                    <div class="preview-img">
+                                                                                                        <img id="preview2" src="#" alt="Image Preview" style="display:none;">
+                                                                                                    </div>
+                                                                                                </div>-->
                                             </div>
-                                            <div class="mb-4 mt-3" style="display: flex">
+
+                                            <!-- Ảnh chân dung -->
+                                            <div class="mb-4 mt-3 d-flex">
                                                 <div class="col-md-6">
-                                                    <label for="portraitPhoto" class="form-label">Ảnh chân dung: </label>
-                                                    <label for="portraitPhoto" class="form-label text-muted">Ảnh có size nhỏ hơn 5mb vả chỉ chấp nhận các file có đuôi jpg, jpeg, png, gif.</label>
-                                                    <input type="file" id="portraitPhoto" accept=".jpg,.png,.jpeg,.gif" name="portraitPhoto" class="form-control mb-4" onchange="previewImage(event, 'preview3')">
+                                                    <label for="portraitPhoto" class="form-label">Ảnh chân dung của bạn: </label>
+                                                    <label class="form-label text-muted">Ảnh có size nhỏ hơn 5MB, chỉ chấp nhận jpg, jpeg, png, gif. Chụp rõ mặt, không đeo kính, không làm mờ ảnh</label>
+                                                    <input type="file" id="portraitPhoto" required accept=".jpg,.png,.jpeg,.gif" name="portraitPhoto" class="form-control mb-4" onchange="previewImage(event, 'preview3')">
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <img id="preview3" class="preview-img" src="#" alt="Image Preview" style="display:none;">
-                                                </div>                                                        
+                                                <!--                                                <div class="col-md-6 text-center">                                                    
+                                                                                                    <label class="form-label">Xem trước ảnh</label>
+                                                                                                    <div class="preview-img">
+                                                                                                        <img id="preview3" src="#" alt="Image Preview" style="display:none;">
+                                                                                                    </div>
+                                                                                                </div>                                                        -->
                                             </div>
+
                                             <div class="row mt-5">
-                                                <div class="col-md-8 text-center">
+                                                <div class="col-md-6 text-center">
                                                     <p id="error-message-info" class="text-danger"></p>
                                                 </div>
-                                                <div class="col-md-4 text-center">
+                                                <div class="col-md-6 text-center">
                                                     <button type="submit" class="btn btn-primary">Gửi phê duyệt</button>
                                                 </div>
                                             </div>
@@ -212,34 +267,33 @@
                     </div>
                 </div>
             </div>
-
-
-        </section><!--end section-->
+        </section>
         <!-- End -->
 
         <!-- Footer Start -->
-        <footer class="bg-footer py-4">
-            <div class="container-fluid">
-                <div class="row align-items-center">
-                    <div class="col-sm-6">
-                        <div class="text-sm-start text-center">
-                            <p class="mb-0"><script>document.write(new Date().getFullYear())</script> © Doctris. Design with <i class="mdi mdi-heart text-danger"></i> by <a href="../../../index.jsp" target="_blank" class="text-reset">Shreethemes</a>.</p>
-                        </div>
-                    </div><!--end col-->
-
-                    <div class="col-sm-6 mt-4 mt-sm-0">
-                        <ul class="list-unstyled footer-list text-sm-end text-center mb-0">
-                            <li class="list-inline-item"><a href="terms.html" class="text-foot me-2">Terms</a></li>
-                            <li class="list-inline-item"><a href="privacy.html" class="text-foot me-2">Privacy</a></li>
-                            <li class="list-inline-item"><a href="aboutus.html" class="text-foot me-2">About</a></li>
-                            <li class="list-inline-item"><a href="contact.html" class="text-foot me-2">Contact</a></li>
-                        </ul>
-                    </div><!--end col-->
-                </div><!--end row-->
-            </div><!--end container-->
-        </footer><!--end footer-->
+        <!--        <footer class="bg-footer py-4">
+                    <div class="container-fluid">
+                        <div class="row align-items-center">
+                            <div class="col-sm-6">
+                                <div class="text-sm-start text-center">
+                                    <p class="mb-0"><script>document.write(new Date().getFullYear())</script> © Doctris. Design with <i class="mdi mdi-heart text-danger"></i> by <a href="../../../index.jsp" target="_blank" class="text-reset">Shreethemes</a>.</p>
+                                </div>
+                            </div>end col
+        
+                            <div class="col-sm-6 mt-4 mt-sm-0">
+                                <ul class="list-unstyled footer-list text-sm-end text-center mb-0">
+                                    <li class="list-inline-item"><a href="terms.html" class="text-foot me-2">Terms</a></li>
+                                    <li class="list-inline-item"><a href="privacy.html" class="text-foot me-2">Privacy</a></li>
+                                    <li class="list-inline-item"><a href="aboutus.html" class="text-foot me-2">About</a></li>
+                                    <li class="list-inline-item"><a href="contact.html" class="text-foot me-2">Contact</a></li>
+                                </ul>
+                            </div>end col
+                        </div>end row
+                    </div>end container
+                </footer>end footer-->
         <!-- End -->       
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
         <script src ="resources/script/jquery-3.7.1.min.js"></script>
         <script src="./resources/script/script.js"></script>
         <!-- javascript -->
@@ -249,57 +303,67 @@
         <!-- Main Js -->
         <script src="<%= request.getContextPath() %>/assets/js/app.js"></script>
         <script>
-                                function previewImage(event, previewId) {
-                                    const input = event.target;
-                                    const preview = document.getElementById(previewId);
+                                                        function previewImage(event, previewId) {
+                                                            const input = event.target;
+                                                            const preview = document.getElementById(previewId);
 
-                                    if (input.files && input.files[0]) {
-                                        const reader = new FileReader();
-                                        reader.onload = function (e) {
-                                            preview.src = e.target.result;
-                                            preview.style.display = 'block';
-                                        };
-                                        reader.readAsDataURL(input.files[0]);
-                                    } else {
-                                        preview.src = '#';
-                                        preview.style.display = 'none';
-                                    }
-                                }
+                                                            if (input.files && input.files[0]) {
+                                                                const reader = new FileReader();
+                                                                reader.onload = function (e) {
+                                                                    preview.src = e.target.result;
+                                                                    preview.style.display = 'block';
+                                                                };
+                                                                reader.readAsDataURL(input.files[0]);
+                                                            } else {
+                                                                preview.src = '#';
+                                                                preview.style.display = 'none';
+                                                            }
+                                                        }
 
-                                $(document).ready(function () {
-                                    $('#identityForm').submit(function (e) {
-                                        e.preventDefault();
-                                        const formData = new FormData(this);
+                                                        $(document).ready(function () {
+                                                            
+                                                            $('#identityForm').submit(function (e) {
+                                                                e.preventDefault();
+                                                                const formData = new FormData(this);
 
-                                        $.ajax({
-                                            url: 'identity-information-controller',
-                                            type: 'POST',
-                                            data: formData,
-                                            contentType: false,
-                                            processData: false,
-                                            success: function (response) {
-                                                Swal.fire({
-                                                    title: 'Thành công!',
-                                                    text: 'Thông tin đã được gửi để phê duyệt.',
-                                                    icon: 'success',
-                                                    confirmButtonText: 'OK'
-                                                }).then((result) => {
-                                                    if (result.isConfirmed) {
-                                                        window.location.href = "identity-information-switch-case";
-                                                    }
-                                                });
-                                            },
-                                            error: function (error) {
-                                                Swal.fire({
-                                                    title: 'Lỗi!',
-                                                    text: 'Có lỗi xảy ra khi lưu thông tin. Vui lòng thử lại.',
-                                                    icon: 'error',
-                                                    confirmButtonText: 'OK'
-                                                });
-                                            }
-                                        });
-                                    });
-                                });
+                                                                $.ajax({
+                                                                    url: 'identity-information-controller',
+                                                                    type: 'POST',
+                                                                    data: formData,
+                                                                    contentType: false,
+                                                                    processData: false,
+                                                                    success: function (response) {
+                                                                        if (response.success) {
+                                                                            Swal.fire({
+                                                                                title: 'Thành công!',
+                                                                                text: 'Thông tin đã được gửi để phê duyệt.',
+                                                                                icon: 'success',
+                                                                                confirmButtonText: 'OK'
+                                                                            }).then((result) => {
+                                                                                if (result.isConfirmed) {
+                                                                                    window.location.href = "identity-information-switch-case";
+                                                                                }
+                                                                            });
+                                                                        } else {
+                                                                            Swal.fire({
+                                                                                title: 'Lỗi!',
+                                                                                text: response.message || 'Có lỗi xảy ra. Vui lòng kiểm tra lại thông tin.',
+                                                                                icon: 'error',
+                                                                                confirmButtonText: 'OK'
+                                                                            });
+                                                                        }
+                                                                    },
+                                                                    error: function (error) {
+                                                                        Swal.fire({
+                                                                            title: 'Lỗi!',
+                                                                            text: 'Có lỗi xảy ra khi lưu thông tin. Vui lòng thử lại.',
+                                                                            icon: 'error',
+                                                                            confirmButtonText: 'OK'
+                                                                        });
+                                                                    }
+                                                                });
+                                                            });
+                                                        });
         </script>
     </body>
 
