@@ -20,18 +20,11 @@
         h3 { color: #1a1d24; font-weight: 600; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #e9ecef; }
         .table img { border-radius: 4px; }
         footer { flex-shrink: 0; background-color: #d41c1c; color: white; padding: 20px 0; }
+        .filter-section { margin-bottom: 20px; padding: 15px; background-color: #f8f9fa; border-radius: 8px; }
+        .filter-section .form-control { margin-right: 10px; }
     </style>
 </head>
 <body>
-    <div id="preloader">
-        <div id="status">
-            <div class="spinner">
-                <div class="double-bounce1"></div>
-                <div class="double-bounce2"></div>
-            </div>
-        </div>
-    </div>
-
     <div class="page-wrapper doctris-theme toggled">
         <jsp:include page="/accountant/template/sidebar.jsp"/>
         
@@ -55,6 +48,38 @@
 
                     <div class="row">
                         <div class="col-12">
+                            <div class="filter-section">
+                                <form method="get" action="<%= request.getContextPath() %>/BlogServlet" class="row g-3 align-items-end">
+                                    <input type="hidden" name="action" value="list">
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control" name="search" placeholder="Tìm kiếm theo tiêu đề..." value="${param.search}">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <select class="form-control" name="categoryFilter">
+                                            <option value="">Tất cả thể loại</option>
+                                            <option value="vay" ${param.categoryFilter == 'vay' ? 'selected' : ''}>Vay</option>
+                                            <option value="tin tức" ${param.categoryFilter == 'tin tức' ? 'selected' : ''}>Tin tức</option>
+                                            <option value="khác" ${param.categoryFilter == 'khác' ? 'selected' : ''}>Khác</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <select class="form-control" name="sortBy">
+                                            <option value="publishDate_desc" ${param.sortBy == 'publishDate_desc' ? 'selected' : ''}>Mới nhất trước</option>
+                                            <option value="publishDate_asc" ${param.sortBy == 'publishDate_asc' ? 'selected' : ''}>Cũ nhất trước</option>
+                                            <option value="title_asc" ${param.sortBy == 'title_asc' ? 'selected' : ''}>Tiêu đề (A-Z)</option>
+                                            <option value="title_desc" ${param.sortBy == 'title_desc' ? 'selected' : ''}>Tiêu đề (Z-A)</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="submit" class="btn btn-primary w-100">Lọc</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
                             <div class="card card-body">
                                 <h3>Danh sách Blog</h3>
                                 <div class="table-responsive">
@@ -70,41 +95,35 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <c:choose>
-                                                <c:when test="${not empty articles}">
-                                                    <c:forEach var="article" items="${articles}">
-                                                        <tr>
-                                                            <td><c:out value="${article.id}" /></td>
-                                                            <td><c:out value="${article.title}" /></td>
-                                                            <td><c:out value="${article.category}" /></td>
-                                                            <td>
-                                                                <c:choose>
-                                                                    <c:when test="${not empty article.imageUrl && article.imageUrl != ''}">
-                                                                        <img src="<%= request.getContextPath() %>${article.imageUrl}" alt="Blog Image" style="width: 50px; height: 50px; object-fit: cover;">
-                                                                    </c:when>
-                                                                    <c:otherwise>
-                                                                        <img src="<%= request.getContextPath() %>/assets/images/default-image.jpg" alt="Default Image" style="width: 50px; height: 50px; object-fit: cover; background-color: #ddd;">
-                                                                    </c:otherwise>
-                                                                </c:choose>
-                                                            </td>
-                                                            <td><fmt:formatDate value="${article.publishDate}" pattern="dd/MM/yyyy HH:mm" /></td>
-                                                            <td>
-                                                                <button class="btn btn-sm btn-outline-primary edit-blog" data-bs-toggle="modal" data-bs-target="#editBlogModal" data-id="${article.id}">Sửa</button>
-                                                                <form action="<%= request.getContextPath() %>/BlogServlet" method="post" style="display:inline;">
-                                                                    <input type="hidden" name="action" value="delete">
-                                                                    <input type="hidden" name="id" value="${article.id}">
-                                                                    <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Bạn có chắc chắn?')">Xóa</button>
-                                                                </form>
-                                                            </td>
-                                                        </tr>
-                                                    </c:forEach>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <tr>
-                                                        <td colspan="6" class="text-center">Không có blog nào</td>
-                                                    </tr>
-                                                </c:otherwise>
-                                            </c:choose>
+                                            <c:forEach var="article" items="${articles}">
+                                                <tr>
+                                                    <td>${article.id}</td>
+                                                    <td>${article.title}</td>
+                                                    <td>${article.category}</td>
+                                                    <td>
+                                                        <c:choose>
+                                                            <c:when test="${not empty article.imageUrl}">
+                                                                <img src="<%= request.getContextPath() %>${article.imageUrl}" alt="Blog Image" style="width: 50px; height: 50px; object-fit: cover;">
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <img src="<%= request.getContextPath() %>/assets/images/default-image.jpg" alt="Default Image" style="width: 50px; height: 50px; object-fit: cover;">
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </td>
+                                                    <td><fmt:formatDate value="${article.publishDate}" pattern="dd/MM/yyyy HH:mm" /></td>
+                                                    <td>
+                                                        <button class="btn btn-sm btn-outline-primary edit-blog" data-bs-toggle="modal" data-bs-target="#editBlogModal" data-id="${article.id}">Sửa</button>
+                                                        <form action="<%= request.getContextPath() %>/BlogServlet" method="post" style="display:inline;">
+                                                            <input type="hidden" name="action" value="delete">
+                                                            <input type="hidden" name="id" value="${article.id}">
+                                                            <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Bạn có chắc chắn?')">Xóa</button>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                            <c:if test="${empty articles}">
+                                                <tr><td colspan="6" class="text-center">Không có blog nào</td></tr>
+                                            </c:if>
                                         </tbody>
                                     </table>
                                 </div>
@@ -127,32 +146,32 @@
                 </div>
                 <div class="modal-body">
                     <form action="<%= request.getContextPath() %>/BlogServlet" method="post" enctype="multipart/form-data" id="addBlogForm">
+                        <input type="hidden" name="action" value="add">
                         <div class="mb-3">
-                            <label for="blogTitle" class="form-label">Tiêu đề</label>
-                            <input type="text" class="form-control" id="blogTitle" name="title" required>
+                            <label for="addBlogTitle" class="form-label">Tiêu đề</label>
+                            <input type="text" class="form-control" id="addBlogTitle" name="title" required>
                         </div>
                         <div class="mb-3">
-                            <label for="blogCategory" class="form-label">Thể loại</label>
-                            <select class="form-control" id="blogCategory" name="category" required>
+                            <label for="addBlogCategory" class="form-label">Thể loại</label>
+                            <select class="form-control" id="addBlogCategory" name="category" required>
                                 <option value="vay">Vay</option>
                                 <option value="tin tức">Tin tức</option>
                                 <option value="khác">Khác</option>
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="blogImage" class="form-label">Hình ảnh</label>
-                            <input type="file" class="form-control" id="blogImage" name="image" accept=".jpg,.png,.jpeg" required>
+                            <label for="addBlogImage" class="form-label">Hình ảnh</label>
+                            <input type="file" class="form-control" id="addBlogImage" name="image" accept=".jpg,.png,.jpeg" required>
                         </div>
                         <div class="mb-3">
-                            <label for="blogDescription" class="form-label">Mô tả</label>
-                            <textarea class="form-control" id="blogDescription" name="description" required></textarea>
+                            <label for="addBlogDescription" class="form-label">Mô tả</label>
+                            <textarea class="form-control" id="addBlogDescription" name="description" required></textarea>
                         </div>
-                        <input type="hidden" name="action" value="add">
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                    <button type="button" class="btn btn-primary" id="saveNewBlog">Lưu Blog</button>
+                    <button type="button" class="btn btn-primary" onclick="document.getElementById('addBlogForm').submit();">Lưu Blog</button>
                 </div>
             </div>
         </div>
@@ -162,7 +181,7 @@
     <div class="modal fade" id="editBlogModal" tabindex="-1" aria-labelledby="editBlogModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content" id="editBlogModalContent">
-                <!-- Nội dung modal sẽ được load động qua AJAX -->
+                <!-- Nội dung sẽ được load động qua AJAX -->
             </div>
         </div>
     </div>
@@ -172,55 +191,23 @@
     <script src="<%= request.getContextPath() %>/assets/js/simplebar.min.js"></script>
     <script src="<%= request.getContextPath() %>/assets/js/feather.min.js"></script>
     <script src="<%= request.getContextPath() %>/assets/js/app.js"></script>
-    <script src="<%= request.getContextPath() %>/assets/tinymce/tinymce.min.js"></script>
     <script>
-       $('.edit-blog').on('click', function() {
-    var blogId = $(this).data('id');
-    console.log("Loading edit modal for blog ID: " + blogId);
-    $.ajax({
-        url: '<%= request.getContextPath() %>/BlogServlet?action=edit&id=' + blogId,
-        type: 'GET',
-        success: function(response) {
-            $('#editBlogModalContent').html(response);
-            $('#editBlogModal').modal('show');
-
-            // Gắn sự kiện cho nút "Lưu thay đổi" sau khi modal được load
-            $('#saveEditBlog').on('click', function() {
-                console.log("Saving edited blog");
-                tinymce.triggerSave(); // Lưu dữ liệu từ TinyMCE vào textarea
-                $('#editBlogForm').submit();
-            });
-
-            // Khởi tạo TinyMCE nếu chưa có
-            if (!tinymce.get('editBlogDescription')) {
-                tinymce.init({
-                    selector: '#editBlogDescription',
-                    height: 300,
-                    plugins: 'advlist autolink lists link charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table paste code help wordcount',
-                    toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help',
-                    images_upload_url: false,
-                    images_upload_handler: false,
-                    setup: function(editor) {
-                        editor.on('change', function() {
-                            editor.save();
-                        });
+        $(document).ready(function() {
+            $('.edit-blog').on('click', function() {
+                var blogId = $(this).data('id');
+                $.ajax({
+                    url: '<%= request.getContextPath() %>/BlogServlet?action=edit&id=' + blogId,
+                    type: 'GET',
+                    success: function(response) {
+                        $('#editBlogModalContent').html(response);
+                        $('#editBlogModal').modal('show');
+                    },
+                    error: function() {
+                        alert('Lỗi khi tải dữ liệu blog');
                     }
                 });
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error("Error loading edit modal - Status: " + status + ", Error: " + error);
-            console.error("Response Text: " + xhr.responseText);
-            alert('Lỗi khi tải dữ liệu blog: ' + status + ' - ' + xhr.responseText);
-        }
-    });
-});
+            });
+        });
     </script>
-    <script>
-    $('#saveNewBlog').on('click', function() {
-        console.log("Saving new blog");
-        $('#addBlogForm').submit();
-    });
-</script>
 </body>
 </html>
