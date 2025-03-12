@@ -17,7 +17,7 @@
                 </button>
             </div>
             <div class="col-12">
-                <button class="btn btn-custom w-100 py-3 text-start d-flex flex-column">
+                <button class="btn btn-custom w-100 py-3 text-start d-flex flex-column" onclick="location.href='auto-profit-intro.jsp'">
                     <div class="d-flex align-items-center">
                         <i class="fas fa-seedling fa-2x me-3"></i>
                         <span class="fs-5 fw-bold">Sinh lời tự động</span>

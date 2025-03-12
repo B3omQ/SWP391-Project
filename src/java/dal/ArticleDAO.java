@@ -11,7 +11,7 @@ import util.DBContext;
 
 public class ArticleDAO extends DBContext {
 
-      private String stripHtml(String html) {
+  private String stripHtml(String html) {
         if (html == null) return null;
         // Loại bỏ thẻ HTML
         String stripped = html.replaceAll("<[^>]+>", "")
@@ -93,26 +93,72 @@ public class ArticleDAO extends DBContext {
         );
     }
 
-    public List<Article> getAllArticles() {
-        List<Article> articles = new ArrayList<>();
-        String sql = "SELECT Id, Title, Description, Category, PublishDate, AuthorId, ImageUrl, CreatedAt, UpdatedAt FROM Articles ORDER BY PublishDate DESC";
 
-        try (PreparedStatement ps = connection.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) {
-                articles.add(mapResultSetToArticle(rs));
+    // Lấy danh sách bài viết với các bộ lọc (search, category, sort)
+    public List<Article> getFilteredArticles(String search, String categoryFilter, String sortBy) {
+        List<Article> articles = new ArrayList<>();
+        StringBuilder sql = new StringBuilder(
+            "SELECT Id, Title, Description, Category, PublishDate, AuthorId, ImageUrl, CreatedAt, UpdatedAt " +
+            "FROM Articles WHERE 1=1"
+        );
+
+        // Điều kiện tìm kiếm theo tiêu đề
+        if (search != null && !search.trim().isEmpty()) {
+            sql.append(" AND Title LIKE ?");
+        }
+
+        // Điều kiện lọc theo thể loại
+        if (categoryFilter != null && !categoryFilter.trim().isEmpty()) {
+            sql.append(" AND Category = ?");
+        }
+
+        // Sắp xếp
+        if (sortBy != null && !sortBy.trim().isEmpty()) {
+            switch (sortBy) {
+                case "publishDate_asc":
+                    sql.append(" ORDER BY PublishDate ASC");
+                    break;
+                case "title_asc":
+                    sql.append(" ORDER BY Title ASC");
+                    break;
+                case "title_desc":
+                    sql.append(" ORDER BY Title DESC");
+                    break;
+                default:
+                    sql.append(" ORDER BY PublishDate DESC");
+                    break;
             }
-            System.out.println("✅ Found " + articles.size() + " articles.");
+        } else {
+            sql.append(" ORDER BY PublishDate DESC");
+        }
+
+        try (PreparedStatement ps = connection.prepareStatement(sql.toString())) {
+            int paramIndex = 1;
+
+            if (search != null && !search.trim().isEmpty()) {
+                ps.setString(paramIndex++, "%" + search.trim() + "%");
+            }
+
+            if (categoryFilter != null && !categoryFilter.trim().isEmpty()) {
+                ps.setString(paramIndex++, categoryFilter.trim());
+            }
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    articles.add(mapResultSetToArticle(rs));
+                }
+            }
         } catch (SQLException e) {
-            System.err.println("❌ SQL Error in getAllArticles: " + e.getMessage());
+            System.err.println("❌ SQL Error in getFilteredArticles: " + e.getMessage());
             e.printStackTrace();
         }
         return articles;
     }
 
-    // Các phương thức khác (addArticle, updateArticle, deleteArticle, getArticleById) giữ nguyên
+    // Thêm bài viết mới
     public void addArticle(Article article) {
-        String sql = "INSERT INTO Articles (Title, Description, Category, AuthorId, ImageUrl, PublishDate, CreatedAt) VALUES (?, ?, ?, ?, ?, GETDATE(), GETDATE())";
+        String sql = "INSERT INTO Articles (Title, Description, Category, AuthorId, ImageUrl, PublishDate, CreatedAt) " +
+                     "VALUES (?, ?, ?, ?, ?, GETDATE(), GETDATE())";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, article.getTitle());
@@ -120,8 +166,10 @@ public class ArticleDAO extends DBContext {
             ps.setString(3, article.getCategory());
             ps.setInt(4, article.getAuthorId());
             ps.setString(5, article.getImageUrl());
-            ps.executeUpdate();
-            System.out.println("✅ Article added successfully: " + article.getTitle());
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("✅ Article added: " + article.getTitle());
+            }
         } catch (SQLException e) {
             System.err.println("❌ Error adding article: " + e.getMessage());
             e.printStackTrace();
@@ -129,7 +177,8 @@ public class ArticleDAO extends DBContext {
     }
 
     public void updateArticle(Article article) {
-        String sql = "UPDATE Articles SET Title = ?, Description = ?, Category = ?, ImageUrl = ?, UpdatedAt = GETDATE() WHERE Id = ?";
+        String sql = "UPDATE Articles SET Title = ?, Description = ?, Category = ?, ImageUrl = ?, UpdatedAt = GETDATE() " +
+                     "WHERE Id = ?";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, article.getTitle());
@@ -139,9 +188,9 @@ public class ArticleDAO extends DBContext {
             ps.setInt(5, article.getId());
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected > 0) {
-                System.out.println("✅ Article updated successfully: " + article.getTitle());
+                System.out.println("✅ Article updated: " + article.getTitle());
             } else {
-                System.out.println("⚠️ No article updated (ID: " + article.getId() + ")");
+                System.out.println("⚠️ No article updated for ID: " + article.getId());
             }
         } catch (SQLException e) {
             System.err.println("❌ Error updating article: " + e.getMessage());
@@ -149,6 +198,7 @@ public class ArticleDAO extends DBContext {
         }
     }
 
+    // Xóa bài viết
     public void deleteArticle(int id) {
         String sql = "DELETE FROM Articles WHERE Id = ?";
 
@@ -156,9 +206,9 @@ public class ArticleDAO extends DBContext {
             ps.setInt(1, id);
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected > 0) {
-                System.out.println("✅ Article deleted successfully: ID = " + id);
+                System.out.println("✅ Article deleted: ID = " + id);
             } else {
-                System.out.println("⚠️ No article found to delete (ID: " + id + ")");
+                System.out.println("⚠️ No article found to delete for ID: " + id);
             }
         } catch (SQLException e) {
             System.err.println("❌ Error deleting article: " + e.getMessage());
@@ -166,8 +216,10 @@ public class ArticleDAO extends DBContext {
         }
     }
 
+    // Lấy bài viết theo ID
     public Article getArticleById(int id) {
-        String sql = "SELECT Id, Title, Description, Category, PublishDate, AuthorId, ImageUrl, CreatedAt, UpdatedAt FROM Articles WHERE Id = ?";
+        String sql = "SELECT Id, Title, Description, Category, PublishDate, AuthorId, ImageUrl, CreatedAt, UpdatedAt " +
+                     "FROM Articles WHERE Id = ?";
         Article article = null;
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -175,9 +227,9 @@ public class ArticleDAO extends DBContext {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     article = mapResultSetToArticle(rs);
-                    System.out.println("✅ Found article by ID: " + id + ", Title: " + article.getTitle());
+                    System.out.println("✅ Found article: ID = " + id + ", Title = " + article.getTitle());
                 } else {
-                    System.out.println("⚠️ No article found with ID: " + id);
+                    System.out.println("⚠️ No article found for ID: " + id);
                 }
             }
         } catch (SQLException e) {
@@ -186,4 +238,21 @@ public class ArticleDAO extends DBContext {
         }
         return article;
     }
+    public List<Article> getAllArticles() {
+    List<Article> articles = new ArrayList<>();
+    String sql = "SELECT Id, Title, Description, Category, PublishDate, AuthorId, ImageUrl, CreatedAt, UpdatedAt " +
+                 "FROM Articles ORDER BY PublishDate DESC";
+
+    try (PreparedStatement ps = connection.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+        while (rs.next()) {
+            articles.add(mapResultSetToArticle(rs));
+        }
+        System.out.println("✅ Found " + articles.size() + " articles.");
+    } catch (SQLException e) {
+        System.err.println("❌ SQL Error in getAllArticles: " + e.getMessage());
+        e.printStackTrace();
+    }
+    return articles;
+}
 }
