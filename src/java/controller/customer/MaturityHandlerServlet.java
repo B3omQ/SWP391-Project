@@ -2,56 +2,77 @@ package controller.customer;
 
 import dal.CustomerDAO;
 import dal.DepServiceUsedDAO;
-import dal.DepHistoryDAO;
 import model.Customer;
 import model.DepServiceUsed;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
-import controller.calculation.InterestCalculator;
 
-/**
- *
- * @author emkob
- */
-
-public class MaturityHandlerServlet {  
+public class MaturityHandlerServlet {
 
     private final CustomerDAO customerDAO = new CustomerDAO();
     private final DepServiceUsedDAO depServiceUsedDAO = new DepServiceUsedDAO();
-    private final DepHistoryDAO depHistoryDAO = new DepHistoryDAO();
+    private static final double DEFAULT_DAILY_RATE = 0.05 / 365.0; // Lãi suất mặc định 5%/năm, chia cho 365 ngày
 
     public void processMaturedDeposits(Customer customer) {
-        List<DepServiceUsed> maturedDeposits = depServiceUsedDAO.getDepServiceUsedByCustomerId(customer.getId());
         LocalDateTime now = LocalDateTime.now();
         boolean hasProcessed = false;
 
-        for (DepServiceUsed deposit : maturedDeposits) {
+        // Xử lý sinh lời tự động dựa trên số dư ví
+        if (customer.isAutoProfitEnabled()) {
+            processAutoProfit(customer);
+        }
+
+        // Xử lý các khoản gửi theo gói (nếu có)
+        List<DepServiceUsed> deposits = depServiceUsedDAO.getDepServiceUsedByCustomerId(customer.getId());
+        for (DepServiceUsed deposit : deposits) {
             if ("ACTIVE".equals(deposit.getDepStatus()) && deposit.getEndDate().toLocalDateTime().isBefore(now)) {
                 processMaturedDeposit(deposit, customer);
                 hasProcessed = true;
             }
         }
-        customer.setWallet(customerDAO.getWalletByCustomerId(customer.getId()));
+
+        if (hasProcessed) {
+            customer.setWallet(customerDAO.getWalletByCustomerId(customer.getId()));
+        }
+    }
+
+    private void processAutoProfit(Customer customer) {
+        BigDecimal wallet = customerDAO.getWalletByCustomerId(customer.getId());
+        if (wallet.compareTo(BigDecimal.ZERO) <= 0) {
+            return; // Không tính lãi nếu ví rỗng
+        }
+
+        // Tính lãi kép hàng ngày (giả sử lãi suất 5%/năm)
+        BigDecimal dailyRate = new BigDecimal(DEFAULT_DAILY_RATE);
+        BigDecimal factor = BigDecimal.ONE.add(dailyRate);
+        BigDecimal interest = wallet.multiply(factor.subtract(BigDecimal.ONE));
+        interest = interest.setScale(2, RoundingMode.HALF_UP);
+
+        // Cộng lãi vào ví
+        BigDecimal newWallet = wallet.add(interest);
+        if (customerDAO.updateWallet(customer.getId(), newWallet)) {
+            customer.setWallet(newWallet);
+            System.out.println("✅ Sinh lãi tự động cho CustomerId " + customer.getId() + ": +" + interest + " VNĐ, Số dư mới: " + newWallet);
+        }
     }
 
     private void processMaturedDeposit(DepServiceUsed deposit, Customer customer) {
         BigDecimal principal = deposit.getAmount();
-        BigDecimal savingRate = depServiceUsedDAO.getSavingRateByDepId(deposit.getDepId());
-        int termMonths = depServiceUsedDAO.getTermMonthsByDepId(deposit.getDepId());
-        BigDecimal interest = InterestCalculator.calculateInterest(principal, savingRate.doubleValue(), termMonths);
-        BigDecimal totalAmount = principal.add(interest);
+       BigDecimal BigsavingRate = depServiceUsedDAO.getSavingRateByDepId(deposit.getDepId());
+       double savingRate = BigsavingRate.doubleValue();
 
-        System.out.println("✅ Principal của deposit " + deposit.getId() + ": " + principal);
-        System.out.println("✅ SavingRate: " + savingRate);
-        System.out.println("✅ TermMonths: " + termMonths);
-        System.out.println("✅ Interest tính được: " + interest);
-        System.out.println("✅ TotalAmount: " + totalAmount);
+        long days = java.time.temporal.ChronoUnit.DAYS.between(
+            deposit.getStartDate().toLocalDateTime(), 
+            deposit.getEndDate().toLocalDateTime()
+        );
+        BigDecimal interest = calculateCompoundInterest(principal, savingRate, days);
+        BigDecimal totalAmount = principal.add(interest);
 
         String maturityAction = deposit.getMaturityAction();
         if (maturityAction == null) {
-            System.out.println("⚠️ MaturityAction là null, gán mặc định 'withdrawAll'");
             maturityAction = "withdrawAll";
         }
 
@@ -62,47 +83,35 @@ public class MaturityHandlerServlet {
                 BigDecimal newBalanceWithdrawInterest = customerDAO.getWalletByCustomerId(customer.getId()).add(interest);
                 customerDAO.updateWallet(customer.getId(), newBalanceWithdrawInterest);
                 renewDeposit(deposit, principal, customer);
-                depHistoryDAO.addDepHistory(deposit.getId(), "Rút lãi", principal, interest, interest); // Amount là lãi
                 break;
-
             case "renewAll":
                 renewDeposit(deposit, totalAmount, customer);
-                depHistoryDAO.addDepHistory(deposit.getId(), "Gửi lại toàn bộ", principal, interest, totalAmount); // Amount là tổng
                 break;
-
             case "withdrawAll":
-                BigDecimal currentBalance = customerDAO.getWalletByCustomerId(customer.getId());
-                BigDecimal newBalanceWithdrawAll = currentBalance.add(totalAmount);
-                boolean updated = customerDAO.updateWallet(customer.getId(), newBalanceWithdrawAll);
-                if (!updated) {
-                    System.out.println("❌ Lỗi: Không thể cập nhật ví cho customer " + customer.getId());
-                } else {
-                    System.out.println("✅ Đã cộng " + totalAmount + " (gốc + lãi) vào ví, số dư mới: " + newBalanceWithdrawAll);
-                }
-                depHistoryDAO.addDepHistory(deposit.getId(), "Rút toàn bộ", principal, interest, totalAmount); // Amount là tổng
+                BigDecimal newBalanceWithdrawAll = customerDAO.getWalletByCustomerId(customer.getId()).add(totalAmount);
+                customerDAO.updateWallet(customer.getId(), newBalanceWithdrawAll);
                 break;
-
             default:
                 BigDecimal newBalanceDefault = customerDAO.getWalletByCustomerId(customer.getId()).add(totalAmount);
                 customerDAO.updateWallet(customer.getId(), newBalanceDefault);
-                depHistoryDAO.addDepHistory(deposit.getId(), "Rút toàn bộ (mặc định)", principal, interest, totalAmount); // Amount là tổng
                 break;
         }
     }
 
-    private void renewDeposit(DepServiceUsed oldDeposit, BigDecimal amount, Customer customer) {
+    private BigDecimal calculateCompoundInterest(BigDecimal principal, double annualRate, long days) {
+        BigDecimal dailyRate = new BigDecimal(annualRate / 365.0 / 100.0);
+        BigDecimal factor = BigDecimal.ONE.add(dailyRate);
+        BigDecimal interest = principal.multiply(factor.pow((int) days).subtract(BigDecimal.ONE));
+        return interest.setScale(2, RoundingMode.HALF_UP);
+    }
+
+   private void renewDeposit(DepServiceUsed oldDeposit, BigDecimal amount, Customer customer) {
         DepServiceUsed newDep = new DepServiceUsed(
             0, oldDeposit.getDepId(), customer.getId(), oldDeposit.getDepTypeId(),
             amount, Timestamp.valueOf(LocalDateTime.now()),
             Timestamp.valueOf(LocalDateTime.now().plusDays(depServiceUsedDAO.getTermMonthsByDepId(oldDeposit.getDepId()) * 30)),
-            "ACTIVE", oldDeposit.getMaturityAction()
+            "ACTIVE", oldDeposit.getMaturityAction() // Sử dụng isAutoProfitEnabled từ Customer
         );
         depServiceUsedDAO.addDepServiceUsed(newDep);
-    }
-
-    private int calculateTermMonths(Timestamp start, Timestamp end) {
-        LocalDateTime startDate = start.toLocalDateTime();
-        LocalDateTime endDate = end.toLocalDateTime();
-        return (int) java.time.temporal.ChronoUnit.MONTHS.between(startDate, endDate);
     }
 }

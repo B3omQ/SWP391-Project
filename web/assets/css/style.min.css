@@ -1434,7 +1434,7 @@ button:not(:disabled) {
 }
 
 .alert-info {
-    background-color: rgba(100, 194, 241, 0.9);
+    background-color: #dc3545;
     color: #fff;
     border-color: #64c2f1
 }
@@ -2197,7 +2197,7 @@ h6,
 }
 
 ::selection {
-    background: rgba(57, 108, 240, 0.9);
+    background: rgba(172, 30, 45, 1);
     color: #fff
 }
 

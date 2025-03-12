@@ -1,13 +1,7 @@
 package controller.customer;
 
-import controller.customer.MaturityScheduler;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
-
-/**
- *
- * @author emkob
- */
 
 public class MaturitySchedulerListener implements ServletContextListener {
 
@@ -15,7 +9,7 @@ public class MaturitySchedulerListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        System.out.println("✅ Ứng dụng khởi động: Bắt đầu scheduler xử lý đáo hạn tự động.");
+        System.out.println("✅ Ứng dụng khởi động: Bắt đầu scheduler xử lý đáo hạn tự động cho người dùng đang đăng nhập.");
         maturityScheduler = new MaturityScheduler();
         maturityScheduler.startScheduler();
     }

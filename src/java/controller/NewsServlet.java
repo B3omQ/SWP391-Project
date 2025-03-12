@@ -1,26 +1,17 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
-
 package controller;
 
 import dal.ArticleDAO;
-import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
 import model.Article;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-/**
- *
- * @author emkob
- */
 public class NewsServlet extends HttpServlet {
-   
+
     private ArticleDAO articleDAO;
 
     @Override
@@ -29,10 +20,26 @@ public class NewsServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<Article> articles = articleDAO.getAllArticles();
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        String search = request.getParameter("search");
+        String categoryFilter = request.getParameter("categoryFilter");
+        String sortBy = request.getParameter("sortBy");
+
+        System.out.println("Search: " + search);
+        System.out.println("Category Filter: " + categoryFilter);
+        System.out.println("Sort By: " + sortBy);
+
+        List<Article> articles = articleDAO.getFilteredArticles(search, categoryFilter, sortBy);
         System.out.println("Số lượng bài viết lấy được: " + articles.size());
-        request.setAttribute("newsList", articles);
+
+        request.setAttribute("newsList", articles != null ? articles : new ArrayList<>());
         request.getRequestDispatcher("/public/News.jsp").forward(request, response);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        doGet(request, response);
     }
 }

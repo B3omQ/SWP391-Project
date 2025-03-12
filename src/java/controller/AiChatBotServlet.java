@@ -112,6 +112,7 @@ public class AiChatBotServlet extends HttpServlet {
             out.print("{\"reply\":\"Lỗi hệ thống. Vui lòng thử lại!\"}");
         } finally {
             out.flush();
+            out.close();
         }
     }
 
