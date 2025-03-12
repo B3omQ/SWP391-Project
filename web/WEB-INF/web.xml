@@ -163,7 +163,7 @@
     <servlet>
         <servlet-name>LoanApproval</servlet-name>
         <servlet-class>controller.ceo.LoanApproval</servlet-class>
-        </servlet>
+    </servlet>
     <servlet>
         <servlet-name>AddLoanOption</servlet-name>
         <servlet-class>controller.manager.AddLoanOption</servlet-class>
@@ -179,10 +179,14 @@
     <servlet>
         <servlet-name>CustomerDepServiceManagement</servlet-name>
         <servlet-class>controller.manager.CustomerDepServiceManagement</servlet-class>
-        </servlet>
+    </servlet>
     <servlet>
         <servlet-name>Disbursement</servlet-name>
         <servlet-class>controller.accountant.Disbursement</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ApplyLoan</servlet-name>
+        <servlet-class>controller.ceo.ApplyLoan</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>HomeServlet</servlet-name>
@@ -403,7 +407,7 @@
     <servlet-mapping>
         <servlet-name>LoanApproval</servlet-name>
         <url-pattern>/loanApproval</url-pattern>
-        </servlet-mapping>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AddLoanOption</servlet-name>
         <url-pattern>/add-loan-option</url-pattern>
@@ -419,10 +423,14 @@
     <servlet-mapping>
         <servlet-name>CustomerDepServiceManagement</servlet-name>
         <url-pattern>/customer-dep-service-management</url-pattern>
-        </servlet-mapping>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Disbursement</servlet-name>
         <url-pattern>/Disbursement</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ApplyLoan</servlet-name>
+        <url-pattern>/applyLoan</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>1440</session-timeout>

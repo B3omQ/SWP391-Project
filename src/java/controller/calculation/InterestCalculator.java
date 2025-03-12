@@ -22,6 +22,17 @@ public class InterestCalculator {
             .multiply(BigDecimal.valueOf(days))
             .divide(BigDecimal.valueOf(DAYS_IN_YEAR), BigDecimal.ROUND_HALF_UP);
     }
+    public static BigDecimal calculateDebtRepay(BigDecimal principal, int selectedTerm, BigDecimal interestRate) {
+        // Tính số ngày vay: selectedTerm * 30
+        int days = selectedTerm * 30;
+        // Tính số tiền lãi: (principal * days * interestRate) / 365
+        BigDecimal interest = principal
+                .multiply(new BigDecimal(days))
+                .multiply(interestRate)
+                .divide(new BigDecimal("365"), 2, BigDecimal.ROUND_HALF_UP);
+        // Tổng số tiền cần trả: tiền gốc + lãi
+        return principal.add(interest);
+    }
 
     public static String calculateMaturityDate(int months) {
         LocalDate today = LocalDate.now();

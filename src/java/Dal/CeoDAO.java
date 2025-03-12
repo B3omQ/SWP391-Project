@@ -4,11 +4,13 @@
  */
 package dal;
 
+import controller.calculation.InterestCalculator;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -17,6 +19,7 @@ import java.util.List;
 import model.Customer;
 import model.DepService;
 import model.LoanService;
+import model.LoanServiceUsed;
 import model.Role;
 import model.Staff;
 import util.AccountValidation;
@@ -675,6 +678,32 @@ public class CeoDAO extends DBContext {
 
         return list;
     }
+    
+    public boolean createLoanServiceUsed(LoanServiceUsed loanServiceUsed) {
+    String sql = "INSERT INTO LoanServiceUsed " +
+                 "(loanId, cusId, amount, startDate, endDate, dateExpiredCount, debtRepayAmount, incomeVertification, loanStatus) " +
+                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    try ( PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+        // Assuming LoanService and Customer objects have getId() methods
+        stmt.setInt(1, loanServiceUsed.getLoanId().getId());
+        stmt.setInt(2, loanServiceUsed.getCusId().getId());
+        stmt.setBigDecimal(3, loanServiceUsed.getAmount());
+        stmt.setTimestamp(4, loanServiceUsed.getStartDate());
+        stmt.setTimestamp(5, loanServiceUsed.getEndDate());
+        stmt.setInt(6, loanServiceUsed.getDateExpiredCount());
+        stmt.setBigDecimal(7, loanServiceUsed.getDebtRepayAmount());
+        stmt.setString(8, loanServiceUsed.getIncomeVertification());
+        stmt.setString(9, loanServiceUsed.getLoanStatus());
+
+        int rowsAffected = stmt.executeUpdate();
+        return rowsAffected > 0;
+    } catch (SQLException ex) {
+        ex.printStackTrace();
+        return false;
+    }
+}
+
 
     public static void main(String[] args) {
         CeoDAO c = new CeoDAO();
@@ -682,8 +711,25 @@ public class CeoDAO extends DBContext {
 //        for (Staff x : c.searchStaffs("", "", 1, 5)) {
 //            System.out.println(x.toString());
 //        }
-        for(LoanService x : c.getAllLoanServiceByStatus("Pending", "DuringTime", "ASC", "", 1, 5)) {
+        for(LoanService x : c.getAllLoanServiceByStatus("Approved", "DuringTime", "ASC", "", 1, 10)) {
             System.out.println(x.toString());
         }
+        LoanService loanService = new LoanServiceDAO().getLoanServiceById(2);
+        System.out.println(loanService.toString());
+        
+        LoanServiceUsed loanServiceUsed = new LoanServiceUsed(
+                0,
+                loanService,
+                c.getCustomerById(1),
+                new BigDecimal(1000000),
+                Timestamp.valueOf(LocalDateTime.now()),
+                Timestamp.valueOf(LocalDateTime.now().plusDays(loanService.getDuringTime() * 30)),
+                0,
+                InterestCalculator.calculateDebtRepay(new BigDecimal(1000000), loanService.getDuringTime(), new BigDecimal(loanService.getOnTermRate())),
+                "",
+                "Pending");
+
+        // Call the DAL method to insert the new record into the database
+        boolean isInserted = c.createLoanServiceUsed(loanServiceUsed);
     }
 }
