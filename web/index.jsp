@@ -6,6 +6,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
     <body>
-        <jsp:forward page="home.jsp"></jsp:forward>
+        <jsp:forward page="home"></jsp:forward>
     </body>
 </html>
+

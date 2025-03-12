@@ -152,6 +152,10 @@
         <servlet-name>CustomerReview</servlet-name>
         <servlet-class>controller.customer.CustomerReview</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CustomerReviewManager</servlet-name>
+        <servlet-class>controller.consultant.CustomerReviewManager</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>HomeServlet</servlet-name>
         <url-pattern>/home</url-pattern>
@@ -359,6 +363,10 @@
     <servlet-mapping>
         <servlet-name>CustomerReview</servlet-name>
         <url-pattern>/CustomerReview</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CustomerReviewManager</servlet-name>
+        <url-pattern>/CustomerReviewManager</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>1440</session-timeout>

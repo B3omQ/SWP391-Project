@@ -1434,7 +1434,7 @@ button:not(:disabled) {
 }
 
 .alert-info {
-    background-color: rgba(100, 194, 241, 0.9);
+    background-color: #dc3545;
     color: #fff;
     border-color: #64c2f1
 }

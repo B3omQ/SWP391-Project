@@ -8,29 +8,58 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ include file="template/header.jsp" %>
 <%@ include file="template/sidebar.jsp" %>
+<style>
+    .star-rating {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: start;
+    }
+    .star-rating input {
+        display: none;
+    }
+    .star-rating label {
+        font-size: 2rem;
+        color: gray;
+        cursor: pointer;
+    }
+    .star-rating label:hover,
+    .star-rating label:hover ~ label,
+    .star-rating input:checked ~ label {
+        color: gold;
+    }
+</style>
 
 <div class="container-fluid">
     <div class="container-fluid mb-3">
     <h2 class="mt-3">Đánh giá dịch vụ</h2>
     <form action="CustomerReview" method="post" class="mt-3">
-        <div class="form-group">
-            <label for="rate">Chọn mức độ hài lòng:</label>
-            <select name="rate" id="rate" class="form-control">
-                <option value="5">5 - Tuyệt vời</option>
-                <option value="4">4 - Tốt</option>
-                <option value="3">3 - Bình thường</option>
-                <option value="2">2 - Không hài lòng</option>
-                <option value="1">1 - Rất tệ</option>
-            </select>
+    <div class="form-group">
+        <label for="rate">Chọn mức độ hài lòng:</label>
+        <div class="star-rating">
+            <input type="radio" id="star5" name="rate" value="5" />
+            <label for="star5" class="mdi mdi-star"></label>
+            
+            <input type="radio" id="star4" name="rate" value="4" />
+            <label for="star4" class="mdi mdi-star"></label>
+            
+            <input type="radio" id="star3" name="rate" value="3" />
+            <label for="star3" class="mdi mdi-star"></label>
+            
+            <input type="radio" id="star2" name="rate" value="2" />
+            <label for="star2" class="mdi mdi-star"></label>
+            
+            <input type="radio" id="star1" name="rate" value="1" />
+            <label for="star1" class="mdi mdi-star"></label>
         </div>
+    </div>
 
-        <div class="form-group mt-2">
-            <label for="review">Nhận xét của bạn:</label>
-            <textarea name="review" id="review" class="form-control" rows="4" placeholder="Nhập nhận xét của bạn..."></textarea>
-        </div>
+    <div class="form-group mt-2">
+        <label for="review">Nhận xét của bạn:</label>
+        <textarea name="review" id="review" class="form-control" rows="4" placeholder="Nhập nhận xét của bạn..."></textarea>
+    </div>
 
-        <button type="submit" class="btn btn-primary mt-3">Gửi đánh giá</button>
-    </form>
+    <button type="submit" class="btn btn-primary mt-3">Gửi đánh giá</button>
+</form>
 </div>
     
 </div>
