@@ -26,7 +26,7 @@
     </servlet>
     <servlet>
         <servlet-name>VerifyingOtp</servlet-name>
-        <servlet-class>controller.customer.VerifyingOtp</servlet-class>
+        <servlet-class>controller.VerifyingOtp</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ConsultantProfile</servlet-name>
