@@ -12,6 +12,10 @@ import java.math.BigDecimal;
 import model.Customer;
 import model.DepServiceUsed;
 
+/**
+ *
+ * @author emkob
+ */
 public class WithdrawDepositServlet extends HttpServlet {
 
     @Override

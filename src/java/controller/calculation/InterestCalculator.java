@@ -18,7 +18,7 @@ public class InterestCalculator {
     public static BigDecimal calculateInterest(BigDecimal depositAmount, double savingRate, int months) {
         int days = months * 30;
         return depositAmount.multiply(BigDecimal.valueOf(savingRate))
-            .divide(BigDecimal.valueOf(100)) // Chuyển lãi suất về dạng phần trăm
+            .divide(BigDecimal.valueOf(100)) 
             .multiply(BigDecimal.valueOf(days))
             .divide(BigDecimal.valueOf(DAYS_IN_YEAR), BigDecimal.ROUND_HALF_UP);
     }
