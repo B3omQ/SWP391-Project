@@ -1,6 +1,6 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Click nbfs://.netbeans/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package dal;
 
@@ -25,33 +25,37 @@ public class CustomerDAO extends DBContext {
 
     private AccountValidation av = new AccountValidation();
 
- public static Customer mapResultSetToCustomer(ResultSet rs) throws SQLException {
-    return new Customer(
-        rs.getInt("Id"),
-        rs.getString("Username"),
-        rs.getString("Password"),
-        rs.getString("Image"),
-        rs.getString("Email"),
-        rs.getString("FirstName"),
-        rs.getString("LastName"),
-        rs.getString("Gender"),
-        rs.getDate("Dob") != null ? rs.getDate("Dob").toLocalDate() : null,
-        rs.getString("Phone"),
-        rs.getString("Address"),
-        rs.getInt("failAttempts"),
-        rs.getTimestamp("LockTime") != null ? rs.getTimestamp("LockTime").toLocalDateTime() : null,
-        rs.getBigDecimal("Wallet")
-    );
-}
- public List<Customer> getAllCustomers() {
+    public static Customer mapResultSetToCustomer(ResultSet rs) throws SQLException {
+        return new Customer(
+            rs.getInt("Id"),
+            rs.getString("Username"),
+            rs.getString("Password"),
+            rs.getString("Image"),
+            rs.getString("Email"),
+            rs.getString("FirstName"),
+            rs.getString("LastName"),
+            rs.getString("Gender"),
+            rs.getDate("Dob") != null ? rs.getDate("Dob").toLocalDate() : null,
+            rs.getString("Phone"),
+            rs.getString("Address"),
+            rs.getInt("failAttempts"),
+            rs.getTimestamp("LockTime") != null ? rs.getTimestamp("LockTime").toLocalDateTime() : null,
+            rs.getBigDecimal("Wallet"),
+                        rs.getBoolean("isAutoProfitEnabled")
+
+        );
+    }
+
+      public List<Customer> getAllCustomers() {
         List<Customer> customers = new ArrayList<>();
-        String sql = "SELECT Id, Wallet FROM Customer"; // Chỉ lấy các cột cần thiết
+        String sql = "SELECT Id, Wallet, isAutoProfitEnabled FROM Customer"; // Thêm isAutoProfitEnabled
         try (PreparedStatement p = connection.prepareStatement(sql);
              ResultSet rs = p.executeQuery()) {
             while (rs.next()) {
                 Customer customer = new Customer();
                 customer.setId(rs.getInt("Id"));
                 customer.setWallet(rs.getBigDecimal("Wallet"));
+                customer.setAutoProfitEnabled(rs.getBoolean("isAutoProfitEnabled")); // Thêm giá trị
                 customers.add(customer);
             }
         } catch (SQLException e) {
@@ -61,6 +65,7 @@ public class CustomerDAO extends DBContext {
         System.out.println("Found " + customers.size() + " customers");
         return customers;
     }
+
     public Customer getCustomerById(int id) {
         String sql = "SELECT * FROM Customer WHERE Id = ?";
         try (PreparedStatement p = connection.prepareStatement(sql)) {
@@ -75,30 +80,33 @@ public class CustomerDAO extends DBContext {
         }
         return null;
     }
-    public List<Customer> getAllCustomersPlus() {
-    List<Customer> customers = new ArrayList<>();
-    String sql = "SELECT Id, Username, Password, Email, Image, Address, Wallet FROM Customer";
-    try (PreparedStatement p = connection.prepareStatement(sql);
-         ResultSet rs = p.executeQuery()) {
-        while (rs.next()) {
-            Customer customer = new Customer();
-            customer.setId(rs.getInt("Id"));
-            customer.setUsername(rs.getString("Username"));
-            customer.setPassword(rs.getString("Password"));
-            customer.setEmail(rs.getString("Email"));
-            customer.setImage(rs.getString("Image"));
-            customer.setAddress(rs.getString("Address"));
-            customer.setWallet(rs.getBigDecimal("Wallet"));
-            customers.add(customer);
+
+   public List<Customer> getAllCustomersPlus() {
+        List<Customer> customers = new ArrayList<>();
+        String sql = "SELECT Id, Username, Password, Email, Image, Address, Wallet, isAutoProfitEnabled FROM Customer"; // Thêm isAutoProfitEnabled
+        try (PreparedStatement p = connection.prepareStatement(sql);
+             ResultSet rs = p.executeQuery()) {
+            while (rs.next()) {
+                Customer customer = new Customer();
+                customer.setId(rs.getInt("Id"));
+                customer.setUsername(rs.getString("Username"));
+                customer.setPassword(rs.getString("Password"));
+                customer.setEmail(rs.getString("Email"));
+                customer.setImage(rs.getString("Image"));
+                customer.setAddress(rs.getString("Address"));
+                customer.setWallet(rs.getBigDecimal("Wallet"));
+                customer.setAutoProfitEnabled(rs.getBoolean("isAutoProfitEnabled")); // Thêm giá trị
+                customers.add(customer);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error querying all customers: " + e.getMessage());
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        System.err.println("Error querying all customers: " + e.getMessage());
-        e.printStackTrace();
+        System.out.println("Found " + customers.size() + " customers");
+        return customers;
     }
-    System.out.println("Found " + customers.size() + " customers");
-    return customers;
-}
-     public BigDecimal getWalletByCustomerId(int customerId) {
+
+    public BigDecimal getWalletByCustomerId(int customerId) {
         String sql = "SELECT Wallet FROM Customer WHERE Id = ?";
         try (PreparedStatement p = connection.prepareStatement(sql)) {
             p.setInt(1, customerId);
@@ -113,32 +121,30 @@ public class CustomerDAO extends DBContext {
         return BigDecimal.ZERO;
     }
 
-public boolean updateWallet(int customerId, BigDecimal newBalance) {
-    String sql = "UPDATE Customer SET Wallet = ? WHERE Id = ?";
-    try (PreparedStatement p = connection.prepareStatement(sql)) {
-        p.setBigDecimal(1, newBalance);
-        p.setInt(2, customerId);
-        int rowsAffected = p.executeUpdate();
-        
-        System.out.println("Cập nhật số dư: " + newBalance + " cho userId: " + customerId);
-        System.out.println("Số dòng bị ảnh hưởng: " + rowsAffected);
+    public boolean updateWallet(int customerId, BigDecimal newBalance) {
+        String sql = "UPDATE Customer SET Wallet = ? WHERE Id = ?";
+        try (PreparedStatement p = connection.prepareStatement(sql)) {
+            p.setBigDecimal(1, newBalance);
+            p.setInt(2, customerId);
+            int rowsAffected = p.executeUpdate();
+            
+            System.out.println("Cập nhật số dư: " + newBalance + " cho userId: " + customerId);
+            System.out.println("Số dòng bị ảnh hưởng: " + rowsAffected);
 
-        return rowsAffected > 0;
-    } catch (SQLException e) {
-        e.printStackTrace();
-        return false;
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
-}
 
     public void updateCustomer(Customer customer) {
         String sql = "UPDATE Customer SET email = ?, phone = ?, address = ? WHERE id = ?";
         try (PreparedStatement p = connection.prepareStatement(sql)) {
-
             p.setString(1, customer.getEmail());
             p.setString(2, customer.getPhone());
             p.setString(3, customer.getAddress());
             p.setInt(4, customer.getId());
-
             p.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -170,7 +176,6 @@ public boolean updateWallet(int customerId, BigDecimal newBalance) {
 
     public boolean emailExists(String email) {
         String sql = "SELECT 1 FROM [dbo].[Customer] WHERE Email = ?";
-
         try (PreparedStatement p = connection.prepareStatement(sql)) {
             p.setString(1, email);
             try (ResultSet rs = p.executeQuery()) {
@@ -184,7 +189,6 @@ public boolean updateWallet(int customerId, BigDecimal newBalance) {
 
     public boolean phoneExists(String phone) {
         String sql = "SELECT 1 FROM [dbo].[Customer] WHERE Phone = ?";
-
         try (PreparedStatement p = connection.prepareStatement(sql)) {
             p.setString(1, phone);
             try (ResultSet rs = p.executeQuery()) {
@@ -198,7 +202,6 @@ public boolean updateWallet(int customerId, BigDecimal newBalance) {
 
     public void updateCustomerImage(int customerId, String imagePath) {
         String sql = "UPDATE Customer SET Image = ? WHERE Id = ?";
-
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, imagePath);
             ps.setInt(2, customerId);
@@ -248,9 +251,6 @@ public boolean updateWallet(int customerId, BigDecimal newBalance) {
             e.printStackTrace();
         }
     }
-
-
-  
 
     public Customer getCustomerByEmail(String email) {
         String sql = "SELECT * FROM [dbo].[Customer] WHERE Email = ?";
@@ -340,26 +340,41 @@ public boolean updateWallet(int customerId, BigDecimal newBalance) {
             e.printStackTrace();
         }
     }
- public List<DepService> getAllDepServices() {
-    List<DepService> depServices = new ArrayList<>();
-    String sql = "SELECT * FROM DepService ORDER BY duringTime ASC";
 
-    try (PreparedStatement ps = connection.prepareStatement(sql);
-         ResultSet rs = ps.executeQuery()) {
+    public List<DepService> getAllDepServices() {
+        List<DepService> depServices = new ArrayList<>();
+        String sql = "SELECT * FROM DepService ORDER BY duringTime ASC";
 
-        while (rs.next()) {
-            DepService depService = new DepService(
-                rs.getInt("id"),
-                rs.getString("description"),
-                rs.getBigDecimal("minimumDep"),
-                rs.getInt("duringTime"),
-                rs.getDouble("savingRate") 
-            );
-            depServices.add(depService);
+        try (PreparedStatement ps = connection.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                DepService depService = new DepService(
+                    rs.getInt("id"),
+                    rs.getString("description"),
+                    rs.getBigDecimal("minimumDep"),
+                    rs.getInt("duringTime"),
+                    rs.getDouble("savingRate") 
+                );
+                depServices.add(depService);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return depServices;
     }
-    return depServices;
-}
+
+  public boolean setAutoProfitEnabled(int customerId, boolean enabled) {
+        String sql = "UPDATE Customer SET isAutoProfitEnabled = ? WHERE Id = ?";
+        try (PreparedStatement p = connection.prepareStatement(sql)) {
+            p.setBoolean(1, enabled);
+            p.setInt(2, customerId);
+            int rowsAffected = p.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            System.err.println("❌ Error updating isAutoProfitEnabled for customer " + customerId + ": " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
