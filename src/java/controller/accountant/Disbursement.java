@@ -88,7 +88,6 @@ public class Disbursement extends HttpServlet {
                 int cusId = Integer.parseInt(updateCusId);
                 BigDecimal amount = new BigDecimal(amountParam);
                 BigDecimal wallet = new BigDecimal(walletParam);
-
                 wallet = wallet.add(amount);
                 cdao.updateWallet(cusId, wallet);
 

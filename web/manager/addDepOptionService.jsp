@@ -33,7 +33,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
         <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css">
-
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
 
     </head>
@@ -161,10 +161,29 @@
 
                 <div class="container-fluid">                    
                     <div class="layout-specing">
+                        <div class="row align-items-center">
+                            <!-- Title & Breadcrumb -->
+                            <div class="col-md-6">
+                                <h5 class="mb-0">Trang quản lí dịch vụ gói gửi tiết kiệm</h5>
+                                <nav aria-label="breadcrumb" class="mt-2">
+                                    <ul class="breadcrumb breadcrumb-muted bg-transparent rounded mb-0 p-0">
+                                        <li class="breadcrumb-item">
+                                            <a href="#" class="text-decoration-none text-danger">SmartBanking</a>
+                                        </li>
+                                        <li class="breadcrumb-item">
+                                            <a href="#" class="text-decoration-none text-danger">Dịch vụ gửi tiết kiệm</a>
+                                        </li>
+                                        <li class="breadcrumb-item active" aria-current="page">Tạo mới gói dịch vụ</li>
+                                    </ul>
+                                </nav>
+                            </div>                           
+                        </div>
+                        </br>
+
                         <div class="kofi-inspired-container">
                             <h5 class="kofi-title">
                                 <i class="fas fa-piggy-bank me-2" style="color: red;"></i>
-                                Create a New Saving Option
+                                Tạo mới gói dịch vụ gửi tiết kiệm
                             </h5>
 
                             <form id="savingForm" action="add-saving-option" method="POST">
@@ -172,49 +191,49 @@
                                     <div class="col-md-6">
                                         <div class="kofi-input-group">
                                             <label for="minimumDep">
-                                                <i class="fas fa-dollar-sign text-success"></i> Deposit Minimum
+                                                <i class="fas fa-dollar-sign text-success"></i> Số tiền gửi tối thiểu
                                             </label>
                                             <input type="number" id="minimumDep" name="minimumDep" 
-                                                   class="kofi-input" placeholder="Enter amount" required>
+                                                   class="kofi-input" placeholder="Nhập giá trị (VNĐ)" required>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="kofi-input-group">
                                             <label for="duringTime">
-                                                <i class="fas fa-clock text-primary"></i> During Time
+                                                <i class="fas fa-clock text-primary"></i> Thời hạn
                                             </label>
                                             <input type="number" id="duringTime" name="duringTime" 
-                                                   class="kofi-input" placeholder="Months" required>
+                                                   class="kofi-input" placeholder="Tháng" required>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="kofi-input-group">
                                             <label for="savingRate">
-                                                <i class="fas fa-percentage text-warning"></i> Saving Rate
+                                                <i class="fas fa-percentage text-warning"></i> Lãi suất trong thời hạn
                                             </label>
                                             <input type="number" step="0.01" id="savingRate" 
                                                    name="savingRate" class="kofi-input" 
-                                                   placeholder="Interest rate (%)" required>
+                                                   placeholder="Tỉ lệ (%)" required>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="kofi-input-group">
                                             <label for="savingRateMinimum">
-                                                <i class="fas fa-chart-line text-danger"></i> Minimum Rate
+                                                <i class="fas fa-chart-line text-danger"></i> Lãi suất đáo hạn
                                             </label>
                                             <input type="number" step="0.01" id="savingRateMinimum" 
                                                    name="savingRateMinimum" class="kofi-input" 
-                                                   placeholder="Minimum rate (%)" required>
+                                                   placeholder="Tỉ lệ (%)" required>
                                         </div>
                                     </div>
                                     <div class="col-12">
                                         <div class="kofi-input-group">
                                             <label for="description">
-                                                <i class="fas fa-comment-dots text-info"></i> Description
+                                                <i class="fas fa-comment-dots text-info"></i> Thông tin mô tả gói
                                             </label>
                                             <textarea name="description" id="description" 
                                                       class="kofi-input kofi-textarea" 
-                                                      placeholder="Tell us about this saving option..."></textarea>
+                                                      placeholder="Mô tả về gói dịch vụ..."></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -222,7 +241,7 @@
                                 <div class="kofi-footer mt-2">                                    
                                     <button type="submit" class="kofi-btn">
                                         <i class="fas fa-paper-plane me-2"></i>
-                                        Send for Approval
+                                        Gửi phê duyệt
                                     </button>
                                 </div>
 
@@ -230,15 +249,15 @@
                                     <div class="modal-dialog modal-dialog-centered">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title">Leave This Page?</h5>
+                                                <h5 class="modal-title">Bạn đang rời trang?</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                                <p>Your changes will be not saved</p>
+                                                <p>Thay đổi của bạn sẽ không được lưu</p>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Stay on Page</button>
-                                                <button type="button" class="btn btn-primary" id="confirmLeaveBtn">Leave Page</button>
+                                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Ở lại trang</button>
+                                                <button type="button" class="btn btn-primary" id="confirmLeaveBtn">Rời trang</button>
                                             </div>
                                         </div>
                                     </div>
@@ -253,7 +272,7 @@
                 <jsp:include page="template/footer.jsp"/>
             </main>
         </div>
-
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
         <script src ="resources/script/jquery-3.7.1.min.js"></script>
         <script src="./assets/tinymce/tinymce.min.js"></script>
         <script src="./resources/script/tinymceConfig.js"></script>
@@ -289,13 +308,13 @@
                 let nextUrl = null;
                 let isLeaving = false;
 
-                
+
                 function updateFormDirty() {
                     let isAnyFieldFilled = false;
                     $('.kofi-input, .kofi-textarea').each(function () {
                         if ($(this).val().trim() !== '') {
                             isAnyFieldFilled = true;
-                            return false; 
+                            return false;
                         }
                     });
                     formDirty = isAnyFieldFilled;
@@ -305,7 +324,7 @@
                     updateFormDirty();
                 });
 
-                
+
                 $('#savingForm').on('submit', function (e) {
                     e.preventDefault();
 
@@ -324,9 +343,17 @@
                         dataType: 'json',
                         success: function (response) {
                             if (response.success) {
-                                showSuccessMessage("Success", "Sending approval successful");
-                                $('#savingForm')[0].reset();
-                                formDirty = false; 
+                                Swal.fire({
+                                    title: 'Thành công!',
+                                    text: 'Gửi yêu cầu phê duyệt thành công',
+                                    icon: 'success',
+                                    confirmButtonText: 'OK'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.reload();
+                                    }
+                                });
+                                formDirty = false;
                             } else {
                                 showErrorMessage("Error", response.message);
                             }
@@ -340,7 +367,7 @@
                 // Xử lý khi người dùng cố gắng rời trang
                 window.onbeforeunload = function (e) {
                     if (formDirty && !isLeaving) {
-                        return 'Your changes made may not be saved.';
+                        return 'Thay đổi của bạn có thể sẽ không được lưu.';
                     }
                 };
 
@@ -372,7 +399,7 @@
                     if (formDirty && !isLeaving) {
                         e.preventDefault();
                         $('#leaveConfirmationModal').modal('show');
-                        nextUrl = null; 
+                        nextUrl = null;
                         history.pushState({page: 'current'}, document.title, originalUrl);
                     }
                 });

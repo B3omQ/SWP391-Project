@@ -132,6 +132,13 @@ public boolean addDepHistory(Integer dsuId, String description, BigDecimal amoun
         System.out.println("Total history records found: " + historyList.size());
         return historyList;
     }
+    
+    public static void main(String[] args) {
+        DepHistoryDAO d = new DepHistoryDAO();
+        List<DepHistory> list = d.getDepHistoryByCustomerId(42);
+        for(DepHistory o : list) {
+            System.out.println(o);}
+    }
 
     /**
      * Lấy tất cả lịch sử gửi tiết kiệm
