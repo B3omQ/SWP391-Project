@@ -25,10 +25,11 @@ public class InterestCalculator {
     public static BigDecimal calculateDebtRepay(BigDecimal principal, int selectedTerm, BigDecimal interestRate) {
         // Tính số ngày vay: selectedTerm * 30
         int days = selectedTerm * 30;
+        BigDecimal decimalInterestRate = interestRate.divide(new BigDecimal("100"), 10, BigDecimal.ROUND_HALF_UP);
         // Tính số tiền lãi: (principal * days * interestRate) / 365
         BigDecimal interest = principal
                 .multiply(new BigDecimal(days))
-                .multiply(interestRate)
+                .multiply(decimalInterestRate)
                 .divide(new BigDecimal("365"), 2, BigDecimal.ROUND_HALF_UP);
         // Tổng số tiền cần trả: tiền gốc + lãi
         return principal.add(interest);

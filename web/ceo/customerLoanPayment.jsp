@@ -39,24 +39,30 @@
                 border-radius: 10px;
                 box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
                 text-align: center;
-                border-top: 5px solid #DA251D; /* Màu đỏ Techcombank */
+                margin: 50px auto;
             }
             .loan-title {
                 font-size: 22px;
                 font-weight: bold;
                 color: #DA251D;
-                margin-bottom: 15px;
+                margin-bottom: 20px;
             }
             .loan-detail {
                 font-size: 16px;
                 margin: 10px 0;
                 display: flex;
                 justify-content: space-between;
-                border-bottom: 1px solid #ddd;
-                padding-bottom: 5px;
             }
             .loan-label {
                 font-weight: bold;
+            }
+            input[type='number'] {
+                width: 100%;
+                padding: 10px;
+                margin-top: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                font-size: 16px;
             }
             .loan-button {
                 margin-top: 20px;
@@ -64,34 +70,25 @@
                 background-color: #DA251D;
                 color: white;
                 text-align: center;
+                border: none;
                 border-radius: 5px;
-                text-decoration: none;
-                display: block;
                 font-size: 16px;
-                font-weight: bold;
-                transition: 0.3s;
+                cursor: pointer;
+                width: 100%;
             }
             .loan-button:hover {
                 background-color: #B71C1C;
-                cursor: pointer;
             }
-            .progress-bar {
-                width: 100%;
-                height: 10px;
-                background-color: #ddd;
-                border-radius: 5px;
-                margin-top: 10px;
-                position: relative;
+            .message, .error {
+                font-size: 16px;
+                margin-bottom: 10px;
+                padding: 10px;
             }
-            .progress-fill {
-                height: 100%;
-                background-color: #DA251D;
-                border-radius: 5px;
+            .message {
+                color: green;
             }
-            .warning {
+            .error {
                 color: red;
-                font-weight: bold;
-                margin-top: 10px;
             }
         </style>
     </head>
@@ -125,69 +122,34 @@
                                 </nav>
                             </div><!--end col-->
                         </div>
-                        <c:choose>
-                            <c:when test="${not empty loan}">
-                                <div class="loan-container">
-                                    <div class="loan-title">Chi Tiết Khoản Vay</div>
+                        <div class="loan-container">
+                            <div class="loan-title">Thanh Toán Khoản Vay</div>
 
-                                    <div class="loan-detail">
-                                        <span class="loan-label">Số tiền vay:</span>
-                                        <span><fmt:formatNumber value="${loan.amount}" type="currency" currencyCode="VND"/></span>
-                                    </div>
+                            <!-- Hiển thị thông báo nếu có -->
+                            <c:if test="${not empty message}">
+                                <div class="message">${message}</div>
+                            </c:if>
+                            <c:if test="${not empty error}">
+                                <div class="error">${error}</div>
+                            </c:if>
 
-                                    <div class="loan-detail">
-                                        <span class="loan-label">Ngày bắt đầu:</span>
-                                        <span><fmt:formatDate value="${loan.startDate}" pattern="dd/MM/yyyy"/></span>
-                                    </div>
+                            <!-- Giả sử bạn đã lấy thông tin khoản vay từ session hoặc request attribute -->
+                            <div class="loan-detail">
+                                <span class="loan-label">Dư nợ:</span>
+                                <span><fmt:formatNumber value="${loan.debtRepayAmount}" type="currency" currencyCode="VND"/></span>
+                            </div>
 
-                                    <div class="loan-detail">
-                                        <span class="loan-label">Ngày kết thúc:</span>
-                                        <c:if test="${not empty loan.endDate}">
-                                            <span><fmt:formatDate value="${loan.endDate}" pattern="dd/MM/yyyy"/></span>
-                                        </c:if>
-                                        <c:if test="${empty loan.endDate}">
-                                            <span>Chưa có</span>
-                                        </c:if>
-                                    </div>
+                            <form action="customerLoanPayment" method="post">
+                                <!-- Giả sử loan.id chứa ID của LoanServiceUsed -->  
+                                <input type="hidden" name="loanId" value="${loan.id}" />
+                                <input type="number" name="repayAmount" placeholder="Nhập số tiền muốn thanh toán" required step=\"0.01\" />
+                                <button type="submit" class="loan-button">Xác Nhận Thanh Toán</button>
+                            </form>
+                            <button onclick="location.href = 'customerLoanServlet'" class="loan-button back-button">Quay Lại</button>
 
-                                    <c:if test="${loan.dateExpiredCount} != 0">
-                                        <div class="loan-detail">
-                                            <span class="loan-label">Kỳ hạn trễ:</span>
-                                            <span>${loan.dateExpiredCount} tháng</span>
-                                        </div>
-                                    </c:if>
-
-                                    <div class="loan-detail">
-                                        <span class="loan-label">Số tiền trả mỗi kỳ:</span>
-                                        <span><fmt:formatNumber value="${loan.debtRepayAmount/loan.loanId.duringTime}" type="currency" currencyCode="VND"/></span>
-                                    </div>
-                                    <div class="loan-detail">
-                                        <span class="loan-label">Tổng lãi phải trả:</span>
-                                        <span><fmt:formatNumber value="${loan.debtRepayAmount}" type="currency" currencyCode="VND"/></span>
-                                    </div>
-
-                                    <!--                                     Thanh tiến trình 
-                                                                        <div class="progress-bar">
-                                                                            <div class="progress-fill" style="width: 50%;"></div>  Thay 50% bằng giá trị thực tế 
-                                                                        </div>-->
-                                    <!--                                    <small>Đã thanh toán 50%</small>
-                                    
-                                                                         Cảnh báo nếu trễ hạn 
-                                                                        <div class="warning">⚠ Bạn đang trễ hạn 2 tháng!</div>-->
-
-                                    <!-- Nút thanh toán -->
-                                    <a href="<%= request.getContextPath() %>/customerLoanPayment?loanId=${loan.id}" class="loan-button" title="Nhấn để thanh toán khoản vay">
-                                        💳 Thanh Toán
-                                    </a>
-                                </div>
-                            </c:when>
-                            <c:otherwise>
-                                <h3>Bạn không có khoản vay nào.</h3>
-                            </c:otherwise>
-                        </c:choose>
-                    </div>       
+                        </div>
+                    </div>
                 </div><!--end container-->
-
                 <!-- Footer Start -->
                 <jsp:include page="template/footer.jsp"/>
                 <!-- End -->

@@ -188,6 +188,14 @@
         <servlet-name>ApplyLoan</servlet-name>
         <servlet-class>controller.ceo.ApplyLoan</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CustomerLoanServlet</servlet-name>
+        <servlet-class>controller.ceo.CustomerLoanServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CustomerLoanPayment</servlet-name>
+        <servlet-class>controller.ceo.CustomerLoanPayment</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>HomeServlet</servlet-name>
         <url-pattern>/home</url-pattern>
@@ -431,6 +439,14 @@
     <servlet-mapping>
         <servlet-name>ApplyLoan</servlet-name>
         <url-pattern>/applyLoan</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CustomerLoanServlet</servlet-name>
+        <url-pattern>/customerLoanServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CustomerLoanPayment</servlet-name>
+        <url-pattern>/customerLoanPayment</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>1440</session-timeout>

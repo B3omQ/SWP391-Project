@@ -146,8 +146,8 @@ public class ApplyLoan extends HttpServlet {
         HttpSession session = request.getSession();
         CeoDAO aDao = new CeoDAO();
         AccountValidation validate = new AccountValidation();
-//        Customer currentAccount = (Customer) session.getAttribute("customer");
-        Customer currentAccount = aDao.getCustomerById(2);
+        Customer currentAccount = (Customer) session.getAttribute("account");
+//        Customer currentAccount = aDao.getCustomerById(2);
         String loanIDParam = request.getParameter("loanId");
         String amountParam = validate.normalizeInput(request.getParameter("amount"));
         Part imagePart = request.getPart("incomeVertification");
@@ -215,14 +215,10 @@ public class ApplyLoan extends HttpServlet {
 
         if (isInserted) {
             request.setAttribute("loanServiceUsed", loanServiceUsed);
-            request.getRequestDispatcher("ceo/test.jsp").forward(request, response);
-        } else {
-            errorMessages.add("Error processing loan service. Please try again.");
-            request.setAttribute("errorMessages", errorMessages);
-            request.getRequestDispatcher("ceo/applyLoan.jsp").forward(request, response);
-        }
-
-        request.getRequestDispatcher("ceo/test.jsp").forward(request, response);
+            request.getRequestDispatcher("ceo/successApplyLoan.jsp").forward(request, response);
+            return;
+        } 
+        request.getRequestDispatcher("ceo/applyLoan.jsp").forward(request, response);
     }
 
     /**

@@ -102,7 +102,7 @@
 
         <div class="page-wrapper doctris-theme toggled">
             <jsp:include page="template/sidebar.jsp"/>
-
+            
             <!-- Start Page Content -->
             <main class="page-content bg-light">
                 <c:set value="${sessionScope.staff}" var="staff"/>
@@ -120,10 +120,11 @@
                                 </nav>
                             </div><!--end col-->
                         </div><!--end row-->
+                        Customer: ${account.toString()}
                         <div class="col-xl-8 col-lg-12 col-md-7 mt-4 pt-2 mt-sm-0 pt-sm-0">
                             <div class="rounded shadow mt-4">
                                 <div class="p-4 border-bottom">
-                                    <h5 class="mb-0">Đăng ký vay vốn :</h5>
+                                    <h5 class="mb-0">Đăng ký vay :</h5>
                                 </div>
                                 <c:if test="${not empty errorMessages}">
                                     <div class="alert alert-danger">
