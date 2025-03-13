@@ -176,6 +176,7 @@ public class ArticleDAO extends DBContext {
         }
     }
 
+    // Cập nhật bài viết
     public void updateArticle(Article article) {
         String sql = "UPDATE Articles SET Title = ?, Description = ?, Category = ?, ImageUrl = ?, UpdatedAt = GETDATE() " +
                      "WHERE Id = ?";

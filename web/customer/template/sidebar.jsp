@@ -8,15 +8,14 @@
             </a>
         </div>
         <ul class="sidebar-menu pt-3">
-            <li><a href="Customer.jsp"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
-            <li><a href="account-profile.jsp"><i class="uil uil-cog me-2 d-inline-block"></i>Account-Settings</a></li>
+            <li><a href="${pageContext.request.contextPath}/customer/Customer.jsp"><i class="uil uil-dashboard me-2 d-inline-block"></i>Dashboard</a></li>
+            <li><a href="${pageContext.request.contextPath}/customer/account-profile.jsp"><i class="uil uil-cog me-2 d-inline-block"></i>Account-Settings</a></li>
             <li class="sidebar-dropdown">
                 <a href="javascript:void(0)"><i class="uil uil-university me-2 d-inline-block"></i>Manage Account Bank</a>
                 <div class="sidebar-submenu">
                     <ul>
-                        <li><a href="blogs.html">Trang chủ</a></li>
-                        <li><a href="deposit.jsp">Nạp tiền</a></li>
-                        <li><a href="Saving.jsp">Gửi tiết kiệm</a></li>
+                        <li><a href="${pageContext.request.contextPath}/customer/deposit.jsp">Nạp tiền</a></li>
+                        <li><a href="${pageContext.request.contextPath}/customer/Saving.jsp">Gửi tiết kiệm</a></li>
                     </ul>
                 </div>
             </li>

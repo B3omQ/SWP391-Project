@@ -47,7 +47,6 @@
                                         </span>
                                     </div>
                                     <p class="text-muted">Chức năng sinh lời tự động chưa được kích hoạt.</p>
-                                    <p>Debug: isAutoProfitEnabled = ${customerFromDB.isAutoProfitEnabled}</p>
                                 </c:otherwise>
                             </c:choose>
                         </div>
