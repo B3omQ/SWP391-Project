@@ -35,5 +35,5 @@
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-    <button type="button" class="btn btn-primary" id="saveEditBlog">Lưu thay đổi</button>
+    <button type="button" class="btn btn-primary" onclick="document.getElementById('editBlogForm').submit();">Lưu thay đổi</button>
 </div>

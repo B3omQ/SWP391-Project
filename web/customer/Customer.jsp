@@ -1,9 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ page import="dal.DepHistoryDAO" %>
-<%@ page import="model.DepHistory" %>
-<%@ page import="java.util.List" %>
 
 <%@ include file="template/header.jsp" %>
 <%@ include file="template/sidebar.jsp" %>
@@ -15,10 +12,55 @@
         return;
     }
 
-    // Truy vấn trực tiếp từ cơ sở dữ liệu
-    DepHistoryDAO depHistoryDAO = new DepHistoryDAO();
-    List<DepHistory> depHistoryList = depHistoryDAO.getDepHistoryByCustomerId(customer.getId());
-    request.setAttribute("depHistoryList", depHistoryList); // Đặt vào request thay vì session
+    // Luôn làm mới dữ liệu từ database mỗi khi tải trang
+    dal.DepHistoryDAO depHistoryDAO = new dal.DepHistoryDAO();
+    java.util.List<model.DepHistory> depHistoryList;
+
+    // Lấy tham số tìm kiếm và sắp xếp từ URL
+    String searchQuery = request.getParameter("s");
+    String sortCriteria = request.getParameter("sort");
+
+    // Áp dụng tìm kiếm nếu có
+    if (searchQuery != null && !searchQuery.trim().isEmpty()) {
+        depHistoryList = depHistoryDAO.searchDepHistoryByCustomerId(customer.getId(), searchQuery);
+    } else {
+        depHistoryList = depHistoryDAO.getDepHistoryByCustomerId(customer.getId());
+    }
+
+    // Áp dụng sắp xếp nếu có
+    if (sortCriteria != null && !sortCriteria.trim().isEmpty()) {
+        switch (sortCriteria) {
+            case "time_desc":
+                java.util.Collections.sort(depHistoryList, java.util.Comparator.comparing(model.DepHistory::getCreatedAt, 
+                        java.util.Comparator.nullsLast(java.util.Comparator.reverseOrder())));
+                break;
+            case "time_asc":
+                java.util.Collections.sort(depHistoryList, java.util.Comparator.comparing(model.DepHistory::getCreatedAt, 
+                        java.util.Comparator.nullsLast(java.util.Comparator.naturalOrder())));
+                break;
+            case "amount_asc":
+                java.util.Collections.sort(depHistoryList, java.util.Comparator.comparing(model.DepHistory::getAmount, 
+                        java.util.Comparator.nullsLast(java.util.Comparator.naturalOrder())));
+                break;
+            case "amount_desc":
+                java.util.Collections.sort(depHistoryList, java.util.Comparator.comparing(model.DepHistory::getAmount, 
+                        java.util.Comparator.nullsLast(java.util.Comparator.reverseOrder())));
+                break;
+            case "description_asc":
+                java.util.Collections.sort(depHistoryList, java.util.Comparator.comparing(model.DepHistory::getDescription, 
+                        java.util.Comparator.nullsLast(java.util.Comparator.naturalOrder())));
+                break;
+            case "description_desc":
+                java.util.Collections.sort(depHistoryList, java.util.Comparator.comparing(model.DepHistory::getDescription, 
+                        java.util.Comparator.nullsLast(java.util.Comparator.reverseOrder())));
+                break;
+            default:
+                break;
+        }
+    }
+
+    // Cập nhật danh sách vào session để các servlet khác có thể dùng
+    session.setAttribute("depHistoryList", depHistoryList);
 %>
 
 <div class="container-fluid">
@@ -30,29 +72,30 @@
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h6 class="align-items-center mb-0">Lịch sử giao dịch</h6>
                         <div class="search-bar p-0 d-none d-md-block ms-2">
-                            <div id="search" class="menu-search mb-0">
-                                <form role="search" method="get" action="<%=request.getContextPath()%>/SearchTransactionHistory" id="searchform" class="searchform">
-                                    <div>
-                                        <input type="text" class="form-control border rounded-pill" name="s" id="s" value="${param.s}" placeholder="Tra cứu giao dịch">
-                                        <input type="submit" id="searchsubmit" value="Search">
-                                        <input type="hidden" name="sort" value="${param.sort}">
-                                    </div>
-                                </form>
-                            </div>
+                            <form role="search" method="get" action="<%=request.getContextPath()%>/SearchTransactionHistory" class="searchform">
+                                <div class="d-flex">
+                                    <input type="text" class="form-control border rounded-pill" name="s" value="${param.s}" placeholder="Tra cứu giao dịch">
+                                    <input type="submit" class="btn btn-primary ms-2" value="Tìm">
+                                    <input type="hidden" name="sort" value="${param.sort}">
+                                </div>
+                            </form>
                         </div>
-                        <div class="mb-0 position-relative ms-3">
-                            <form method="get" action="<%=request.getContextPath()%>/SortTransactionHistory" id="sortform" style="display:inline;">
+                        <div class="mb-0 position-relative ms-3 d-flex align-items-center">
+                            <form method="get" action="<%=request.getContextPath()%>/SortTransactionHistory" style="display:inline;">
                                 <input type="hidden" name="s" value="${param.s}">
                                 <select class="form-select form-control" name="sort" onchange="this.form.submit()">
                                     <option value="" ${empty param.sort ? 'selected' : ''}>-- Sắp xếp --</option>
-                                    <option value="time" ${param.sort == 'time' ? 'selected' : ''}>Theo Thời gian</option>
-                                    <option value="amount" ${param.sort == 'amount' ? 'selected' : ''}>Theo Số tiền</option>
-                                    <option value="description" ${param.sort == 'description' ? 'selected' : ''}>Theo Mô tả</option>
+                                    <option value="time_desc" ${param.sort == 'time_desc' ? 'selected' : ''}>Mới nhất trước</option>
+                                    <option value="time_asc" ${param.sort == 'time_asc' ? 'selected' : ''}>Cũ nhất trước</option>
+                                    <option value="amount_asc" ${param.sort == 'amount_asc' ? 'selected' : ''}>Số tiền tăng</option>
+                                    <option value="amount_desc" ${param.sort == 'amount_desc' ? 'selected' : ''}>Số tiền giảm</option>
+                                    <option value="description_asc" ${param.sort == 'description_asc' ? 'selected' : ''}>Mô tả (A-Z)</option>
+                                    <option value="description_desc" ${param.sort == 'description_desc' ? 'selected' : ''}>Mô tả (Z-A)</option>
                                 </select>
                             </form>
+                            <a href="<%=request.getContextPath()%>/customer/Customer.jsp" class="btn btn-outline-primary ms-2">Làm mới</a>
                         </div>
                     </div>
-                    <!-- Bảng hiển thị lịch sử giao dịch -->
                     <div class="table-responsive">
                         <table class="table table-hover table-striped">
                             <thead class="table-dark">
@@ -89,7 +132,6 @@
                                             </button>
                                         </td>
                                     </tr>
-                                    <!-- Modal cho mỗi lịch sử -->
                                     <div class="modal fade" id="transactionModal_${history.id}" tabindex="-1" aria-labelledby="transactionModalLabel_${history.id}" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
@@ -134,8 +176,7 @@
                         </table>
                     </div>
                 </div>
-            </div><!--end col-->
-
+            </div>
             <div class="col-xl-4 col-lg-5 mt-4">
                 <div class="card shadow border-0 p-4">
                     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -146,8 +187,8 @@
                         <div id="chart-center" style="position: absolute; top: 50%; left: 35%; transform: translate(-50%, -50%); font-size: 20px; font-weight: bold; color: #333; text-align: center; width: 100%; max-width: 200px; white-space: nowrap;"></div>
                     </div>
                 </div>
-            </div><!--end col-->
-        </div><!--end row-->
+            </div>
+        </div>
     </div>
 </div>
 

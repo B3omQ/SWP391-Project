@@ -1,6 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ page import="java.math.BigDecimal" %>
 <%@ page import="java.text.DecimalFormat" %>
+<%@ page import="java.time.LocalDateTime" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
 
 <%
     Object rawDepositAmount = session.getAttribute("depositAmount");
@@ -23,6 +25,10 @@
 
     String selectedAction = (String) session.getAttribute("selectedAction");
     selectedAction = (selectedAction != null) ? selectedAction : "withdrawAll";
+
+    // Lấy ngày hiện tại và định dạng
+    DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    String effectiveDate = LocalDateTime.now().format(dateFormatter);
 
     DecimalFormat currencyFormat = new DecimalFormat("#,###");
 %>
@@ -49,7 +55,7 @@
                         </div>
                         <div class="row mb-3">
                             <div class="col-6">Ngày hiệu lực:</div>
-                            <div class="col-6 text-end fw-bold">01/03/2025</div>
+                            <div class="col-6 text-end fw-bold"><%= effectiveDate %></div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-6">Kỳ hạn:</div>
@@ -65,7 +71,12 @@
                         </div>
                         <div class="row mb-3">
                             <div class="col-6">Phương thức đáo hạn:</div>
-                            <div class="col-6 text-end fw-bold"><%= selectedAction %></div>
+                            <div class="col-6 text-end fw-bold">
+                                <% 
+                                    String maturityActionDisplay = (String) session.getAttribute("maturityActionDisplay");
+                                    out.print(maturityActionDisplay != null ? maturityActionDisplay : "Rút toàn bộ gốc và lãi");
+                                %>
+                            </div>
                         </div>
                         <hr>
                         <div class="d-flex justify-content-between">

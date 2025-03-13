@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.math.BigDecimal;
 
 public class ProcessTermOptions extends HttpServlet {
 
@@ -13,14 +14,16 @@ public class ProcessTermOptions extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("selectedTerm") == null) {
-            System.out.println("[ERROR] Session không hợp lệ hoặc thiếu selectedTerm, quay lại chooseTerm.jsp");
-            response.sendRedirect(request.getContextPath() + "/customer/chooseTerm.jsp");
+        if (session == null || session.getAttribute("selectedTerm") == null || session.getAttribute("depositAmount") == null) {
+            System.out.println("[ERROR] Session không hợp lệ hoặc thiếu dữ liệu cần thiết (selectedTerm/depositAmount), quay lại chooseTerm.jsp");
+            response.sendRedirect(request.getContextPath() + "/customer/chooseTerm.jsp?error=missing_data");
             return;
         }
 
         Integer selectedTerm = (Integer) session.getAttribute("selectedTerm");
+        BigDecimal depositAmount = (BigDecimal) session.getAttribute("depositAmount");
         System.out.println("[DEBUG] selectedTerm from session: " + selectedTerm);
+        System.out.println("[DEBUG] depositAmount from session: " + depositAmount);
 
         String action = request.getParameter("action");
         if (action == null) {
@@ -29,23 +32,31 @@ public class ProcessTermOptions extends HttpServlet {
             return;
         }
 
-        // Lưu giá trị tiếng Anh vào session
+        // Lưu giá trị tiếng Anh và tiếng Việt
         String actionValue;
+        String maturityActionDisplay;
         switch (action) {
             case "withdrawInterest":
                 actionValue = "withdrawInterest";
+                maturityActionDisplay = "Rút lãi và tái tục gốc";
                 break;
             case "renewAll":
                 actionValue = "renewAll";
+                maturityActionDisplay = "Tái tục cả gốc và lãi";
                 break;
             case "withdrawAll":
                 actionValue = "withdrawAll";
+                maturityActionDisplay = "Rút toàn bộ gốc và lãi";
                 break;
             default:
-                actionValue = "withdrawAll"; // Mặc định
+                actionValue = "withdrawAll";
+                maturityActionDisplay = "Rút toàn bộ gốc và lãi (mặc định)";
         }
+
         session.setAttribute("selectedAction", actionValue);
+        session.setAttribute("maturityActionDisplay", maturityActionDisplay);
         System.out.println("[DEBUG] Stored selectedAction in session: " + actionValue);
+        System.out.println("[DEBUG] Stored maturityActionDisplay in session: " + maturityActionDisplay);
 
         response.sendRedirect(request.getContextPath() + "/customer/confirmTermAction.jsp");
     }
@@ -58,6 +69,6 @@ public class ProcessTermOptions extends HttpServlet {
 
     @Override
     public String getServletInfo() {
-        return "Short description";
+        return "Servlet xử lý tùy chọn đáo hạn cho khoản gửi tiết kiệm";
     }
 }
