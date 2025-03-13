@@ -26,7 +26,7 @@ public class IdentityInformationController extends HttpServlet {
     }
 
     private String getAndSaveImg(Part filePart) throws IOException {
-        String relativePath = "assets/images/identityInformation/";
+        String relativePath = "assets/images/IdentityInformation/";
         String uploadPath = getServletContext().getRealPath("");
         String projectRoot = uploadPath.replace("build" + File.separator + "web", "");
         String fileSavePath = projectRoot + "web" + File.separator + relativePath;

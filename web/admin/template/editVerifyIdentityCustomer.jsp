@@ -15,24 +15,23 @@
 
                 <!-- Modal Body -->
                 <div class="modal-body">
-
                     <div class="form-group row text-center">
                         <div class="col-md-4">
                             <label class="col-form-label">Ảnh chân dung</label>
                             <div class="img-container">
-                                <img src="${param.portraitPhoto}" class="img-thumbnail" alt="Ảnh chân dung">
+                                <img id="zoomPortrait-${param.id}" src="${param.portraitPhoto}" class="img-thumbnail" alt="Ảnh chân dung" data-zoom-image="${param.portraitPhoto}">
                             </div>
                         </div>
                         <div class="form-group col-md-4">
                             <label class="col-form-label">Ảnh CCCD/CMND mặt trước</label>
                             <div class="img-container">
-                                <img src="${param.identityCardFrontSide}" class="img-thumbnail" alt="CCCD mặt trước">
+                                <img id="zoomFront-${param.id}" src="${param.identityCardFrontSide}" class="img-thumbnail" alt="CCCD mặt trước" data-zoom-image="${param.identityCardFrontSide}">
                             </div>
                         </div>
                         <div class="form-group col-md-4">
                             <label class="col-form-label">Ảnh CCCD/CMND mặt sau</label>
                             <div class="img-container">
-                                <img src="${param.identityCardBackSide}" class="img-thumbnail" alt="CCCD mặt sau">
+                                <img id="zoomBack-${param.id}" src="${param.identityCardBackSide}" class="img-thumbnail" alt="CCCD mặt sau" data-zoom-image="${param.identityCardBackSide}">
                             </div>
                         </div>
                     </div>
@@ -51,7 +50,7 @@
                             </div>
                         </div>
                     </div>
-                            
+
                     <div class="row">
                         <c:if test="${param.pendingStatus == 'Denied'}">
                             <div class="form-group row mt-3">
@@ -73,7 +72,6 @@
                             </div>
                         </c:if>
                     </div>
-
                 </div>
 
                 <!-- Modal Footer -->
@@ -128,6 +126,7 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
+        cursor: zoom-in;
     }
 
     .modal-footer {
@@ -135,4 +134,62 @@
         justify-content: space-between;
         align-items: center;
     }
+
+    /* Tăng z-index cho phần tử zoom của ElevateZoom */
+    .zoomContainer {
+        z-index: 1070 !important; /* Cao hơn z-index của modal (1060) */
+    }
+
+    /* Đảm bảo lens không bị che khuất */
+    .zoomLens {
+        z-index: 1071 !important;
+    }
 </style>
+
+<script>
+
+    $(document).ready(function () {
+        $('#editModal${param.id}').on('shown.bs.modal', function () {
+            $("#zoomPortrait-${param.id}").elevateZoom({
+                zoomType: "lens", // Hiệu ứng phóng to kiểu lens
+                lensShape: "round", // Hình dạng lens là tròn
+                lensSize: 300, // Kích thước lens
+                scrollZoom: true, 
+                zoomWindowWidth: 400, // Chiều rộng cửa sổ zoom
+                zoomWindowHeight: 400, // Chiều cao cửa sổ zoom
+                borderSize: 1, // Độ dày viền
+                borderColour: "#888"        // Màu viền
+            });
+
+            $("#zoomFront-${param.id}").elevateZoom({
+                zoomType: "lens",
+                lensShape: "round",
+                lensSize: 300,
+                scrollZoom: true,
+                zoomWindowWidth: 400,
+                zoomWindowHeight: 400,
+                borderSize: 1,
+                borderColour: "#888"
+            });
+
+            $("#zoomBack-${param.id}").elevateZoom({
+                zoomType: "lens",
+                lensShape: "round",
+                lensSize: 300,
+                scrollZoom: true,
+                zoomWindowWidth: 400,
+                zoomWindowHeight: 400,
+                borderSize: 1,
+                borderColour: "#888"
+            });
+        });
+
+        // Khi modal đóng, xóa ElevateZoom để tránh lỗi
+        $('#editModal${param.id}').on('hidden.bs.modal', function () {
+            $.removeData($('#zoomPortrait-${param.id}'), 'elevateZoom');
+            $.removeData($('#zoomFront-${param.id}'), 'elevateZoom');
+            $.removeData($('#zoomBack-${param.id}'), 'elevateZoom');
+            $('.zoomContainer').remove(); // Xóa container zoom khỏi DOM
+        });
+    });
+</script>
