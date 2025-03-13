@@ -177,6 +177,14 @@
         <servlet-class>controller.accountant.Disbursement</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>CustomerReview</servlet-name>
+        <servlet-class>controller.customer.CustomerReview</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CustomerReviewManager</servlet-name>
+        <servlet-class>controller.consultant.CustomerReviewManager</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>SearchTransactionHistory</servlet-name>
         <servlet-class>controller.customer.SearchTransactionHistory</servlet-class>
     </servlet>
@@ -201,12 +209,12 @@
         <servlet-class>controller.customer.DepositCreationServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>AutoProfitServlet</servlet-name>
-        <servlet-class>controller.customer.AutoProfitServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>LoanHistoryServlet</servlet-name>
         <servlet-class>controller.customer.LoanHistoryServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AutoProfitServlet</servlet-name>
+        <servlet-class>controller.customer.AutoProfitServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>HomeServlet</servlet-name>
@@ -441,6 +449,14 @@
         <url-pattern>/Disbursement</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>CustomerReview</servlet-name>
+        <url-pattern>/CustomerReview</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CustomerReviewManager</servlet-name>
+        <url-pattern>/CustomerReviewManager</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>SearchTransactionHistory</servlet-name>
         <url-pattern>/SearchTransactionHistory</url-pattern>
     </servlet-mapping>
@@ -465,12 +481,12 @@
         <url-pattern>/DepositCreationServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>AutoProfitServlet</servlet-name>
-        <url-pattern>/AutoProfitServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>LoanHistoryServlet</servlet-name>
         <url-pattern>/LoanHistoryServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AutoProfitServlet</servlet-name>
+        <url-pattern>/AutoProfitServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>1440</session-timeout>

@@ -7,7 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-    <        <div class="top-header">
+            <div class="top-header">
             <div class="header-bar d-flex justify-content-between border-bottom">
                 <div class="d-flex align-items-center">
                     <a href="#" class="logo-icon">

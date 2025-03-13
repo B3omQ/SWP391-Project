@@ -2,6 +2,7 @@
 <%@ page import="dal.DepServiceUsedDAO" %>
 <%@ page import="model.DepServiceUsed" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <jsp:useBean id="depServiceUsedDAO" class="dal.DepServiceUsedDAO" scope="page"/>
 
@@ -48,7 +49,20 @@
                     <div class="row mb-3">
                         <div class="col-6 text-start fw-bold">Hành động khi đáo hạn</div>
                         <div class="col-6 text-end">
-                            <c:out value="${deposit.maturityAction}" default="Không xác định" />
+                            <c:choose>
+                                <c:when test="${deposit.maturityAction == 'withdrawInterest'}">
+                                    Rút lãi và tái tục gốc
+                                </c:when>
+                                <c:when test="${deposit.maturityAction == 'renewAll'}">
+                                    Tái tục cả gốc và lãi
+                                </c:when>
+                                <c:when test="${deposit.maturityAction == 'withdrawAll'}">
+                                    Rút toàn bộ gốc và lãi
+                                </c:when>
+                                <c:otherwise>
+                                    Rút toàn bộ gốc và lãi (mặc định)
+                                </c:otherwise>
+                            </c:choose>
                         </div>
                     </div>
                     <div class="row mb-3">

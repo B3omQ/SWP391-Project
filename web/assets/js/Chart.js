@@ -3,7 +3,8 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(response => response.json())
         .then(data => {
             const ctx = document.getElementById('assetChart').getContext('2d');
-            const totalBalance = data.walletBalance.toLocaleString() + " VNĐ"; // Hiển thị tổng tiền
+            // Hiển thị tổng tiền (wallet + saving + loan) ở giữa
+            const totalBalance = data.totalWithoutInvestment.toLocaleString() + " VNĐ";
 
             new Chart(ctx, {
                 type: 'doughnut',
@@ -11,8 +12,15 @@ document.addEventListener("DOMContentLoaded", function () {
                     labels: data.labels,
                     datasets: [{
                         data: data.values,
-                        backgroundColor: ['#007bff', '#17a2b8', '#6f42c1', '#ffc107'], // Màu sắc đẹp hơn
-                        hoverOffset: 10
+                        backgroundColor: [
+                            '#1a73e8', // Màu xanh dương dịu hơn cho Tài khoản
+                            '#26c6da', // Màu xanh lam nhẹ cho Tiết kiệm
+                            '#8e24aa', // Màu tím đậm hơn cho Đầu tư
+                            '#fb8c00'  // Màu cam nhẹ cho Vay
+                        ],
+                        hoverOffset: 15, // Tăng hiệu ứng hover cho đẹp
+                        borderWidth: 1, // Thêm viền nhẹ giữa các phần
+                        borderColor: '#ffffff' // Viền màu trắng để phân cách
                     }]
                 },
                 options: {
@@ -23,36 +31,47 @@ document.addEventListener("DOMContentLoaded", function () {
                             position: 'right',
                             labels: {
                                 font: {
-                                    family: 'Poppins, Arial, sans-serif', // Font chữ đẹp hơn
-                                    size: 12 // Giảm kích thước chữ
+                                    family: 'Roboto, Arial, sans-serif', // Font chữ hiện đại hơn
+                                    size: 11 // Giảm kích thước chữ để tránh tràn
                                 },
-                                color: '#333', // Màu chữ tối hơn cho dễ đọc
-                                boxWidth: 12,
-                                padding: 15
+                                color: '#444', // Màu chữ đậm hơn, dễ đọc
+                                boxWidth: 10, // Giảm kích thước hộp màu
+                                padding: 20, // Tăng khoảng cách giữa các mục trong legend
+                                usePointStyle: true // Dùng kiểu điểm tròn thay vì hộp
                             }
                         },
                         tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)', // Nền tooltip tối hơn
+                            titleFont: {
+                                family: 'Roboto, Arial, sans-serif',
+                                size: 12
+                            },
+                            bodyFont: {
+                                family: 'Roboto, Arial, sans-serif',
+                                size: 11
+                            },
                             callbacks: {
                                 label: function (tooltipItem) {
-                                    return `${tooltipItem.label}: ${tooltipItem.raw}%`;
+                                    const amount = data.amounts[tooltipItem.dataIndex];
+                                    return `${tooltipItem.label}: ${amount.toLocaleString()} VNĐ`;
                                 }
                             }
                         }
                     },
                     layout: {
-                        padding: 20
+                        padding: 30 // Tăng khoảng cách xung quanh biểu đồ
                     },
-                    cutout: '70%' // Tạo khoảng trống giữa vòng tròn
+                    cutout: '75%' // Tăng khoảng trống giữa vòng tròn để đẹp hơn
                 }
             });
 
-            // Hiển thị số dư giữa biểu đồ với font đẹp và nhỏ hơn
+            // Hiển thị số dư giữa biểu đồ
             const chartCenter = document.getElementById("chart-center");
             chartCenter.innerHTML = totalBalance;
-            chartCenter.style.fontFamily = "Poppins, Arial, sans-serif"; // Font chữ
-            chartCenter.style.fontSize = "16px"; // Chữ nhỏ hơn
-            chartCenter.style.fontWeight = "bold"; // Chữ đậm hơn
-            chartCenter.style.color = "#333"; // Màu tối hơn cho dễ nhìn
+            chartCenter.style.fontFamily = "Roboto, Arial, sans-serif";
+            chartCenter.style.fontSize = "14px"; // Giảm kích thước chữ ở giữa
+            chartCenter.style.fontWeight = "600"; // Chữ đậm vừa phải
+            chartCenter.style.color = "#333";
         })
         .catch(error => {
             console.error('Error fetching data:', error);

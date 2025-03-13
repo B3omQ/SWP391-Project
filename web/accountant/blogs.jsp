@@ -191,23 +191,29 @@
     <script src="<%= request.getContextPath() %>/assets/js/simplebar.min.js"></script>
     <script src="<%= request.getContextPath() %>/assets/js/feather.min.js"></script>
     <script src="<%= request.getContextPath() %>/assets/js/app.js"></script>
+ 
     <script>
-        $(document).ready(function() {
-            $('.edit-blog').on('click', function() {
-                var blogId = $(this).data('id');
-                $.ajax({
-                    url: '<%= request.getContextPath() %>/BlogServlet?action=edit&id=' + blogId,
-                    type: 'GET',
-                    success: function(response) {
-                        $('#editBlogModalContent').html(response);
-                        $('#editBlogModal').modal('show');
-                    },
-                    error: function() {
-                        alert('Lỗi khi tải dữ liệu blog');
-                    }
-                });
+    $(document).ready(function() {
+        $('.edit-blog').on('click', function() {
+            var blogId = $(this).data('id');
+            $.ajax({
+                url: '<%= request.getContextPath() %>/BlogServlet?action=edit&id=' + blogId,
+                type: 'GET',
+                success: function(response) {
+                    $('#editBlogModalContent').html(response);
+                    $('#editBlogModal').modal('show');
+                },
+                error: function() {
+                    alert('Lỗi khi tải dữ liệu blog');
+                }
             });
         });
-    </script>
+
+        // Gửi form khi nhấn "Lưu thay đổi" (nếu dùng cách khác)
+        $('#editBlogModal').on('click', '#saveEditBlog', function() {
+            $('#editBlogForm').submit();
+        });
+    });
+</script>
 </body>
 </html>

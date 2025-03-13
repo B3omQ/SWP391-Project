@@ -10,8 +10,7 @@
     <div class="layout-specing">
         <div class="container mt-5" style="max-width: 600px;">
             <h3 class="text-center">Bạn muốn làm gì khi kỳ hạn gửi tiền kết thúc?</h3>
-<p class="text-center text-muted">Vào <strong><%= request.getAttribute("maturityDate") %></strong></p>
-
+<p class="text-center text-muted">Vào <strong><%= session.getAttribute("maturityDate") %></strong></p>
             <form action="${pageContext.request.contextPath}/ProcessTermOptions" method="POST">
                 <div class="option-box" onclick="selectOption(this)">
                     <input type="radio" name="action" value="renewAll" id="renewAll" required>

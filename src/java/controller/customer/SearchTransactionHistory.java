@@ -11,10 +11,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-/**
- *
- * @author emkob
- */
 public class SearchTransactionHistory extends HttpServlet {
 
     private DepHistoryDAO depHistoryDAO;
@@ -33,6 +29,7 @@ public class SearchTransactionHistory extends HttpServlet {
         }
 
         String searchQuery = request.getParameter("s");
+        String sortCriteria = request.getParameter("sort");
         List<DepHistory> depHistoryList;
 
         if (searchQuery != null && !searchQuery.trim().isEmpty()) {
@@ -41,13 +38,23 @@ public class SearchTransactionHistory extends HttpServlet {
             depHistoryList = depHistoryDAO.getDepHistoryByCustomerId(customer.getId());
         }
 
-        // Lưu dữ liệu vào session thay vì request vì redirect sẽ mất request
+        // Lưu danh sách vào session
         request.getSession().setAttribute("depHistoryList", depHistoryList);
-        // Redirect về Customer.jsp với tham số s (nếu có)
+
+        // Tạo URL redirect với các tham số
         String redirectUrl = request.getContextPath() + "/customer/Customer.jsp";
+        StringBuilder params = new StringBuilder();
         if (searchQuery != null && !searchQuery.trim().isEmpty()) {
-            redirectUrl += "?s=" + java.net.URLEncoder.encode(searchQuery, "UTF-8");
+            params.append("s=").append(java.net.URLEncoder.encode(searchQuery, "UTF-8"));
         }
+        if (sortCriteria != null && !sortCriteria.trim().isEmpty()) {
+            if (params.length() > 0) params.append("&");
+            params.append("sort=").append(sortCriteria);
+        }
+        if (params.length() > 0) {
+            redirectUrl += "?" + params.toString();
+        }
+
         response.sendRedirect(redirectUrl);
     }
 }

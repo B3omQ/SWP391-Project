@@ -20,10 +20,14 @@
                                 giao dịch an toàn hoặc tư vấn quản lý tài khoản đơn giản.</p>
 
                             <div class="mt-4 pt-2">
-                                <a href="onlineChat.jsp" class="btn btn-primary">Hỗ trợ tạo tài khoản ngay</a>
-                                <p class="text-white-50 mb-0 mt-2">T&C apply. Please read <a href="#"
-                                                                                             class="text-white-50">Terms and Conditions <i
-                                            class="ri-arrow-right-line align-middle"></i></a></p>
+                                <a href="OnlineSupport" class="btn btn-primary">Hỗ trợ tạo tài khoản ngay</a>
+                                <p class="text-white-50 mb-0 mt-2">T&C apply. Vui lòng đọc 
+                                    <a href="#"class="text-white-50">Điều khoản và Điều kiện 
+                                        <i class="ri-arrow-right-line align-middle">
+
+                                        </i>
+                                    </a>
+                                </p>
                             </div>
                         </div>
                     </div><!--end col-->
@@ -39,42 +43,42 @@
                     <div class="col-xl-10">
                         <div class="features-absolute bg-white shadow rounded overflow-hidden card-group">
                             <div class="card border-0 bg-light p-4">
-                                <i class="ri-heart-pulse-fill text-primary h2 mb-0"></i>
-                                <h5 class="mt-1">Emergency Cases</h5>
-                                <p class="text-muted mt-2">This is required when, for example, the is not yet available.
-                                    Dummy text is also known as 'fill text'.</p>
-                                <a href="departments.html" class="text-primary">Read More <i
+                                <i class="ri-tools-fill text-primary h2 mb-0"></i>
+                                <h5 class="mt-1">Công Cụ Và Tiện Ích</h5>
+                                <p class="text-muted mt-2">SmartBank cung cấp các công cụ hỗ trợ tài chính hiện đại như tính toán lãi suất,
+                                    quản lý chi tiêu và dự báo đầu tư. Giúp bạn kiểm soát tài chính hiệu quả mọi lúc, mọi nơi.</p>
+                                <a href="departments.html" class="text-primary">Tìm Hiểu Thêm <i
                                         class="ri-arrow-right-line align-middle"></i></a>
                             </div>
 
                             <div class="card border-0 p-4">
-                                <i class="ri-dossier-fill text-primary h2 mb-0"></i>
-                                <h5 class="mt-1">Doctors Timetable</h5>
-                                <p class="text-muted mt-2">This is required when, for example, the is not yet available.
-                                    Dummy text is also known as 'fill text'.</p>
-                                <a href="departments.html" class="text-primary">Read More <i
+                                <i class="ri-bank-fill text-primary h2 mb-0"></i>
+                                <h5 class="mt-1">Dịch Vụ Ngân Hàng</h5>
+                                <p class="text-muted mt-2">Sử dụng các dịch vụ ngân hàng tiện lợi như gửi tiết kiệm,
+                                    vay vốn và đầu tư sinh lời với SmartBank. Giao dịch an toàn, nhanh chóng và tối ưu lợi nhuận cho khách hàng.</p>
+                                <a href="departments.html" class="text-primary">Tìm Hiểu Thêm <i
                                         class="ri-arrow-right-line align-middle"></i></a>
                             </div>
 
                             <div class="card border-0 bg-light p-4">
                                 <i class="ri-time-fill text-primary h2 mb-0"></i>
-                                <h5 class="mt-1">Opening Hours</h5>
+                                <h5 class="mt-1">Giờ Hoạt Động Mở Tài Khoản Và Hỗ Trợ</h5>
                                 <ul class="list-unstyled mt-2">
                                     <li class="d-flex justify-content-between">
-                                        <p class="text-muted mb-0">Monday - Friday</p>
+                                        <p class="text-muted mb-0">Thứ Hai - Thứ Sáu</p>
                                         <p class="text-primary mb-0">8.00 - 20.00</p>
                                     </li>
                                     <li class="d-flex justify-content-between">
-                                        <p class="text-muted mb-0">Saturday</p>
+                                        <p class="text-muted mb-0">Thứ Bảy</p>
                                         <p class="text-primary mb-0">8.00 - 18.00</p>
                                     </li>
                                     <li class="d-flex justify-content-between">
-                                        <p class="text-muted mb-0">Sunday</p>
+                                        <p class="text-muted mb-0">Chủ Nhật</p>
                                         <p class="text-primary mb-0">8.00 - 14.00</p>
                                     </li>
                                 </ul>
-                                <a href="departments.html" class="text-primary">Read More <i
-                                        class="ri-arrow-right-line align-middle"></i></a>
+                                <!--                                <a href="departments.html" class="text-primary">Tìm hiểu Thêm <i
+                                                                        class="ri-arrow-right-line align-middle"></i></a>-->
                             </div>
                         </div>
                     </div><!--end col-->
@@ -85,31 +89,29 @@
                 <div class="row align-items-center">
                     <div class="col-lg-5 col-md-6">
                         <div class="position-relative">
-                            <img src="assets/images/about/about-2.png" class="img-fluid" alt="">
-                            <div class="play-icon">
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#watchvideomodal"
-                                   class="play-btn video-play-icon">
-                                    <i class="mdi mdi-play text-primary rounded-circle bg-white title-bg-dark shadow"></i>
-                                </a>
-                            </div>
+                            <img src="assets/images/about/about-1.png" class="img-fluid" alt="">
+                            <!--                            <div class="play-icon">
+                                                            <a href="#" data-bs-toggle="modal" data-bs-target="#watchvideomodal"
+                                                               class="play-btn video-play-icon">
+                                                                <i class="mdi mdi-play text-primary rounded-circle bg-white title-bg-dark shadow"></i>
+                                                            </a>
+                                                        </div>-->
                         </div>
                     </div><!--end col-->
 
                     <div class="col-lg-7 col-md-6 mt-4 mt-lg-0 pt- pt-lg-0">
                         <div class="ms-lg-4">
                             <div class="section-title">
-                                <h4 class="title mb-4">About Our Treatments</h4>
-                                <p class="text-muted para-desc">Great doctor if you need your family member to get effective
-                                    immediate assistance, examination, emergency treatment or a simple consultation. Thank
-                                    you.</p>
-                                <p class="text-muted para-desc mb-0">The most well-known dummy text is the 'Lorem Ipsum',
-                                    which is said to have originated in the 16th century. Lorem Ipsum is composed in a
-                                    pseudo-Latin language which more or less corresponds to 'proper' Latin. It contains a
-                                    series of real Latin words.</p>
+                                <h4 class="title mb-4">Về Ngân Hàng Của Chúng Tôi</h4>
+                                <p class="text-muted para-desc">SmartBank là một hệ thống ngân hàng trực tuyến được phát triển như một dự án cá nhân,
+                                    cung cấp các dịch vụ tài chính đa dạng bao gồm cho vay, gửi tiết kiệm và đầu tư.</p>
+                                <p class="text-muted para-desc mb-0">Với giao diện thân thiện và các tính năng tiện ích, 
+                                    SmartBank giúp người dùng dễ dàng quản lý tài chính,
+                                    thực hiện giao dịch an toàn và tối ưu hóa lợi nhuận từ các khoản đầu tư.</p>
                             </div>
 
                             <div class="mt-4">
-                                <a href="aboutus.html" class="btn btn-primary">Read More <i
+                                <a href="aboutus.html" class="btn btn-primary">Tìm hiểu thêm <i
                                         class="ri-arrow-right-line align-middle"></i></a>
                             </div>
                         </div>
@@ -121,10 +123,10 @@
                 <div class="row justify-content-center">
                     <div class="col-12">
                         <div class="section-title mb-4 pb-2 text-center">
-                            <span class="badge badge-pill badge-soft-primary mb-3">Departments</span>
-                            <h4 class="title mb-4">Our Medical Services</h4>
-                            <p class="text-muted mx-auto para-desc mb-0">Great doctor if you need your family member to get
-                                effective immediate assistance, emergency treatment or a simple consultation.</p>
+                            <span class="badge badge-pill badge-soft-primary mb-3">Phòng Ban</span>
+                            <h4 class="title mb-4">Dịch Vụ Ngân Hàng</h4>
+                            <p class="text-muted mx-auto para-desc mb-0">Dịch vụ cho vay, gửi tiết kiệm và đầu tư, 
+                                giúp khách hàng quản lý tài chính hiệu quả. Hệ thống đảm bảo giao dịch an toàn, nhanh chóng và tối ưu lợi nhuận.</p>
                         </div>
                     </div><!--end col-->
                 </div><!--end row-->
@@ -133,13 +135,13 @@
                     <div class="col-xl-3 col-md-4 col-12 mt-5">
                         <div class="card features feature-primary border-0">
                             <div class="icon text-center rounded-md">
-                                <i class="ri-eye-fill h3 mb-0"></i>
+                                <i class="ri-bank-card-fill h3 mb-0"></i>
                             </div>
                             <div class="card-body p-0 mt-3">
-                                <a href="departments.html" class="title text-dark h5">Eye Care</a>
-                                <p class="text-muted mt-3">There is now an abundance of readable dummy texts required purely
-                                    to fill a space.</p>
-                                <a href="departments.html" class="link">Read More <i
+                                <a href="departments.html" class="title text-dark h5">Gửi Tiết Kiệm</a>
+                                <p class="text-muted mt-3">Tích lũy tài chính an toàn với các gói tiết kiệm linh hoạt,
+                                    lãi suất hấp dẫn và rút tiền dễ dàng.</p>
+                                <a href="departments.html" class="link">Tìm Hiểu Thêm <i
                                         class="ri-arrow-right-line align-middle"></i></a>
                             </div>
                         </div>
@@ -148,13 +150,13 @@
                     <div class="col-xl-3 col-md-4 col-12 mt-5">
                         <div class="card features feature-primary border-0">
                             <div class="icon text-center rounded-md">
-                                <i class="ri-psychotherapy-fill h3 mb-0"></i>
+                                <i class="ri-hand-coin-fill h3 mb-0"></i>
                             </div>
                             <div class="card-body p-0 mt-3">
-                                <a href="departments.html" class="title text-dark h5">Psychotherapy</a>
-                                <p class="text-muted mt-3">There is now an abundance of readable dummy texts required purely
-                                    to fill a space.</p>
-                                <a href="departments.html" class="link">Read More <i
+                                <a href="departments.html" class="title text-dark h5">Vay Tín Dụng</a>
+                                <p class="text-muted mt-3">Giải pháp vay vốn nhanh chóng, thủ tục đơn giản, lãi suất ưu đãi.
+                                    Đáp ứng nhu cầu tài chính cá nhân và kinh doanh một cách thuận tiện nhất.</p>
+                                <a href="departments.html" class="link">Tìm Hiểu Thêm <i
                                         class="ri-arrow-right-line align-middle"></i></a>
                             </div>
                         </div>
@@ -163,13 +165,13 @@
                     <div class="col-xl-3 col-md-4 col-12 mt-5">
                         <div class="card features feature-primary border-0">
                             <div class="icon text-center rounded-md">
-                                <i class="ri-stethoscope-fill h3 mb-0"></i>
+                                <i class="ri-user-add-fill h3 mb-0"></i>
                             </div>
                             <div class="card-body p-0 mt-3">
-                                <a href="departments.html" class="title text-dark h5">Primary Care</a>
-                                <p class="text-muted mt-3">There is now an abundance of readable dummy texts required purely
-                                    to fill a space.</p>
-                                <a href="departments.html" class="link">Read More <i
+                                <a href="departments.html" class="title text-dark h5">Tạo Tài Khoản</a>
+                                <p class="text-muted mt-3">Đăng ký tài khoản trực tuyến chỉ trong vài phút để trải nghiệm các dịch vụ tài chính hiện đại,
+                                    an toàn và tiện lợi từ SmartBank.</p>
+                                <a href="departments.html" class="link">Tìm Hiểu Thêm <i
                                         class="ri-arrow-right-line align-middle"></i></a>
                             </div>
                         </div>
@@ -178,186 +180,16 @@
                     <div class="col-xl-3 col-md-4 col-12 mt-5">
                         <div class="card features feature-primary border-0">
                             <div class="icon text-center rounded-md">
-                                <i class="ri-capsule-fill h3 mb-0"></i>
+                                <i class="ri-bar-chart-fill h3 mb-0"></i>
                             </div>
                             <div class="card-body p-0 mt-3">
-                                <a href="departments.html" class="title text-dark h5">Dental Care</a>
-                                <p class="text-muted mt-3">There is now an abundance of readable dummy texts required purely
-                                    to fill a space.</p>
-                                <a href="departments.html" class="link">Read More <i
+                                <a href="departments.html" class="title text-dark h5">Đầu tư</a>
+                                <p class="text-muted mt-3">Tối ưu hóa lợi nhuận với các danh mục đầu tư đa dạng, phù hợp với mọi nhu cầu.
+                                    Quản lý danh mục thông minh và nhận tư vấn chiến lược đầu tư từ SmartBank.</p>
+                                <a href="departments.html" class="link">Tìm Hiểu Thêm <i
                                         class="ri-arrow-right-line align-middle"></i></a>
                             </div>
                         </div>
-                    </div><!--end col-->
-
-                    <div class="col-xl-3 col-md-4 col-12 mt-5">
-                        <div class="card features feature-primary border-0">
-                            <div class="icon text-center rounded-md">
-                                <i class="ri-microscope-fill h3 mb-0"></i>
-                            </div>
-                            <div class="card-body p-0 mt-3">
-                                <a href="departments.html" class="title text-dark h5">Orthopedic</a>
-                                <p class="text-muted mt-3">There is now an abundance of readable dummy texts required purely
-                                    to fill a space.</p>
-                                <a href="departments.html" class="link">Read More <i
-                                        class="ri-arrow-right-line align-middle"></i></a>
-                            </div>
-                        </div>
-                    </div><!--end col-->
-
-                    <div class="col-xl-3 col-md-4 col-12 mt-5">
-                        <div class="card features feature-primary border-0">
-                            <div class="icon text-center rounded-md">
-                                <i class="ri-pulse-fill h3 mb-0"></i>
-                            </div>
-                            <div class="card-body p-0 mt-3">
-                                <a href="departments.html" class="title text-dark h5">Cardiology</a>
-                                <p class="text-muted mt-3">There is now an abundance of readable dummy texts required purely
-                                    to fill a space.</p>
-                                <a href="departments.html" class="link">Read More <i
-                                        class="ri-arrow-right-line align-middle"></i></a>
-                            </div>
-                        </div>
-                    </div><!--end col-->
-
-                    <div class="col-xl-3 col-md-4 col-12 mt-5">
-                        <div class="card features feature-primary border-0">
-                            <div class="icon text-center rounded-md">
-                                <i class="ri-empathize-fill h3 mb-0"></i>
-                            </div>
-                            <div class="card-body p-0 mt-3">
-                                <a href="departments.html" class="title text-dark h5">Gynecology</a>
-                                <p class="text-muted mt-3">There is now an abundance of readable dummy texts required purely
-                                    to fill a space.</p>
-                                <a href="departments.html" class="link">Read More <i
-                                        class="ri-arrow-right-line align-middle"></i></a>
-                            </div>
-                        </div>
-                    </div><!--end col-->
-
-                    <div class="col-xl-3 col-md-4 col-12 mt-5">
-                        <div class="card features feature-primary border-0">
-                            <div class="icon text-center rounded-md">
-                                <i class="ri-mind-map h3 mb-0"></i>
-                            </div>
-                            <div class="card-body p-0 mt-3">
-                                <a href="departments.html" class="title text-dark h5">Neurology</a>
-                                <p class="text-muted mt-3">There is now an abundance of readable dummy texts required purely
-                                    to fill a space.</p>
-                                <a href="departments.html" class="link">Read More <i
-                                        class="ri-arrow-right-line align-middle"></i></a>
-                            </div>
-                        </div>
-                    </div><!--end col-->
-                </div><!--end row-->
-            </div><!--end container-->
-        </section><!--end section-->
-        <!-- End -->
-
-        <!-- Start -->
-        <section class="section">
-            <div class="container">
-                <div class="row justify-content-center wow fadeInUp">
-                    <div class="col-12">
-                        <div class="section-title text-center mb-4 pb-2">
-                            <h4 class="title mb-4">Doctors</h4>
-                            <p class="text-muted mx-auto para-desc mb-0">Great doctor if you need your family member to get
-                                effective immediate assistance, emergency treatment or a simple consultation.</p>
-                        </div>
-                    </div><!--end col-->
-                </div><!--end row-->
-
-                <div class="row align-items-center wow fadeInUp">
-                    <div class="col-xl-3 col-lg-3 col-md-6 mt-4 pt-2">
-                        <div class="card team border-0 rounded shadow overflow-hidden">
-                            <div class="team-img position-relative">
-                                <img src="assets/images/doctors/01.jpg" class="img-fluid" alt="">
-                                <ul class="list-unstyled team-social mb-0">
-                                    <li><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i
-                                                data-feather="facebook" class="icons"></i></a></li>
-                                    <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i
-                                                data-feather="linkedin" class="icons"></i></a></li>
-                                    <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i
-                                                data-feather="github" class="icons"></i></a></li>
-                                    <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i
-                                                data-feather="twitter" class="icons"></i></a></li>
-                                </ul>
-                            </div>
-                            <div class="card-body content text-center">
-                                <a href="doctor-team-one.html" class="title text-dark h5 d-block mb-0">Calvin Carlo</a>
-                                <small class="text-muted speciality">Eye Care</small>
-                            </div>
-                        </div>
-                    </div><!--end col-->
-
-                    <div class="col-xl-3 col-lg-3 col-md-6 mt-4 pt-2">
-                        <div class="card team border-0 rounded shadow overflow-hidden">
-                            <div class="team-img position-relative">
-                                <img src="assets/images/doctors/02.jpg" class="img-fluid" alt="">
-                                <ul class="list-unstyled team-social mb-0">
-                                    <li><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i
-                                                data-feather="facebook" class="icons"></i></a></li>
-                                    <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i
-                                                data-feather="linkedin" class="icons"></i></a></li>
-                                    <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i
-                                                data-feather="github" class="icons"></i></a></li>
-                                    <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i
-                                                data-feather="twitter" class="icons"></i></a></li>
-                                </ul>
-                            </div>
-                            <div class="card-body content text-center">
-                                <a href="doctor-team-one.html" class="title text-dark h5 d-block mb-0">Cristino Murphy</a>
-                                <small class="text-muted speciality">Gynecology</small>
-                            </div>
-                        </div>
-                    </div><!--end col-->
-
-                    <div class="col-xl-3 col-lg-3 col-md-6 mt-4 pt-2">
-                        <div class="card team border-0 rounded shadow overflow-hidden">
-                            <div class="team-img position-relative">
-                                <img src="assets/images/doctors/03.jpg" class="img-fluid" alt="">
-                                <ul class="list-unstyled team-social mb-0">
-                                    <li><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i
-                                                data-feather="facebook" class="icons"></i></a></li>
-                                    <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i
-                                                data-feather="linkedin" class="icons"></i></a></li>
-                                    <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i
-                                                data-feather="github" class="icons"></i></a></li>
-                                    <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i
-                                                data-feather="twitter" class="icons"></i></a></li>
-                                </ul>
-                            </div>
-                            <div class="card-body content text-center">
-                                <a href="doctor-team-one.html" class="title text-dark h5 d-block mb-0">Alia Reddy</a>
-                                <small class="text-muted speciality">Psychotherapy</small>
-                            </div>
-                        </div>
-                    </div><!--end col-->
-
-                    <div class="col-xl-3 col-lg-3 col-md-6 mt-4 pt-2">
-                        <div class="card team border-0 rounded shadow overflow-hidden">
-                            <div class="team-img position-relative">
-                                <img src="assets/images/doctors/04.jpg" class="img-fluid" alt="">
-                                <ul class="list-unstyled team-social mb-0">
-                                    <li><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i
-                                                data-feather="facebook" class="icons"></i></a></li>
-                                    <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i
-                                                data-feather="linkedin" class="icons"></i></a></li>
-                                    <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i
-                                                data-feather="github" class="icons"></i></a></li>
-                                    <li class="mt-2"><a href="#" class="btn btn-icon btn-pills btn-soft-primary"><i
-                                                data-feather="twitter" class="icons"></i></a></li>
-                                </ul>
-                            </div>
-                            <div class="card-body content text-center">
-                                <a href="doctor-team-one.html" class="title text-dark h5 d-block mb-0">Toni Kovar</a>
-                                <small class="text-muted speciality">Orthopedic</small>
-                            </div>
-                        </div>
-                    </div><!--end col-->
-
-                    <div class="col-12 mt-4 pt-2 text-center">
-                        <a href="doctor-team-one.html" class="btn btn-primary">See More</a>
                     </div><!--end col-->
                 </div><!--end row-->
             </div><!--end container-->
@@ -380,8 +212,8 @@
                                         <div class="counter-box text-center">
                                             <h1 class="mt-3 text-white title-dark"><span class="counter-value"
                                                                                          data-target="99">10</span>%</h1>
-                                            <h5 class="counter-head text-white title-dark mb-1">Positive feedback</h5>
-                                            <p class="text-white-50 mb-0">From Customer</p>
+                                            <h5 class="counter-head text-white title-dark mb-1">Phản hồi tích cực</h5>
+                                            <p class="text-white-50 mb-0">Từ người dùng</p>
                                         </div><!--end counter box-->
                                     </div><!--end col-->
 
@@ -389,8 +221,8 @@
                                         <div class="counter-box text-center">
                                             <h1 class="mt-3 text-white title-dark"><span class="counter-value"
                                                                                          data-target="25">2</span>+</h1>
-                                            <h5 class="counter-head text-white title-dark mb-1">Experienced Clinics</h5>
-                                            <p class="text-white-50 mb-0">High Qualified</p>
+                                            <h5 class="counter-head text-white title-dark mb-1">Nhân viên có kinh nghiệm</h5>
+                                            <p class="text-white-50 mb-0">Trình độ cao</p>
                                         </div><!--end counter box-->
                                     </div><!--end col-->
 
@@ -398,8 +230,8 @@
                                         <div class="counter-box text-center">
                                             <h1 class="mt-3 text-white title-dark"><span class="counter-value"
                                                                                          data-target="1251">95</span>+</h1>
-                                            <h5 class="counter-head text-white title-dark mb-1">Questions & Answers</h5>
-                                            <p class="text-white-50 mb-0">Your Questions</p>
+                                            <h5 class="counter-head text-white title-dark mb-1">Câu hỏi & Phản hồi</h5>
+                                            <p class="text-white-50 mb-0">Thắc mắc của bạn</p>
                                         </div><!--end counter box-->
                                     </div><!--end col-->
                                 </div><!--end row-->
@@ -412,6 +244,7 @@
         </section><!--end section-->
         <!-- End -->
 
+        <!-- Phần đánh giá khách hàng, tạo và lấy lên từ database, dưới là format fontend -->
         <!-- Start -->
         <section class="section">
             <div class="container">
@@ -419,72 +252,40 @@
                     <div class="col-12">
                         <div class="section-title text-center mb-4 pb-2">
                             <h4 class="title mb-4">Khách hàng nói về chúng tôi</h4>
-                            <p class="text-muted mx-auto para-desc mb-0">Great doctor if you need your family member to get
-                                effective immediate assistance, emergency treatment or a simple consultation.</p>
+                            <p class="text-muted mx-auto para-desc mb-0">Phản hồi về chất lượng của người dùng là nền móng để chúng tôi phát triển ngày một tốt hơn.</p>
                         </div>
                     </div><!--end col-->
                 </div><!--end row-->
-
                 <div class="row justify-content-center wow fadeInUp">
                     <div class="col-lg-8 mt-4 pt-2 text-center">
                         <div class="client-review-slider">
-                            <div class="tiny-slide text-center">
-                                <p class="text-muted h6 fw-normal fst-italic">" It seems that only fragments of the original
-                                    text remain in the Lorem Ipsum texts used today. The most well-known dummy text is the
-                                    'Lorem Ipsum', which is said to have originated in the 16th century. "</p>
-                                <img src="https://placehold.co/600x400" class="img-fluid" alt="">
-                                <ul class="list-unstyled mb-0">
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                </ul>
-                                <h6 class="text-primary">- Thomas Israel <small class="text-muted">C.E.O</small></h6>
-                            </div><!--end customer testi-->
-
-                            <div class="tiny-slide text-center">
-                                <p class="text-muted h6 fw-normal fst-italic">" The advantage of its Latin origin and the
-                                    relative meaninglessness of Lorum Ipsum is that the text does not attract attention to
-                                    itself or distract the viewer's attention from the layout. "</p>
-                                <img src="https://placehold.co/600x400" class="img-fluid" alt="">
-                                <ul class="list-unstyled mb-0">
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                </ul>
-                                <h6 class="text-primary">- Carl Oliver <small class="text-muted">P.A</small></h6>
-                            </div><!--end customer testi-->
-
-                            <div class="tiny-slide text-center">
-                                <p class="text-muted h6 fw-normal fst-italic">" There is now an abundance of readable dummy
-                                    texts. These are usually used when a text is required purely to fill a space. These
-                                    alternatives to the classic Lorem Ipsum texts are often amusing and tell short, funny or
-                                    nonsensical stories. "</p>
-                                <img src="https://placehold.co/600x400" class="img-fluid" alt="">
-                                <ul class="list-unstyled mb-0">
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                    <li class="list-inline-item"><i class="mdi mdi-star text-warning"></i></li>
-                                </ul>
-                                <h6 class="text-primary">- Barbara McIntosh <small class="text-muted">M.D</small></h6>
-                            </div><!--end customer testi-->
+                            <c:forEach var="r" items="${rlist}">
+                                <div class="tiny-slide text-center">
+                                    <p class="text-muted h6 fw-normal fst-italic">${r.review}</p>
+                                    <ul class="list-unstyled mb-0">
+                                        <c:forEach var="i" begin="1" end="5">
+                                            <li class="list-inline-item">
+                                                <i class="mdi mdi-star ${i <= r.rate ? 'text-warning' : 'text-secondary'}"></i>
+                                            </li>
+                                        </c:forEach>
+                                    </ul>
+                                    <h6 class="text-primary">-${r.cusid.username}<small class="text-muted"></small></h6>
+                                </div><!--end customer testi-->
+                            </c:forEach>
                         </div><!--end carousel-->
                     </div><!--end col-->
                 </div><!--end row-->
             </div><!--end container-->
 
+
+            <!-- Phần News -->
             <div class="container mt-100 mt-60 wow fadeInUp">
                 <div class="row justify-content-center">
                     <div class="col-12">
                         <div class="section-title text-center mb-4 pb-2">
-                            <span class="badge badge-pill badge-soft-primary mb-3">Read News</span>
+                            <span class="badge badge-pill badge-soft-primary mb-3">Thông tin mới</span>
                             <h4 class="title mb-4">Khám phá và chia sẻ</h4>
-                            <p class="text-muted mx-auto para-desc mb-0">content</p>
+                            <p class="text-muted mx-auto para-desc mb-0">Những thông tin, thông báo chính thức của SmartBank</p>
                         </div>
                     </div><!--end col-->
                 </div><!--end row-->
@@ -609,19 +410,19 @@
                         <a href="#" class="logo-footer">
                             <img src="assets/images/logo-light.png" height="22" alt="">
                         </a>
-                        <p class="mt-4 me-xl-5">Great doctor if you need your family member to get effective immediate
-                            assistance, emergency treatment or a simple consultation.</p>
+                        <p class="mt-4 me-xl-5">SmartBank cung cấp các dịch vụ cho vay, gửi tiết kiệm và đầu tư,
+                            giúp khách hàng quản lý tài chính hiệu quả. Hệ thống đảm bảo giao dịch an toàn, nhanh chóng và tối ưu lợi nhuận.</p>
                     </div><!--end col-->
 
                     <div class="col-xl-7 col-lg-8 col-md-12">
                         <div class="row">
                             <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
-                                <h5 class="text-light title-dark footer-head">Company</h5>
+                                <h5 class="text-light title-dark footer-head">Công ty</h5>
                                 <ul class="list-unstyled footer-list mt-4">
                                     <li><a href="aboutus.html" class="text-foot"><i class="mdi mdi-chevron-right me-1"></i>
-                                            About us</a></li>
+                                            Về Chúng tôi</a></li>
                                     <li><a href="departments.html" class="text-foot"><i
-                                                class="mdi mdi-chevron-right me-1"></i> Services</a></li>
+                                                class="mdi mdi-chevron-right me-1"></i> Dịch vụ</a></li>
                                     <li><a href="doctor-team-two.html" class="text-foot"><i
                                                 class="mdi mdi-chevron-right me-1"></i> Team</a></li>
                                     <li><a href="blog-detail.html" class="text-foot"><i
@@ -635,42 +436,33 @@
                             </div><!--end col-->
 
                             <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
-                                <h5 class="text-light title-dark footer-head">Departments</h5>
+                                <h5 class="text-light title-dark footer-head">Phòng Ban</h5>
                                 <ul class="list-unstyled footer-list mt-4">
                                     <li><a href="departments.html" class="text-foot"><i
-                                                class="mdi mdi-chevron-right me-1"></i> Eye Care</a></li>
+                                                class="mdi mdi-chevron-right me-1"></i> Gửi Tiết Kiệm</a></li>
                                     <li><a href="departments.html" class="text-foot"><i
-                                                class="mdi mdi-chevron-right me-1"></i> Psychotherapy</a></li>
+                                                class="mdi mdi-chevron-right me-1"></i> Vay Tín Dụng</a></li>
                                     <li><a href="departments.html" class="text-foot"><i
-                                                class="mdi mdi-chevron-right me-1"></i> Dental Care</a></li>
+                                                class="mdi mdi-chevron-right me-1"></i> Tạo Tài Khoản</a></li>
                                     <li><a href="departments.html" class="text-foot"><i
-                                                class="mdi mdi-chevron-right me-1"></i> Orthopedic</a></li>
-                                    <li><a href="departments.html" class="text-foot"><i
-                                                class="mdi mdi-chevron-right me-1"></i> Cardiology</a></li>
-                                    <li><a href="departments.html" class="text-foot"><i
-                                                class="mdi mdi-chevron-right me-1"></i> Gynecology</a></li>
-                                    <li><a href="departments.html" class="text-foot"><i
-                                                class="mdi mdi-chevron-right me-1"></i> Neurology</a></li>
+                                                class="mdi mdi-chevron-right me-1"></i> Đầu tư</a></li>
+
                                 </ul>
                             </div><!--end col-->
 
                             <div class="col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
-                                <h5 class="text-light title-dark footer-head">Contact us</h5>
+                                <h5 class="text-light title-dark footer-head">Liên hệ</h5>
                                 <ul class="list-unstyled footer-list mt-4">
                                     <li class="d-flex align-items-center">
                                         <i data-feather="mail" class="fea icon-sm text-foot align-middle"></i>
-                                        <a href="mailto:contact@example.com" class="text-foot ms-2">contact@example.com</a>
+                                        <a href="mailto:dichvuhotrosmartbank@gmail.com
+                                           " class="text-foot ms-2">dichvuhotrosmartbank@gmail.com
+                                        </a>
                                     </li>
 
                                     <li class="d-flex align-items-center">
                                         <i data-feather="phone" class="fea icon-sm text-foot align-middle"></i>
-                                        <a href="tel:+152534-468-854" class="text-foot ms-2">+152 534-468-854</a>
-                                    </li>
-
-                                    <li class="d-flex align-items-center">
-                                        <i data-feather="map-pin" class="fea icon-sm text-foot align-middle"></i>
-                                        <a href="javascript:void(0)" class="video-play-icon text-foot ms-2">View on Google
-                                            map</a>
+                                        <a href="tel:+152534-468-854" class="text-foot ms-2">+84 936-924-631</a>
                                     </li>
                                 </ul>
 
@@ -696,19 +488,18 @@
                         <div class="col-sm-6">
                             <div class="text-sm-start text-center">
                                 <p class="mb-0">
-                                    <script>document.write(new Date().getFullYear())</script> © Doctris. Design with <i
-                                        class="mdi mdi-heart text-danger"></i> by <a href="../../../index.html"
-                                        target="_blank" class="text-reset">Shreethemes</a>.
+                                    <script>document.write(new Date().getFullYear())</script> Bản quyền © 2025 thuộc về Ngân hàng SmartBank <i
+                                        class="mdi mdi-heart text-danger"></i> bởi <a href="http://localhost:9999/BankingSystem/"
+                                        target="_blank" class="text-reset">Nhóm 2</a>.
                                 </p>
                             </div>
                         </div><!--end col-->
 
                         <div class="col-sm-6 mt-4 mt-sm-0">
                             <ul class="list-unstyled footer-list text-sm-end text-center mb-0">
-                                <li class="list-inline-item"><a href="terms.html" class="text-foot me-2">Terms</a></li>
-                                <li class="list-inline-item"><a href="privacy.html" class="text-foot me-2">Privacy</a></li>
-                                <li class="list-inline-item"><a href="aboutus.html" class="text-foot me-2">About</a></li>
-                                <li class="list-inline-item"><a href="contact.html" class="text-foot me-2">Contact</a></li>
+                                <li class="list-inline-item"><a href="terms.html" class="text-foot me-2">Điều khoản</a></li>
+                                <li class="list-inline-item"><a href="privacy.html" class="text-foot me-2">Quyền riêng tư dữ liệu</a></li>
+                                <li class="list-inline-item"><a href="contact.html" class="text-foot me-2">☎ KH doanh nghiệp</a></li>
                             </ul>
                         </div><!--end col-->
                     </div><!--end row-->
@@ -769,7 +560,7 @@
             function filterBadWords(text) {
                 let filteredText = text;
                 badWords.forEach(word => {
-                    const regex = new RegExp("(?<!\\w)"+word+"(?!\\w)", "gi");
+                    const regex = new RegExp("(?<!\\w)" + word + "(?!\\w)", "gi");
                     filteredText = filteredText.replace(regex, "*".repeat(word.length));
                 });
                 return filteredText;

@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller;
+package controller.customer;
 
 import dal.CustomerReviewDAO;
 import java.io.IOException;
@@ -12,16 +12,13 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.util.List;
 import model.Customer;
-import model.CustomerReview;
-import model.Staff;
 
 /**
  *
  * @author LAPTOP
  */
-public class HomeServlet extends HttpServlet {
+public class CustomerReview extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -35,23 +32,8 @@ public class HomeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        Customer customer = (Customer) session.getAttribute("customer");
-        Staff staff = (Staff) session.getAttribute("staff");
-        CustomerReviewDAO crdao = new CustomerReviewDAO();
-        try {
-            List<CustomerReview> rlist = crdao.getTop5ReviewsByRate(5);
-            request.setAttribute("rlist", rlist);
-            System.out.println("Servlet rlist size: " + rlist.size());
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
-        request.getRequestDispatcher("home.jsp").forward(request, response);
+        request.getRequestDispatcher("./customer/Review.jsp").forward(request, response);
     }
-    
-    
 
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -62,15 +44,28 @@ public class HomeServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-    }
+protected void doPost(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+    response.setContentType("application/json");
+    response.setCharacterEncoding("UTF-8");
+    CustomerReviewDAO crdao = new CustomerReviewDAO();
+    HttpSession session = request.getSession();
+    Customer currentAccount = (Customer) session.getAttribute("account");
+    
+    try{
+        String rateStr = request.getParameter("rate");
+        String review = request.getParameter("review");
+        int rate = Integer.parseInt(rateStr);
+        
+        crdao.addReview(currentAccount.getId(), rate, review);
+        
+        
+    }catch (Exception e) {
+                e.printStackTrace();
+            }
+    doGet(request, response);
+}
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";

@@ -3,7 +3,6 @@ package controller.customer;
 import dal.CustomerDAO;
 import dal.DepServiceUsedDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,29 +16,7 @@ import model.Customer;
  *
  * @author emkob
  */
-
 public class DepositValidationServlet extends HttpServlet {
-
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet DepositValidationServlet</title>");  
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet DepositValidationServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -53,14 +30,10 @@ public class DepositValidationServlet extends HttpServlet {
 
         DepServiceUsedDAO depServiceUsedDAO = new DepServiceUsedDAO();
         List<DepServiceUsed> activeDeposits = depServiceUsedDAO.getActiveDepositsByCustomerId(customerId);
-        if (!activeDeposits.isEmpty()) {
-            request.getSession().setAttribute("error4", "Bạn chỉ được gửi một khoản tiết kiệm tại một thời điểm!");
-            response.sendRedirect(request.getContextPath() + "/customer/Termsavings.jsp");
-            return;
-        }
-
         String amountStr = request.getParameter("depositAmount");
         BigDecimal amount;
+        CustomerDAO customerDAO = new CustomerDAO();
+
         try {
             amount = new BigDecimal(amountStr);
             if (amount.compareTo(BigDecimal.ZERO) <= 0) {
@@ -77,8 +50,7 @@ public class DepositValidationServlet extends HttpServlet {
                 return;
             }
 
-            // Kiểm tra số dư tài khoản (wallet)
-            CustomerDAO customerDAO = new CustomerDAO();
+            // Lấy số dư ví từ database và đồng bộ với session
             BigDecimal walletBalance = customerDAO.getWalletByCustomerId(customerId);
             if (walletBalance == null || amount.compareTo(walletBalance) > 0) {
                 request.getSession().setAttribute("error4", "Số tiền gửi không được vượt quá số dư tài khoản (" + 
@@ -86,6 +58,10 @@ public class DepositValidationServlet extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + "/customer/savemoney.jsp");
                 return;
             }
+
+            // Đồng bộ số dư ví vào đối tượng customer trong session
+            customer.setWallet(walletBalance);
+            request.getSession().setAttribute("account", customer);
 
         } catch (NumberFormatException e) {
             request.getSession().setAttribute("error4", "Số tiền không hợp lệ!");
