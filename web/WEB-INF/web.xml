@@ -196,6 +196,18 @@
         <servlet-name>NewsDetailServlet</servlet-name>
         <servlet-class>controller.NewsDetailServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DepositCreationServlet</servlet-name>
+        <servlet-class>controller.customer.DepositCreationServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AutoProfitServlet</servlet-name>
+        <servlet-class>controller.customer.AutoProfitServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoanHistoryServlet</servlet-name>
+        <servlet-class>controller.customer.LoanHistoryServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>HomeServlet</servlet-name>
         <url-pattern>/home</url-pattern>
@@ -226,11 +238,11 @@
     </servlet>
     <servlet>
         <servlet-name>requestPassword</servlet-name>
-        <servlet-class>controller.customer.requestPassword</servlet-class>
+        <servlet-class>controller.requestPassword</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>resetPassword</servlet-name>
-        <servlet-class>controller.customer.resetPassword</servlet-class>
+        <servlet-class>controller.resetPassword</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>VNpayServlet</servlet-name>
@@ -448,6 +460,18 @@
         <servlet-name>NewsDetailServlet</servlet-name>
         <url-pattern>/NewsDetailServlet</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DepositCreationServlet</servlet-name>
+        <url-pattern>/DepositCreationServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AutoProfitServlet</servlet-name>
+        <url-pattern>/AutoProfitServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoanHistoryServlet</servlet-name>
+        <url-pattern>/LoanHistoryServlet</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>1440</session-timeout>
         <!-- 1440 phút = 24 giờ -->
@@ -463,5 +487,8 @@
     </error-page>
     <listener>
         <listener-class>controller.customer.MaturitySchedulerListener</listener-class>
+    </listener>
+    <listener>
+        <listener-class>controller.customer.SessionTracker</listener-class>
     </listener>
 </web-app>

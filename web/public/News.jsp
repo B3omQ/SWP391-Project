@@ -77,7 +77,6 @@
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
             max-height: 72px;
-            /* Loại bỏ HTML không mong muốn */
             white-space: pre-wrap;
             word-wrap: break-word;
         }
@@ -91,6 +90,16 @@
         }
         .news-link:hover {
             text-decoration: underline;
+        }
+        .filter-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .filter-section .form-control {
+            margin-right: 10px;
         }
 
         @media (max-width: 768px) {
@@ -110,6 +119,9 @@
                 -webkit-line-clamp: 2;
                 max-height: 48px;
             }
+            .filter-section .form-control {
+                margin-bottom: 10px;
+            }
         }
     </style>
 </head>
@@ -117,7 +129,37 @@
     <div class="content-wrapper">
         <div class="news-container">
             <h2 class="text-center mb-4" style="color: #d41c1c; font-weight: 700;">Thông Tin Mới</h2>
-            
+
+            <!-- Filter Section -->
+            <div class="filter-section">
+                <form method="get" action="${pageContext.request.contextPath}/NewsServlet" class="row g-3 align-items-end">
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" name="search" placeholder="Tìm kiếm theo tiêu đề..." value="${param.search}">
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-control" name="categoryFilter">
+                            <option value="">Tất cả thể loại</option>
+                            <option value="vay" ${param.categoryFilter == 'vay' ? 'selected' : ''}>Vay</option>
+                            <option value="tin tức" ${param.categoryFilter == 'tin tức' ? 'selected' : ''}>Tin tức</option>
+                            <option value="khác" ${param.categoryFilter == 'khác' ? 'selected' : ''}>Khác</option>
+                            <option value="kinh nghiệm" ${param.categoryFilter == 'kinh nghiệm' ? 'selected' : ''}>Kinh nghiệm</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-control" name="sortBy">
+                            <option value="publishDate_desc" ${param.sortBy == 'publishDate_desc' ? 'selected' : ''}>Mới nhất trước</option>
+                            <option value="publishDate_asc" ${param.sortBy == 'publishDate_asc' ? 'selected' : ''}>Cũ nhất trước</option>
+                            <option value="title_asc" ${param.sortBy == 'title_asc' ? 'selected' : ''}>Tiêu đề (A-Z)</option>
+                            <option value="title_desc" ${param.sortBy == 'title_desc' ? 'selected' : ''}>Tiêu đề (Z-A)</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary w-100">Lọc</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- News List -->
             <c:choose>
                 <c:when test="${not empty newsList}">
                     <c:forEach var="news" items="${newsList}" varStatus="loop">
@@ -152,6 +194,6 @@
 
     <script src="${pageContext.request.contextPath}/assets/js/bootstrap.bundle.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-    <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> <!-- Thêm JSTL functions -->
+    <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 </body>
 </html>
