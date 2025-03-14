@@ -67,13 +67,16 @@
                         <div class="row align-items-center">
                             <!-- Title & Breadcrumb -->
                             <div class="col-md-6">
-                                <h5 class="mb-0">Customer Management</h5>
+                                <h5 class="mb-0">Trang thông tin khách hàng</h5>
                                 <nav aria-label="breadcrumb" class="mt-2">
                                     <ul class="breadcrumb breadcrumb-muted bg-transparent rounded mb-0 p-0">
                                         <li class="breadcrumb-item">
-                                            <a href="index.html" class="text-decoration-none text-danger">SmartBanking</a>
+                                            <a href="#" class="text-decoration-none text-danger">SmartBanking</a>
                                         </li>
-                                        <li class="breadcrumb-item active" aria-current="page">Customers</li>
+                                        <li class="breadcrumb-item">
+                                            <a href="#" class="text-decoration-none text-danger">Danh sách khách hàng</a>
+                                        </li>
+                                        <li class="breadcrumb-item active" aria-current="page">Danh sách thông tin cá nhân</li>
                                     </ul>
                                 </nav>
                             </div>
@@ -85,81 +88,83 @@
                                         value="${currentPhoneSearch}"
                                         class="form-control border-custome me-2"
                                         type="text"
-                                        placeholder="Search by phone number"
+                                        placeholder="Tìm kiếm bằng số điện thoại"
                                         id="phoneSearch"
                                         name="phoneSearch"
                                         />
-                                    <select class="btn border-custome me-2" name="recordsPerPage" onchange="onChangeSubmit('search')" id="entries">
-                                        <option value="3" ${currentRecords == 3 ? 'selected' : ''}>3</option>
-                                        <option value="5" ${currentRecords == 5 ? 'selected' : ''}>5</option>
-                                        <option value="8" ${currentRecords == 8 ? 'selected' : ''}>8</option>
-                                        <option value="10" ${currentRecords == 10 ? 'selected' : ''}>10</option>
-                                        <option value="12" ${currentRecords == 12 ? 'selected' : ''}>12</option>
-                                        <option value="15" ${currentRecords == 15 ? 'selected' : ''}>15</option>
-                                    </select>
                                     <a href="?page=1&phoneSearch=&recordsPerPage=${currentRecords}" class="btn border-custome me-2">Reset</a>
-                                    <button class="btn btn-danger" type="submit">Search</button>
+                                    <button class="btn btn-danger" type="submit">Tìm</button>
                                 </form>
                             </div>
                         </div>
                         <!-- Customer Table -->
                         <style>
 
-                            .table {
-                                border-collapse: separate; /* Để box-shadow hiển thị đúng */
-                                border-spacing: 0; /* Loại bỏ khoảng cách giữa các ô */
-                                border-radius: 20px; /* Bo góc */
-                                overflow: hidden; /* Đảm bảo góc bo tròn không bị mất */
-                                background: white; /* Đảm bảo bảng có màu nền để bóng đẹp hơn */
-                                box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.15),
-                                    0px 0px 8px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng xung quanh */
-                            }
-                            /* Cố định kích thước hàng */
-                            .table tbody tr {
-                                height: 60px; /* Đặt chiều cao hàng cố định */
+                            /* CSS cho bảng */
+                            .table_component {
+                                overflow-x: auto; /* Đảm bảo bảng cuộn ngang trên màn hình nhỏ */
+                                width: 100%;
+                                margin-top: 1.5rem;
                             }
 
-                            /* Cột có nội dung dài sẽ bị cắt bớt với dấu "..." */
-                            .table tbody td {
-                                white-space: nowrap; /* Không xuống dòng */
-                                overflow: hidden; /* Ẩn phần dư */
-                                text-overflow: ellipsis; /* Hiển thị "..." nếu quá dài */
-                                max-width: 150px; /* Giới hạn độ rộng */
-                            }
-
-                            /* Chỉnh lại ô hình ảnh */
-                            .table img {
-                                width: 100px;
-                                height: 100px;
-                                object-fit: cover; /* Giữ tỷ lệ ảnh, không méo */
-                            }
-                            .modal-body .row div {
-                                text-align: left !important; /* Đưa dữ liệu về căn trái */
-                            }
-
-                            .head {
-                                font-weight: bold;
-                            }
-
-                            .mb-4 {
-                                margin-bottom: 1.5rem !important;
-                            }
-
-                            .mt-3 {
-                                margin-top: 1rem !important;
-                            }
-
-                            .mt-2 {
-                                margin-top: 0.5rem !important;
-                            }
-
-                            .table-responsive {
-                                padding : 1rem;
+                            .table_component table {
+                                width: 100%;
+                                border-collapse: collapse; /* Loại bỏ khoảng cách giữa các ô */
                                 text-align: center;
+                                background-color: #fff;
+                                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Thêm bóng nhẹ để nổi bật */
                             }
 
-                            .photo {
-                                border-radius: 50%;
+                            .table_component th,
+                            .table_component td {
+                                padding: 12px 15px; /* Tăng padding để thoáng hơn */
+                                border: 2px solid #cfcfd3; /* Viền nhẹ nhàng hơn #cfcfd3 */
+                                vertical-align: middle; /* Căn giữa theo chiều dọc */
+                            }
+
+                            .table_component th {
+                                background-color: #f8f9fa; /* Màu nền nhẹ cho tiêu đề */
+                                color: #333; /* Màu chữ đậm hơn */
+                                font-weight: 600; /* Chữ đậm cho tiêu đề */
+                            }
+
+                            .table_component td {
+                                color: #555; /* Màu chữ nhẹ nhàng hơn */
+                            }
+
+                            /* Chỉnh ô chứa ảnh */
+                            .table_component .photo-div {
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                            }
+
+                            .table_component .photo {
+                                width: 100px; /* Giảm kích thước ảnh để vừa vặn hơn */
+                                height: 100px;
+                                object-fit: cover; /* Đảm bảo ảnh không bị méo */
+                                border-radius: 5px; /* Bo góc nhẹ cho ảnh */
+                                border: 1px solid #dee2e6; /* Viền nhẹ cho ảnh */
+                            }
+
+                            /* Tối ưu chiều rộng cột */
+                            .table_component td.text-truncate {
+                                max-width: 150px; /* Tăng chiều rộng tối đa cho cột Fullname và Phone */
+                                white-space: nowrap; /* Ngăn xuống dòng */
+                                overflow: hidden;
+                                text-overflow: ellipsis; /* Thêm dấu ... khi bị cắt */
+                            }
+
+                            /* Hiệu ứng hover cho hàng */
+                            .table_component tbody tr:hover {
+                                background-color: #f5f6f8; /* Màu nền khi hover */
+                                transition: background-color 0.2s ease; /* Hiệu ứng mượt mà */
+                            }
+
+                            /* Tùy chỉnh nút trong cột Actions */
+                            .table_component .btn {
+                                font-size: 0.9rem;
+                                margin: 0 2px; /* Khoảng cách giữa các nút */
                             }
 
                             .profile-header {
@@ -183,23 +188,23 @@
                             }
                         </style>
 
-                        <div class="table-responsive mt-4">
-                            <table class="table table-striped table-bordered table-hover">
-                                <thead class="thead-dark bg-dark text-white" style ="text-align:center">
+                        <div class="table_component mt-4" role="region" tabindex="0">
+                            <table>
+                                <thead style ="text-align:center">
                                     <tr>
                                         <th>ID</th>
-                                        <th>Image</th>
-                                        <th>Fullname</th>
-                                        <th>Phone</th>
-                                        <th>Gender</th>
-                                        <th>Actions</th>
+                                        <th>Ảnh đại diện</th>
+                                        <th>Họ và tên</th>
+                                        <th>Số điện thoại</th>
+                                        <th>Giới tính</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <c:choose>
                                         <c:when test="${empty customerList}">
                                             <tr>
-                                                <td colspan="100%" class="text-center text-muted fw-bold">Search list is empty</td>
+                                                <td colspan="100%" class="text-center text-muted fw-bold">Danh sách trống</td>
                                             </tr>
                                         </c:when>
                                         <c:otherwise>
@@ -254,26 +259,26 @@
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-header bg-danger text-white">
-                                                            <h1 class="modal-title fs-5" id="detailsModalLabel${customer.id}">Customer's Detail</h1>
+                                                            <h1 class="modal-title fs-5" id="detailsModalLabel${customer.id}">Thông tin chung</h1>
                                                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
                                                             <div class="profile-header text-center">
                                                                 <img src="${customer.image}" alt="Customer Image" class="profile-image">
                                                                 <h2>${customer.firstname} ${customer.lastname}</h2>
-                                                                <p class="text-muted">Customer</p>
+                                                                <p class="text-muted">Vai trò: khách hàng</p>
                                                             </div>
                                                             <div class="profile-info">
-                                                                <p><strong>Id:</strong> ${customer.id}</p>
-                                                                <p><strong>Email contact:</strong> ${customer.email}</p>
-                                                                <p><strong>Address:</strong> ${customer.address}</p>
-                                                                <p><strong>Phone:</strong> ${customer.phone}</p>
-                                                                <p><strong>Date of Birth:</strong> ${customer.dob}</p>
+                                                                <p><strong>Mã id:</strong> ${customer.id}</p>
+                                                                <p><strong>Email liên hệ:</strong> ${customer.email}</p>
+                                                                <p><strong>Địa chỉ:</strong> ${customer.address}</p>
+                                                                <p><strong>Số điện thoại:</strong> ${customer.phone}</p>
+                                                                <p><strong>Ngày khai sinh:</strong> ${customer.dob}</p>
 
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn text-white bg-danger" data-bs-dismiss="modal">Close</button>
+                                                            <button type="button" class="btn text-white bg-danger" data-bs-dismiss="modal">Đóng</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -290,12 +295,12 @@
                 <!-- Pagination -->                 
                 <nav aria-label="Page navigation" class="mt-4">
                     <ul class="pagination justify-content-center">
-                        <!-- Nút First và Previous -->
+                        <!-- Nút Đầu và Trước -->
                         <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
-                            <a class="page-link text-danger" href="?page=1&phoneSearch=${currentPhoneSearch}&recordsPerPage=${currentRecords}">First</a>
+                            <a class="page-link text-danger" href="?page=1&phoneSearch=${currentPhoneSearch}&recordsPerPage=${currentRecords}">Đầu</a>
                         </li>
                         <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
-                            <a class="page-link text-danger" href="?page=${currentPage - 1}&phoneSearch=${currentPhoneSearch}&recordsPerPage=${currentRecords}">Previous</a>
+                            <a class="page-link text-danger" href="?page=${currentPage - 1}&phoneSearch=${currentPhoneSearch}&recordsPerPage=${currentRecords}">Trước</a>
                         </li>
 
                         <c:choose>
@@ -379,12 +384,12 @@
                             </c:otherwise>
                         </c:choose>
 
-                        <!-- Nút Next và Last -->
+                        <!-- Nút Tiếp và Cuối -->
                         <li class="page-item ${currentPage == totalPages ? 'disabled' : ''}">
-                            <a class="page-link text-danger" href="?page=${currentPage + 1}&phoneSearch=${currentPhoneSearch}&recordsPerPage=${currentRecords}">Next</a>
+                            <a class="page-link text-danger" href="?page=${currentPage + 1}&phoneSearch=${currentPhoneSearch}&recordsPerPage=${currentRecords}">Tiếp</a>
                         </li>
                         <li class="page-item ${currentPage == totalPages ? 'disabled' : ''}">
-                            <a class="page-link text-danger" href="?page=${totalPages}&phoneSearch=${currentPhoneSearch}&recordsPerPage=${currentRecords}">Last</a>
+                            <a class="page-link text-danger" href="?page=${totalPages}&phoneSearch=${currentPhoneSearch}&recordsPerPage=${currentRecords}">Cuối</a>
                         </li>
                     </ul>
                     <c:choose>
@@ -395,7 +400,7 @@
                                 <input type="number" name="page" min="1" max="${totalPages}" 
                                        placeholder="Page" 
                                        class="form-control w-auto text-center px-2">
-                                <button type="submit" class="btn btn-primary ms-2">Go</button>
+                                <button type="submit" class="btn btn-primary ms-2">Đi đến</button>
                             </form>
                         </c:when>
                     </c:choose>                
@@ -422,7 +427,7 @@
                                             });
 
                                             tippy('#newImg', {
-                                                content: "Only accept file jpg, jpeg, png, gif and size smaller than 5mbs",
+                                                content: "Chỉ chấp nhận các file jpg, jpeg, png, gif và dung lượng nhỏ hơn 5mb",
                                                 animation: 'fade',
                                                 duration: [300, 300],
                                                 placement: 'top',
@@ -430,7 +435,7 @@
                                             });
 
                                             tippy('#newPhone', {
-                                                content: "Phone must be 10 - 11 digits number",
+                                                content: "Số điện thoại bao gồm từ 10 - 11 số",
                                                 animation: 'fade',
                                                 duration: [300, 300],
                                                 placement: 'top',
@@ -444,7 +449,7 @@
                                             var phonePattern = /^\d{10,11}$/; // Chỉ chứa 10-11 số
 
                                             if (!phonePattern.test(phoneValue)) {
-                                                showErrorMessage("Error", "Invalid phone number")
+                                                showErrorMessage("Error", "Định dạng số điện thoại sai")
                                                 phoneInput.focus();
                                                 return false;
                                             }
@@ -473,8 +478,8 @@
                                                         data: {deleteId: customerId},
                                                         success: function (response) {
                                                             if (response.success) {
-                                                                reloadWithMessage("success", "Success", "Deleted!");                                                               
-                                                                
+                                                                showSuccessMessage("Success", "Đã xóa!");
+                                                                form.closest('tr').remove();
                                                             } else {
                                                                 showErrorMessage("Error", "Something wrong here");
                                                             }
@@ -490,7 +495,6 @@
                                                 event.preventDefault(); // Chặn form submit mặc định
 
                                                 let form = $(this);
-                                                let customerId = form.find('input[name="updateId"]').val(); // Lấy ID từ input hidden
                                                 let formData = new FormData(this); // Lấy dữ liệu form (bao gồm file)
 
                                                 if (confirm("Are you sure you want to update this customer?")) {
@@ -502,7 +506,7 @@
                                                         contentType: false, // Để browser tự động chọn content type
                                                         success: function (response) {
                                                             if (response.success) {
-                                                                reloadWithMessage("success", "Success", "Edit successful");
+                                                                reloadWithMessage("success", "Success", "Đã cập nhật!");
                                                             } else {
                                                                 showErrorMessage("Error", response.message);
                                                             }

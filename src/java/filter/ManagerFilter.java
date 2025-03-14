@@ -59,7 +59,7 @@
 //        
 //        try {
 //            Staff staff = (Staff) session.getAttribute("staff");
-//            if (staff == null || staff.getRoleId().getId() != 4 || session.getAttribute("account") != null) {
+//            if (staff == null || staff.getRoleId().getId() != 3 || session.getAttribute("account") != null) {
 //                httpRequest.getRequestDispatcher("denied.jsp").forward(request, response);
 //                return;
 //            }
