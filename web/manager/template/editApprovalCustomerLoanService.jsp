@@ -4,6 +4,7 @@
 <form action="customer-loan-service-management" method="post" id="editLoan-${param.id}">
     <div class="modal fade" id="editModal${param.id}" tabindex="-1" aria-labelledby="editModalLabel${param.id}" aria-hidden="true">
         <input name="updateId" type="hidden" value="${param.id}" />
+        <input name="customerId" type="hidden" value="${param.customerId}" />
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
 

@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class Customer {
+
     private int id;
     private String username;
     private String password;
@@ -22,10 +23,10 @@ public class Customer {
     private BigDecimal wallet;
     private boolean isAutoProfitEnabled;
 
-    public Customer(int id, String username, String password, String image, String email, String firstname, 
-                    String lastname, String gender, LocalDate dob, String phone, 
-                    String Address, int failAttempt, LocalDateTime locktime, BigDecimal wallet, 
-                    boolean isAutoProfitEnabled) {
+    public Customer(int id, String username, String password, String image, String email, String firstname,
+            String lastname, String gender, LocalDate dob, String phone,
+            String Address, int failAttempt, LocalDateTime locktime, BigDecimal wallet,
+            boolean isAutoProfitEnabled) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -47,8 +48,8 @@ public class Customer {
     }
 
     // Constructor cũ (không có isAutoProfitEnabled)
-    public Customer(int id, String image, String email, String firstname, String lastname, String gender, 
-                    LocalDate dob, String phone, String Address) {
+    public Customer(int id, String image, String email, String firstname, String lastname, String gender,
+            LocalDate dob, String phone, String Address) {
         this.id = id;
         this.image = image;
         this.email = email;
@@ -60,8 +61,8 @@ public class Customer {
         this.Address = Address;
     }
 
-    public Customer(String username, String password, String email, String firstname, String lastname, 
-                    String gender, LocalDate dob, String phone, String Address) {
+    public Customer(String username, String password, String email, String firstname, String lastname,
+            String gender, LocalDate dob, String phone, String Address) {
         this.username = username;
         this.password = password;
         this.email = email;
@@ -74,9 +75,9 @@ public class Customer {
         this.wallet = BigDecimal.valueOf(50000.00);
     }
 
-    public Customer(int id, String username, String password, String image, String email, String firstname, 
-                    String lastname, String gender, LocalDate dob, String phone, String Address, 
-                    int failAttempt, LocalDateTime locktime, BigDecimal wallet) {
+    public Customer(int id, String username, String password, String image, String email, String firstname,
+            String lastname, String gender, LocalDate dob, String phone, String Address,
+            int failAttempt, LocalDateTime locktime, BigDecimal wallet) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -93,8 +94,8 @@ public class Customer {
         this.wallet = wallet;
     }
 
-    public Customer(String image, String username, String password, String email, String firstname, 
-                    String lastname, String gender, LocalDate dob, String phone, String Address) {
+    public Customer(String image, String username, String password, String email, String firstname,
+            String lastname, String gender, LocalDate dob, String phone, String Address) {
         this.image = image;
         this.username = username;
         this.password = password;
@@ -114,6 +115,7 @@ public class Customer {
         this.wallet = wallet;
         this.isAutoProfitEnabled = isAutoProfitEnabled;
     }
+       
 
     // Getter và Setter cho isAutoProfitEnabled
     public boolean isAutoProfitEnabled() {
@@ -181,7 +183,7 @@ public class Customer {
     }
 
     public String getFullname() {
-        return fullname;
+        return lastname + " " + firstname;
     }
 
     public void setFullname(String fullname) {

@@ -248,6 +248,7 @@
                                                         </div>
                                                         <jsp:include page="template/editVerifyIdentityCustomer.jsp">
                                                             <jsp:param name="id" value="${identity.id}"/>
+                                                            <jsp:param name="customerId" value="${identity.cusId.id}"/>
                                                             <jsp:param name="identityCardFrontSide" value="${identity.identityCardFrontSide}"/>
                                                             <jsp:param name="identityCardBackSide" value="${identity.identityCardBackSide}" />
                                                             <jsp:param name="identityCardNumber" value="${identity.identityCardNumber}" />

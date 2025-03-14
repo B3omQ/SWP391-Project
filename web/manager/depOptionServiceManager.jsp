@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en">
 
@@ -252,20 +253,19 @@
                                     <c:forEach var="dep" items="${depOptionServiceList}" varStatus="status">
                                         <div class="col-md-6 mb-4">
                                             <div class="card bubble wow fadeInUp" data-id="${dep.id}" data-wow-delay="${status.index * 0.1}s">
-                                                <div class="card-body position-relative" >
-                                                    <!-- Biểu tượng xóa -->
+                                                <div class="card-body position-relative">
                                                     <c:if test="${dep.pendingStatus != 'Approved'}">
                                                         <i class="fas fa-trash delete-icon" style="position: absolute; top: 10px; right: 10px; cursor: pointer;"></i>
                                                     </c:if>
                                                     <div class="row align-items-center">
                                                         <div class="col-4 text-center" style="border-right: 2px solid rgba(0, 0, 0, 0.1); ">
-                                                            <a class="" style="font-size: 4rem; font-weight: bold; color: black"> ${dep.duringTime}</a>
+                                                            <a class="" style="font-size: 4rem; font-weight: bold; color: black">${dep.duringTime}</a>
                                                             <p class="text-muted">tháng</p>
                                                         </div>
                                                         <div class="col-8" style="text-align: right">
-                                                            <p><strong>Số tiền tối thiểu (VNĐ):</strong> ${dep.minimumDep}</p>
+                                                            <p><strong>Số tiền tối thiểu (VNĐ):</strong> <fmt:formatNumber value="${dep.minimumDep}" type="number" groupingUsed="true" /></p>
                                                             <p><strong>Lãi suất thấp nhất:</strong> ${dep.savingRateMinimum}%</p>
-                                                            <p><strong>Lãi suất:</strong> ${dep.savingRate}%</p> 
+                                                            <p><strong>Lãi suất:</strong>${dep.savingRate}%</p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -274,7 +274,7 @@
                                     </c:forEach>
                                 </c:otherwise>
                             </c:choose>
-                        </div>                        
+                        </div>                
                     </div>
                 </div>
                 <!-- Footer Start -->

@@ -11,8 +11,9 @@ import java.math.BigDecimal;
  * @author JIGGER
  */
 public class DepService {
-    
+
     private int id;
+    private String depServiceName;
     private String description;
     private BigDecimal minimumDep;
     private int duringTime;
@@ -21,7 +22,7 @@ public class DepService {
     private String pendingStatus;
 
     public DepService() {
-        
+
     }
 
     public DepService(int id, String description, BigDecimal minimumDep, int duringTime, double savingRate) {
@@ -31,19 +32,25 @@ public class DepService {
         this.duringTime = duringTime;
         this.savingRate = savingRate;
     }
-    
-    
 
-
-    public DepService(int id, String description, BigDecimal minimumDep, int duringTime, double savingRate, double savingRateMinimum, String pendingStatus) {
+    public DepService(int id, String depServiceName, String description, BigDecimal minimumDep, int duringTime, double savingRate, double savingRateMinimum, String pendingStatus) {
         this.id = id;
+        this.depServiceName = depServiceName;
         this.description = description;
         this.minimumDep = minimumDep;
         this.duringTime = duringTime;
         this.savingRate = savingRate;
         this.savingRateMinimum = savingRateMinimum;
         this.pendingStatus = pendingStatus;
+    }
 
+
+    public String getDepServiceName() {
+        return depServiceName;
+    }
+
+    public void setDepServiceName(String depServiceName) {
+        this.depServiceName = depServiceName;
     }
 
     public int getId() {
@@ -104,9 +111,7 @@ public class DepService {
 
     @Override
     public String toString() {
-        return "DepService{" + "id=" + id + ", description=" + description + ", minimumDep=" + minimumDep + ", duringTime=" + duringTime + ", savingRate=" + savingRate + ", savingRateMinimum=" + savingRateMinimum + ", pendingStatus=" + pendingStatus + '}';
+        return "DepService{" + "id=" + id + ", depServiceName=" + depServiceName + ", description=" + description + ", minimumDep=" + minimumDep + ", duringTime=" + duringTime + ", savingRate=" + savingRate + ", savingRateMinimum=" + savingRateMinimum + ", pendingStatus=" + pendingStatus + '}';
     }
 
-    
-    
 }

@@ -97,8 +97,8 @@
                                         <option value="Denied" ${currentStatus == 'Denied' ? 'selected' : ''}>Từ chối</option>
                                         <option value="Approved" ${currentStatus == 'Approved' ? 'selected' : ''}>Phê duyệt</option>
                                     </select>
-                                    <a href="?page=1&phoneSearch=&pendingStatus=&recordsPerPage=${currentRecords}" class="btn border-custome me-2">Đặt lại</a>
-                                    <button class="btn btn-danger" type="submit">Tìm kiếm</button>
+                                    <a href="?page=1&phoneSearch=&pendingStatus=&recordsPerPage=${currentRecords}" class="btn border-custome me-2">Reset</a>
+                                    <button class="btn btn-danger" type="submit">Tìm</button>
                                 </form>
                             </div>
                         </div>
@@ -179,6 +179,7 @@
                                         <th>Id</th>
                                         <th>Ảnh đại diện</th>
                                         <th>Họ và tên</th>
+                                        <th>Giới tính</th>
                                         <th>Số điện thoại</th>
                                         <th>trạng thái</th>
                                         <th>Thông tin chi tiết</th>
@@ -194,6 +195,7 @@
                                                 </div>
                                             </td>
                                             <td>${loan.cusId.fullname}</td>
+                                            <td>${loan.cusId.gender}</td>
                                             <td style="max-width: 100px;">${loan.cusId.phone}</td>
                                             <td style="max-width: 100px;">${loan.loanStatus}</td>
                                             <td class="text-center align-middle">
@@ -207,6 +209,7 @@
                                                 </div>
                                                 <jsp:include page="template/editApprovalCustomerLoanService.jsp">
                                                     <jsp:param name="id" value="${loan.id}"/>
+                                                    <jsp:param name="customerId" value="${loan.cusId.id}"/>
                                                     <jsp:param name="customerFullname" value="${loan.cusId.fullname}"/>
                                                     <jsp:param name="customerDateOfBirth" value="${loan.cusId.dob}"/>
                                                     <jsp:param name="customerIncomeVertification" value="${loan.incomeVertification}"/>
