@@ -4,8 +4,10 @@
  */
 package controller.manager;
 
+import controller.sendNotificationEmail;
 import dal.CustomerDAO;
 import dal.LoanServiceUsedDAO;
+import dal.NotifyDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -91,10 +93,25 @@ public class CustomerLoanServiceManagement extends HttpServlet {
         String delete = request.getParameter("deleteId");
         String status = request.getParameter("status");
         LoanServiceUsedDAO ldao = new LoanServiceUsedDAO();
+        NotifyDAO ndao = new NotifyDAO();
+        sendNotificationEmail sendEmail = new sendNotificationEmail();
+        CustomerDAO cdao = new CustomerDAO();
         if (update != null) {
             try {
                 int loanId = Integer.parseInt(update);
-                ldao.updateLoanServiceUsedStatus(loanId, status);
+                int customerId = Integer.parseInt(request.getParameter("customerId"));
+                if ("Approved".equalsIgnoreCase(status)) {
+                    String description = "Quản trị viên đã ghi nhận thông tin gói vay của bạn, vui lòng chờ phản hồi mới nhất của chúng tôi";
+                    sendEmail.sendNotify(cdao.getCustomerById(customerId).getEmail(), description, cdao.getCustomerById(customerId).getFirstname());
+                    ndao.insertNotificationForCustomer(customerId, description, 3);
+                    ldao.updateLoanServiceUsedStatus(loanId, status);
+                }
+                if ("Denied".equalsIgnoreCase(status)) {
+                    String description = "Quản trị viên đã từ chối thông tin gói vay của bạn, vui lòng kiểm tra lại thông tin giấy tờ theo đúng quy chuẩn";
+                    sendEmail.sendNotify(cdao.getCustomerById(customerId).getEmail(), description, cdao.getCustomerById(customerId).getFirstname());
+                    ndao.insertNotificationForCustomer(customerId, description, 3);
+                    ldao.updateLoanServiceUsedStatus(loanId, status);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -102,8 +119,9 @@ public class CustomerLoanServiceManagement extends HttpServlet {
         if (delete != null) {
             try {
                 int deleteId = Integer.parseInt("delete");
-                
+
             } catch (Exception e) {
+
             }
         }
         doGet(request, response);

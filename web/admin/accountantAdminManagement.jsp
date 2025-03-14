@@ -172,8 +172,8 @@
                             }
                             .profile-image {
                                 border-radius: 10%;
-                                width: 150px;
-                                height: 150px;
+                                width: 250px;
+                                height: auto;
                             }
                             .profile-info {
                                 padding: 20px;

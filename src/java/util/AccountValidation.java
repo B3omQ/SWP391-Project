@@ -124,4 +124,13 @@ public class AccountValidation {
         return password.toString();
     }
 
+    public static boolean isPositiveInteger(String str) {
+        try {
+            int num = Integer.parseInt(str);
+            return num > 0;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
 }

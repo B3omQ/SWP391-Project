@@ -55,6 +55,7 @@ public class AddSavingOption extends HttpServlet {
             JSONObject json = new JSONObject();
 
             try {
+                String depName = request.getParameter("depName");
                 String description = request.getParameter("description");
                 String minimumDepStr = request.getParameter("minimumDep");
                 String duringTimeStr = request.getParameter("duringTime");
@@ -72,7 +73,7 @@ public class AddSavingOption extends HttpServlet {
                     json.put("success", false);
                     json.put("message", "All numeric values must be greater than 0");
                 } else {
-                    depdao.createDepService(description, minimumDep, duringTime, savingRate, savingRateMinimum);
+                    depdao.createDepService(depName, description, minimumDep, duringTime, savingRate, savingRateMinimum);
                     json.put("success", true);
                 }
 

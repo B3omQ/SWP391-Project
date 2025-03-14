@@ -190,6 +190,15 @@
                                 <div class="row g-4">
                                     <div class="col-md-6">
                                         <div class="kofi-input-group">
+                                            <label for="depName">
+                                                <i class="fas fa-comment-dots text-success"></i> Tên gói
+                                            </label>
+                                            <input type="text" id="depName" name="depName" 
+                                                   class="kofi-input" placeholder="Nhập tên gói" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="kofi-input-group">
                                             <label for="minimumDep">
                                                 <i class="fas fa-dollar-sign text-success"></i> Số tiền gửi tối thiểu
                                             </label>
@@ -329,6 +338,7 @@
                     e.preventDefault();
 
                     let formData = {
+                        depName: $('#depName').val(),
                         description: $('#description').val(),
                         minimumDep: $('#minimumDep').val(),
                         duringTime: $('#duringTime').val(),
