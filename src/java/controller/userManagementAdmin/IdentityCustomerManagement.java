@@ -4,7 +4,10 @@
  */
 package controller.userManagementAdmin;
 
+import controller.sendNotificationEmail;
+import dal.CustomerDAO;
 import dal.IdentityDAO;
+import dal.NotifyDAO;
 
 import java.io.IOException;
 
@@ -97,20 +100,31 @@ public class IdentityCustomerManagement extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         JSONObject json = new JSONObject();
         String updateId = request.getParameter("updateId");
+        String customerId = request.getParameter("customerId");
         IdentityDAO idao = new IdentityDAO();        
+        NotifyDAO ndao = new NotifyDAO();
+        sendNotificationEmail sendEmail = new sendNotificationEmail();
+        CustomerDAO cdao = new CustomerDAO();
         if (updateId != null) {
             try {
                 int id = Integer.parseInt(updateId);
+                int cusId = Integer.parseInt(customerId);
                 String reasonReject = request.getParameter("reasonReject");
                 String status = request.getParameter("status");
 
                 if ("Approved".equals(status)) {
+                    String description = "Quản trị viên đã phê duyệt thành công xác minh định danh tài khoản của bạn";
+                    sendEmail.sendNotify(cdao.getCustomerById(cusId).getEmail(), description, cdao.getCustomerById(cusId).getFirstname());
+                    ndao.insertNotificationForCustomer(cusId, description, 1);
                     idao.updateStatus(id, status);
                     response.sendRedirect("identity-customer-management?notify=success");
                     return;
                 }
 
                 if ("Denied".equals(status)) {
+                    String description = "Xác minh định danh tài khoản của bạn đã bị từ chối";
+                    sendEmail.sendNotify(cdao.getCustomerById(cusId).getEmail(), description, cdao.getCustomerById(cusId).getFirstname());
+                    ndao.insertNotificationForCustomer(cusId, description, 1);
                     idao.updateVerifyIdentityInformation(id, reasonReject, status);
                     response.sendRedirect("identity-customer-management?notify=success");
                     return;

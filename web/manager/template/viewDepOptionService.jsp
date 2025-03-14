@@ -67,10 +67,12 @@
     <body>
         <div class="container">
             <img src="https://www.saokim.com.vn/wp-content/uploads/2023/01/Bieu-Tuong-Logo-Ngan-Hang-Techcombank.png" alt="Techcombank Logo" class="logo">
-            <h1 class="title">Deposit Option Information</h1>
-            <div class="description">
-                ${deposite.description}
-            </div>
+            <h1 class="title">${deposite.depServiceName}</h1>
+            <div class="row">
+                <div class="description">
+                    ${deposite.description}
+                </div>                
+            </div>            
         </div>
     </body>
 </html>

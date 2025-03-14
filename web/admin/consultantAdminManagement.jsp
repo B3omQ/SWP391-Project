@@ -171,8 +171,8 @@
                             }
                             .profile-image {
                                 border-radius: 10%;
-                                width: 150px;
-                                height: 150px;
+                                width: 250px;
+                                height: auto;
                             }
                             .profile-info {
                                 padding: 20px;
@@ -414,107 +414,107 @@
 
         <script src ="resources/script/jquery-3.7.1.min.js"></script>
         <script>
-                                        document.addEventListener("DOMContentLoaded", function () {
-                                            tippy('#entries', {
-                                                content: "Entries",
-                                                animation: 'fade',
-                                                duration: [300, 300],
-                                                placement: 'top',
-                                                theme: 'light-border'
-                                            });
+            document.addEventListener("DOMContentLoaded", function () {
+                tippy('#entries', {
+                    content: "Entries",
+                    animation: 'fade',
+                    duration: [300, 300],
+                    placement: 'top',
+                    theme: 'light-border'
+                });
 
-                                            tippy('#newImg', {
-                                                content: "Only accept file jpg, jpeg, png, gif and size smaller than 5mbs",
-                                                animation: 'fade',
-                                                duration: [300, 300],
-                                                placement: 'top',
-                                                theme: 'light-border'
-                                            });
+                tippy('#newImg', {
+                    content: "Only accept file jpg, jpeg, png, gif and size smaller than 5mbs",
+                    animation: 'fade',
+                    duration: [300, 300],
+                    placement: 'top',
+                    theme: 'light-border'
+                });
 
-                                            tippy('#newPhone', {
-                                                content: "Phone must be 10 - 11 digits number",
-                                                animation: 'fade',
-                                                duration: [300, 300],
-                                                placement: 'top',
-                                                theme: 'light-border'
-                                            });
-                                        });
+                tippy('#newPhone', {
+                    content: "Phone must be 10 - 11 digits number",
+                    animation: 'fade',
+                    duration: [300, 300],
+                    placement: 'top',
+                    theme: 'light-border'
+                });
+            });
 
-                                        function validatePhoneSearch() {
-                                            var phoneInput = document.getElementById("phoneSearch");
-                                            var phoneValue = phoneInput.value.trim();
-                                            var phonePattern = /^\d{10,11}$/; // Chỉ chứa 10-11 số
+            function validatePhoneSearch() {
+                var phoneInput = document.getElementById("phoneSearch");
+                var phoneValue = phoneInput.value.trim();
+                var phonePattern = /^\d{10,11}$/; // Chỉ chứa 10-11 số
 
-                                            if (!phonePattern.test(phoneValue)) {
-                                                showErrorMessage("Error", "Invalid phone number")
-                                                phoneInput.focus();
-                                                return false;
-                                            }
-                                            return true;
-                                        }
+                if (!phonePattern.test(phoneValue)) {
+                    showErrorMessage("Error", "Invalid phone number")
+                    phoneInput.focus();
+                    return false;
+                }
+                return true;
+            }
 
-                                        document.getElementById("search").addEventListener("submit", function (event) {
-                                            if (!validatePhoneSearch()) {
-                                                event.preventDefault(); // Ngăn chặn form submit nếu không hợp lệ
-                                            }
-                                        });
+            document.getElementById("search").addEventListener("submit", function (event) {
+                if (!validatePhoneSearch()) {
+                    event.preventDefault(); // Ngăn chặn form submit nếu không hợp lệ
+                }
+            });
 
-                                        $(document).ready(function () {
-                                            showToastrAfterReload();
+            $(document).ready(function () {
+                showToastrAfterReload();
 
-                                            $('form[id^="deleteConsultant-"]').on('submit', function (event) {
-                                                event.preventDefault();
+                $('form[id^="deleteConsultant-"]').on('submit', function (event) {
+                    event.preventDefault();
 
-                                                let form = $(this);
-                                                let consultantId = form.find('input[name="deleteId"]').val();
+                    let form = $(this);
+                    let consultantId = form.find('input[name="deleteId"]').val();
 
-                                                if (confirm("Are you sure you want to delete this customer?")) {
-                                                    $.ajax({
-                                                        url: 'consultant-admin-management',
-                                                        type: 'POST',
-                                                        data: {deleteId: consultantId},
-                                                        success: function (response) {
-                                                            if (response.success) {
-                                                                reloadWithMessage("success", "Success", "Deleted!");
-                                                            } else {
-                                                                showErrorMessage("Error", "Something wrong here");
-                                                            }
-                                                        },
-                                                        error: function () {
-                                                            showErrorMessage("Error", "Server is busy right now. Please try again later.");
-                                                        }
-                                                    });
-                                                }
-                                            });
+                    if (confirm("Are you sure you want to delete this customer?")) {
+                        $.ajax({
+                            url: 'consultant-admin-management',
+                            type: 'POST',
+                            data: {deleteId: consultantId},
+                            success: function (response) {
+                                if (response.success) {
+                                    reloadWithMessage("success", "Success", "Deleted!");
+                                } else {
+                                    showErrorMessage("Error", "Something wrong here");
+                                }
+                            },
+                            error: function () {
+                                showErrorMessage("Error", "Server is busy right now. Please try again later.");
+                            }
+                        });
+                    }
+                });
 
-                                            $('form[id^="editConsultant-"]').on('submit', function (event) {
-                                                event.preventDefault(); // Chặn form submit mặc định
+                $('form[id^="editConsultant-"]').on('submit', function (event) {
+                    event.preventDefault(); // Chặn form submit mặc định
 
-                                                let form = $(this);
-                                                let consultantId = form.find('input[name="updateId"]').val(); // Lấy ID từ input hidden
-                                                let formData = new FormData(this); // Lấy dữ liệu form (bao gồm file)
+                    let form = $(this);
+                    let consultantId = form.find('input[name="updateId"]').val(); // Lấy ID từ input hidden
+                    let formData = new FormData(this); // Lấy dữ liệu form (bao gồm file)
 
-                                                if (confirm("Are you sure you want to update this customer?")) {
-                                                    $.ajax({
-                                                        url: form.attr('action'), // Lấy URL action từ form
-                                                        type: form.attr('method'), // Lấy method từ form
-                                                        data: formData,
-                                                        processData: false, // Không xử lý dữ liệu (FormData sẽ làm việc này)
-                                                        contentType: false, // Để browser tự động chọn content type
-                                                        success: function (response) {
-                                                            if (response.success) {
-                                                                reloadWithMessage("success", "Success", "Edit successful");
-                                                            } else {
-                                                                showErrorMessage("Error", response.message);
-                                                            }
-                                                        },
-                                                        error: function () {
-                                                            showErrorMessage("Error", "Server is busy right now. Please try again later.");
-                                                        }
-                                                    });
-                                                }
-                                            });
-                                        });
+                    if (confirm("Are you sure you want to update this customer?")) {
+                        $.ajax({
+                            url: form.attr('action'), // Lấy URL action từ form
+                            type: form.attr('method'), // Lấy method từ form
+                            data: formData,
+                            processData: false, // Không xử lý dữ liệu (FormData sẽ làm việc này)
+                            contentType: false, // Để browser tự động chọn content type
+                            success: function (response) {
+                                if (response.success) {
+                                    reloadWithMessage("success", "Success", "Edit successful");
+                                } else {
+                                    showErrorMessage("Error", response.message);
+                                }
+                            },
+                            error: function () {
+                                showErrorMessage("Error", "Server is busy right now. Please try again later.");
+                            }
+                        });
+                    }
+                });
+            });
         </script>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
