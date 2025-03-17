@@ -23,7 +23,7 @@ public class DepServiceDAO extends DBContext {
         List<DepService> list = new ArrayList<>();
 
         String sql = """
-                      SELECT Id, Description, MinimumDep, DuringTime, SavingRate, SavingRateMinimum, PendingStatus
+                     SELECT Id, DepServiceName, Description, MinimumDep, DuringTime, SavingRate, SavingRateMinimum, PendingStatus
                      FROM BankingSystem.dbo.DepService""";
 
         try (PreparedStatement st = connection.prepareStatement(sql)) {
@@ -31,6 +31,7 @@ public class DepServiceDAO extends DBContext {
                 while (rs.next()) {
                     DepService depService = new DepService(
                             rs.getInt("Id"),
+                            rs.getString("DepServiceName"),
                             rs.getString("Description"),
                             rs.getBigDecimal("MinimumDep"),
                             rs.getInt("DuringTime"),
@@ -52,6 +53,7 @@ public class DepServiceDAO extends DBContext {
     public static void main(String[] args) {
         DepServiceDAO d = new DepServiceDAO();
         List<DepService> list = d.getAllDepServiceByStatus("Pending", "DuringTime", "ASC");
+        d.createDepService("AAA", "AAAA", BigDecimal.valueOf(123), 123, 1.2, 2.3);
         for (DepService o : list) {
             System.out.println(o);
         }
@@ -61,7 +63,7 @@ public class DepServiceDAO extends DBContext {
         List<DepService> list = new ArrayList<>();
 
         String sql = """
-         SELECT Id, Description, MinimumDep, DuringTime, SavingRate, SavingRateMinimum, PendingStatus
+         SELECT Id, DepServiceName, Description, MinimumDep, DuringTime, SavingRate, SavingRateMinimum, PendingStatus
          FROM BankingSystem.dbo.DepService
          WHERE PendingStatus = ?""";
         
@@ -77,6 +79,7 @@ public class DepServiceDAO extends DBContext {
                 while (rs.next()) {
                     DepService depService = new DepService(
                             rs.getInt("Id"),
+                            rs.getString("DepServiceName"),
                             rs.getString("Description"),
                             rs.getBigDecimal("MinimumDep"),
                             rs.getInt("DuringTime"),
@@ -117,6 +120,7 @@ public class DepServiceDAO extends DBContext {
                 while (rs.next()) {
                     return new DepService(
                             rs.getInt("Id"),
+                            rs.getString("DepServiceName"),
                             rs.getString("Description"),
                             rs.getBigDecimal("MinimumDep"),
                             rs.getInt("DuringTime"),
@@ -131,18 +135,19 @@ public class DepServiceDAO extends DBContext {
         return null;
     }
 
-    public void createDepService(String description, BigDecimal minimumDep, int duringTime, double savingRate, double savingRateMinimum) {
+    public void createDepService(String depname, String description, BigDecimal minimumDep, int duringTime, double savingRate, double savingRateMinimum) {
         String sql = """
                      INSERT INTO BankingSystem.dbo.DepService
-                     (Description, MinimumDep, DuringTime, SavingRate, SavingRateMinimum)
-                     VALUES(?, ?, ?, ?, ?); """;
+                     (DepServiceName, Description, MinimumDep, DuringTime, SavingRate, SavingRateMinimum)
+                     VALUES(?, ?, ?, ?, ?, ?); """;
         try {
             PreparedStatement st = connection.prepareStatement(sql);
-            st.setString(1, description);
-            st.setBigDecimal(2, minimumDep);
-            st.setInt(3, duringTime);
-            st.setDouble(4, savingRate);
-            st.setDouble(5, savingRateMinimum);
+            st.setString(1, depname);
+            st.setString(2, description);
+            st.setBigDecimal(3, minimumDep);
+            st.setInt(4, duringTime);
+            st.setDouble(5, savingRate);
+            st.setDouble(6, savingRateMinimum);
             int rowsInserted = st.executeUpdate();
             if (rowsInserted > 0) {
                 System.out.println("Inserted successfully!");

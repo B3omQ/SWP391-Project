@@ -8,18 +8,12 @@ import dal.CustomerDAO;
 import dal.DepServiceUsedDAO;
 import dal.DepHistoryDAO;
 import model.Customer;
-import model.DepServiceUsed;
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.List;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import controller.calculation.InterestCalculator;
 import java.io.PrintWriter;
 import model.Staff;
 

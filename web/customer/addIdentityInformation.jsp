@@ -321,7 +321,7 @@
                                                         }
 
                                                         $(document).ready(function () {
-                                                            
+
                                                             $('#identityForm').submit(function (e) {
                                                                 e.preventDefault();
                                                                 const formData = new FormData(this);
