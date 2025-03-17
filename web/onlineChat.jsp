@@ -139,8 +139,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
 
             /* Tin nhắn của người nhận hiển thị bên trái, màu xám nhạt */
             #messages div:nth-child(even) {
-                background-color: #e0e0e0; /* Màu xám nhạt */
-                color: #333333; /* Màu chữ đen đậm */
+                background-color: #d32f2f; /* Màu xám nhạt */
+                color: white; /* Màu chữ đen đậm */
                 margin-left: 0;
                 margin-right: auto;
             }
@@ -381,7 +381,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                 </div>
                 <div class="header-controls">
                     <c:choose>
-                        <c:when test="${sessionScope.sustomer == null && sessionScope.staff == null}">
+                        <c:when test="${sessionScope.account == null && sessionScope.staff == null}">
                             <button class="header-button" onclick="location.href = '${pageContext.request.contextPath}/auth/template/login.jsp'">Đăng nhập</button>
                         </c:when>
                         <c:otherwise>

@@ -41,7 +41,9 @@
                     </ul>
                 </div>
             </li>       
-
+            
+            <li><a href="ChatHistoryManagement"><i class="uil uil-user me-2 d-inline-block"></i>Lịch sử chat của consultant</a></li>
+            
             <li><a href="home.jsp"><i class="uil uil-window me-2 d-inline-block"></i>Home page</a></li>
         </ul>
         <!-- sidebar-menu  -->

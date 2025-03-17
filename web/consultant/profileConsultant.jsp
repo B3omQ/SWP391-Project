@@ -89,11 +89,10 @@
                     <div class="card bg-white rounded shadow overflow-hidden mt-4 border-0">
                         <div class="p-5 bg-primary bg-gradient"></div>
                         <div class="avatar-profile d-flex margin-nagative mt-n5 position-relative ps-3">
-                            <img src="../assets/images/doctors/01.jpg"
+                            <img src="${staff.image}"
                                  class="rounded-circle shadow-md avatar avatar-medium" alt="">
                             <div class="mt-4 ms-3 pt-3">
-                                <h5 class="mt-3 mb-1">Dr. Calvin Carlo</h5>
-                                <p class="text-muted mb-0">Orthopedic</p>
+                                <h5 class="mt-3 mb-1">${staff.username}</h5>
                             </div>
                         </div>
 
@@ -102,15 +101,15 @@
                                 <div class="card border-0 rounded-0 p-4">
                                     <ul class="nav nav-pills nav-justified flex-column flex-sm-row rounded shadow overflow-hidden bg-light"
                                         id="pills-tab" role="tablist">
-                                        <li class="nav-item">
+<!--                                        <li class="nav-item">
                                             <a class="nav-link rounded-0 active" id="overview-tab" data-bs-toggle="pill"
                                                href="#pills-overview" role="tab" aria-controls="pills-overview"
                                                aria-selected="false">
                                                 <div class="text-center pt-1 pb-1">
                                                     <h4 class="title fw-normal mb-0">Overview</h4>
                                                 </div>
-                                            </a><!--end nav link-->
-                                        </li><!--end nav item-->
+                                            </a>end nav link
+                                        </li>end nav item
 
                                         <li class="nav-item">
                                             <a class="nav-link rounded-0" id="experience-tab" data-bs-toggle="pill"
@@ -119,8 +118,8 @@
                                                 <div class="text-center pt-1 pb-1">
                                                     <h4 class="title fw-normal mb-0">Experience</h4>
                                                 </div>
-                                            </a><!--end nav link-->
-                                        </li><!--end nav item-->
+                                            </a>end nav link
+                                        </li>end nav item
 
                                         <li class="nav-item">
                                             <a class="nav-link rounded-0" id="review-tab" data-bs-toggle="pill"
@@ -129,8 +128,8 @@
                                                 <div class="text-center pt-1 pb-1">
                                                     <h4 class="title fw-normal mb-0">Reviews</h4>
                                                 </div>
-                                            </a><!--end nav link-->
-                                        </li><!--end nav item-->
+                                            </a>end nav link
+                                        </li>end nav item-->
 
                                         <li class="nav-item">
                                             <a class="nav-link rounded-0" id="timetable-tab" data-bs-toggle="pill"
@@ -748,7 +747,7 @@
                                                             </form>
                                                         </div>
                                                     </div>
-                                                    <div class="rounded shadow mt-4">
+<!--                                                    <div class="rounded shadow mt-4">
                                                         <div class="p-4 border-bottom">
                                                             <h6 class="mb-0">General Notifications :</h6>
                                                         </div>
@@ -764,11 +763,11 @@
                                                                     <div class="mt-4">
                                                                         <button type="submit" class="btn btn-danger">Delete
                                                                             Account</button>
-                                                                    </div><!--end col-->
+                                                                    </div>end col
                                                                 </div>
                                                             </div>
                                                         </form>    
-                                                    </div>
+                                                    </div>-->
                                                 </div><!--end col-->
                                             </div><!--end row-->
                                         </div><!--end teb pane-->
