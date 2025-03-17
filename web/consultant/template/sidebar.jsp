@@ -33,7 +33,6 @@
                 </div>
             </li>
 
-
             <li><a href="home"><i class="uil uil-window me-2 d-inline-block"></i>Home page</a></li>
         </ul>
         <!-- sidebar-menu  -->

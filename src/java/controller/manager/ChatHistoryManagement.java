@@ -38,7 +38,7 @@ public class ChatHistoryManagement extends HttpServlet {
         ChatMessageDAO chatMessageDAO = new ChatMessageDAO();
     CustomerDAO cdao = new CustomerDAO();
 
-    int senderId = -1, receiverId = -1; // Giá trị mặc định nếu không chọn ai
+    int senderId = -1, receiverId = -1;
     try {
         String senderIdParam = request.getParameter("senderId");
         String receiverIdParam = request.getParameter("receiverId");

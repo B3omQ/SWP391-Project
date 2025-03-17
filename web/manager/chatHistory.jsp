@@ -39,8 +39,16 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
         <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
         <title>JSP Page</title>
     </head>
+    <style>
+        .chat-box {
+            background-color: white;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>    
     <body>
         <div id="preloader">
             <div id="status">
@@ -57,35 +65,34 @@
 
             <main class="page-content bg-light">   
                 <jsp:include page="template/header.jsp"/>               
-
                 <div class="container-fluid">                    
                     <div class="layout-specing">
                         <h2 class="text-center">Lịch Sử Cuộc Trò Chuyện</h2>
-                        <form id="chatHistoryForm" action="ChatHistoryManagement" method="GET">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <label for="customerId">Chọn Customer:</label>
-                                    <select id="customerId" name="senderId" class="form-control">
-                                        <c:forEach var="customers" items="${customers}">
-                                            <option value="${customers.id}">${customers.username}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
+                            <form id="chatHistoryForm" action="ChatHistoryManagement" method="GET">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label for="customerId">Chọn Customer:</label>
+                                        <select id="customerId" name="senderId" class="form-control">
+                                            <c:forEach var="customers" items="${customers}">
+                                                <option value="${customers.id}">${customers.username}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
 
-                                <div class="col-md-4">
-                                    <label for="consultantId">Chọn Consultant:</label>
-                                    <select id="consultantId" name="receiverId" class="form-control">
-                                        <c:forEach var="staffs" items="${staffs}">
-                                            <option value="${staffs.id}">${staffs.username}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
+                                    <div class="col-md-4">
+                                        <label for="consultantId">Chọn Consultant:</label>
+                                        <select id="consultantId" name="receiverId" class="form-control">
+                                            <c:forEach var="staffs" items="${staffs}">
+                                                <option value="${staffs.id}">${staffs.username}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
 
-                                <div class="col-md-4">
-                                    <button class="btn btn-primary mt-4" onclick="fetchChatHistory()">Xem lịch sử</button>
+                                    <div class="col-md-4">
+                                        <button class="btn btn-primary mt-4" onclick="fetchChatHistory()">Xem lịch sử</button>
+                                    </div>
                                 </div>
-                            </div>
-                        </form>
+                            </form>
                         <div class="chat-box mt-4">
                             <div id="chatMessages">
                                 <c:forEach var="message" items="${chatHistory}">
