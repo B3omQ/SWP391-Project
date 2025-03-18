@@ -70,16 +70,16 @@ public class AuthServlet extends HttpServlet {
 
                         switch (roleId) {
                             case 1: // Admin
-                                response.sendRedirect("accountant/home.jsp");
+                                response.sendRedirect("home");
                                 break;
                             case 2: // Manager
-                                response.sendRedirect("staff/template/Manager.jsp");
+                                response.sendRedirect("home");
                                 break;
                             case 3: // Employee
-                                response.sendRedirect("staff/template/Employee.jsp");
+                                response.sendRedirect("home");
                                 break;
                             default:
-                                response.sendRedirect("staff/template/Staff.jsp");
+                                response.sendRedirect("home");
                                 break;
                         }
                         return;
