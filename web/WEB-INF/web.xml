@@ -220,6 +220,14 @@
         <servlet-name>ChatHistoryManagement</servlet-name>
         <servlet-class>controller.manager.ChatHistoryManagement</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ChatLogCustomer</servlet-name>
+        <servlet-class>controller.consultant.ChatLogCustomer</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ChatLogConsultant</servlet-name>
+        <servlet-class>controller.customer.ChatLogConsultant</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>HomeServlet</servlet-name>
         <url-pattern>/home</url-pattern>
@@ -495,6 +503,14 @@
     <servlet-mapping>
         <servlet-name>ChatHistoryManagement</servlet-name>
         <url-pattern>/ChatHistoryManagement</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChatLogCustomer</servlet-name>
+        <url-pattern>/ChatLogCustomer</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChatLogConsultant</servlet-name>
+        <url-pattern>/ChatLogConsultant</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>1440</session-timeout>

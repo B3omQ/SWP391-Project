@@ -32,7 +32,11 @@
                     </ul>
                 </div>
             </li>
-
+            
+            <li><a href="ChatLogCustomer"><i class="uil uil-user me-2 d-inline-block"></i>Lịch sử Chat với customer</a></li>
+            
+            <li><a href="CustomerReviewManager"><i class="uil uil-user me-2 d-inline-block"></i>Quản lí review</a></li>  
+            
             <li><a href="home"><i class="uil uil-window me-2 d-inline-block"></i>Home page</a></li>
         </ul>
         <!-- sidebar-menu  -->
