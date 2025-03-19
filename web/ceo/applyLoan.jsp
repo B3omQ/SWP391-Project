@@ -102,7 +102,7 @@
 
         <div class="page-wrapper doctris-theme toggled">
             <jsp:include page="template/sidebar.jsp"/>
-            
+
             <!-- Start Page Content -->
             <main class="page-content bg-light">
                 <c:set value="${sessionScope.staff}" var="staff"/>
@@ -120,7 +120,6 @@
                                 </nav>
                             </div><!--end col-->
                         </div><!--end row-->
-                        Customer: ${account.toString()}
                         <div class="col-xl-8 col-lg-12 col-md-7 mt-4 pt-2 mt-sm-0 pt-sm-0">
                             <div class="rounded shadow mt-4">
                                 <div class="p-4 border-bottom">
@@ -140,20 +139,23 @@
                                     <div class="p-4">
                                         <div class="p-4">
                                             <div class="row">
-                                                
+
                                                 <div class="row align-items-center">
                                                     <label class="form-label">Income Vertification</label>
                                                     <div class="md-5" style="padding-top: 10px">
-                                                        <input type="file" class="form-control-file" name="incomeVertification" accept=".jpg,.png,.jpeg"> 
+                                                        <input type="file" class="form-control-file" name="incomeVertification" accept=".zip"> 
                                                     </div>
                                                 </div><!--end row-->
-                                                
+
                                                 <div class="col-md-12">
                                                     <div class="mb-3">
                                                         <label class="form-label">Nhập số tiền:</label>
-                                                        <input name="amount" type="number" class="form-control" value="">
+                                                        <div class="input-group">
+                                                            <input id="amountInput" name="amount" type="number" class="form-control" min="0" oninput="updateDisplay()" />
+                                                            <span class="input-group-text" id="formattedAmount">0 VND</span>
+                                                        </div>
                                                     </div>
-                                                </div><!--end col-->
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="savings-container">
@@ -253,7 +255,21 @@
                 });
             });
         </script>
+<script>
+function updateDisplay() {
+    let input = document.getElementById("amountInput");
+    let display = document.getElementById("formattedAmount");
 
+    let value = input.value;
+    if (value === "") {
+        display.innerText = "0 VND";
+        return;
+    }
+
+    let formattedValue = new Intl.NumberFormat("vi-VN").format(value);
+    display.innerText = formattedValue + " VND";
+}
+</script>
     </body>
 
 </html>

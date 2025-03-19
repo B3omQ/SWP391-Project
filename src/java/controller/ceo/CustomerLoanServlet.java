@@ -62,6 +62,20 @@ public class CustomerLoanServlet extends HttpServlet {
             throws ServletException, IOException {
        // Lấy ID khách hàng từ session (giả sử đã đăng nhập)
         HttpSession session = request.getSession();
+        String loanStr = request.getParameter("loanStatus");
+        if (loanStr != null) {
+            // Loại bỏ khoảng trắng đầu cuối và thay thế nhiều khoảng trắng bằng 1 khoảng
+            loanStr = loanStr.trim().replaceAll("\\s+", " ");
+        }
+        if (loanStr == null) {
+            loanStr = (String) session.getAttribute("loanStatusSession");
+            if (loanStr == null) {
+                loanStr = "In processing";
+            }
+        } else {
+            session.setAttribute("loanStatusSession", loanStr);
+        }
+        
         int cusID;
         try {
             Customer currentAccount = (Customer) session.getAttribute("account");
@@ -73,10 +87,11 @@ public class CustomerLoanServlet extends HttpServlet {
 
         // Gọi DAO để lấy khoản vay của khách hàng
         CeoDAO dao = new CeoDAO();
-        LoanServiceUsed loan = dao.getLoanByCustomerId(cusID);
+        List<LoanServiceUsed> loan = dao.getLoanByCustomerId(cusID, loanStr);
 
         // Đẩy thông tin khoản vay vào request và chuyển tiếp sang JSP
-        request.setAttribute("loan", loan);
+        request.setAttribute("loans", loan);
+        request.setAttribute("loanStatus", loanStr);
         request.getRequestDispatcher("./ceo/Loan.jsp").forward(request, response);
     }
 

@@ -21,6 +21,10 @@ public class LoanService {
     private BigDecimal minimumLoan;
     private BigDecimal maximumLoan;
     private String pendingStatus;
+    private double afterTermRate;
+    private String reasonReject;
+    private String loanTypeRepay;
+    private int gracePeriod;
 
     public LoanService() {
     }
@@ -37,6 +41,21 @@ public class LoanService {
         this.pendingStatus = pendingStatus;
     }
 
+    public LoanService(int id, String loanServiceName, String description, int duringTime, double onTermRate, double penaltyRate, BigDecimal minimumLoan, BigDecimal maximumLoan, String pendingStatus, double afterTermRate, String reasonReject, String loanTypeRepay, int gracePeriod) {
+        this.id = id;
+        this.loanServiceName = loanServiceName;
+        this.description = description;
+        this.duringTime = duringTime;
+        this.onTermRate = onTermRate;
+        this.penaltyRate = penaltyRate;
+        this.minimumLoan = minimumLoan;
+        this.maximumLoan = maximumLoan;
+        this.pendingStatus = pendingStatus;
+        this.afterTermRate = afterTermRate;
+        this.reasonReject = reasonReject;
+        this.loanTypeRepay = loanTypeRepay;
+        this.gracePeriod = gracePeriod;
+    }
     
 
     public int getId() {
@@ -111,7 +130,37 @@ public class LoanService {
         this.pendingStatus = pendingStatus;
     }
 
+    public double getAfterTermRate() {
+        return afterTermRate;
+    }
 
+    public void setAfterTermRate(double afterTermRate) {
+        this.afterTermRate = afterTermRate;
+    }
+
+    public String getReasonReject() {
+        return reasonReject;
+    }
+
+    public void setReasonReject(String reasonReject) {
+        this.reasonReject = reasonReject;
+    }
+
+    public String getLoanTypeRepay() {
+        return loanTypeRepay;
+    }
+
+    public void setLoanTypeRepay(String loanTypeRepay) {
+        this.loanTypeRepay = loanTypeRepay;
+    }
+
+    public int getGracePeriod() {
+        return gracePeriod;
+    }
+
+    public void setGracePeriod(int gracePeriod) {
+        this.gracePeriod = gracePeriod;
+    }
 
     @Override
     public String toString() {

@@ -180,9 +180,10 @@ public class ApplyLoan extends HttpServlet {
 
         if (imagePart.getSize() > 1024 * 1024 * 5) {
             errorMessages.add("Image must be < 5mb");
-        }
-        if (image != null && !validate.isValidateImage(image)) {
-            errorMessages.add("Image must be .jpg, .jpeg, .png");
+        }       
+        // Kiểm tra file có đúng định dạng ZIP không
+        if (!image.endsWith(".zip")) {
+            errorMessages.add("Only accept zip file");
         }
         if (image == null) {
             errorMessages.add("Missing income vertification");
@@ -206,7 +207,7 @@ public class ApplyLoan extends HttpServlet {
                 Timestamp.valueOf(LocalDateTime.now()),
                 Timestamp.valueOf(LocalDateTime.now().plusDays(loanService.getDuringTime() * 30)),
                 0,
-                InterestCalculator.calculateDebtRepay(loanAmount, loanService.getDuringTime(), new BigDecimal(loanService.getOnTermRate())),
+                loanAmount,
                 image,
                 "Pending");
 

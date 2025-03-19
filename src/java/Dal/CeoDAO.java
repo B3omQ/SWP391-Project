@@ -529,7 +529,7 @@ public class CeoDAO extends DBContext {
         List<DepService> list = new ArrayList<>();
 
         String sql = """
-         SELECT Id, Description, MinimumDep, DuringTime, SavingRate, SavingRateMinimum, PendingStatus
+         SELECT Id, Description, MinimumDep, DuringTime, SavingRate, SavingRateMinimum, PendingStatus, ReasonReject, DepServiceName
          FROM BankingSystem.dbo.DepService
          WHERE PendingStatus = ?""";
         List<Object> params = new ArrayList<>();
@@ -566,7 +566,9 @@ public class CeoDAO extends DBContext {
                             rs.getInt("DuringTime"),
                             rs.getDouble("SavingRate"),
                             rs.getDouble("SavingRateMinimum"),
-                            rs.getString("PendingStatus")
+                            rs.getString("PendingStatus"),
+                            rs.getString("ReasonReject"),
+                            rs.getString("DepServiceName")
                     );
                     list.add(depService);
                 }
@@ -622,6 +624,40 @@ public class CeoDAO extends DBContext {
         }
 
         return total;
+    }
+
+    public LoanService getLoanServiceById(int id) {
+        LoanService loanService = null;
+        String sql = "SELECT Id, LoanServiceName, Description, LoanTypeRepay, DuringTime, GracePeriod, "
+                + "OnTermRate, AfterTermRate, PenaltyRate, MinimumLoan, MaximumLoan, "
+                + "ReasonReject, PendingStatus "
+                + "FROM LoanService WHERE Id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, id);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    loanService = new LoanService(
+                            rs.getInt("Id"),
+                            rs.getString("LoanServiceName"),
+                            rs.getString("Description"),
+                            rs.getInt("DuringTime"),
+                            rs.getDouble("OnTermRate"),
+                            rs.getDouble("PenaltyRate"),
+                            rs.getBigDecimal("MinimumLoan"),
+                            rs.getBigDecimal("MaximumLoan"),
+                            rs.getString("PendingStatus"),
+                            rs.getDouble("AfterTermRate"),
+                            rs.getString("ReasonReject"),
+                            rs.getString("LoanTypeRepay"),
+                            rs.getInt("GracePeriod")
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return loanService;
     }
 
     public List<LoanService> getAllLoanServiceByStatus(String status, String sortBy, String order, String search, int page, int pageSize) {
@@ -708,10 +744,8 @@ public class CeoDAO extends DBContext {
         List<LoanServiceUsed> list = new ArrayList<>();
 
         String sql = """
-         SELECT Id, LoanId, CusId, Amount, StartDate, EndDate, DateExpiredCount, DebtRepayAmount, IncomeVertification, LoanStatus
-         FROM BankingSystem.dbo.LoanServiceUsed
-         WHERE LoanStatus = ?
-         """;
+            SELECT Id FROM BankingSystem.dbo.LoanServiceUsed WHERE LoanStatus = ?
+        """;
 
         List<Object> params = new ArrayList<>();
 
@@ -745,26 +779,7 @@ public class CeoDAO extends DBContext {
 
             try (ResultSet rs = st.executeQuery()) {
                 while (rs.next()) {
-                    LoanServiceUsed loanUsed = new LoanServiceUsed();
-                    loanUsed.setId(rs.getInt("Id"));
-
-                    // Khởi tạo đối tượng LoanService từ cột LoanId
-                    LoanService loan = new LoanService();
-                    loan.setId(rs.getInt("LoanId"));
-                    loanUsed.setLoanId(loan);
-
-                    // Khởi tạo đối tượng Customer từ cột CusId
-                    Customer customer = new Customer();
-                    customer.setId(rs.getInt("CusId"));
-                    loanUsed.setCusId(customer);
-
-                    loanUsed.setAmount(rs.getBigDecimal("Amount"));
-                    loanUsed.setStartDate(rs.getTimestamp("StartDate"));
-                    loanUsed.setEndDate(rs.getTimestamp("EndDate"));
-                    loanUsed.setDateExpiredCount(rs.getInt("DateExpiredCount"));
-                    loanUsed.setDebtRepayAmount(rs.getBigDecimal("DebtRepayAmount"));
-                    loanUsed.setIncomeVertification(rs.getString("IncomeVertification"));
-                    loanUsed.setLoanStatus(rs.getString("LoanStatus"));
+                    LoanServiceUsed loanUsed = getLoanServiceUsedById(rs.getInt("Id"));
 
                     list.add(loanUsed);
                 }
@@ -776,42 +791,23 @@ public class CeoDAO extends DBContext {
         return list;
     }
 
-    public LoanServiceUsed getLoanByCustomerId(int cusId) {
-        LoanServiceUsed loan = null;
-        String sql = """
-            SELECT Id, LoanId, CusId, Amount, StartDate, EndDate, DateExpiredCount, 
-                   DebtRepayAmount, IncomeVertification, LoanStatus
-            FROM LoanServiceUsed WHERE CusId = ? AND LoanStatus = 'Done'""";
+    public List<LoanServiceUsed> getLoanByCustomerId(int cusId, String loanStatus) {
+        List<LoanServiceUsed> loanList = new ArrayList<>();
+
+        String sql = "SELECT Id FROM LoanServiceUsed WHERE CusId = ? AND LoanStatus = ?";
 
         try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setInt(1, cusId);
+            st.setString(2, loanStatus);
             try (ResultSet rs = st.executeQuery()) {
-                if (rs.next()) {
-                    int loanServiceId = rs.getInt("LoanId");
-
-                    // Lấy thông tin LoanService thông qua phương thức khác
-                    LoanService loanService = new LoanServiceDAO().getLoanServiceById(loanServiceId);
-
-                    // Lấy thông tin Customer (giả sử đã có phương thức getCustomerById)
-                    Customer customer = getCustomerById(cusId);
-                    loan = new LoanServiceUsed(
-                            rs.getInt("Id"),
-                            loanService, // Giả sử sẽ lấy thêm LoanService nếu cần
-                            customer, // Giả sử sẽ lấy thêm Customer nếu cần
-                            rs.getBigDecimal("Amount"),
-                            rs.getTimestamp("StartDate"),
-                            rs.getTimestamp("EndDate"),
-                            rs.getInt("DateExpiredCount"),
-                            rs.getBigDecimal("DebtRepayAmount"),
-                            rs.getString("IncomeVertification"),
-                            rs.getString("LoanStatus")
-                    );
+                while (rs.next()) {
+                    loanList.add(getLoanServiceUsedById(rs.getInt("Id")));
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return loan;
+        return loanList;
     }
 
     public LoanServiceUsed getLoanServiceUsedById(int id) {
@@ -819,21 +815,19 @@ public class CeoDAO extends DBContext {
         String sql = "SELECT Id, LoanId, CusId, Amount, StartDate, EndDate, "
                 + "DateExpiredCount, DebtRepayAmount, IncomeVertification, LoanStatus "
                 + "FROM LoanServiceUsed WHERE Id = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
 
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, id);
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    // Lấy các giá trị từ ResultSet
-                    int loanServiceId = rs.getInt("LoanId");
-                    int cusIdInt = rs.getInt("CusId");
+                    // Lấy thông tin LoanService từ LoanServiceDAO
+                    LoanService loanService = new CeoDAO().getLoanServiceById(rs.getInt("LoanId"));
 
-                    // Lấy thông tin LoanService và Customer thông qua các hàm hỗ trợ
-                    LoanService loanService = new LoanServiceDAO().getLoanServiceById(loanServiceId);
-                    Customer customer = getCustomerById(cusIdInt);
+                    // Lấy thông tin khách hàng
+                    Customer customer = getCustomerById(rs.getInt("CusId"));
 
-                    // Tạo đối tượng LoanServiceUsed và gán giá trị
+                    // Tạo đối tượng LoanServiceUsed
                     lsu = new LoanServiceUsed();
                     lsu.setId(rs.getInt("Id"));
                     lsu.setLoanId(loanService);
@@ -853,69 +847,53 @@ public class CeoDAO extends DBContext {
         return lsu;
     }
 
-    public boolean insertPayment(int lsuId, BigDecimal paymentAmount) {
-        String sql = "INSERT INTO LoanPayment (LSUId, PaymentAmount) VALUES (?, ?)";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, lsuId);
-            ps.setBigDecimal(2, paymentAmount);
-            int rows = ps.executeUpdate();
-            return rows > 0;
+    public boolean customerPayLoan(BigDecimal newDebtAmount, int loanId) {
+        String sql = "UPDATE LoanServiceUsed SET DebtRepayAmount = ? WHERE Id = ?";
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setBigDecimal(1, newDebtAmount);
+            st.setInt(2, loanId);
+            st.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+        return true;
     }
 
-    public boolean updateDebtAfterPayment(int loanServiceUsedId, BigDecimal paymentAmount) {
-        boolean isUpdated = false;
+    public void updateLoanStatus(int loanId, String newStatus) {
+        String sql = "UPDATE LoanServiceUsed SET LoanStatus = ? WHERE Id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, newStatus);
+            ps.setInt(2, loanId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
-        // Câu lệnh SQL lấy dư nợ hiện tại
-        String getDebtSql = "SELECT DebtRepayAmount FROM LoanServiceUsed WHERE Id = ?";
+    public void insertPayment(int loanId, BigDecimal paymentAmount) {
+        String sql = "INSERT INTO LoanPayment (LSUId, PaymentAmount) VALUES (?, ?)";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, loanId);
+            ps.setBigDecimal(2, paymentAmount);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
-        // Câu lệnh SQL cập nhật dư nợ mới
-        String updateDebtSql = "UPDATE LoanServiceUsed SET DebtRepayAmount = ?, LoanStatus = ? WHERE Id = ?";
-
-        try (PreparedStatement psSelect = connection.prepareStatement(getDebtSql)) {
-
-            // Thiết lập tham số cho truy vấn lấy dư nợ hiện tại
-            psSelect.setInt(1, loanServiceUsedId);
-
-            try (ResultSet rs = psSelect.executeQuery()) {
-                if (rs.next()) {
-                    // Lấy dư nợ hiện tại từ kết quả truy vấn
-                    BigDecimal currentDebt = rs.getBigDecimal("DebtRepayAmount");
-
-                    // Tính toán dư nợ mới sau khi thanh toán
-                    BigDecimal newDebt = currentDebt.subtract(paymentAmount);
-
-                    // Nếu số dư nợ mới nhỏ hơn 0, đặt về 0
-                    if (newDebt.compareTo(BigDecimal.ZERO) < 0) {
-                        newDebt = BigDecimal.ZERO;
-                    }
-
-                    String newLoanStatus  = getLoanServiceUsedById(loanServiceUsedId).getLoanStatus();
-                    // Xác định trạng thái khoản vay dựa trên số dư nợ mới
-                    if(newDebt.compareTo(BigDecimal.ZERO) == 0) {
-                        newLoanStatus = "Completed";
-                    }
-
-                    try (PreparedStatement psUpdate = connection.prepareStatement(updateDebtSql)) {
-                        // Thiết lập giá trị cho truy vấn cập nhật
-                        psUpdate.setBigDecimal(1, newDebt);
-                        psUpdate.setString(2, newLoanStatus);
-                        psUpdate.setInt(3, loanServiceUsedId);
-
-                        // Thực thi cập nhật và kiểm tra kết quả
-                        int rowsAffected = psUpdate.executeUpdate();
-                        isUpdated = (rowsAffected > 0);
-                    }
-                }
+    public int getNumberOfLoanPaymentByLoanId(int id) {
+        int count = 0;
+        String sql = "SELECT COUNT(*) FROM LoanPayment WHERE LSUId = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt(1);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        return isUpdated;
+        return count;
     }
 
     public static void main(String[] args) {
@@ -929,11 +907,14 @@ public class CeoDAO extends DBContext {
         }
         LoanService loanService = new LoanServiceDAO().getLoanServiceById(2);
         System.out.println(loanService.toString());
+//        c.updateLoanStatus(1, "Done");
+        for(DepService x : c.getAllDepServiceByStatus("Pending", "DuringTime", "ASC", "", 1, 10)) {
+            System.out.println(x.toString());
+        }
 
 //        for (LoanServiceUsed x : c.getAllLoanServiceUsedByStatus("Pending", "DuringTime", "ASC", "", 1, 10)) {
 //            System.out.println(x.toString());
 //        }
-        System.out.println(c.getLoanByCustomerId(1));
 //        LoanServiceUsed loanServiceUsed = new LoanServiceUsed(
 //                0,
 //                loanService,

@@ -5,14 +5,20 @@
 package controller.ceo;
 
 import dal.CeoDAO;
+import dal.CustomerDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import model.LoanServiceUsed;
+import controller.calculation.InterestCalculator;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 /**
  *
@@ -59,9 +65,68 @@ public class CustomerLoanPayment extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         CeoDAO dao = new CeoDAO();
+        HttpSession session = request.getSession();
+        String payType = request.getParameter("payType");
+        if (payType == null || payType.trim().isEmpty()) {
+            payType = (String) session.getAttribute("payTypeSession");
+            if (payType == null) {
+                payType = "Monthly";
+            }
+        } else {
+            session.setAttribute("payTypeSession", payType);
+        }
         String loanServiceUsedId = request.getParameter("loanId");
         LoanServiceUsed loan = dao.getLoanServiceUsedById(Integer.parseInt(loanServiceUsedId));
         request.setAttribute("loan", loan);
+        request.setAttribute("payType", payType);
+        // Tinh tien lai dinh ky 
+        BigDecimal interestAmount = InterestCalculator.calculateMonthlyInterestPayment(loan);
+        request.setAttribute("interestAmount", interestAmount);
+        // Tinh thoi gian thanh toan dinh ky
+        LocalDate startDate = loan.getStartDate().toLocalDateTime().toLocalDate();
+        int debtCount = dao.getNumberOfLoanPaymentByLoanId(loan.getId());
+        LocalDate minLocalDate = startDate.plusMonths(debtCount);
+        LocalDate dueLocalDate = startDate.plusMonths(debtCount + 1);
+        // Chuyển LocalDate thành Timestamp
+        Timestamp minDate = Timestamp.valueOf(minLocalDate.atStartOfDay());
+        Timestamp dueDate = Timestamp.valueOf(dueLocalDate.atStartOfDay());
+        request.setAttribute("minDate", minDate);
+        request.setAttribute("dueDate", dueDate);
+        // No lai trong han
+        BigDecimal overdueInterestDebt = BigDecimal.ZERO;
+        // No lai qua han
+        BigDecimal overduePrincipal = BigDecimal.ZERO;
+        // Ngày hiện tại
+        LocalDate today = LocalDate.now();
+        // Kiểm tra nếu đã quá hạn kỳ này
+        if (today.isAfter(dueLocalDate)) {
+            // Tính nợ lãi quá hạn
+            long overdueDays = ChronoUnit.DAYS.between(dueLocalDate, today);
+            request.setAttribute("overdueDays", overdueDays);
+            overdueInterestDebt = InterestCalculator.calculateOverdueInterestDebt(interestAmount, overdueDays);
+        }
+        LocalDate endDate = loan.getEndDate().toLocalDateTime().toLocalDate();
+        // Kiểm tra nếu đã quá hạn tổng (tức là đã quá hạn cuối cùng của khoản vay)
+        if (today.isAfter(endDate)) {
+            // Số ngày quá hạn tổng
+            long totalOverdueDays = ChronoUnit.DAYS.between(endDate, today);
+            request.setAttribute("totalOverdueDays", totalOverdueDays);
+            // Tính nợ gốc quá hạn
+            overduePrincipal = InterestCalculator.calculateOverduePrincipal(loan, totalOverdueDays);
+        }
+        request.setAttribute("overdueInterestDebt", overdueInterestDebt);
+        request.setAttribute("overduePrincipal", overduePrincipal);
+        // Tong so tien phai tra = tong goc + lai + no lai 
+        BigDecimal paymentAmount = InterestCalculator.calculateTotalPaymentMonthly(loan);
+        if (payType.equalsIgnoreCase("Full")) {
+            int count = 0;
+            if (today.isBefore(dueLocalDate)) {
+                count = loan.getLoanId().getDuringTime() - debtCount;
+            }
+            paymentAmount = InterestCalculator.calculateTotalPayment(loan, count);
+        }
+        paymentAmount = paymentAmount.add(overdueInterestDebt).add(overduePrincipal);
+        request.setAttribute("paymentAmount", paymentAmount);
         request.getRequestDispatcher("./ceo/customerLoanPayment.jsp").forward(request, response);
     }
 
@@ -76,36 +141,56 @@ public class CustomerLoanPayment extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        CeoDAO dao = new CeoDAO();
+        HttpSession session = request.getSession();
         String loanIdStr = request.getParameter("loanId");
         String repayAmountStr = request.getParameter("repayAmount");
+        request.setAttribute("paymentAmount", repayAmountStr);
+        String payType = request.getParameter("pType");
+        LoanServiceUsed loan = dao.getLoanServiceUsedById(Integer.parseInt(loanIdStr));
 
         if (loanIdStr == null || repayAmountStr == null || loanIdStr.isEmpty() || repayAmountStr.isEmpty()) {
-            request.setAttribute("error", "Thông tin không hợp lệ!");
-            
-            doGet(request, response);
+            request.setAttribute("errorMess", "Thông tin không hợp lệ!");
+            request.getRequestDispatcher("./ceo/customerLoanPayment.jsp").forward(request, response);
             return;
         }
-
         try {
-            int loanId = Integer.parseInt(loanIdStr);
             BigDecimal repayAmount = new BigDecimal(repayAmountStr);
-
-            // Gọi DAO để chèn bản ghi thanh toán
-            CeoDAO paymentDAO = new CeoDAO();
-            boolean success = paymentDAO.insertPayment(loanId, repayAmount);
-
-            if (success) {
-                paymentDAO.updateDebtAfterPayment(loanId, repayAmount);
+            BigDecimal customerWallet = loan.getCusId().getWallet();
+            if (customerWallet.compareTo(repayAmount) < 0) {
+                request.setAttribute("errorMess", "Số dư trong ví không đủ thanh toán");
+                request.getRequestDispatcher("./ceo/customerLoanPayment.jsp").forward(request, response);
+                return;
+            }
+            // Thanh toan khoan vay
+            BigDecimal newDebtRepayAmount = InterestCalculator.calculateBaseDebtRemain(loan);
+            if(payType.equalsIgnoreCase("Full")) {
+                newDebtRepayAmount = BigDecimal.ZERO;
+            }
+            boolean isSuccessPayment = dao.customerPayLoan(newDebtRepayAmount, loan.getId());
+            //Cap nhat thong tin khoan vay thanh done neu khach hang tra het 
+            if (dao.getLoanServiceUsedById(loan.getId()).getDebtRepayAmount().compareTo(BigDecimal.ZERO) == 0) {
+                dao.updateLoanStatus(loan.getId(), "Done");
+            }
+            //Cap nhat so du trong vi khach hang
+            CustomerDAO cDAO = new CustomerDAO();
+            cDAO.updateWallet(loan.getCusId().getId(), loan.getCusId().getWallet().subtract(repayAmount));
+            //Ghi lai lich su thanh toan cua khach hang
+            dao.insertPayment(loan.getId(), repayAmount);
+            loan = dao.getLoanServiceUsedById(Integer.parseInt(loanIdStr));
+            request.setAttribute("loan", loan);
+            if (isSuccessPayment) {
                 request.setAttribute("message", "Thanh toán thành công!");
             } else {
-                request.setAttribute("error", "Thanh toán thất bại. Vui lòng thử lại!");
+                request.setAttribute("errorMess", "Thanh toán thất bại. Vui lòng thử lại!");
             }
+            request.getRequestDispatcher("./ceo/paymentResult.jsp").forward(request, response);
         } catch (NumberFormatException ex) {
-            request.setAttribute("error", "Dữ liệu không hợp lệ!");
+            request.setAttribute("errorMess", "Dữ liệu không hợp lệ!");
+            loan = dao.getLoanServiceUsedById(Integer.parseInt(loanIdStr));
+            request.setAttribute("loan", loan);
+            request.getRequestDispatcher("./ceo/customerLoanPayment.jsp").forward(request, response);
         }
-
-        // Chuyển về trang form (hoặc trang kết quả)
-        doGet(request, response);
     }
 
     /**

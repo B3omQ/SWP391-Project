@@ -158,6 +158,7 @@
                                                 <thead class="thead-dark">
                                                     <tr>
                                                         <th>#</th>
+                                                        <th>Name</th>
                                                         <th>MinimumDep</th>
                                                         <th>SavingRateMinimum</th>
                                                         <th>SavingRate</th>
@@ -172,7 +173,7 @@
                                                     <c:forEach var="dep" items="${depOptionServiceList}">
                                                         <tr>
                                                             <td>${dep.id}</td>
-
+                                                            <td>${dep.depServiceName}</td>  
                                                             <td>${dep.minimumDep}</td>  
                                                             <td>${dep.savingRateMinimum}</td>  
                                                             <td>${dep.savingRate}</td>  
