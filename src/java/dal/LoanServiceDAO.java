@@ -26,7 +26,7 @@ public class LoanServiceDAO extends DBContext {
         List<LoanService> list = new ArrayList<>();
 
         String sql = """
-         SELECT Id, LoanServiceName, Description, DuringTime, OnTermRate, PenaltyRate, MinimumLoan, MaximumLoan, PendingStatus
+         SELECT Id, LoanServiceName, Description, LoanTypeRepay, DuringTime, GracePeriod, OnTermRate, AfterTermRate, PenaltyRate, MinimumLoan, MaximumLoan, PendingStatus, ReasonReject
          FROM BankingSystem.dbo.LoanService
          WHERE PendingStatus = ?""";
 
@@ -46,12 +46,16 @@ public class LoanServiceDAO extends DBContext {
                             rs.getInt("Id"),
                             rs.getString("LoanServiceName"),
                             rs.getString("Description"),
+                            rs.getString("LoanTypeRepay"),
                             rs.getInt("DuringTime"),
+                            rs.getInt("GracePeriod"),
                             rs.getDouble("OnTermRate"),
+                            rs.getDouble("AfterTermRate"),
                             rs.getDouble("PenaltyRate"),
                             rs.getBigDecimal("MinimumLoan"),
                             rs.getBigDecimal("MaximumLoan"),
-                            rs.getString("PendingStatus")
+                            rs.getString("PendingStatus"),
+                            rs.getString("ReasonReject")
                     );
                     list.add(loanService);
                 }
@@ -69,6 +73,7 @@ public class LoanServiceDAO extends DBContext {
         for(LoanService o : list) {
             System.out.println(o);
         }
+        l.createLoanService("AAA", "AAA", "Trả theo kỳ", 1, 1,1,1,1, BigDecimal.valueOf(200), BigDecimal.valueOf(300));
     }
 
     public LoanService getLoanServiceById(int id) {
@@ -85,12 +90,16 @@ public class LoanServiceDAO extends DBContext {
                             rs.getInt("Id"),
                             rs.getString("LoanServiceName"),
                             rs.getString("Description"),
+                            rs.getString("LoanTypeRepay"),
                             rs.getInt("DuringTime"),
+                            rs.getInt("GracePeriod"),
                             rs.getDouble("OnTermRate"),
+                            rs.getDouble("AfterTermRate"),
                             rs.getDouble("PenaltyRate"),
                             rs.getBigDecimal("MinimumLoan"),
                             rs.getBigDecimal("MaximumLoan"),
-                            rs.getString("PendingStatus")
+                            rs.getString("PendingStatus"),
+                            rs.getString("ReasonReject")
                     );
                 }
             }
@@ -113,24 +122,30 @@ public class LoanServiceDAO extends DBContext {
 
     public void createLoanService(String loanServiceName,
             String description,
+            String loanTypeRepay,
             double onTermRate,
+            double afterTermRate,
             double penaltyRate,
             int duringTime,
+            int gracePeriod,
             BigDecimal minimumLoan,
             BigDecimal maximumLoan) {
 
         String sql = """
                      INSERT INTO BankingSystem.dbo.LoanService
-                     (LoanServiceName, Description, DuringTime, OnTermRate, PenaltyRate, MinimumLoan, MaximumLoan)
-                     VALUES(?, ?, ?, ?, ?, ?, ?);""";
+                     (LoanServiceName, Description, LoanTypeRepay, DuringTime, GracePeriod, OnTermRate, AfterTermRate, PenaltyRate, MinimumLoan, MaximumLoan)
+                     VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);""";
         try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setString(1, loanServiceName);
             st.setString(2, description);
-            st.setInt(3, duringTime);
-            st.setDouble(4, onTermRate);
-            st.setDouble(5, penaltyRate);
-            st.setBigDecimal(6, minimumLoan);
-            st.setBigDecimal(7, maximumLoan);
+            st.setString(3, loanTypeRepay);
+            st.setInt(4, duringTime);
+            st.setInt(5, gracePeriod);
+            st.setDouble(6, onTermRate);
+            st.setDouble(7, afterTermRate);
+            st.setDouble(8, penaltyRate);
+            st.setBigDecimal(9, minimumLoan);
+            st.setBigDecimal(10, maximumLoan);
             int rowsInserted = st.executeUpdate();
             if (rowsInserted > 0) {
                 System.out.println("Inserted successfully!");

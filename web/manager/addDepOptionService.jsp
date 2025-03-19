@@ -202,8 +202,9 @@
                                             <label for="minimumDep">
                                                 <i class="fas fa-dollar-sign text-success"></i> Số tiền gửi tối thiểu
                                             </label>
-                                            <input type="number" id="minimumDep" name="minimumDep" 
-                                                   class="kofi-input" placeholder="Nhập giá trị (VNĐ)" required>
+                                            <input type="text" id="minimumDepDisplay" name="minimumDepDisplay" 
+                                                   class="kofi-input" placeholder="Nhập giá trị (VNĐ)" required oninput="formatNumber(this)">
+                                            <input type="hidden" id="minimumDep" name="minimumDep">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -312,6 +313,24 @@
         <script src="<%= request.getContextPath() %>/assets/js/app.js"></script>
         <!-- Thêm đoạn script này vào phần script hiện có -->
         <script>
+            function formatNumber(input) {
+                let value = input.value.replace(/[^0-9]/g, '');
+                if (value) {
+                    input.value = parseInt(value).toLocaleString('vi-VN');
+                    document.getElementById("minimumDep").value = value; // Lưu giá trị sạch vào hidden input
+                } else {
+                    input.value = '';
+                    document.getElementById("minimumDep").value = '';
+                }
+            }
+
+            function prepareForm() {
+                let displayInput = document.getElementById("minimumDepDisplay");
+                let hiddenInput = document.getElementById("minimumDep");
+                let value = displayInput.value.replace(/[^0-9]/g, '');
+                hiddenInput.value = value; // Đảm bảo giá trị gửi đi là số nguyên thuần
+            }
+
             $(document).ready(function () {
                 let formDirty = false;
                 let nextUrl = null;
