@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ include file="template/header.jsp" %>
 <%@ include file="template/sidebar.jsp" %>
 
@@ -15,11 +16,15 @@
                 <div class="info-section">
                     <div class="row mb-3">
                         <div class="col-6 text-start fw-bold">Số tiền đã nạp:</div>
-                        <div class="col-6 text-end amount"><%= request.getAttribute("amount") %> VNĐ</div>
+                        <div class="col-6 text-end amount">
+                            <fmt:formatNumber value="${requestScope.amount}" type="number" groupingUsed="true" /> VNĐ
+                        </div>
                     </div>
                     <div class="row mb-4">
                         <div class="col-6 text-start fw-bold">Số dư hiện tại:</div>
-                        <div class="col-6 text-end balance"><%= request.getAttribute("newBalance") %> VNĐ</div>
+                        <div class="col-6 text-end balance">
+                            <fmt:formatNumber value="${requestScope.newBalance}" type="number" groupingUsed="true" /> VNĐ
+                        </div>
                     </div>
                 </div>
                 <div class="text-center">

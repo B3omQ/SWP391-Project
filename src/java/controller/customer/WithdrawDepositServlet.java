@@ -12,16 +12,11 @@ import java.math.BigDecimal;
 import model.Customer;
 import model.DepServiceUsed;
 
-/**
- *
- * @author emkob
- */
 public class WithdrawDepositServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Lấy depositId từ request
         String depositIdStr = request.getParameter("depositId");
         int depositId;
         try {
@@ -31,7 +26,6 @@ public class WithdrawDepositServlet extends HttpServlet {
             return;
         }
 
-        // Lấy thông tin khách hàng từ session
         Customer customer = (Customer) request.getSession().getAttribute("account");
         if (customer == null) {
             response.sendRedirect(request.getContextPath() + "/auth/template/login.jsp");
@@ -39,7 +33,6 @@ public class WithdrawDepositServlet extends HttpServlet {
         }
         int customerId = customer.getId();
 
-        // Lấy thông tin khoản gửi
         DepServiceUsedDAO depServiceUsedDAO = new DepServiceUsedDAO();
         DepServiceUsed deposit = depServiceUsedDAO.getDepositById(depositId);
         if (deposit == null || deposit.getCusId() != customerId || !"ACTIVE".equalsIgnoreCase(deposit.getDepStatus())) {
@@ -47,18 +40,15 @@ public class WithdrawDepositServlet extends HttpServlet {
             return;
         }
 
-        // Xử lý rút tiền
         try {
-            // Tính toán số tiền rút (tiền gốc + lãi, giả định lãi suất 5%/năm để minh họa)
             BigDecimal principal = deposit.getAmount();
             long timeDiffMillis = System.currentTimeMillis() - deposit.getStartDate().getTime();
-            long days = timeDiffMillis / (1000 * 60 * 60 * 24); // Số ngày từ ngày gửi đến hiện tại
-            BigDecimal interestRate = new BigDecimal("0.05"); // Lãi suất 5%/năm
+            long days = timeDiffMillis / (1000 * 60 * 60 * 24);
+            BigDecimal interestRate = new BigDecimal("0.05");
             BigDecimal interest = principal.multiply(interestRate).multiply(new BigDecimal(days))
-                    .divide(new BigDecimal("365"), 2, BigDecimal.ROUND_HALF_UP); // Lãi = Gốc * Lãi suất * Số ngày / 365
+                    .divide(new BigDecimal("365"), 2, BigDecimal.ROUND_HALF_UP);
             BigDecimal totalAmount = principal.add(interest);
 
-            // Cộng tiền vào tài khoản thanh toán (wallet)
             CustomerDAO customerDAO = new CustomerDAO();
             BigDecimal currentBalance = customerDAO.getWalletByCustomerId(customerId);
             BigDecimal newBalance = currentBalance.add(totalAmount);
@@ -69,7 +59,6 @@ public class WithdrawDepositServlet extends HttpServlet {
                 return;
             }
 
-            // Đánh dấu khoản gửi là không hoạt động
             boolean statusUpdated = depServiceUsedDAO.updateDepositStatus(depositId, "INACTIVE");
             if (!statusUpdated) {
                 request.getSession().setAttribute("error", "Không thể cập nhật trạng thái khoản gửi!");
@@ -77,18 +66,15 @@ public class WithdrawDepositServlet extends HttpServlet {
                 return;
             }
 
-            // Lưu lịch sử giao dịch vào DepHistory (dùng hàm mới)
             DepHistoryDAO depHistoryDAO = new DepHistoryDAO();
-            boolean historySaved = depHistoryDAO.addDepHistory(depositId, "Rút tiền tiết kiệm", principal, interest, totalAmount);
+            boolean historySaved = depHistoryDAO.addDepHistory(depositId, "Rút tiền tiết kiệm", principal, interest, totalAmount, customerId);
             if (!historySaved) {
                 System.err.println("Failed to save DepHistory for withdrawal: depositId=" + depositId);
             }
 
-            // Cập nhật session với thông tin khách hàng mới
             Customer updatedCustomer = customerDAO.getCustomerById(customerId);
             request.getSession().setAttribute("account", updatedCustomer);
 
-            // Chuyển hướng về trang chính với thông báo thành công
             request.getSession().setAttribute("success", "Rút tiền thành công! Số tiền " + totalAmount + " VND đã được chuyển vào tài khoản thanh toán.");
             response.sendRedirect(request.getContextPath() + "/customer/Termsavings.jsp");
 

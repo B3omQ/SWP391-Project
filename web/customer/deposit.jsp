@@ -1,5 +1,4 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
-
 <%@ include file="template/header.jsp" %>
 <%@ include file="template/sidebar.jsp" %>
 
@@ -10,8 +9,10 @@
             <form action="${pageContext.request.contextPath}/VNpayServlet" method="post">
                 <!-- Nhập số tiền -->
                 <div class="mb-3">
-                    <label for="amount" class="form-label">Nhập số tiền cần nạp (VNĐ):</label>
-                    <input type="number" class="form-control" id="amount" name="amount" min="10000" required>
+                    <label for="amountDisplay" class="form-label">Nhập số tiền cần nạp (VNĐ):</label>
+                    <input type="text" class="form-control" id="amountDisplay" oninput="formatNumber(this)" required min="10000">
+                    <input type="hidden" id="amount" name="amount">
+                    <small class="form-text text-muted">Tối thiểu: 10,000 VNĐ</small>
                 </div>
 
                 <!-- Dropdown chọn phương thức nạp -->
@@ -32,3 +33,25 @@
 </div>
 
 <%@ include file="template/footer.jsp" %>
+
+<!-- JavaScript để định dạng số tiền -->
+<script>
+    function formatNumber(input) {
+        let value = input.value.replace(/[^0-9]/g, ''); // Loại bỏ mọi ký tự không phải số
+        if (value) {
+            // Định dạng số theo kiểu Việt Nam (dấu chấm làm phân cách hàng nghìn)
+            input.value = Number(value).toLocaleString('vi-VN');
+            document.getElementById("amount").value = value; // Lưu giá trị sạch vào hidden input
+        } else {
+            input.value = '';
+            document.getElementById("amount").value = '';
+        }
+
+        // Kiểm tra giá trị tối thiểu
+        if (value && parseInt(value) < 10000) {
+            input.setCustomValidity('Số tiền phải tối thiểu 10,000 VNĐ!');
+        } else {
+            input.setCustomValidity('');
+        }
+    }
+</script>

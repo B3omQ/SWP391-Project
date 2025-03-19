@@ -1,6 +1,7 @@
 package controller.customer;
 
 import dal.CustomerDAO;
+import dal.DepHistoryDAO;
 import model.Customer;
 import java.math.BigDecimal;
 import java.util.List;
@@ -15,6 +16,7 @@ public class MaturityScheduler {
     private final ScheduledExecutorService maturityScheduler = Executors.newScheduledThreadPool(1);
     private final ScheduledExecutorService autoProfitScheduler = Executors.newScheduledThreadPool(1);
     private final CustomerDAO customerDAO = new CustomerDAO();
+    private final DepHistoryDAO depHistoryDAO = new DepHistoryDAO();
     private final MaturityHandlerServlet maturityHandler = new MaturityHandlerServlet();
 
     public void startScheduler() {
@@ -22,23 +24,17 @@ public class MaturityScheduler {
         autoProfitScheduler.scheduleAtFixedRate(this::processAutoProfitForAllCustomers, 0, 1, TimeUnit.DAYS);
     }
 
-    /**
-     * Xử lý đáo hạn chỉ cho khách hàng đang đăng nhập
-     */
     private void processMaturedDepositsForActiveCustomers() {
         try {
             System.out.println(" Bắt đầu xử lý đáo hạn cho khách hàng đang đăng nhập: " + java.time.LocalDateTime.now());
 
-            // Lấy danh sách ID khách hàng đang đăng nhập từ SessionTracker
             Set<Integer> activeCustomerIds = SessionTracker.getActiveCustomerIds();
-            if (activeCustomerIds.isEmpty()) {
+            if (activeCustomerIds == null || activeCustomerIds.isEmpty()) {
                 System.out.println(" Không có khách hàng nào đang đăng nhập -> bỏ qua xử lý đáo hạn.");
                 return;
             }
 
-            // Lấy thông tin khách hàng từ cơ sở dữ liệu
             List<Customer> allCustomers = customerDAO.getAllCustomers();
-            // Lọc chỉ những khách hàng đang đăng nhập
             List<Customer> activeCustomers = allCustomers.stream()
                 .filter(customer -> activeCustomerIds.contains(customer.getId()))
                 .collect(Collectors.toList());
@@ -48,7 +44,6 @@ public class MaturityScheduler {
                 return;
             }
 
-            // Xử lý đáo hạn cho từng khách hàng đang đăng nhập
             for (Customer customer : activeCustomers) {
                 maturityHandler.processMaturedDeposits(customer);
                 System.out.println(" Đã xử lý đáo hạn cho customer " + customer.getId());
@@ -61,10 +56,6 @@ public class MaturityScheduler {
         }
     }
 
-    /**
-     * Xử lý sinh lời tự động cho tất cả khách hàng có bật tính năng này
-     * (Giữ nguyên phần này vì bạn không yêu cầu thay đổi)
-     */
     private void processAutoProfitForAllCustomers() {
         try {
             System.out.println("✅ Bắt đầu sinh lời tự động cho tất cả khách hàng: " + java.time.LocalDateTime.now());
@@ -83,12 +74,9 @@ public class MaturityScheduler {
         }
     }
 
-    /**
-     * Sinh lời tự động cho từng khách hàng bật tính năng này
-     */
     private void processAutoProfit(Customer customer) {
         BigDecimal currentBalance = customer.getWallet();
-        if (currentBalance.compareTo(BigDecimal.ZERO) > 0) {
+        if (currentBalance != null && currentBalance.compareTo(BigDecimal.ZERO) > 0) {
             BigDecimal interestRate = new BigDecimal("0.0003"); // 0.03%/ngày
             BigDecimal interest = currentBalance.multiply(interestRate);
             BigDecimal newBalance = currentBalance.add(interest);
@@ -96,15 +84,16 @@ public class MaturityScheduler {
             boolean updated = customerDAO.updateWallet(customer.getId(), newBalance);
             if (updated) {
                 System.out.println(" Sinh lời tự động cho customer " + customer.getId() + ": +" + interest + ", số dư mới: " + newBalance);
+                boolean historyAdded = depHistoryDAO.addDepHistory(null, "Sinh lời tự động", interest, customer.getId());
+                if (!historyAdded) {
+                    System.out.println(" Lỗi khi ghi lịch sử sinh lời tự động cho customer " + customer.getId());
+                }
             } else {
                 System.out.println(" Lỗi khi cập nhật sinh lời tự động cho customer " + customer.getId());
             }
         }
     }
 
-    /**
-     * Dừng scheduler khi cần
-     */
     public void stopScheduler() {
         maturityScheduler.shutdown();
         autoProfitScheduler.shutdown();
