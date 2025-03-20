@@ -24,10 +24,7 @@ public class LoanService {
     private BigDecimal minimumLoan;
     private BigDecimal maximumLoan;
     private String pendingStatus;
-    private double afterTermRate;
     private String reasonReject;
-    private String loanTypeRepay;
-    private int gracePeriod;
 
     public LoanService() {
     }
@@ -171,38 +168,7 @@ public class LoanService {
         this.pendingStatus = pendingStatus;
     }
 
-    public double getAfterTermRate() {
-        return afterTermRate;
-    }
-
-    public void setAfterTermRate(double afterTermRate) {
-        this.afterTermRate = afterTermRate;
-    }
-
-    public String getReasonReject() {
-        return reasonReject;
-    }
-
-    public void setReasonReject(String reasonReject) {
-        this.reasonReject = reasonReject;
-    }
-
-    public String getLoanTypeRepay() {
-        return loanTypeRepay;
-    }
-
-    public void setLoanTypeRepay(String loanTypeRepay) {
-        this.loanTypeRepay = loanTypeRepay;
-    }
-
-    public int getGracePeriod() {
-        return gracePeriod;
-    }
-
-    public void setGracePeriod(int gracePeriod) {
-        this.gracePeriod = gracePeriod;
-    }
-
+  
     @Override
     public String toString() {
         return "LoanService{" + "id=" + id + ", loanServiceName=" + loanServiceName + ", description=" + description + ", duringTime=" + duringTime + ", onTermRate=" + onTermRate + ", penaltyRate=" + penaltyRate + ", minimumLoan=" + minimumLoan + ", maximumLoan=" + maximumLoan + ", pendingStatus=" + pendingStatus + '}';

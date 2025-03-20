@@ -666,7 +666,7 @@ public class CeoDAO extends DBContext {
         List<LoanService> list = new ArrayList<>();
 
         String sql = """
-         SELECT Id, LoanServiceName, Description, DuringTime, OnTermRate, PenaltyRate, MinimumLoan, MaximumLoan, PendingStatus
+         SELECT Id, LoanServiceName, Description, DuringTime, OnTermRate, PenaltyRate, MinimumLoan, MaximumLoan, PendingStatus, AfterTermRate, ReasonReject, LoanTypeRepay, GracePeriod
          FROM BankingSystem.dbo.LoanService
          WHERE PendingStatus = ?""";
         List<Object> params = new ArrayList<>();
@@ -705,7 +705,11 @@ public class CeoDAO extends DBContext {
                             rs.getDouble("PenaltyRate"),
                             rs.getBigDecimal("MinimumLoan"),
                             rs.getBigDecimal("MaximumLoan"),
-                            rs.getString("PendingStatus")
+                            rs.getString("PendingStatus"),
+                            rs.getDouble("AfterTermRate"),
+                            rs.getString("ReasonReject"),
+                            rs.getString("LoanTypeRepay"),
+                            rs.getInt("GracePeriod")
                     );
                     list.add(loanService);
                 }
