@@ -6,6 +6,7 @@ package controller.ceo;
 
 import controller.calculation.InterestCalculator;
 import dal.CeoDAO;
+import dal.IdentityDAO;
 import dal.LoanServiceDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -26,6 +27,7 @@ import java.util.List;
 import model.LoanService;
 import model.Customer;
 import model.LoanServiceUsed;
+import model.VerifyIdentityInformation;
 import util.AccountValidation;
 
 /**
@@ -148,6 +150,31 @@ public class ApplyLoan extends HttpServlet {
         AccountValidation validate = new AccountValidation();
         Customer currentAccount = (Customer) session.getAttribute("account");
 //        Customer currentAccount = aDao.getCustomerById(2);
+
+        IdentityDAO idao = new IdentityDAO();
+        List<VerifyIdentityInformation> identityList = idao.getListVerifyIdentityInformationByCusId(currentAccount.getId());
+        VerifyIdentityInformation reasonRejectIdentity = idao.getTop1(currentAccount.getId(), "Denied");
+        request.setAttribute("identityList", identityList);
+                
+        if (idao.countStatus(currentAccount.getId(), "Pending") == 1) {
+            session.setAttribute("status", "pending");
+            request.getRequestDispatcher("./customer/identityInformation.jsp").forward(request, response);
+            return;
+        }
+        
+        if (idao.countStatus(currentAccount.getId(), "Denied") > 0) {
+            session.setAttribute("reasonRejectIdentity", reasonRejectIdentity);
+            session.setAttribute("status", "denied");
+            request.getRequestDispatcher("./customer/identityInformation.jsp").forward(request, response);
+            return;
+        }        
+        if (idao.countStatus(currentAccount.getId(), "Approved") != 1) {           
+            session.setAttribute("status", "none");
+            request.getRequestDispatcher("./customer/addIdentityInformation.jsp").forward(request, response);
+            return;
+        }
+        
+        
         String loanIDParam = request.getParameter("loanId");
         String amountParam = validate.normalizeInput(request.getParameter("amount"));
         Part imagePart = request.getPart("incomeVertification");

@@ -204,12 +204,12 @@
 
                             <div class="loan-detail">
                                 <span class="loan-label">Nợ lãi quá hạn:</span>
-                                <span><fmt:formatNumber value="${overdueInterestDebt}"  pattern="#,##0 VND"/></span>${overdueDays} day
+                                <span><fmt:formatNumber value="${overdueInterestDebt}"  pattern="#,##0 VND"/></span>
                             </div>
 
                             <div class="loan-detail">
                                 <span class="loan-label">Nợ gốc quá hạn:</span>
-                                <span><fmt:formatNumber value="${overduePrincipal}"  pattern="#,##0 VND"/></span>${totalOverdueDays} day
+                                <span><fmt:formatNumber value="${overduePrincipal}"  pattern="#,##0 VND"/></span>
                             </div>
 
                             <div class="loan-detail">
