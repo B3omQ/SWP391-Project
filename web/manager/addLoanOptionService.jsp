@@ -136,6 +136,22 @@
             transform: translateY(-5px);
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
         }
+        /* Dropdown */
+        .form-select {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            padding: 10px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            background: #fafafa;
+            transition: all 0.3s ease;
+        }
+
+        .form-select:focus {
+            border-color: #ff6f61;
+            box-shadow: 0 0 5px rgba(255, 111, 97, 0.3);
+            outline: none;
+        }
 
     </style>
 
@@ -207,6 +223,15 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="kofi-input-group">
+                                            <label for="gracePeriod">
+                                                <i class="fas fa-clock text-success"></i> Thời gian ân hạn
+                                            </label>
+                                            <input type="number" id="gracePeriod" name="gracePeriod" 
+                                                   class="kofi-input" placeholder="Nhập số ngày" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="kofi-input-group">
                                             <label for="onTermRate">
                                                 <i class="fas fa-percentage text-primary"></i> Lãi suất trong kì hạn
                                             </label>
@@ -217,8 +242,18 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="kofi-input-group">
-                                            <label for="penaltyRate">
+                                            <label for="afterTermRate">
                                                 <i class="fas fa-percentage text-warning"></i> Lãi suất sau kì hạn
+                                            </label>
+                                            <input type="number" step="0.01" id="afterTermRate" 
+                                                   name="afterTermRate" class="kofi-input" 
+                                                   placeholder="Nhập tỉ lệ (%)" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="kofi-input-group">
+                                            <label for="penaltyRate">
+                                                <i class="fas fa-percentage text-warning"></i> Lãi suất phạt
                                             </label>
                                             <input type="number" step="0.01" id="penaltyRate" 
                                                    name="penaltyRate" class="kofi-input" 
@@ -244,6 +279,20 @@
                                                    name="maximumLoan" class="kofi-input" 
                                                    placeholder="Nhập giá trị (VNĐ)" required>
                                         </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="kofi-input-group">
+                                            <label for="loanTypeRepay">
+                                                <i class="fas fa-dollar-sign text-danger"></i> Cách thức trả nợ
+                                            </label>
+                                            <select class="form-select me-2" name="loanTypeRepay" id="loanTypeRepay">
+                                                <option value="ReducingBalancePayment">Trả theo dư nợ giảm dần</option>
+                                                <option value="FixedInstallmentPayment">Trả nợ theo kỳ hạn cố định</option>
+                                                <option value="LumpSumPaymentAtMaturity">Trả nợ cuối kỳ </option>
+                                                <option value="FlexiblePayment">Trả nợ linh hoạt</option>
+                                            </select> 
+                                        </div>         
                                     </div>
                                     <div class="col-12">
                                         <div class="kofi-input-group">
@@ -348,7 +397,10 @@
                     let formData = {
                         loanServiceName: $('#loanServiceName').val(),
                         duringTime: $('#duringTime').val(),
+                        gracePeriod: $('#gracePeriod').val(),
+                        loanTypeRepay: $('#loanTypeRepay').val(),
                         onTermRate: $('#onTermRate').val(),
+                        afterTermRate: $('#afterTermRate').val(),
                         penaltyRate: $('#penaltyRate').val(),
                         minimumLoan: $('#minimumLoan').val(),
                         maximumLoan: $('#maximumLoan').val(),

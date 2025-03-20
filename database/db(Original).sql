@@ -22,7 +22,7 @@ create table [Staff] (
 )
 
 CREATE TABLE [dbo].[Articles] (
-    [Id] INT IDENTITY(1,1) PRIMARY KEY,           -- Khóa chính, tự động tăng
+    [Id] INT IDENTITY(1,1) PRIMARY KEY,          -- Khóa chính, tự động tăng
     [Title] NVARCHAR(255) NOT NULL,              -- Tiêu đề bài viết
     [Description] NVARCHAR(MAX) NOT NULL,        -- Mô tả, cho phép nội dung dài
     [Category] NVARCHAR(100) NOT NULL,           -- Thể loại bài viết
