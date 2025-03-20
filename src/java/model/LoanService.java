@@ -24,14 +24,10 @@ public class LoanService {
     private BigDecimal minimumLoan;
     private BigDecimal maximumLoan;
     private String pendingStatus;
-<<<<<<< HEAD
     private double afterTermRate;
     private String reasonReject;
     private String loanTypeRepay;
     private int gracePeriod;
-=======
-    private String reasonReject;
->>>>>>> 60f0e668320656e40bc44b29402bc2c60dc2e01d
 
     public LoanService() {
     }
