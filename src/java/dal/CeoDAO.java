@@ -465,12 +465,14 @@ public class CeoDAO extends DBContext {
                 while (rs.next()) {
                     return new DepService(
                             rs.getInt("Id"),
-                            rs.getString("Description"),
+                            rs.getString("Description"),                            
                             rs.getBigDecimal("MinimumDep"),
                             rs.getInt("DuringTime"),
                             rs.getDouble("SavingRate"),
                             rs.getDouble("SavingRateMinimum"),
-                            rs.getString("PendingStatus")
+                            rs.getString("PendingStatus"),
+                            rs.getString("ReasonReject"),
+                            rs.getString("DepServiceName")
                     );
                 }
             }
