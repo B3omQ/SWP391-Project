@@ -103,7 +103,7 @@ public class CustomerLoanPayment extends HttpServlet {
             // Tính nợ lãi quá hạn
             long overdueDays = ChronoUnit.DAYS.between(dueLocalDate, today);
             request.setAttribute("overdueDays", overdueDays);
-            overdueInterestDebt = InterestCalculator.calculateOverdueInterestDebt(interestAmount, overdueDays);
+            overdueInterestDebt = InterestCalculator.calculateOverdueInterestDebt(loan,interestAmount, overdueDays);
         }
         LocalDate endDate = loan.getEndDate().toLocalDateTime().toLocalDate();
         // Kiểm tra nếu đã quá hạn tổng (tức là đã quá hạn cuối cùng của khoản vay)

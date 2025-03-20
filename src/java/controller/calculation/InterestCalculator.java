@@ -75,13 +75,13 @@ public class InterestCalculator {
     public static void main(String[] args) {
 //        System.out.println(InterestCalculator.calculateDebtRepay(new BigDecimal(3000000), 1 , new BigDecimal(21.2)));
         System.out.println("Test: " + calculateMonthlyInterestPayment(new CeoDAO().getLoanServiceUsedById(5)));
-        System.out.println("Overdue Interest : " + calculateOverdueInterestDebt(BigDecimal.valueOf(2000000), 32));
+        System.out.println("Overdue Interest : " + calculateOverdueInterestDebt(new CeoDAO().getLoanServiceUsedById(1),BigDecimal.valueOf(2000000), 32));
         System.out.println("Overdue principal: " + calculateOverduePrincipal(new CeoDAO().getLoanServiceUsedById(1), 180));
     }
 
-    public static BigDecimal calculateOverdueInterestDebt(BigDecimal interestAmount, long overdueDays) {
+    public static BigDecimal calculateOverdueInterestDebt(LoanServiceUsed l,BigDecimal interestAmount, long overdueDays) {
         BigDecimal result = BigDecimal.ZERO;
-        result = interestAmount.multiply(BigDecimal.valueOf(10))
+        result = interestAmount.multiply(BigDecimal.valueOf(l.getLoanId().getPenaltyRate()))
                 .divide(BigDecimal.valueOf(100), BigDecimal.ROUND_HALF_UP)
                 .divide(BigDecimal.valueOf(365), 10, BigDecimal.ROUND_HALF_UP)
                 .multiply(BigDecimal.valueOf(overdueDays));
