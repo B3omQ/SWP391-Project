@@ -886,6 +886,45 @@ public class CeoDAO extends DBContext {
             e.printStackTrace();
         }
     }
+    
+    // Thêm khách hàng vào danh sách đen
+    public void addToBlacklist(int cusId, String reason) {
+        String sql = "INSERT INTO Blacklist (CusId, Reason, BlacklistDate) VALUES (?, ?, GETDATE())";
+        try (
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, cusId);
+            ps.setString(2, reason);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Kiểm tra khách hàng có bị blacklist không
+    public boolean isBlacklisted(int cusId) {
+        String sql = "SELECT * FROM Blacklist WHERE CusId = ?";
+        try (
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, cusId);
+            ResultSet rs = ps.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    // Xóa khách hàng khỏi danh sách đen (nếu cần)
+    public void removeFromBlacklist(int cusId) {
+        String sql = "DELETE FROM Blacklist WHERE CusId = ?";
+        try (
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, cusId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public int getNumberOfLoanPaymentByLoanId(int id) {
         int count = 0;
@@ -900,6 +939,22 @@ public class CeoDAO extends DBContext {
             e.printStackTrace();
         }
         return count;
+    }
+    
+    public boolean isOverdue(int cusId) {
+        String sql = "SELECT LSU.Id FROM LoanServiceUsed LSU "
+                   + "JOIN LoanService LS ON LSU.LoanId = LS.Id "
+                   + "WHERE LSU.CusId = ? AND DATEDIFF(DAY, LSU.EndDate, GETDATE()) > LS.GracePeriod";
+
+        try (
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, cusId);
+            ResultSet rs = ps.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public static void main(String[] args) {

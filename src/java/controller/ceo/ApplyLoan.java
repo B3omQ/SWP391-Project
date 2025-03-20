@@ -146,41 +146,57 @@ public class ApplyLoan extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
+
         CeoDAO aDao = new CeoDAO();
         AccountValidation validate = new AccountValidation();
         Customer currentAccount = (Customer) session.getAttribute("account");
-//        Customer currentAccount = aDao.getCustomerById(2);
 
+//        Customer currentAccount = aDao.getCustomerById(2);
         IdentityDAO idao = new IdentityDAO();
         List<VerifyIdentityInformation> identityList = idao.getListVerifyIdentityInformationByCusId(currentAccount.getId());
         VerifyIdentityInformation reasonRejectIdentity = idao.getTop1(currentAccount.getId(), "Denied");
         request.setAttribute("identityList", identityList);
-                
+
         if (idao.countStatus(currentAccount.getId(), "Pending") == 1) {
             session.setAttribute("status", "pending");
             request.getRequestDispatcher("./customer/identityInformation.jsp").forward(request, response);
             return;
         }
-        
+
         if (idao.countStatus(currentAccount.getId(), "Denied") > 0) {
             session.setAttribute("reasonRejectIdentity", reasonRejectIdentity);
             session.setAttribute("status", "denied");
             request.getRequestDispatcher("./customer/identityInformation.jsp").forward(request, response);
             return;
-        }        
-        if (idao.countStatus(currentAccount.getId(), "Approved") != 1) {           
+        }
+        if (idao.countStatus(currentAccount.getId(), "Approved") != 1) {
             session.setAttribute("status", "none");
             request.getRequestDispatcher("./customer/addIdentityInformation.jsp").forward(request, response);
             return;
         }
-        
-        
+
         String loanIDParam = request.getParameter("loanId");
         String amountParam = validate.normalizeInput(request.getParameter("amount"));
         Part imagePart = request.getPart("incomeVertification");
         String fileType = imagePart.getContentType();
         List<String> errorMessages = new ArrayList<>();
+        if (currentAccount != null) {
+            int cusId = currentAccount.getId();
 
+            // Nếu khách hàng có khoản vay quá hạn mà chưa bị blacklist thì thêm vào danh sách đen
+            if (aDao.isOverdue(cusId) && !aDao.isBlacklisted(cusId)) {
+                aDao.addToBlacklist(cusId, "Quá hạn trả nợ");
+                session.setAttribute("blacklistStatus", "Bạn đã bị chặn do quá hạn trả nợ!");
+            }
+        }
+        if (aDao.isBlacklisted(currentAccount.getId())) {
+            errorMessages.add("Bạn không thể thực hiện giao dịch vì bạn đang bị blacklist.");
+            request.setAttribute("errorMessages", errorMessages);
+            List<LoanService> listLoan = aDao.getAllLoanServiceByStatus("Approved", "DuringTime", "ASC", "", 1, 10);
+            request.setAttribute("optionLoanList", listLoan);
+            request.getRequestDispatcher("ceo/applyLoan.jsp").forward(request, response);
+            return;
+        }
         // Validate loan service ID
         int loanID = 0;
         if (loanIDParam == null || loanIDParam.trim().isEmpty()) {
@@ -207,7 +223,7 @@ public class ApplyLoan extends HttpServlet {
 
         if (imagePart.getSize() > 1024 * 1024 * 5) {
             errorMessages.add("Image must be < 5mb");
-        }       
+        }
         // Kiểm tra file có đúng định dạng ZIP không
         if (!image.endsWith(".zip")) {
             errorMessages.add("Only accept zip file");
@@ -245,7 +261,7 @@ public class ApplyLoan extends HttpServlet {
             request.setAttribute("loanServiceUsed", loanServiceUsed);
             request.getRequestDispatcher("ceo/successApplyLoan.jsp").forward(request, response);
             return;
-        } 
+        }
         request.getRequestDispatcher("ceo/applyLoan.jsp").forward(request, response);
     }
 
