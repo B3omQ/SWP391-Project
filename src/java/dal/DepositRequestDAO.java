@@ -19,7 +19,7 @@ public class DepositRequestDAO extends DBContext {
     public static final String STATUS_CANCEL = "CANCEL";
 
     public int addDepositRequest(DepositRequest request) {
-        String sql = "INSERT INTO deposit_requests (CusId, Amount, Note, Status, CreatedAt) " +
+        String sql = "INSERT INTO DepositRequest (CusId, Amount, Note, Status, CreatedAt) " +
                      "VALUES (?, ?, ?, ?, GETDATE())";
         try (PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setInt(1, request.getCusId());
@@ -47,7 +47,7 @@ public class DepositRequestDAO extends DBContext {
     public List<DepositRequest> getPendingDepositRequests() {
         List<DepositRequest> list = new ArrayList<>();
         String sql = "SELECT dr.Id, dr.CusId, dr.Amount, dr.Note, dr.Status, dr.CreatedAt, c.Username " +
-                     "FROM deposit_requests dr " +
+                     "FROM DepositRequest dr " +
                      "JOIN Customer c ON dr.CusId = c.Id " +
                      "WHERE dr.Status = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -66,7 +66,7 @@ public class DepositRequestDAO extends DBContext {
 
     public DepositRequest getDepositRequestById(int id) {
         String sql = "SELECT dr.Id, dr.CusId, dr.Amount, dr.Note, dr.Status, dr.CreatedAt, c.Username " +
-                     "FROM deposit_requests dr " +
+                     "FROM DepositRequest dr " +
                      "JOIN Customer c ON dr.CusId = c.Id " +
                      "WHERE dr.Id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -90,7 +90,7 @@ public class DepositRequestDAO extends DBContext {
             return false;
         }
         
-        String sql = "UPDATE deposit_requests SET Status = ? WHERE Id = ? AND Status = ?";
+        String sql = "UPDATE DepositRequest SET Status = ? WHERE Id = ? AND Status = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, status);
             stmt.setInt(2, id);
@@ -106,7 +106,7 @@ public class DepositRequestDAO extends DBContext {
     public List<DepositRequest> getDepositRequestsByCusId(int cusId) {
         List<DepositRequest> requests = new ArrayList<>();
         String sql = "SELECT dr.Id, dr.CusId, dr.Amount, dr.Note, dr.Status, dr.CreatedAt, c.Username " +
-                     "FROM deposit_requests dr " +
+                     "FROM DepositRequest dr " +
                      "JOIN Customer c ON dr.CusId = c.Id " +
                      "WHERE dr.CusId = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -127,7 +127,7 @@ public class DepositRequestDAO extends DBContext {
         List<DepositRequest> requests = new ArrayList<>();
         StringBuilder sql = new StringBuilder(
                 "SELECT dr.Id, dr.CusId, dr.Amount, dr.Note, dr.Status, dr.CreatedAt, c.Username " +
-                "FROM deposit_requests dr " +
+                "FROM DepositRequest dr " +
                 "JOIN Customer c ON dr.CusId = c.Id " +
                 "WHERE 1=1");
 

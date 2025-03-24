@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 
 public class DepHistory {
     private int id;
-    private Integer dsuId; // Đổi thành Integer để hỗ trợ NULL
+    private Integer dsuId; 
     private String description;
     private BigDecimal amount;
     private Timestamp createdAt;

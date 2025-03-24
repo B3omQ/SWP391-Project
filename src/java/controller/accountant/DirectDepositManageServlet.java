@@ -1,6 +1,8 @@
 package controller.accountant;
 
 import dal.DepositRequestDAO;
+import dal.DepHistoryDAO;
+import dal.CustomerDAO;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -8,11 +10,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.util.List;
 import model.DepositRequest;
 
 public class DirectDepositManageServlet extends HttpServlet {
     private final DepositRequestDAO depositRequestDAO = new DepositRequestDAO();
+    private final DepHistoryDAO depHistoryDAO = new DepHistoryDAO();
+    private final CustomerDAO customerDAO = new CustomerDAO();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -33,7 +38,6 @@ public class DirectDepositManageServlet extends HttpServlet {
             List<DepositRequest> depositRequests = depositRequestDAO.getFilteredDepositRequests(search, statusFilter, sortBy);
             request.setAttribute("depositRequests", depositRequests);
 
-            // Xóa thông báo sau khi hiển thị
             if (session.getAttribute("message") != null) {
                 session.removeAttribute("message");
             }
@@ -66,14 +70,55 @@ public class DirectDepositManageServlet extends HttpServlet {
             String status = request.getParameter("status");
 
             if ("update".equals(action)) {
-                // Chỉ cho phép cập nhật từ ACTIVE sang COMPLETED hoặc CANCEL
-                boolean success = depositRequestDAO.updateDepositRequestStatus(id, status);
-                session.setAttribute("message", success ? 
-                    "Trạng thái phiếu đã được cập nhật thành công!" : 
-                    "Cập nhật trạng thái thất bại!");
+                DepositRequest depositRequest = depositRequestDAO.getDepositRequestById(id); // Lấy thông tin phiếu yêu cầu
+                if (depositRequest == null) {
+                    session.setAttribute("error", "Không tìm thấy phiếu yêu cầu!");
+                    response.sendRedirect(request.getContextPath() + "/DirectDepositManageServlet");
+                    return;
+                }
+
+                // Cập nhật trạng thái phiếu yêu cầu
+                boolean statusUpdated = depositRequestDAO.updateDepositRequestStatus(id, status);
+                if (statusUpdated) {
+                    if ("COMPLETED".equalsIgnoreCase(status)) {
+                        // Lấy thông tin khách hàng và số tiền từ phiếu yêu cầu
+                        int cusId = depositRequest.getCusId();
+                        BigDecimal amount = depositRequest.getAmount();
+
+                        // Lấy số dư hiện tại của khách hàng
+                        BigDecimal currentBalance = customerDAO.getWalletByCustomerId(cusId);
+                        if (currentBalance == null) {
+                            currentBalance = BigDecimal.ZERO; // Nếu không có số dư, khởi tạo bằng 0
+                        }
+
+                        // Tính số dư mới
+                        BigDecimal newBalance = currentBalance.add(amount);
+
+                        // Cập nhật số dư khách hàng
+                        boolean balanceUpdated = customerDAO.updateWallet(cusId, newBalance);
+                        if (balanceUpdated) {
+                            // Lưu vào lịch sử giao dịch
+                            String description = "Nạp tiền từ phiếu yêu cầu #" + id;
+                            boolean historySaved = depHistoryDAO.addDepHistory(null, description, amount, cusId);
+
+                            if (historySaved) {
+                                session.setAttribute("message", "Xử lý phiếu yêu cầu thành công, số dư và lịch sử đã được cập nhật!");
+                            } else {
+                                session.setAttribute("error", "Cập nhật số dư thành công nhưng lưu lịch sử thất bại!");
+                            }
+                        } else {
+                            session.setAttribute("error", "Cập nhật số dư khách hàng thất bại!");
+                        }
+                    } else if ("CANCEL".equalsIgnoreCase(status)) {
+                        session.setAttribute("message", "Phiếu yêu cầu đã bị hủy thành công!");
+                    } else {
+                        session.setAttribute("message", "Trạng thái phiếu đã được cập nhật thành công!");
+                    }
+                } else {
+                    session.setAttribute("error", "Cập nhật trạng thái thất bại!");
+                }
             }
 
-            // Chuyển hướng và làm mới danh sách
             response.sendRedirect(request.getContextPath() + "/DirectDepositManageServlet");
         } catch (Exception e) {
             System.err.println("Error in doPost: " + e.getMessage());

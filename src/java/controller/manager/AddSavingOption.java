@@ -72,7 +72,7 @@ public class AddSavingOption extends HttpServlet {
                     json.put("success", false);
                     json.put("message", "All numeric values must be greater than 0");
                 } else {
-                    depdao.createDepService(description, minimumDep, duringTime, savingRate, savingRateMinimum);
+//                    depdao.createDepService(description, minimumDep, duringTime, savingRate, savingRateMinimum);
                     json.put("success", true);
                 }
 
