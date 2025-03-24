@@ -963,15 +963,10 @@ public class CeoDAO extends DBContext {
 //        for (Staff x : c.searchStaffs("", "", 1, 5)) {
 //            System.out.println(x.toString());
 //        }
-        for (LoanService x : c.getAllLoanServiceByStatus("Approved", "DuringTime", "ASC", "", 1, 10)) {
-            System.out.println(x.toString());
-        }
-        LoanService loanService = new LoanServiceDAO().getLoanServiceById(2);
-        System.out.println(loanService.toString());
-//        c.updateLoanStatus(1, "Done");
-        for(DepService x : c.getAllDepServiceByStatus("Pending", "DuringTime", "ASC", "", 1, 10)) {
-            System.out.println(x.toString());
-        }
+        System.out.println(c.isOverdue(1));
+        System.out.println(c.isBlacklisted(2));
+        System.out.println(c.isBlacklisted(1));
+        
 
 //        for (LoanServiceUsed x : c.getAllLoanServiceUsedByStatus("Pending", "DuringTime", "ASC", "", 1, 10)) {
 //            System.out.println(x.toString());

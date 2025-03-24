@@ -146,11 +146,28 @@ public class ApplyLoan extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-
+        List<String> errorMessages = new ArrayList<>();
         CeoDAO aDao = new CeoDAO();
         AccountValidation validate = new AccountValidation();
         Customer currentAccount = (Customer) session.getAttribute("account");
+        
+        if (currentAccount != null) {
+            int cusId = currentAccount.getId();
 
+            // Nếu khách hàng có khoản vay quá hạn mà chưa bị blacklist thì thêm vào danh sách đen
+            if (aDao.isOverdue(cusId) && !aDao.isBlacklisted(cusId)) {
+                aDao.addToBlacklist(cusId, "Quá hạn trả nợ");
+                session.setAttribute("blacklistStatus", "Bạn đã bị chặn do quá hạn trả nợ!");
+            }
+        }
+        if (aDao.isBlacklisted(currentAccount.getId())) {
+            errorMessages.add("Bạn không thể thực hiện giao dịch vì bạn đang bị blacklist.");
+            request.setAttribute("errorMessages", errorMessages);
+            List<LoanService> listLoan = aDao.getAllLoanServiceByStatus("Approved", "DuringTime", "ASC", "", 1, 10);
+            request.setAttribute("optionLoanList", listLoan);
+            request.getRequestDispatcher("ceo/applyLoan.jsp").forward(request, response);
+            return;
+        }
 //        Customer currentAccount = aDao.getCustomerById(2);
         IdentityDAO idao = new IdentityDAO();
         List<VerifyIdentityInformation> identityList = idao.getListVerifyIdentityInformationByCusId(currentAccount.getId());
@@ -179,24 +196,7 @@ public class ApplyLoan extends HttpServlet {
         String amountParam = validate.normalizeInput(request.getParameter("amount"));
         Part imagePart = request.getPart("incomeVertification");
         String fileType = imagePart.getContentType();
-        List<String> errorMessages = new ArrayList<>();
-        if (currentAccount != null) {
-            int cusId = currentAccount.getId();
 
-            // Nếu khách hàng có khoản vay quá hạn mà chưa bị blacklist thì thêm vào danh sách đen
-            if (aDao.isOverdue(cusId) && !aDao.isBlacklisted(cusId)) {
-                aDao.addToBlacklist(cusId, "Quá hạn trả nợ");
-                session.setAttribute("blacklistStatus", "Bạn đã bị chặn do quá hạn trả nợ!");
-            }
-        }
-        if (aDao.isBlacklisted(currentAccount.getId())) {
-            errorMessages.add("Bạn không thể thực hiện giao dịch vì bạn đang bị blacklist.");
-            request.setAttribute("errorMessages", errorMessages);
-            List<LoanService> listLoan = aDao.getAllLoanServiceByStatus("Approved", "DuringTime", "ASC", "", 1, 10);
-            request.setAttribute("optionLoanList", listLoan);
-            request.getRequestDispatcher("ceo/applyLoan.jsp").forward(request, response);
-            return;
-        }
         // Validate loan service ID
         int loanID = 0;
         if (loanIDParam == null || loanIDParam.trim().isEmpty()) {

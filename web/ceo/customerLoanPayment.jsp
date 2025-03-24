@@ -148,10 +148,11 @@
                                class="tab ${payType == 'Monthly' ? 'active' : ''}">Trả nợ định kỳ</a>
                             <a href="<%= request.getContextPath() %>/customerLoanPayment?loanId=${loan.id}&payType=Full" 
                                class="tab ${payType == 'Full' ? 'active' : ''}">Trả nợ toàn phần</a>
+                                <a href="<%= request.getContextPath() %>/customerLoanPayment?loanId=${loan.id}&payType=ToNow"
+                                   class="tab ${payType == 'ToNow' ? 'active' : ''}">Trả nợ tới hiện tại</a>
                         </div>
                         <div class="loan-container">
                             <div class="loan-title">Thanh Toán Khoản Vay</div>
-
                             <!-- Hiển thị thông báo nếu có -->
                             <c:if test="${not empty message}">
                                 <div class="message">${message}</div>
@@ -171,17 +172,17 @@
                                 <span class="loan-label">Số tiền đang vay:</span>
                                 <span><fmt:formatNumber value="${loan.amount}" pattern="#,##0 VND"/></span>
                             </div>
-                            
+${monthsToPay} - ${debtCount}
                             <div class="loan-detail">
                                 <span class="loan-label">Lãi suất 6 tháng đầu:</span>
                                 <span>${loan.loanId.onTermRate}%/năm</span>
                             </div>
-                            
+
                             <div class="loan-detail">
                                 <span class="loan-label">Lãi suất:</span>
                                 <span>${loan.loanId.afterTermRate}%/năm</span>
                             </div>
-                            
+
                             <div class="loan-detail">
                                 <span class="loan-label">Lãi suất quá hạn:</span>
                                 <span>${loan.loanId.penaltyRate}%/năm</span>
@@ -234,6 +235,7 @@
                                     <span><fmt:formatNumber value="${paymentAmount}"  pattern="#,##0 VND"/></span>
                                 </div>
                                 <input type="hidden" name="repayAmount" value="${paymentAmount}"/>
+                                <input type="hidden" name="monthsToPay" value="${monthsToPay}"/>
                                 <input type="hidden" name="pType" value="${payType}"/>
                                 <c:if test="${now > minDate || payType == 'Full'}">
                                     <button type="submit" class="loan-button">Xác Nhận Thanh Toán</button>

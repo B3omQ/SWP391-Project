@@ -143,7 +143,8 @@
                                                 <div class="row align-items-center">
                                                     <label class="form-label">Income Vertification</label>
                                                     <div class="md-5" style="padding-top: 10px">
-                                                        <input type="file" class="form-control-file" name="incomeVertification" accept=".zip"> 
+                                                        <input type="file" class="form-control-file" id="fileInput" name="incomeVertification" accept=".zip"> 
+                                                        <small id="fileError" style="color: red;"></small>
                                                     </div>
                                                 </div><!--end row-->
 
@@ -165,9 +166,12 @@
                                                 <div id="options-container">
                                                     <div class="option" data-loan-id="${optionLoan.id}" data-months="1" data-rate="0.5%" data-date="10/04/2025">
                                                         <strong>${optionLoan.loanServiceName}</strong><br>
-                                                        ${optionLoan.duringTime} Tháng - ${optionLoan.onTermRate}%/năm <br>
-                                                        <small>${optionLoan.minimumLoan} VND - ${optionLoan.maximumLoan} VND</small><br>
-                                                        <small>Ngày đáo hạn: 10/12/2025</small>
+                                                        ${optionLoan.duringTime} Tháng - Lãi suất: ${optionLoan.afterTermRate}%/năm <br>
+                                                        <c:if test="${optionLoan.loanTypeRepay == 'Amortized Loan'}">
+                                                        Lãi suất ưu đãi: ${optionLoan.onTermRate}%/năm<br>
+                                                        </c:if>
+                                                        Hạn mức: <span><fmt:formatNumber value="${optionLoan.minimumLoan}" pattern="#,##0 VND"/> - 
+                                                            <fmt:formatNumber value="${optionLoan.maximumLoan}" pattern="#,##0 VND"/></span>
                                                     </div>
                                                 </div>
                                             </c:forEach>
@@ -255,21 +259,32 @@
                 });
             });
         </script>
-<script>
-function updateDisplay() {
-    let input = document.getElementById("amountInput");
-    let display = document.getElementById("formattedAmount");
+        <script>
+            function updateDisplay() {
+                let input = document.getElementById("amountInput");
+                let display = document.getElementById("formattedAmount");
 
-    let value = input.value;
-    if (value === "") {
-        display.innerText = "0 VND";
-        return;
-    }
+                let value = input.value;
+                if (value === "") {
+                    display.innerText = "0 VND";
+                    return;
+                }
 
-    let formattedValue = new Intl.NumberFormat("vi-VN").format(value);
-    display.innerText = formattedValue + " VND";
-}
-</script>
+                let formattedValue = new Intl.NumberFormat("vi-VN").format(value);
+                display.innerText = formattedValue + " VND";
+            }
+        </script>
+        <script>
+            document.getElementById('fileInput').addEventListener('change', function () {
+                const file = this.files[0];
+                const maxSize = 5 * 1024 * 1024; // 5MB
+
+                if (file.size > maxSize) {
+                    alert('❌ File quá lớn! Chỉ chấp nhận file tối đa 5MB.');
+                    this.value = ''; // Xóa file đã chọn
+                }
+            });
+        </script>
     </body>
 
 </html>

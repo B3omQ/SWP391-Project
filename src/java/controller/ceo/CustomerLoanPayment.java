@@ -18,6 +18,7 @@ import model.LoanServiceUsed;
 import controller.calculation.InterestCalculator;
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.temporal.ChronoUnit;
 
 /**
@@ -68,23 +69,25 @@ public class CustomerLoanPayment extends HttpServlet {
         HttpSession session = request.getSession();
         String payType = request.getParameter("payType");
         if (payType == null || payType.trim().isEmpty()) {
-            payType = (String) session.getAttribute("payTypeSession");
             if (payType == null) {
                 payType = "Monthly";
             }
-        } else {
-            session.setAttribute("payTypeSession", payType);
-        }
+        } 
+        request.setAttribute("payType", payType);
+
         String loanServiceUsedId = request.getParameter("loanId");
         LoanServiceUsed loan = dao.getLoanServiceUsedById(Integer.parseInt(loanServiceUsedId));
         request.setAttribute("loan", loan);
-        request.setAttribute("payType", payType);
+
         // Tinh tien lai dinh ky 
         BigDecimal interestAmount = InterestCalculator.calculateMonthlyInterestPayment(loan);
         request.setAttribute("interestAmount", interestAmount);
         // Tinh thoi gian thanh toan dinh ky
         LocalDate startDate = loan.getStartDate().toLocalDateTime().toLocalDate();
-        int debtCount = dao.getNumberOfLoanPaymentByLoanId(loan.getId());
+        
+        // Tinh debt count de xac dinh da tra duoc tien cho bao nhieu thang -> xac dinh ngay tra no dinh ky tiep theo
+        int debtCount = InterestCalculator.getDebtCount(loan);
+        
         LocalDate minLocalDate = startDate.plusMonths(debtCount);
         LocalDate dueLocalDate = startDate.plusMonths(debtCount + 1);
         // Chuyển LocalDate thành Timestamp
@@ -103,7 +106,7 @@ public class CustomerLoanPayment extends HttpServlet {
             // Tính nợ lãi quá hạn
             long overdueDays = ChronoUnit.DAYS.between(dueLocalDate, today);
             request.setAttribute("overdueDays", overdueDays);
-            overdueInterestDebt = InterestCalculator.calculateOverdueInterestDebt(loan,interestAmount, overdueDays);
+            overdueInterestDebt = InterestCalculator.calculateOverdueInterestDebt(loan, interestAmount, overdueDays);
         }
         LocalDate endDate = loan.getEndDate().toLocalDateTime().toLocalDate();
         // Kiểm tra nếu đã quá hạn tổng (tức là đã quá hạn cuối cùng của khoản vay)
@@ -116,11 +119,28 @@ public class CustomerLoanPayment extends HttpServlet {
         }
         request.setAttribute("overdueInterestDebt", overdueInterestDebt);
         request.setAttribute("overduePrincipal", overduePrincipal);
+
+        // Tính tổng số tháng cần thanh toán đến hết tháng hiện tại
+        long monthsToPay = ChronoUnit.MONTHS.between(minLocalDate, today) + 1;
+//        if (today.getDayOfMonth() < dueLocalDate.getDayOfMonth()) {
+//            monthsToPay--; // Nếu chưa đến ngày thanh toán kỳ tiếp theo, giảm 1 kỳ
+//        }
+        // Đảm bảo không vượt quá thời gian khoản vay
+        monthsToPay = Math.min(monthsToPay, loan.getLoanId().getDuringTime() - debtCount);
+        if (payType.equalsIgnoreCase("Monthly")) {
+            monthsToPay = 1;
+        }
+        request.setAttribute("monthsToPay", monthsToPay);
+        request.setAttribute("debtCount", debtCount);
+
         // Tong so tien phai tra = tong goc + lai + no lai 
         BigDecimal paymentAmount = InterestCalculator.calculateTotalPaymentMonthly(loan);
+        if (monthsToPay > 1) {
+            paymentAmount = InterestCalculator.calculateTotalPaymentMonths(loan, (int) monthsToPay);
+        }
         if (payType.equalsIgnoreCase("Full")) {
             int count = 0;
-            if (today.isBefore(dueLocalDate)) {
+            if (today.isBefore(endDate)) {
                 count = loan.getLoanId().getDuringTime() - debtCount;
             }
             paymentAmount = InterestCalculator.calculateTotalPayment(loan, count);
@@ -148,6 +168,8 @@ public class CustomerLoanPayment extends HttpServlet {
         request.setAttribute("paymentAmount", repayAmountStr);
         String payType = request.getParameter("pType");
         LoanServiceUsed loan = dao.getLoanServiceUsedById(Integer.parseInt(loanIdStr));
+        String monthsToPayStr = request.getParameter("monthsToPay");
+        int monthsToPay = Integer.parseInt(monthsToPayStr);
 
         if (loanIdStr == null || repayAmountStr == null || loanIdStr.isEmpty() || repayAmountStr.isEmpty()) {
             request.setAttribute("errorMess", "Thông tin không hợp lệ!");
@@ -163,8 +185,8 @@ public class CustomerLoanPayment extends HttpServlet {
                 return;
             }
             // Thanh toan khoan vay
-            BigDecimal newDebtRepayAmount = InterestCalculator.calculateBaseDebtRemain(loan);
-            if(payType.equalsIgnoreCase("Full")) {
+            BigDecimal newDebtRepayAmount = InterestCalculator.calculateBaseDebtRemain(loan, monthsToPay);
+            if (payType.equalsIgnoreCase("Full")) {
                 newDebtRepayAmount = BigDecimal.ZERO;
             }
             boolean isSuccessPayment = dao.customerPayLoan(newDebtRepayAmount, loan.getId());
