@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en">
 
@@ -195,55 +196,76 @@
                 <div class="container-fluid">
                     <div class="layout-specing">
                         <!-- Header Section -->
-                        </br>
-                        <div class="row mb-4">
-                            <div class="col-12">
-                                <h2 class="text-primary">Deposit Options</h2>
+
+                        <div class="row align-items-center">
+                            <!-- Title & Breadcrumb -->
+                            <div class="col-md-6">
+                                <h5 class="mb-0">Trang quản lí dịch vụ gói gửi tiết kiệm</h5>
+                                <nav aria-label="breadcrumb" class="mt-2">
+                                    <ul class="breadcrumb breadcrumb-muted bg-transparent rounded mb-0 p-0">
+                                        <li class="breadcrumb-item">
+                                            <a href="#" class="text-decoration-none text-danger">SmartBanking</a>
+                                        </li>
+                                        <li class="breadcrumb-item">
+                                            <a href="#" class="text-decoration-none text-danger">Dịch vụ gửi tiết kiệm</a>
+                                        </li>
+                                        <li class="breadcrumb-item active" aria-current="page">Danh sách các gói dịch vụ</li>
+                                    </ul>
+                                </nav>
+                            </div>
+
+                            <!-- Search form -->
+                            <div class="col-md-6">
+                                <form id="sort" action="dep-option-service" method="get" class="d-flex">
+                                    <select class="form-select me-2" name="pendingStatus" onchange="onChangeSubmit('sort')" id="status">
+                                        <option value="Approved" ${currentStatus == 'Approved' || empty currentStatus ? 'selected' : ''}>Phê duyệt</option>
+                                        <option value="Denied" ${currentStatus == 'Denied' ? 'selected' : ''}>Từ chối</option>
+                                        <option value="Pending" ${currentStatus == 'Pending' ? 'selected' : ''}>Đang chờ</option>
+                                    </select>   
+                                    <select class="form-select me-2" name="sortBy" onchange="onChangeSubmit('sort')" id="sorBy">
+                                        <option value="DuringTime" ${currentSort == 'DuringTime' || empty currentSort ? 'selected' : ''}>Tháng</option>
+                                        <option value="MinimumDep" ${currentSort == 'MinimumDep' ? 'selected' : ''}>Giá trị gửi tối thiểu</option>
+                                    </select>     
+                                    <select class="form-select me-2" name="order" onchange="onChangeSubmit('sort')" id="order">
+                                        <option value="ASC" ${currentOrder == 'ASC' || empty currentOrder ? 'selected' : ''}>Tăng dần</option>
+                                        <option value="DESC" ${currentOrder == 'DESC' ? 'selected' : ''}>Giảm dần</option>
+                                    </select> 
+                                    <button class="btn btn-outline-primary w-100" type="button" 
+                                            onclick="window.location.href = './dep-option-service?pendingStatus=&sortBy=&order='">
+                                        Đặt lại
+                                    </button>
+                                </form>
                             </div>
                         </div>
+                        </br>                        
 
                         <!-- Title & Dropdown -->
-                        <div class="row align-items-center mb-4">
-                            <form id="sort" action="dep-option-service" method="get" class="d-flex">
-                                <select class="form-select me-2" name="pendingStatus" onchange="onChangeSubmit('sort')" id="status">
-                                    <option value="Approved" ${currentStatus == 'Approved' || empty currentStatus ? 'selected' : ''}>Approved</option>
-                                    <option value="Denied" ${currentStatus == 'Denied' ? 'selected' : ''}>Denied</option>
-                                    <option value="Pending" ${currentStatus == 'Pending' ? 'selected' : ''}>Pending</option>
-                                </select>   
-                                <select class="form-select me-2" name="sortBy" onchange="onChangeSubmit('sort')" id="sorBy">
-                                    <option value="DuringTime" ${currentSort == 'DuringTime' || empty currentSort ? 'selected' : ''}>Months</option>
-                                    <option value="MinimumDep" ${currentSort == 'MinimumDep' ? 'selected' : ''}>MinMoneyDep</option>
-                                </select>     
-                                <select class="form-select me-2" name="order" onchange="onChangeSubmit('sort')" id="order">
-                                    <option value="ASC" ${currentOrder == 'ASC' || empty currentOrder ? 'selected' : ''}>Asc</option>
-                                    <option value="DESC" ${currentOrder == 'DESC' ? 'selected' : ''}>Desc</option>
-                                </select> 
-                            </form>
-                        </div>
+
+
+
                         <!-- Deposit Options List -->                     
                         <div class="row">
                             <c:choose>
                                 <c:when test="${empty depOptionServiceList}">
-                                    <div class="col-12 text-center text-muted fw-bold">Search list is empty</div>
+                                    <div class="col-12 text-center text-muted fw-bold">Danh sách trống.</div>
                                 </c:when>
                                 <c:otherwise>
                                     <c:forEach var="dep" items="${depOptionServiceList}" varStatus="status">
                                         <div class="col-md-6 mb-4">
                                             <div class="card bubble wow fadeInUp" data-id="${dep.id}" data-wow-delay="${status.index * 0.1}s">
-                                                <div class="card-body position-relative" >
-                                                    <!-- Biểu tượng xóa -->
+                                                <div class="card-body position-relative">
                                                     <c:if test="${dep.pendingStatus != 'Approved'}">
                                                         <i class="fas fa-trash delete-icon" style="position: absolute; top: 10px; right: 10px; cursor: pointer;"></i>
                                                     </c:if>
                                                     <div class="row align-items-center">
                                                         <div class="col-4 text-center" style="border-right: 2px solid rgba(0, 0, 0, 0.1); ">
-                                                            <a class="" style="font-size: 4rem; font-weight: bold; color: black"> ${dep.duringTime}</a>
+                                                            <a class="" style="font-size: 4rem; font-weight: bold; color: black">${dep.duringTime}</a>
                                                             <p class="text-muted">tháng</p>
                                                         </div>
                                                         <div class="col-8" style="text-align: right">
-                                                            <p><strong>Số tiền tối thiểu (VNĐ):</strong> ${dep.minimumDep}</p>
+                                                            <p><strong>Số tiền tối thiểu (VNĐ):</strong> <fmt:formatNumber value="${dep.minimumDep}" type="number" groupingUsed="true" /></p>
                                                             <p><strong>Lãi suất thấp nhất:</strong> ${dep.savingRateMinimum}%</p>
-                                                            <p><strong>Lãi suất:</strong> ${dep.savingRate}%</p> 
+                                                            <p><strong>Lãi suất:</strong>${dep.savingRate}%</p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -252,7 +274,7 @@
                                     </c:forEach>
                                 </c:otherwise>
                             </c:choose>
-                        </div>
+                        </div>                
                     </div>
                 </div>
                 <!-- Footer Start -->
@@ -271,41 +293,41 @@
         <script src="./resources/script/script.js"></script>
 
         <script>
-                                            new WOW().init();
+                                                new WOW().init();
 
-                                            $(document).ready(function () {
+                                                $(document).ready(function () {
 
-                                                showToastrAfterReload();
-                                                // Handle bubble click to review
-                                                $('.bubble').on('click', function () {
-                                                    var depId = $(this).data('id');
-                                                    window.location.href = 'view-dep-option?depId=' + depId;
-                                                });
+                                                    showToastrAfterReload();
+                                                    // Handle bubble click to review
+                                                    $('.bubble').on('click', function () {
+                                                        var depId = $(this).data('id');
+                                                        window.location.href = 'view-dep-option?depId=' + depId;
+                                                    });
 
-                                                // Handle delete icon click
-                                                $('.delete-icon').on('click', function (event) {
-                                                    event.stopPropagation(); // Prevent bubble click event
-                                                    var depId = $(this).closest('.bubble').data('id');
-                                                    var column = $(this).closest('.col-md-6');
-                                                    if (confirm("Are you sure you want to delete this option?")) {
-                                                        $.ajax({
-                                                            url: 'dep-option-service',
-                                                            type: 'POST',
-                                                            data: {delete: depId},
-                                                            success: function (response) {
-                                                                if (response.success) {
-                                                                    reloadWithMessage("success", "Success", "Deleted!");
-                                                                } else {
-                                                                    showErrorMessage("Error", "Something wrong here");
+                                                    // Handle delete icon click
+                                                    $('.delete-icon').on('click', function (event) {
+                                                        event.stopPropagation(); // Prevent bubble click event
+                                                        var depId = $(this).closest('.bubble').data('id');
+                                                        var column = $(this).closest('.col-md-6');
+                                                        if (confirm("Are you sure you want to delete this option?")) {
+                                                            $.ajax({
+                                                                url: 'dep-option-service',
+                                                                type: 'POST',
+                                                                data: {delete: depId},
+                                                                success: function (response) {
+                                                                    if (response.success) {
+                                                                        reloadWithMessage("success", "Success", "Deleted!");
+                                                                    } else {
+                                                                        showErrorMessage("Error", "Something wrong here");
+                                                                    }
+                                                                },
+                                                                error: function () {
+                                                                    showErrorMessage("Error", "Server is busy right now. Please try again later.");
                                                                 }
-                                                            },
-                                                            error: function () {
-                                                                showErrorMessage("Error", "Server is busy right now. Please try again later.");
-                                                            }
-                                                        });
-                                                    }
+                                                            });
+                                                        }
+                                                    });
                                                 });
-                                            });
         </script>
 
         <!-- page-wrapper -->

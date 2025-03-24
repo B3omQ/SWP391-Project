@@ -13,62 +13,76 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.Customer;
+import org.json.JSONArray;
+import util.WordFilter;
 
 /**
  *
  * @author LAPTOP
  */
 public class CustomerReview extends HttpServlet {
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.getRequestDispatcher("./customer/Review.jsp").forward(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
-protected void doPost(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-    response.setContentType("application/json");
-    response.setCharacterEncoding("UTF-8");
-    CustomerReviewDAO crdao = new CustomerReviewDAO();
-    HttpSession session = request.getSession();
-    Customer currentAccount = (Customer) session.getAttribute("account");
-    
-    try{
-        String rateStr = request.getParameter("rate");
-        String review = request.getParameter("review");
-        int rate = Integer.parseInt(rateStr);
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
         
-        crdao.addReview(currentAccount.getId(), rate, review);
+        CustomerReviewDAO crdao = new CustomerReviewDAO();
+        HttpSession session = request.getSession();
+        Customer currentAccount = (Customer) session.getAttribute("account");
         
+        PrintWriter out = response.getWriter();
         
-    }catch (Exception e) {
-                e.printStackTrace();
+        try {
+            if (currentAccount == null) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                out.print("{\"error\": \"Please login first\"}");
+                return;
             }
-    doGet(request, response);
-}
+            
+            String rateStr = request.getParameter("rate");
+            String review = request.getParameter("review");
+            
+            if (rateStr == null || review == null) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                out.print("{\"error\": \"Missing required parameters\"}");
+                return;
+            }
+            
+            int rate = Integer.parseInt(rateStr);
+            
+            // Server-side validation
+            if (review.length() > 500) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                out.print("{\"error\": \"Review exceeds 500 characters\"}");
+                return;
+            }
+            
+            crdao.addReview(currentAccount.getId(), rate, review);
+            
+            response.setStatus(HttpServletResponse.SC_OK);
+            out.print("{\"message\": \"Review submitted successfully\"}");
+            
+        } catch (NumberFormatException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            out.print("{\"error\": \"Invalid rating format\"}");
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            out.print("{\"error\": \"Server error occurred\"}");
+            e.printStackTrace();
+        } finally {
+            out.flush();
+        }
+    }
 
     @Override
     public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
+        return "Customer Review Servlet";
+    }
 }

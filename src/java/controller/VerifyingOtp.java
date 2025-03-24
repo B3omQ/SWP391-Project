@@ -8,18 +8,12 @@ import dal.CustomerDAO;
 import dal.DepServiceUsedDAO;
 import dal.DepHistoryDAO;
 import model.Customer;
-import model.DepServiceUsed;
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.List;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import controller.calculation.InterestCalculator;
 import java.io.PrintWriter;
 import model.Staff;
 
@@ -28,6 +22,7 @@ import model.Staff;
  * @author emkob
  */
 public class VerifyingOtp extends HttpServlet {
+
     private CustomerDAO customerDAO = new CustomerDAO();
     private DepServiceUsedDAO depServiceUsedDAO = new DepServiceUsedDAO();
     private DepHistoryDAO depHistoryDAO = new DepHistoryDAO();
@@ -81,67 +76,76 @@ public class VerifyingOtp extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-protected void doPost(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-    HttpSession session = request.getSession();
-    String userOtp = request.getParameter("otp");
-    String generatedOtp = (String) session.getAttribute("otp");
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        String userOtp = request.getParameter("otp");
+        String generatedOtp = (String) session.getAttribute("otp");
+        try {
+            String otpChangePass = request.getParameter("otpChangePass");
+            if (otpChangePass != null) {
+                if (userOtp != null && userOtp.equals(generatedOtp)) {
+                    session.removeAttribute("otp");
+                    response.sendRedirect("change-email");
+                    return;
+                } else {
+                    session.setAttribute("otpError", "Mã OTP không đúng, vui lòng thử lại!");
+                    response.sendRedirect(request.getContextPath() + "/auth/template/otpEmail.jsp");
+                }
+            }
 
-    try {
-        String otpChangePass = request.getParameter("otpChangePass");
-        if (otpChangePass != null) {
+            if (generatedOtp == null) {
+                response.sendRedirect("auth/template/login.jsp");
+                return;
+            }
+
             if (userOtp != null && userOtp.equals(generatedOtp)) {
                 session.removeAttribute("otp");
-                response.sendRedirect("change-email");
-                return;
+                if (session.getAttribute("staff") != null) {
+                    Staff staff = (Staff) session.getAttribute("staff");
+                    if (staff.getRoleId().getId() == 1) {
+                        response.sendRedirect("home");
+                    }
+                    if (staff.getRoleId().getId() == 2) {
+                        response.sendRedirect("home");
+                    }
+                    if (staff.getRoleId().getId() == 3) {
+                        response.sendRedirect("home");
+                    }
+                    if (staff.getRoleId().getId() == 4) {
+                        response.sendRedirect("home");
+                    }
+                    if (staff.getRoleId().getId() == 5) {
+                        response.sendRedirect("");
+                    }
+                } else {
+                    response.sendRedirect("home");
+                }
             } else {
                 session.setAttribute("otpError", "Mã OTP không đúng, vui lòng thử lại!");
-                response.sendRedirect(request.getContextPath() + "/auth/template/otpEmail.jsp");
-                return;
+                response.sendRedirect(request.getContextPath() + "/auth/template/otp.jsp");
             }
-        }
 
-        if (generatedOtp == null) {
-            response.sendRedirect("auth/template/login.jsp");
-            return;
-        }
+            if (userOtp != null && userOtp.equals(generatedOtp)) {
+                session.removeAttribute("otp");
 
-        if (userOtp != null && userOtp.equals(generatedOtp)) {
-            session.removeAttribute("otp");
-            if (session.getAttribute("staff") != null) {
-                Staff staff = (Staff) session.getAttribute("staff");
-                if (staff.getRoleId().getId() == 1) {
-                    response.sendRedirect("accountant/home.jsp");
-                    return;
-                }
-                if (staff.getRoleId().getId() == 2) {
-                    response.sendRedirect(""); 
-                    return;
-                }
-                if (staff.getRoleId().getId() == 3) {
-                    response.sendRedirect("profile-manager");
-                    return;
-                }
-                if (staff.getRoleId().getId() == 4) {
-                    response.sendRedirect("profile-admin");
-                    return;
-                }
-                if (staff.getRoleId().getId() == 5) {
-                    response.sendRedirect(""); 
-                    return;
+                if (session.getAttribute("staff") != null) {
+                    // Staff không có tiết kiệm, chuyển hướng thẳng
+                    response.sendRedirect("home");
+                } else {
+                    // Customer: Xử lý đáo hạn trước khi chuyển hướng
+                    Customer customer = (Customer) session.getAttribute("account");
+                    if (customer != null) {
+                    }
+                    response.sendRedirect("home");
                 }
             } else {
-                response.sendRedirect("customer/Customer.jsp");
-                return;
+                session.setAttribute("otpError", "Mã OTP không đúng, vui lòng thử lại!");
+                response.sendRedirect(request.getContextPath() + "/auth/template/otp.jsp");
             }
-        } else {
-            session.setAttribute("otpError", "Mã OTP không đúng, vui lòng thử lại!");
-            response.sendRedirect(request.getContextPath() + "/auth/template/otp.jsp");
-            return;
+        }catch(Exception e) {
+            System.out.println(e);
         }
-    } catch (Exception e) {
-        e.printStackTrace();
     }
-}
 
 }

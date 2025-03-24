@@ -11,20 +11,31 @@ import java.math.BigDecimal;
  * @author JIGGER
  */
 public class DepService {
-    
+
     private int id;
-    private String depServiceName; 
+    private String depServiceName;
     private String description;
     private BigDecimal minimumDep;
     private int duringTime;
     private double savingRate;
     private double savingRateMinimum;
-    private String reasonReject; 
+    private String reasonReject;
     private String pendingStatus;
 
+    // Default constructor
     public DepService() {
     }
 
+    // Constructor with minimal fields
+    public DepService(int id, String description, BigDecimal minimumDep, int duringTime, double savingRate) {
+        this.id = id;
+        this.description = description;
+        this.minimumDep = minimumDep;
+        this.duringTime = duringTime;
+        this.savingRate = savingRate;
+    }
+
+    // Constructor with all fields
     public DepService(int id, String depServiceName, String description, BigDecimal minimumDep, 
                       int duringTime, double savingRate, double savingRateMinimum, 
                       String reasonReject, String pendingStatus) {
@@ -39,15 +50,7 @@ public class DepService {
         this.pendingStatus = pendingStatus;
     }
 
-    public DepService(int id, String description, BigDecimal minimumDep, int duringTime, double savingRate) {
-        this.id = id;
-        this.description = description;
-        this.minimumDep = minimumDep;
-        this.duringTime = duringTime;
-        this.savingRate = savingRate;
-    }
-
-    // Getters và Setters
+    // Getters and Setters
     public int getId() {
         return id;
     }

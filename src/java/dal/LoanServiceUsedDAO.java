@@ -73,6 +73,68 @@ public class LoanServiceUsedDAO extends DBContext {
         return loanList;
     }
 
+    public List<LoanServiceUsed> getLoanServiceUsed(int offset, int recordsPerPage, String status, String phone) {
+        List<LoanServiceUsed> loanList = new ArrayList<>();
+        String sql = """
+                 SELECT * 
+                 FROM LoanServiceUsed lsu JOIN Customer c ON lsu.CusId = c.Id
+                 """;
+
+        if (status != null && !status.isEmpty()) {
+            sql += " WHERE [LoanStatus] = '" + status + "'";
+        }
+
+        if (phone != null && !phone.isEmpty()) {
+            sql += " AND [Phone] = '" + phone + "'";
+        }
+
+        String pagination = """
+                ORDER BY lsu.Id
+                OFFSET ? ROWS
+                FETCH NEXT ? ROWS ONLY;
+                """;
+
+        sql += pagination;
+
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, offset);
+            st.setInt(2, recordsPerPage);
+
+            try (ResultSet rs = st.executeQuery()) {
+                while (rs.next()) {
+                    int loanServiceId = rs.getInt("LoanId");
+                    LoanService loanService = loanServiceDAO.getLoanServiceById(loanServiceId);
+                    int customerId = rs.getInt("CusId");
+                    Customer customer = customerDAO.getCustomerById(customerId);
+                    LoanServiceUsed loan = new LoanServiceUsed(
+                            rs.getInt("Id"),
+                            loanService,
+                            customer,
+                            rs.getBigDecimal("Amount"),
+                            rs.getTimestamp("StartDate"),
+                            rs.getTimestamp("EndDate"),
+                            rs.getInt("DateExpiredCount"),
+                            rs.getBigDecimal("DebtRepayAmount"),
+                            rs.getString("IncomeVertification"),
+                            rs.getString("LoanStatus")
+                    );
+                    loanList.add(loan);
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return loanList;
+    }
+
+    public static void main(String[] args) {
+        LoanServiceUsedDAO l = new LoanServiceUsedDAO();
+        List<LoanServiceUsed> list = l.getLoanServiceUsed(0, 10, "Approved", "");
+        for (LoanServiceUsed o : list) {
+            System.out.println(o);
+        }
+    }
+
     public int totalLoanServiceUsed(String status) {
         String sql = "SELECT COUNT(*) FROM [dbo].[LoanServiceUsed]";
 

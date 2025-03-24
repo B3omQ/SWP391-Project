@@ -136,6 +136,13 @@ public class DepHistoryDAO extends DBContext {
         System.out.println("[DEBUG] Total history records found: " + historyList.size());
         return historyList;
     }
+    
+    public static void main(String[] args) {
+        DepHistoryDAO d = new DepHistoryDAO();
+        List<DepHistory> list = d.getDepHistoryByCustomerId(42);
+        for(DepHistory o : list) {
+            System.out.println(o);}
+    }
 
     /**
      * Lấy danh sách giao dịch nạp tiền theo CustomerId

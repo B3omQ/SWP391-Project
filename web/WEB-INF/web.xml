@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
+    <!-- Servlet Definitions -->
     <servlet>
         <servlet-name>HomeServlet</servlet-name>
         <servlet-class>controller.HomeServlet</servlet-class>
@@ -137,12 +138,40 @@
         <servlet-class>controller.ceo.CeoProfileServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>IdentityInformationController</servlet-name>
+        <servlet-class>controller.customer.IdentityInformationController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>IdentityCustomerManagement</servlet-name>
+        <servlet-class>controller.userManagementAdmin.IdentityCustomerManagement</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>IdentityInformationSwitchCase</servlet-name>
+        <servlet-class>controller.customer.IdentityInformationSwitchCase</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>OnlineSupport</servlet-name>
         <servlet-class>controller.OnlineSupport</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ChatFilter</servlet-name>
         <servlet-class>filter.ChatFilter</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddLoanOption</servlet-name>
+        <servlet-class>controller.manager.AddLoanOption</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewLoanOption</servlet-name>
+        <servlet-class>controller.manager.ViewLoanOption</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CustomerLoanServiceManagement</servlet-name>
+        <servlet-class>controller.manager.CustomerLoanServiceManagement</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CustomerDepServiceManagement</servlet-name>
+        <servlet-class>controller.manager.CustomerDepServiceManagement</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Disbursement</servlet-name>
@@ -188,6 +217,7 @@
         <servlet-name>AutoProfitServlet</servlet-name>
         <servlet-class>controller.customer.AutoProfitServlet</servlet-class>
     </servlet>
+    <!-- Servlets from HEAD -->
     <servlet>
         <servlet-name>DirectDepositServlet</servlet-name>
         <servlet-class>controller.customer.DirectDepositServlet</servlet-class>
@@ -200,22 +230,24 @@
         <servlet-name>DirectDepositManageServlet</servlet-name>
         <servlet-class>controller.accountant.DirectDepositManageServlet</servlet-class>
     </servlet>
-    <servlet-mapping>
-        <servlet-name>HomeServlet</servlet-name>
-        <url-pattern>/home</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ConsultantAddCustomer</servlet-name>
-        <url-pattern>/consultant-customer</url-pattern>
-    </servlet-mapping>
+    <!-- Servlets from master -->
+    <servlet>
+        <servlet-name>ChatHistoryManagement</servlet-name>
+        <servlet-class>controller.manager.ChatHistoryManagement</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ChatLogCustomer</servlet-name>
+        <servlet-class>controller.consultant.ChatLogCustomer</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ChatLogConsultant</servlet-name>
+        <servlet-class>controller.customer.ChatLogConsultant</servlet-class>
+    </servlet>
+    <!-- Additional Servlets -->
     <servlet>
         <servlet-name>ProfileManager</servlet-name>
         <servlet-class>controller.manager.ProfileManager</servlet-class>
     </servlet>
-    <servlet-mapping>
-        <servlet-name>ProfileManager</servlet-name>
-        <url-pattern>/profile-manager</url-pattern>
-    </servlet-mapping>
     <servlet>
         <servlet-name>AuthServlet</servlet-name>
         <servlet-class>controller.AuthServlet</servlet-class>
@@ -240,6 +272,20 @@
         <servlet-name>VNpayServlet</servlet-name>
         <servlet-class>controller.customer.VNpayServlet</servlet-class>
     </servlet>
+
+    <!-- Servlet Mappings -->
+    <servlet-mapping>
+        <servlet-name>HomeServlet</servlet-name>
+        <url-pattern>/home</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ConsultantAddCustomer</servlet-name>
+        <url-pattern>/consultant-customer</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProfileManager</servlet-name>
+        <url-pattern>/profile-manager</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AuthServlet</servlet-name>
         <url-pattern>/AuthServlet</url-pattern>
@@ -294,7 +340,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>LoanOptionService</servlet-name>
-        <url-pattern>/Loan-Option-Service</url-pattern>
+        <url-pattern>/loan-option-service</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>DepOptionService</servlet-name>
@@ -393,12 +439,40 @@
         <url-pattern>/ceoProfileServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>IdentityInformationController</servlet-name>
+        <url-pattern>/identity-information-controller</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>IdentityCustomerManagement</servlet-name>
+        <url-pattern>/identity-customer-management</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>IdentityInformationSwitchCase</servlet-name>
+        <url-pattern>/identity-information-switch-case</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>OnlineSupport</servlet-name>
         <url-pattern>/OnlineSupport</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ChatFilter</servlet-name>
         <url-pattern>/ChatFilter</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddLoanOption</servlet-name>
+        <url-pattern>/add-loan-option</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewLoanOption</servlet-name>
+        <url-pattern>/view-loan-option</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CustomerLoanServiceManagement</servlet-name>
+        <url-pattern>/customer-loan-service-management</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CustomerDepServiceManagement</servlet-name>
+        <url-pattern>/customer-dep-service-management</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Disbursement</servlet-name>
@@ -444,6 +518,7 @@
         <servlet-name>AutoProfitServlet</servlet-name>
         <url-pattern>/AutoProfitServlet</url-pattern>
     </servlet-mapping>
+    <!-- Servlet Mappings from HEAD -->
     <servlet-mapping>
         <servlet-name>DirectDepositServlet</servlet-name>
         <url-pattern>/DirectDepositServlet</url-pattern>
@@ -456,19 +531,36 @@
         <servlet-name>DirectDepositManageServlet</servlet-name>
         <url-pattern>/DirectDepositManageServlet</url-pattern>
     </servlet-mapping>
+    <!-- Servlet Mappings from master -->
+    <servlet-mapping>
+        <servlet-name>ChatHistoryManagement</servlet-name>
+        <url-pattern>/ChatHistoryManagement</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChatLogCustomer</servlet-name>
+        <url-pattern>/ChatLogCustomer</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChatLogConsultant</servlet-name>
+        <url-pattern>/ChatLogConsultant</url-pattern>
+    </servlet-mapping>
+
+    <!-- Session Configuration -->
     <session-config>
         <session-timeout>1440</session-timeout>
-        <!-- 1440 phút = 24 giờ -->
         <cookie-config>
             <http-only>true</http-only>
             <secure>false</secure>
-            <!-- Đổi thành true nếu dùng HTTPS -->
         </cookie-config>
     </session-config>
+
+    <!-- Error Page -->
     <error-page>
         <error-code>404</error-code>
         <location>/error/404.jsp</location>
     </error-page>
+
+    <!-- Listeners -->
     <listener>
         <listener-class>controller.customer.MaturitySchedulerListener</listener-class>
     </listener>

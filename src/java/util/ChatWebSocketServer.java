@@ -12,9 +12,12 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import model.Customer;
 import model.Staff;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 @ServerEndpoint(value = "/chat", configurator = WebSocketConfigurator.class)
-public class ChatWebSocketServer {
+public class ChatWebSocketServer extends DBContext{
 
     private static final Map<String, Session> userSessions = new ConcurrentHashMap<>();
     private static final Map<String, String> userRoles = new ConcurrentHashMap<>();
@@ -106,6 +109,42 @@ public class ChatWebSocketServer {
         System.out.println("Danh sách CUSTOMER: " + customerList);
         System.out.println("Danh sách GUEST: " + guestList);
     }
+    private void saveMessageToDatabase(String sender, String senderRole, String receiver, String receiverRole, String message) {
+
+    String sql = "INSERT INTO chat_messages (sender_id, sender_type, receiver_id, receiver_type, message) " +
+                 "VALUES (?, ?, ?, ?, ?)";
+
+    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+        stmt.setInt(1, getUserId(sender, senderRole)); // Lấy ID của người gửi
+        stmt.setString(2, senderRole);
+        stmt.setInt(3, getUserId(receiver, receiverRole)); // Lấy ID của người nhận
+        stmt.setString(4, receiverRole);
+        stmt.setString(5, message);
+
+        stmt.executeUpdate();
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+}
+
+// Phương thức lấy ID người dùng dựa trên username và role
+private int getUserId(String username, String role) {
+    String sql = role.equals("customer") ? "SELECT Id FROM Customer WHERE Username = ?" :
+                 "SELECT Id FROM Staff WHERE Username = ?";
+    
+    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        
+        stmt.setString(1, username);
+        ResultSet rs = stmt.executeQuery();
+        if (rs.next()) {
+            return rs.getInt("Id");
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return -1;
+}
 
 @OnMessage
 public void onMessage(String message, Session session) {
@@ -154,11 +193,8 @@ public void onMessage(String message, Session session) {
     if ((senderRole.equals("staff") && (receiverRole.equals("customer") || receiverRole.equals("guest")))
             || ((senderRole.equals("customer") || senderRole.equals("guest")) && receiverRole.equals("staff"))) {
         // Xử lý tin nhắn ảnh
-        if (chatMessage.startsWith("IMAGE")) {
-            sendMessageToSession(receiverSession, sender + ": " + chatMessage); // Gửi tin nhắn ảnh với sender
-        } else {
             sendMessageToSession(receiverSession, sender + ": " + chatMessage); // Gửi tin nhắn văn bản
-        }
+            saveMessageToDatabase(sender, senderRole, receiver, receiverRole,chatMessage);
         // Gửi xác nhận cho sender
 //        sendMessageToSession(session, "Hệ thống: Tin nhắn đã được gửi tới " + receiver);
     } else {

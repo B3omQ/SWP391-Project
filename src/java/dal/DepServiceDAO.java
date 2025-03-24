@@ -1,6 +1,6 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nvarchar/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Click nbfs://SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package dal;
 
@@ -21,11 +21,10 @@ public class DepServiceDAO extends DBContext {
 
     public List<DepService> getAllDepService() {
         List<DepService> list = new ArrayList<>();
-
         String sql = """
-                      SELECT Id, DepServiceName, Description, MinimumDep, DuringTime, SavingRate, 
-                             SavingRateMinimum, ReasonReject, PendingStatus
-                      FROM BankingSystem.dbo.DepService""";
+                     SELECT Id, DepServiceName, Description, MinimumDep, DuringTime, SavingRate, 
+                            SavingRateMinimum, ReasonReject, PendingStatus
+                     FROM BankingSystem.dbo.DepService""";
 
         try (PreparedStatement st = connection.prepareStatement(sql);
              ResultSet rs = st.executeQuery()) {
@@ -52,15 +51,14 @@ public class DepServiceDAO extends DBContext {
 
     public List<DepService> getAllDepServiceByStatus(String status, String sortBy, String order) {
         List<DepService> list = new ArrayList<>();
-
         String sql = """
-                      SELECT Id, DepServiceName, Description, MinimumDep, DuringTime, SavingRate, 
-                             SavingRateMinimum, ReasonReject, PendingStatus
-                      FROM BankingSystem.dbo.DepService
-                      WHERE PendingStatus = ?""";
-        
+                     SELECT Id, DepServiceName, Description, MinimumDep, DuringTime, SavingRate, 
+                            SavingRateMinimum, ReasonReject, PendingStatus
+                     FROM BankingSystem.dbo.DepService
+                     WHERE PendingStatus = ?""";
+
         if ("DuringTime".equalsIgnoreCase(sortBy)) {
-            sql += " ORDER BY [DuringTime] " + order;        
+            sql += " ORDER BY [DuringTime] " + order;
         } else {
             sql += " ORDER BY [MinimumDep] " + order;
         }
@@ -137,7 +135,7 @@ public class DepServiceDAO extends DBContext {
         String sql = """
                      INSERT INTO BankingSystem.dbo.DepService
                      (DepServiceName, Description, MinimumDep, DuringTime, SavingRate, SavingRateMinimum, ReasonReject, PendingStatus)
-                     VALUES (?, ?, ?, ?, ?, ?, ?, ?);""";
+                     VALUES (?, ?, ?, ?, ?, ?, ?, ?)""";
         try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setString(1, depServiceName);
             st.setString(2, description);
@@ -159,6 +157,7 @@ public class DepServiceDAO extends DBContext {
     public static void main(String[] args) {
         DepServiceDAO d = new DepServiceDAO();
         List<DepService> list = d.getAllDepServiceByStatus("Pending", "DuringTime", "ASC");
+        d.createDepService("AAA", "AAAA", BigDecimal.valueOf(123), 123, 1.2, 2.3, null, "Pending");
         for (DepService o : list) {
             System.out.println(o);
         }

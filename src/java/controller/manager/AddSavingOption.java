@@ -1,6 +1,6 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ * Click nbfs://SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 package controller.manager;
 
@@ -21,29 +21,12 @@ import org.json.JSONObject;
  */
 public class AddSavingOption extends HttpServlet {
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.getRequestDispatcher("./manager/addDepOptionService.jsp").forward(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -55,11 +38,13 @@ public class AddSavingOption extends HttpServlet {
             JSONObject json = new JSONObject();
 
             try {
+                String depName = request.getParameter("depName");
                 String description = request.getParameter("description");
                 String minimumDepStr = request.getParameter("minimumDep");
                 String duringTimeStr = request.getParameter("duringTime");
                 String savingRateStr = request.getParameter("savingRate");
                 String savingRateMinimumStr = request.getParameter("savingRateMinimum");
+
                 BigDecimal minimumDep = new BigDecimal(minimumDepStr);
                 int duringTime = Integer.parseInt(duringTimeStr);
                 double savingRate = Double.parseDouble(savingRateStr);
@@ -72,7 +57,9 @@ public class AddSavingOption extends HttpServlet {
                     json.put("success", false);
                     json.put("message", "All numeric values must be greater than 0");
                 } else {
-//                    depdao.createDepService(description, minimumDep, duringTime, savingRate, savingRateMinimum);
+                    // Gọi phương thức createDepService với đầy đủ tham số
+                    depdao.createDepService(depName, description, minimumDep, duringTime, 
+                                            savingRate, savingRateMinimum, null, "Pending");
                     json.put("success", true);
                 }
 
@@ -93,14 +80,8 @@ public class AddSavingOption extends HttpServlet {
         }
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
-
+    }
 }
