@@ -195,11 +195,12 @@
                                                         <span>${loan.dateExpiredCount} tháng</span>
                                                     </div>
                                                 </c:if>
-
+                                                 <c:if test="${loanStatus == 'In processing'}">
                                                 <!-- Nút thanh toán -->
                                                 <a href="<%= request.getContextPath() %>/customerLoanPayment?loanId=${loan.id}" class="loan-button" title="Nhấn để thanh toán khoản vay">
                                                     💳 Thanh Toán
                                                 </a>
+                                                    </c:if>
                                             </div>
                                         </c:forEach>
                                     </div>

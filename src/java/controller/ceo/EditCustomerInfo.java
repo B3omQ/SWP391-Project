@@ -73,7 +73,7 @@ public class EditCustomerInfo extends HttpServlet {
         }
 
         // Get the uploaded file name
-        String fileName = filePart.getSubmittedFileName();
+        String fileName = System.currentTimeMillis() + "-" + filePart.getSubmittedFileName();
         // Combine the path and the file name
         String filePath = fileSavePath + File.separator + fileName;
         // Write the file to the specified path

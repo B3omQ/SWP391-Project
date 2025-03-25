@@ -172,7 +172,6 @@
                                 <span class="loan-label">Số tiền đang vay:</span>
                                 <span><fmt:formatNumber value="${loan.amount}" pattern="#,##0 VND"/></span>
                             </div>
-${monthsToPay} - ${debtCount}
                             <div class="loan-detail">
                                 <span class="loan-label">Lãi suất 6 tháng đầu:</span>
                                 <span>${loan.loanId.onTermRate}%/năm</span>

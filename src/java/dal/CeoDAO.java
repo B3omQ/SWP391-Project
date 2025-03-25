@@ -465,7 +465,7 @@ public class CeoDAO extends DBContext {
                 while (rs.next()) {
                     return new DepService(
                             rs.getInt("Id"),
-                            rs.getString("Description"),                            
+                            rs.getString("Description"),
                             rs.getBigDecimal("MinimumDep"),
                             rs.getInt("DuringTime"),
                             rs.getDouble("SavingRate"),
@@ -886,12 +886,12 @@ public class CeoDAO extends DBContext {
             e.printStackTrace();
         }
     }
-    
+
     // Thêm khách hàng vào danh sách đen
     public void addToBlacklist(int cusId, String reason) {
         String sql = "INSERT INTO Blacklist (CusId, Reason, BlacklistDate) VALUES (?, ?, GETDATE())";
         try (
-             PreparedStatement ps = connection.prepareStatement(sql)) {
+                PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, cusId);
             ps.setString(2, reason);
             ps.executeUpdate();
@@ -902,23 +902,28 @@ public class CeoDAO extends DBContext {
 
     // Kiểm tra khách hàng có bị blacklist không
     public boolean isBlacklisted(int cusId) {
-        String sql = "SELECT * FROM Blacklist WHERE CusId = ?";
-        try (
-             PreparedStatement ps = connection.prepareStatement(sql)) {
+        String sql = "SELECT LSU.Id FROM LoanServiceUsed LSU "
+                + "JOIN LoanService LS ON LSU.LoanId = LS.Id "
+                + "WHERE LSU.CusId = ? "
+                + "AND LSU.DebtRepayAmount != 0 "
+                + // Chỉ xét khoản vay chưa trả hết
+                "AND DATEDIFF(MONTH, LSU.EndDate, GETDATE()) > LS.GracePeriod";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, cusId);
             ResultSet rs = ps.executeQuery();
-            return rs.next();
+            return rs.next(); // Nếu có kết quả, khách hàng bị blacklist
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+        return false; // Mặc định không bị blacklist nếu có lỗi xảy ra
     }
 
     // Xóa khách hàng khỏi danh sách đen (nếu cần)
     public void removeFromBlacklist(int cusId) {
         String sql = "DELETE FROM Blacklist WHERE CusId = ?";
         try (
-             PreparedStatement ps = connection.prepareStatement(sql)) {
+                PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, cusId);
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -940,14 +945,14 @@ public class CeoDAO extends DBContext {
         }
         return count;
     }
-    
+
     public boolean isOverdue(int cusId) {
         String sql = "SELECT LSU.Id FROM LoanServiceUsed LSU "
-                   + "JOIN LoanService LS ON LSU.LoanId = LS.Id "
-                   + "WHERE LSU.CusId = ? AND DATEDIFF(DAY, LSU.EndDate, GETDATE()) > LS.GracePeriod";
+                + "JOIN LoanService LS ON LSU.LoanId = LS.Id "
+                + "WHERE LSU.CusId = ? AND DATEDIFF(DAY, LSU.EndDate, GETDATE()) > LS.GracePeriod";
 
         try (
-             PreparedStatement ps = connection.prepareStatement(sql)) {
+                PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, cusId);
             ResultSet rs = ps.executeQuery();
             return rs.next();
@@ -966,7 +971,6 @@ public class CeoDAO extends DBContext {
         System.out.println(c.isOverdue(1));
         System.out.println(c.isBlacklisted(2));
         System.out.println(c.isBlacklisted(1));
-        
 
 //        for (LoanServiceUsed x : c.getAllLoanServiceUsedByStatus("Pending", "DuringTime", "ASC", "", 1, 10)) {
 //            System.out.println(x.toString());

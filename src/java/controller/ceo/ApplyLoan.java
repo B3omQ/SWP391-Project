@@ -80,7 +80,7 @@ public class ApplyLoan extends HttpServlet {
         }
 
         // Get the uploaded file name
-        String fileName = filePart.getSubmittedFileName();
+        String fileName = System.currentTimeMillis() + "-" + filePart.getSubmittedFileName();
         // Combine the path and the file name
         String filePath = fileSavePath + File.separator + fileName;
         // Write the file to the specified path
@@ -219,6 +219,13 @@ public class ApplyLoan extends HttpServlet {
                 errorMessages.add("Invalid loan amount format.");
             }
         }
+        if (loanID != 0) {
+            if(loanAmount.compareTo(aDao.getLoanServiceById(loanID).getMinimumLoan()) < 0 || 
+                loanAmount.compareTo(aDao.getLoanServiceById(loanID).getMaximumLoan()) > 0){
+            errorMessages.add("Loan amount is not in the valid loan range.");
+        }
+        }
+        
         String image = (imagePart != null && imagePart.getSize() > 0 ? getAndSaveImg(imagePart) : null);
 
         if (imagePart.getSize() > 1024 * 1024 * 5) {

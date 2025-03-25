@@ -178,7 +178,16 @@
                                                             <td>${dep.savingRateMinimum}</td>  
                                                             <td>${dep.savingRate}</td>  
                                                             <td>${dep.duringTime}</td>  
-                                                            <td>                              
+                                                            <td>      
+                                                                <!-- Icon View Detail -->
+                                                                <a href="#" 
+                                                                   title="View Details"
+                                                                   data-bs-toggle="modal" 
+                                                                   data-bs-target="#depDetailModal" 
+                                                                   class="btn btn-icon btn-pills"
+                                                                   onclick="showDepDetail('${dep.depServiceName}', '${dep.description}')">
+                                                                    <i class="fas fa-eye"></i>
+                                                                </a>
                                                                 <c:if test="${currentStatus == 'Pending'}">
                                                                     <a href="depositApproval?id=${dep.id}&changeStatus=Approved" class="btn btn-icon btn-pills btn-soft-success">
                                                                         <i class="fas fa-check"></i>
@@ -253,6 +262,24 @@
                         </div><!--end row-->
                     </div>
                 </div>
+                <!-- Loan Detail Modal -->
+                <div class="modal fade" id="depDetailModal" tabindex="-1" aria-labelledby="depDetailModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="loanDetailModalLabel">Deposit Details</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <h5 id="modalDepName"></h5>
+                                <p id="modalDepDescription"></p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>                    
                 <!-- Footer Start -->
                 <jsp:include page="template/footer.jsp"/>
                 <!-- End -->
@@ -290,5 +317,11 @@
         <script src="<%= request.getContextPath() %>/assets/js/feather.min.js"></script>
         <!-- Main Js -->
         <script src="<%= request.getContextPath() %>/assets/js/app.js"></script>
+        <script>
+                                                   function showDepDetail(name, description) {
+                                                       document.getElementById('modalDepName').textContent = name;
+                                                       document.getElementById('modalDepDescription').textContent = description;
+                                                   }
+        </script>
     </body>
 </html>

@@ -159,9 +159,11 @@
                                                     <tr>
                                                         <th>#</th>
                                                         <th>Name</th>
+                                                        <th>Type</th>
                                                         <th>Minimum Loan</th>
                                                         <th>Maximum Loan</th>
                                                         <th>On Term Rate</th>
+                                                        <th>Rate</th>
                                                         <th>Penalty Rate</th>
                                                         <th>Term (Months)</th> 
                                                         <!-- Action -->
@@ -175,12 +177,23 @@
                                                         <tr>
                                                             <td>${loan.id}</td>
                                                             <td>${loan.loanServiceName}</td>
+                                                            <td>${loan.loanTypeRepay}</td>
                                                             <td>${loan.minimumLoan}</td>  
                                                             <td>${loan.maximumLoan}</td>  
                                                             <td>${loan.onTermRate}</td>
+                                                            <td>${loan.afterTermRate}</td>
                                                             <td>${loan.penaltyRate}</td>
                                                             <td>${loan.duringTime}</td>  
-                                                            <td>                              
+                                                            <td>                  
+                                                                <!-- Icon View Detail -->
+                                                                <a href="#" 
+                                                                   title="View Details"
+                                                                   data-bs-toggle="modal" 
+                                                                   data-bs-target="#loanDetailModal" 
+                                                                   class="btn btn-icon btn-pills"
+                                                                   onclick="showLoanDetail('${loan.loanServiceName}', '${loan.description}')">
+                                                                    <i class="fas fa-eye"></i>
+                                                                </a>
                                                                 <c:if test="${currentStatus == 'Pending'}">
                                                                     <a href="loanApproval?id=${loan.id}&changeStatus=Approved" class="btn btn-icon btn-pills btn-soft-success">
                                                                         <i class="fas fa-check"></i>
@@ -255,6 +268,24 @@
                         </div><!--end row-->
                     </div>
                 </div>
+                <!-- Loan Detail Modal -->
+                <div class="modal fade" id="loanDetailModal" tabindex="-1" aria-labelledby="loanDetailModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="loanDetailModalLabel">Loan Details</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <h5 id="modalLoanName"></h5>
+                                <p id="modalLoanDescription"></p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <!-- Footer Start -->
                 <jsp:include page="template/footer.jsp"/>
                 <!-- End -->
@@ -292,5 +323,12 @@
         <script src="<%= request.getContextPath() %>/assets/js/feather.min.js"></script>
         <!-- Main Js -->
         <script src="<%= request.getContextPath() %>/assets/js/app.js"></script>
+        <!-- JavaScript to Populate Modal -->
+        <script>
+                                                   function showLoanDetail(name, description) {
+                                                       document.getElementById('modalLoanName').textContent = name;
+                                                       document.getElementById('modalLoanDescription').textContent = description;
+                                                   }
+        </script>
     </body>
 </html>
