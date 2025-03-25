@@ -41,10 +41,10 @@ public class DepServiceUsedDAO extends DBContext {
         return list;
     }
 
-    public boolean addDepServiceUsed(DepServiceUsed dsu) {
+  public int addDepServiceUsed(DepServiceUsed dsu) {
         String sql = "INSERT INTO DepServiceUsed (DepId, CusId, DepTypeId, Amount, StartDate, EndDate, DepStatus, MaturityOption) " +
-                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?)"; // Thêm MaturityOption vào SQL
-
+                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        
         try (PreparedStatement p = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             p.setInt(1, dsu.getDepId());
             p.setInt(2, dsu.getCusId());
@@ -53,21 +53,22 @@ public class DepServiceUsedDAO extends DBContext {
             p.setTimestamp(5, dsu.getStartDate());
             p.setTimestamp(6, dsu.getEndDate());
             p.setString(7, dsu.getDepStatus());
-            p.setString(8, dsu.getMaturityAction()); // Lưu giá trị maturityAction vào MaturityOption
+            p.setString(8, dsu.getMaturityAction());
 
             int affectedRows = p.executeUpdate();
             if (affectedRows > 0) {
                 try (ResultSet generatedKeys = p.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
-                        dsu.setId(generatedKeys.getInt(1)); // Gán lại ID mới được tạo
+                        return generatedKeys.getInt(1); // Trả về ID vừa chèn
                     }
                 }
             }
-            return affectedRows > 0;
+            return -1; // Thất bại
         } catch (SQLException e) {
+            System.out.println("❌ Error adding DepServiceUsed: " + e.getMessage());
             e.printStackTrace();
+            return -1;
         }
-        return false;
     }
 
     public boolean updateDepStatus(int id, String newStatus) {

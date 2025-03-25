@@ -228,6 +228,14 @@
         <servlet-name>ChatLogConsultant</servlet-name>
         <servlet-class>controller.customer.ChatLogConsultant</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DirectDepositListServlet</servlet-name>
+        <servlet-class>controller.customer.DirectDepositListServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DirectDepositServlet</servlet-name>
+        <servlet-class>controller.customer.DirectDepositServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>HomeServlet</servlet-name>
         <url-pattern>/home</url-pattern>
@@ -511,6 +519,14 @@
     <servlet-mapping>
         <servlet-name>ChatLogConsultant</servlet-name>
         <url-pattern>/ChatLogConsultant</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DirectDepositListServlet</servlet-name>
+        <url-pattern>/DirectDepositListServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DirectDepositServlet</servlet-name>
+        <url-pattern>/DirectDepositServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>1440</session-timeout>

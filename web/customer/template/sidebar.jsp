@@ -14,8 +14,9 @@
                 <a href="javascript:void(0)"><i class="uil uil-university me-2 d-inline-block"></i>Manage Account Bank</a>
                 <div class="sidebar-submenu">
                     <ul>
-                        <li><a href="${pageContext.request.contextPath}/customer/deposit.jsp">Nạp tiền</a></li>
-                        <li><a href="${pageContext.request.contextPath}/customer/Saving.jsp">Gửi tiết kiệm</a></li>
+                         <li><a href="${pageContext.request.contextPath}/customer/deposit.jsp">Nạp tiền qua VNPay</a></li>
+            <li><a href="${pageContext.request.contextPath}/customer/direct-deposit.jsp">Nạp tiền trực tiếp</a></li>
+            <li><a href="${pageContext.request.contextPath}/customer/Saving.jsp">Gửi tiết kiệm</a></li>
                     </ul>
                 </div>
             </li>
