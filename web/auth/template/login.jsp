@@ -98,9 +98,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-lg-12 mt-3 text-center">
-                                            <h6 class="text-muted">Or</h6>
-                                        </div>  
+                                        
                                         <div class="col-12 mt-3">
                                             <div class="d-grid">
                                                 <!-- Ch?nh s?a ???ng d?n Google OAuth -->
