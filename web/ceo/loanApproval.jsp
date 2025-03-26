@@ -186,12 +186,8 @@
                                                             <td>${loan.duringTime}</td>  
                                                             <td>                  
                                                                 <!-- Icon View Detail -->
-                                                                <a href="#" 
-                                                                   title="View Details"
-                                                                   data-bs-toggle="modal" 
-                                                                   data-bs-target="#loanDetailModal" 
-                                                                   class="btn btn-icon btn-pills"
-                                                                   onclick="showLoanDetail('${loan.loanServiceName}', '${loan.description}')">
+                                                                <a href="view-loan-option?loanId=${loan.id}"                                                                    
+                                                                   class="btn btn-icon btn-pills">
                                                                     <i class="fas fa-eye"></i>
                                                                 </a>
                                                                 <c:if test="${currentStatus == 'Pending'}">

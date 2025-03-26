@@ -180,12 +180,9 @@
                                                             <td>${dep.duringTime}</td>  
                                                             <td>      
                                                                 <!-- Icon View Detail -->
-                                                                <a href="#" 
-                                                                   title="View Details"
-                                                                   data-bs-toggle="modal" 
-                                                                   data-bs-target="#depDetailModal" 
+                                                                <a href="view-dep-option?depId=${dep.id}"
                                                                    class="btn btn-icon btn-pills"
-                                                                   onclick="showDepDetail('${dep.depServiceName}', '${dep.description}')">
+                                                                   >
                                                                     <i class="fas fa-eye"></i>
                                                                 </a>
                                                                 <c:if test="${currentStatus == 'Pending'}">
