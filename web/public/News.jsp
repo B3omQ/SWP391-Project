@@ -133,10 +133,10 @@
             <!-- Filter Section -->
             <div class="filter-section">
                 <form method="get" action="${pageContext.request.contextPath}/NewsServlet" class="row g-3 align-items-end">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <input type="text" class="form-control" name="search" placeholder="Tìm kiếm theo tiêu đề..." value="${param.search}">
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <select class="form-control" name="categoryFilter">
                             <option value="">Tất cả thể loại</option>
                             <option value="vay" ${param.categoryFilter == 'vay' ? 'selected' : ''}>Vay</option>
@@ -145,7 +145,7 @@
                             <option value="kinh nghiệm" ${param.categoryFilter == 'kinh nghiệm' ? 'selected' : ''}>Kinh nghiệm</option>
                         </select>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <select class="form-control" name="sortBy">
                             <option value="publishDate_desc" ${param.sortBy == 'publishDate_desc' ? 'selected' : ''}>Mới nhất trước</option>
                             <option value="publishDate_asc" ${param.sortBy == 'publishDate_asc' ? 'selected' : ''}>Cũ nhất trước</option>
@@ -154,8 +154,17 @@
                         </select>
                     </div>
                     <div class="col-md-2">
+                        <select class="form-control" name="recordsPerPage" onchange="this.form.submit()">
+                            <option value="5" ${recordsPerPage == 5 ? 'selected' : ''}>5 bài viết</option>
+                            <option value="10" ${recordsPerPage == 10 ? 'selected' : ''}>10 bài viết</option>
+                            <option value="20" ${recordsPerPage == 20 ? 'selected' : ''}>20 bài viết</option>
+                            <option value="50" ${recordsPerPage == 50 ? 'selected' : ''}>50 bài viết</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
                         <button type="submit" class="btn btn-primary w-100">Lọc</button>
                     </div>
+                    <input type="hidden" name="page" value="1">
                 </form>
             </div>
 
@@ -182,6 +191,31 @@
                             </div>
                         </a>
                     </c:forEach>
+
+                    <!-- Phân trang -->
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center mt-4">
+                            <c:if test="${currentPage > 1}">
+                                <li class="page-item">
+                                    <a class="page-link" href="${pageContext.request.contextPath}/NewsServlet?page=${currentPage - 1}&search=${param.search}&categoryFilter=${param.categoryFilter}&sortBy=${param.sortBy}&recordsPerPage=${recordsPerPage}" aria-label="Previous">
+                                        <span aria-hidden="true">«</span>
+                                    </a>
+                                </li>
+                            </c:if>
+                            <c:forEach begin="1" end="${totalPages}" var="i">
+                                <li class="page-item ${currentPage == i ? 'active' : ''}">
+                                    <a class="page-link" href="${pageContext.request.contextPath}/NewsServlet?page=${i}&search=${param.search}&categoryFilter=${param.categoryFilter}&sortBy=${param.sortBy}&recordsPerPage=${recordsPerPage}">${i}</a>
+                                </li>
+                            </c:forEach>
+                            <c:if test="${currentPage < totalPages}">
+                                <li class="page-item">
+                                    <a class="page-link" href="${pageContext.request.contextPath}/NewsServlet?page=${currentPage + 1}&search=${param.search}&categoryFilter=${param.categoryFilter}&sortBy=${param.sortBy}&recordsPerPage=${recordsPerPage}" aria-label="Next">
+                                        <span aria-hidden="true">»</span>
+                                    </a>
+                                </li>
+                            </c:if>
+                        </ul>
+                    </nav>
                 </c:when>
                 <c:otherwise>
                     <p class="text-center" style="color: #777;">Không có bài viết nào để hiển thị.</p>

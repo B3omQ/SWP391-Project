@@ -35,7 +35,34 @@ public class DirectDepositListServlet extends HttpServlet {
 
             int cusId = customer.getId();
             System.out.println("Fetching deposit requests for CusId: " + cusId);
-            List<DepositRequest> depositRequests = depositRequestDAO.getDepositRequestsByCusId(cusId);
+
+            // Lấy tham số phân trang
+            String pageParam = request.getParameter("page");
+            String recordsPerPageParam = request.getParameter("recordsPerPage");
+
+            // Xử lý số bản ghi trên mỗi trang
+            int recordsPerPage;
+            if (recordsPerPageParam != null && !recordsPerPageParam.trim().isEmpty()) {
+                try {
+                    recordsPerPage = Integer.parseInt(recordsPerPageParam);
+                    if (recordsPerPage != 5 && recordsPerPage != 10 && recordsPerPage != 20 && recordsPerPage != 50) {
+                        recordsPerPage = 5; // Giá trị mặc định nếu không hợp lệ
+                    }
+                } catch (NumberFormatException e) {
+                    recordsPerPage = 5; // Giá trị mặc định nếu không parse được
+                }
+            } else {
+                recordsPerPage = 5; // Giá trị mặc định
+            }
+
+            // Xử lý phân trang
+            int page = (pageParam == null || pageParam.trim().isEmpty()) ? 1 : Integer.parseInt(pageParam);
+            int totalRecords = depositRequestDAO.countDepositRequestsByCusId(cusId);
+            int totalPages = (int) Math.ceil(totalRecords * 1.0 / recordsPerPage);
+            int offset = (page - 1) * recordsPerPage;
+
+            // Lấy danh sách phiếu yêu cầu với phân trang
+            List<DepositRequest> depositRequests = depositRequestDAO.getDepositRequestsByCusIdWithPagination(cusId, offset, recordsPerPage);
 
             if (depositRequests == null || depositRequests.isEmpty()) {
                 System.out.println("No deposit requests found for CusId: " + cusId);
@@ -43,7 +70,12 @@ public class DirectDepositListServlet extends HttpServlet {
                 System.out.println("Found " + depositRequests.size() + " deposit requests");
             }
 
+            // Truyền dữ liệu vào request
             request.setAttribute("depositRequests", depositRequests);
+            request.setAttribute("currentPage", page);
+            request.setAttribute("totalPages", totalPages);
+            request.setAttribute("recordsPerPage", recordsPerPage);
+
             System.out.println("Forwarding to /customer/direct-deposit-list.jsp");
             request.getRequestDispatcher("/customer/direct-deposit-list.jsp").forward(request, response);
         } catch (Exception e) {
@@ -78,8 +110,23 @@ public class DirectDepositListServlet extends HttpServlet {
 
             String action = request.getParameter("action");
             int id = Integer.parseInt(request.getParameter("id"));
+            String recordsPerPage = request.getParameter("recordsPerPage");
 
             if ("cancel".equals(action)) {
+                DepositRequest depositRequest = depositRequestDAO.getDepositRequestById(id);
+                if (depositRequest == null) {
+                    session.setAttribute("message", "Không tìm thấy phiếu yêu cầu!");
+                    response.sendRedirect(request.getContextPath() + "/DirectDepositListServlet?recordsPerPage=" + recordsPerPage);
+                    return;
+                }
+
+                int cusId = customer.getId();
+                if (depositRequest.getCusId() != cusId) {
+                    session.setAttribute("message", "Bạn không có quyền hủy phiếu này!");
+                    response.sendRedirect(request.getContextPath() + "/DirectDepositListServlet?recordsPerPage=" + recordsPerPage);
+                    return;
+                }
+
                 boolean success = depositRequestDAO.updateDepositRequestStatus(id, DepositRequestDAO.STATUS_CANCEL);
                 if (success) {
                     session.setAttribute("message", "Phiếu đã được hủy thành công!");
@@ -88,7 +135,7 @@ public class DirectDepositListServlet extends HttpServlet {
                 }
             }
 
-            response.sendRedirect(request.getContextPath() + "/DirectDepositListServlet");
+            response.sendRedirect(request.getContextPath() + "/DirectDepositListServlet?recordsPerPage=" + recordsPerPage);
         } catch (Exception e) {
             System.err.println("❌ Error in DirectDepositListServlet.doPost: " + e.getMessage());
             e.printStackTrace();

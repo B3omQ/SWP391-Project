@@ -51,10 +51,10 @@
                             <div class="filter-section">
                                 <form method="get" action="<%= request.getContextPath() %>/DirectDepositManageServlet" class="row g-3 align-items-end">
                                     <input type="hidden" name="action" value="list">
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
                                         <input type="text" class="form-control" name="search" placeholder="Tìm kiếm theo mã phiếu..." value="${param.search}">
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <select class="form-control" name="statusFilter">
                                             <option value="">Tất cả trạng thái</option>
                                             <option value="ACTIVE" ${param.statusFilter == 'ACTIVE' ? 'selected' : ''}>Đang xử lý</option>
@@ -62,15 +62,24 @@
                                             <option value="CANCEL" ${param.statusFilter == 'CANCEL' ? 'selected' : ''}>Đã hủy</option>
                                         </select>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <select class="form-control" name="sortBy">
                                             <option value="createdAt_desc" ${param.sortBy == 'createdAt_desc' ? 'selected' : ''}>Mới nhất trước</option>
                                             <option value="createdAt_asc" ${param.sortBy == 'createdAt_asc' ? 'selected' : ''}>Cũ nhất trước</option>
                                         </select>
                                     </div>
                                     <div class="col-md-2">
+                                        <select class="form-control" name="recordsPerPage" onchange="this.form.submit()">
+                                            <option value="5" ${recordsPerPage == 5 ? 'selected' : ''}>5 phiếu</option>
+                                            <option value="10" ${recordsPerPage == 10 ? 'selected' : ''}>10 phiếu</option>
+                                            <option value="20" ${recordsPerPage == 20 ? 'selected' : ''}>20 phiếu</option>
+                                            <option value="50" ${recordsPerPage == 50 ? 'selected' : ''}>50 phiếu</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2">
                                         <button type="submit" class="btn btn-primary w-100">Lọc</button>
                                     </div>
+                                    <input type="hidden" name="page" value="1">
                                 </form>
                             </div>
                         </div>
@@ -122,6 +131,7 @@
                                                             <form action="<%= request.getContextPath() %>/DirectDepositManageServlet" method="post" style="display:inline;">
                                                                 <input type="hidden" name="action" value="update">
                                                                 <input type="hidden" name="id" value="${request.id}">
+                                                                <input type="hidden" name="recordsPerPage" value="${recordsPerPage}">
                                                                 <select name="status" class="form-control form-control-sm" style="width: auto; display: inline-block;">
                                                                     <option value="COMPLETED">Hoàn thành</option>
                                                                     <option value="CANCEL">Hủy</option>
@@ -141,6 +151,31 @@
                                         </tbody>
                                     </table>
                                 </div>
+
+                                <!-- Phân trang -->
+                                <nav aria-label="Page navigation">
+                                    <ul class="pagination justify-content-center mt-4">
+                                        <c:if test="${currentPage > 1}">
+                                            <li class="page-item">
+                                                <a class="page-link" href="<%= request.getContextPath() %>/DirectDepositManageServlet?action=list&page=${currentPage - 1}&search=${param.search}&statusFilter=${param.statusFilter}&sortBy=${param.sortBy}&recordsPerPage=${recordsPerPage}" aria-label="Previous">
+                                                    <span aria-hidden="true">«</span>
+                                                </a>
+                                            </li>
+                                        </c:if>
+                                        <c:forEach begin="1" end="${totalPages}" var="i">
+                                            <li class="page-item ${currentPage == i ? 'active' : ''}">
+                                                <a class="page-link" href="<%= request.getContextPath() %>/DirectDepositManageServlet?action=list&page=${i}&search=${param.search}&statusFilter=${param.statusFilter}&sortBy=${param.sortBy}&recordsPerPage=${recordsPerPage}">${i}</a>
+                                            </li>
+                                        </c:forEach>
+                                        <c:if test="${currentPage < totalPages}">
+                                            <li class="page-item">
+                                                <a class="page-link" href="<%= request.getContextPath() %>/DirectDepositManageServlet?action=list&page=${currentPage + 1}&search=${param.search}&statusFilter=${param.statusFilter}&sortBy=${param.sortBy}&recordsPerPage=${recordsPerPage}" aria-label="Next">
+                                                    <span aria-hidden="true">»</span>
+                                                </a>
+                                            </li>
+                                        </c:if>
+                                    </ul>
+                                </nav>
                             </div>
                         </div>
                     </div>

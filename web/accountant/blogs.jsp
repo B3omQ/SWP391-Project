@@ -51,10 +51,10 @@
                             <div class="filter-section">
                                 <form method="get" action="<%= request.getContextPath() %>/BlogServlet" class="row g-3 align-items-end">
                                     <input type="hidden" name="action" value="list">
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
                                         <input type="text" class="form-control" name="search" placeholder="Tìm kiếm theo tiêu đề..." value="${param.search}">
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <select class="form-control" name="categoryFilter">
                                             <option value="">Tất cả thể loại</option>
                                             <option value="vay" ${param.categoryFilter == 'vay' ? 'selected' : ''}>Vay</option>
@@ -62,7 +62,7 @@
                                             <option value="khác" ${param.categoryFilter == 'khác' ? 'selected' : ''}>Khác</option>
                                         </select>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <select class="form-control" name="sortBy">
                                             <option value="publishDate_desc" ${param.sortBy == 'publishDate_desc' ? 'selected' : ''}>Mới nhất trước</option>
                                             <option value="publishDate_asc" ${param.sortBy == 'publishDate_asc' ? 'selected' : ''}>Cũ nhất trước</option>
@@ -71,8 +71,17 @@
                                         </select>
                                     </div>
                                     <div class="col-md-2">
+                                        <select class="form-control" name="recordsPerPage" onchange="this.form.submit()">
+                                            <option value="5" ${recordsPerPage == 5 ? 'selected' : ''}>5 bài viết</option>
+                                            <option value="10" ${recordsPerPage == 10 ? 'selected' : ''}>10 bài viết</option>
+                                            <option value="20" ${recordsPerPage == 20 ? 'selected' : ''}>20 bài viết</option>
+                                            <option value="50" ${recordsPerPage == 50 ? 'selected' : ''}>50 bài viết</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2">
                                         <button type="submit" class="btn btn-primary w-100">Lọc</button>
                                     </div>
+                                    <input type="hidden" name="page" value="1">
                                 </form>
                             </div>
                         </div>
@@ -127,6 +136,31 @@
                                         </tbody>
                                     </table>
                                 </div>
+
+                                <!-- Phân trang -->
+                                <nav aria-label="Page navigation">
+                                    <ul class="pagination justify-content-center mt-4">
+                                        <c:if test="${currentPage > 1}">
+                                            <li class="page-item">
+                                                <a class="page-link" href="<%= request.getContextPath() %>/BlogServlet?action=list&page=${currentPage - 1}&search=${param.search}&categoryFilter=${param.categoryFilter}&sortBy=${param.sortBy}&recordsPerPage=${recordsPerPage}" aria-label="Previous">
+                                                    <span aria-hidden="true">«</span>
+                                                </a>
+                                            </li>
+                                        </c:if>
+                                        <c:forEach begin="1" end="${totalPages}" var="i">
+                                            <li class="page-item ${currentPage == i ? 'active' : ''}">
+                                                <a class="page-link" href="<%= request.getContextPath() %>/BlogServlet?action=list&page=${i}&search=${param.search}&categoryFilter=${param.categoryFilter}&sortBy=${param.sortBy}&recordsPerPage=${recordsPerPage}">${i}</a>
+                                            </li>
+                                        </c:forEach>
+                                        <c:if test="${currentPage < totalPages}">
+                                            <li class="page-item">
+                                                <a class="page-link" href="<%= request.getContextPath() %>/BlogServlet?action=list&page=${currentPage + 1}&search=${param.search}&categoryFilter=${param.categoryFilter}&sortBy=${param.sortBy}&recordsPerPage=${recordsPerPage}" aria-label="Next">
+                                                    <span aria-hidden="true">»</span>
+                                                </a>
+                                            </li>
+                                        </c:if>
+                                    </ul>
+                                </nav>
                             </div>
                         </div>
                     </div>
@@ -214,6 +248,6 @@
             $('#editBlogForm').submit();
         });
     });
-</script>
+    </script>
 </body>
 </html>

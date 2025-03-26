@@ -130,10 +130,8 @@ public class VerifyingOtp extends HttpServlet {
                 session.removeAttribute("otp");
 
                 if (session.getAttribute("staff") != null) {
-                    // Staff không có tiết kiệm, chuyển hướng thẳng
                     response.sendRedirect("home");
                 } else {
-                    // Customer: Xử lý đáo hạn trước khi chuyển hướng
                     Customer customer = (Customer) session.getAttribute("account");
                     if (customer != null) {
                     }

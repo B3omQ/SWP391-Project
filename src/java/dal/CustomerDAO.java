@@ -348,15 +348,13 @@ public class CustomerDAO extends DBContext {
         try (PreparedStatement ps = connection.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
 
-            while (rs.next()) {
-                DepService depService = new DepService(
-                    rs.getInt("id"),
-                    rs.getString("description"),
-                    rs.getBigDecimal("minimumDep"),
-                    rs.getInt("duringTime"),
-                    rs.getDouble("savingRate") 
-                );
-                depServices.add(depService);
+             while (rs.next()) {
+                DepService dep = new DepService();
+                dep.setId(rs.getInt("id"));
+                dep.setDepServiceName(rs.getString("depServiceName")); // Đảm bảo cột này tồn tại
+                dep.setSavingRate(rs.getDouble("savingRate"));
+                dep.setDuringTime(rs.getInt("duringTime"));
+                depServices.add(dep);
             }
         } catch (SQLException e) {
             e.printStackTrace();

@@ -34,9 +34,36 @@ public class DirectDepositManageServlet extends HttpServlet {
             String search = request.getParameter("search");
             String statusFilter = request.getParameter("statusFilter");
             String sortBy = request.getParameter("sortBy");
+            String pageParam = request.getParameter("page");
+            String recordsPerPageParam = request.getParameter("recordsPerPage");
 
-            List<DepositRequest> depositRequests = depositRequestDAO.getFilteredDepositRequests(search, statusFilter, sortBy);
+            // Xử lý số bản ghi trên mỗi trang
+            int recordsPerPage;
+            if (recordsPerPageParam != null && !recordsPerPageParam.trim().isEmpty()) {
+                try {
+                    recordsPerPage = Integer.parseInt(recordsPerPageParam);
+                    if (recordsPerPage != 5 && recordsPerPage != 10 && recordsPerPage != 20 && recordsPerPage != 50) {
+                        recordsPerPage = 5; // Giá trị mặc định nếu không hợp lệ
+                    }
+                } catch (NumberFormatException e) {
+                    recordsPerPage = 5; // Giá trị mặc định nếu không parse được
+                }
+            } else {
+                recordsPerPage = 5; // Giá trị mặc định
+            }
+
+            // Xử lý phân trang
+            int page = (pageParam == null || pageParam.trim().isEmpty()) ? 1 : Integer.parseInt(pageParam);
+            int totalRecords = depositRequestDAO.countFilteredDepositRequests(search, statusFilter);
+            int totalPages = (int) Math.ceil(totalRecords * 1.0 / recordsPerPage);
+            int offset = (page - 1) * recordsPerPage;
+
+            // Lấy danh sách phiếu nạp tiền với phân trang
+            List<DepositRequest> depositRequests = depositRequestDAO.getFilteredDepositRequestsWithPagination(search, statusFilter, sortBy, offset, recordsPerPage);
             request.setAttribute("depositRequests", depositRequests);
+            request.setAttribute("currentPage", page);
+            request.setAttribute("totalPages", totalPages);
+            request.setAttribute("recordsPerPage", recordsPerPage);
 
             if (session.getAttribute("message") != null) {
                 session.removeAttribute("message");
@@ -68,36 +95,30 @@ public class DirectDepositManageServlet extends HttpServlet {
             String action = request.getParameter("action");
             int id = Integer.parseInt(request.getParameter("id"));
             String status = request.getParameter("status");
+            String recordsPerPage = request.getParameter("recordsPerPage");
 
             if ("update".equals(action)) {
-                DepositRequest depositRequest = depositRequestDAO.getDepositRequestById(id); // Lấy thông tin phiếu yêu cầu
+                DepositRequest depositRequest = depositRequestDAO.getDepositRequestById(id);
                 if (depositRequest == null) {
                     session.setAttribute("error", "Không tìm thấy phiếu yêu cầu!");
-                    response.sendRedirect(request.getContextPath() + "/DirectDepositManageServlet");
+                    response.sendRedirect(request.getContextPath() + "/DirectDepositManageServlet?recordsPerPage=" + recordsPerPage);
                     return;
                 }
 
-                // Cập nhật trạng thái phiếu yêu cầu
                 boolean statusUpdated = depositRequestDAO.updateDepositRequestStatus(id, status);
                 if (statusUpdated) {
                     if ("COMPLETED".equalsIgnoreCase(status)) {
-                        // Lấy thông tin khách hàng và số tiền từ phiếu yêu cầu
                         int cusId = depositRequest.getCusId();
                         BigDecimal amount = depositRequest.getAmount();
 
-                        // Lấy số dư hiện tại của khách hàng
                         BigDecimal currentBalance = customerDAO.getWalletByCustomerId(cusId);
                         if (currentBalance == null) {
-                            currentBalance = BigDecimal.ZERO; // Nếu không có số dư, khởi tạo bằng 0
+                            currentBalance = BigDecimal.ZERO;
                         }
 
-                        // Tính số dư mới
                         BigDecimal newBalance = currentBalance.add(amount);
-
-                        // Cập nhật số dư khách hàng
                         boolean balanceUpdated = customerDAO.updateWallet(cusId, newBalance);
                         if (balanceUpdated) {
-                            // Lưu vào lịch sử giao dịch
                             String description = "Nạp tiền từ phiếu yêu cầu #" + id;
                             boolean historySaved = depHistoryDAO.addDepHistory(null, description, amount, cusId);
 
@@ -119,7 +140,7 @@ public class DirectDepositManageServlet extends HttpServlet {
                 }
             }
 
-            response.sendRedirect(request.getContextPath() + "/DirectDepositManageServlet");
+            response.sendRedirect(request.getContextPath() + "/DirectDepositManageServlet?recordsPerPage=" + recordsPerPage);
         } catch (Exception e) {
             System.err.println("Error in doPost: " + e.getMessage());
             e.printStackTrace();

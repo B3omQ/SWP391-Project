@@ -231,12 +231,6 @@ public class DepHistoryDAO extends DBContext {
         }
     }
 
-    /**
-     * Ánh xạ ResultSet thành đối tượng DepHistory
-     * @param rs ResultSet chứa dữ liệu từ database
-     * @return DepHistory đối tượng được ánh xạ
-     * @throws SQLException nếu có lỗi khi truy xuất dữ liệu
-     */
     private DepHistory mapResultSetToDepHistory(ResultSet rs) throws SQLException {
         return new DepHistory(
             rs.getInt("Id"),
@@ -248,46 +242,9 @@ public class DepHistoryDAO extends DBContext {
         );
     }
 
-    /**
-     * Tìm kiếm lịch sử gửi tiết kiệm theo CustomerId và từ khóa
-     * @param customerId ID của khách hàng
-     * @param keyword Từ khóa tìm kiếm
-     * @return List<DepHistory> chứa danh sách lịch sử, hoặc danh sách rỗng nếu không tìm thấy
-     */
-    public List<DepHistory> searchDepHistoryByCustomerId(int customerId, String keyword) {
-        List<DepHistory> historyList = new ArrayList<>();
-        String sql = "SELECT Id, DSUId, Discription, CreatedAt, Amount, CusId " +
-                     "FROM DepHistory " +
-                     "WHERE CusId = ? " +
-                     "AND (Discription LIKE ? OR CAST(Amount AS NVARCHAR(50)) LIKE ?) " +
-                     "ORDER BY CreatedAt DESC";
-        
-        System.out.println("[DEBUG] Searching DepHistory for customerId: " + customerId + " with keyword: " + keyword);
-        
-        try (PreparedStatement p = connection.prepareStatement(sql)) {
-            p.setInt(1, customerId);
-            p.setString(2, "%" + keyword + "%");
-            p.setString(3, "%" + keyword + "%");
-            try (ResultSet rs = p.executeQuery()) {
-                while (rs.next()) {
-                    DepHistory history = mapResultSetToDepHistory(rs);
-                    historyList.add(history);
-                    System.out.println("[DEBUG] Found record: ID=" + history.getId() + ", Description=" + history.getDescription() + ", Amount=" + history.getAmount());
-                }
-            }
-        } catch (SQLException e) {
-            System.out.println("❌ Error searching DepHistory: " + e.getMessage());
-            e.printStackTrace();
-        }
-        System.out.println("[DEBUG] Total history records found: " + historyList.size());
-        return historyList;
-    }
+ 
 
-    /**
-     * Tính tổng lợi nhuận tự động theo CustomerId
-     * @param customerId ID của khách hàng
-     * @return Tổng lợi nhuận tự động, hoặc 0 nếu không có
-     */
+
     public BigDecimal getTotalAutoProfit(int customerId) {
         String sql = "SELECT SUM(Amount) AS TotalAutoProfit " +
                      "FROM DepHistory " +
@@ -327,4 +284,81 @@ public class DepHistoryDAO extends DBContext {
             return false;
         }
     }
+        public int countDepHistoryByCustomerId(int customerId, String searchQuery) {
+        String sql = "SELECT COUNT(*) FROM DepHistory WHERE CusId = ?";
+        if (searchQuery != null && !searchQuery.trim().isEmpty()) {
+            sql += " AND (Discription LIKE ? OR CAST(Amount AS NVARCHAR(50)) LIKE ?)";
+        }
+        
+        try (PreparedStatement p = connection.prepareStatement(sql)) {
+            p.setInt(1, customerId);
+            if (searchQuery != null && !searchQuery.trim().isEmpty()) {
+                p.setString(2, "%" + searchQuery + "%");
+                p.setString(3, "%" + searchQuery + "%");
+            }
+            try (ResultSet rs = p.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("❌ Error counting DepHistory: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+ 
+    public List<DepHistory> getDepHistoryByCustomerIdWithPagination(int customerId, int offset, int limit) {
+        List<DepHistory> historyList = new ArrayList<>();
+        String sql = "SELECT Id, DSUId, Discription, CreatedAt, Amount, CusId " +
+                     "FROM DepHistory " +
+                     "WHERE CusId = ? " +
+                     "ORDER BY CreatedAt DESC " +
+                     "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY"; 
+        
+        try (PreparedStatement p = connection.prepareStatement(sql)) {
+            p.setInt(1, customerId);
+            p.setInt(2, offset);
+            p.setInt(3, limit);
+            try (ResultSet rs = p.executeQuery()) {
+                while (rs.next()) {
+                    DepHistory history = mapResultSetToDepHistory(rs);
+                    historyList.add(history);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("❌ Error querying DepHistory with pagination: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return historyList;
+    }
+    public List<DepHistory> searchDepHistoryByCustomerIdWithPagination(int customerId, String keyword, int offset, int limit) {
+        List<DepHistory> historyList = new ArrayList<>();
+        String sql = "SELECT Id, DSUId, Discription, CreatedAt, Amount, CusId " +
+                     "FROM DepHistory " +
+                     "WHERE CusId = ? " +
+                     "AND (Discription LIKE ? OR CAST(Amount AS NVARCHAR(50)) LIKE ?) " +
+                     "ORDER BY CreatedAt DESC " +
+                     "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        
+        try (PreparedStatement p = connection.prepareStatement(sql)) {
+            p.setInt(1, customerId);
+            p.setString(2, "%" + keyword + "%");
+            p.setString(3, "%" + keyword + "%");
+            p.setInt(4, offset);
+            p.setInt(5, limit);
+            try (ResultSet rs = p.executeQuery()) {
+                while (rs.next()) {
+                    DepHistory history = mapResultSetToDepHistory(rs);
+                    historyList.add(history);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("❌ Error searching DepHistory with pagination: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return historyList;
+    }
+
 }
