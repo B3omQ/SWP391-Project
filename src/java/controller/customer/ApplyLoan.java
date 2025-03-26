@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller.ceo;
+package controller.customer;
 
 import controller.calculation.InterestCalculator;
 import dal.CeoDAO;
@@ -131,7 +131,7 @@ public class ApplyLoan extends HttpServlet {
         CeoDAO ceoDao = new CeoDAO();
         List<LoanService> listLoan = ceoDao.getAllLoanServiceByStatus("Approved", "DuringTime", "ASC", "", 1, 10);
         request.setAttribute("optionLoanList", listLoan);
-        request.getRequestDispatcher("ceo/applyLoan.jsp").forward(request, response);
+        request.getRequestDispatcher("customer/applyLoan.jsp").forward(request, response);
     }
 
     /**
@@ -165,7 +165,7 @@ public class ApplyLoan extends HttpServlet {
             request.setAttribute("errorMessages", errorMessages);
             List<LoanService> listLoan = aDao.getAllLoanServiceByStatus("Approved", "DuringTime", "ASC", "", 1, 10);
             request.setAttribute("optionLoanList", listLoan);
-            request.getRequestDispatcher("ceo/applyLoan.jsp").forward(request, response);
+            request.getRequestDispatcher("customer/applyLoan.jsp").forward(request, response);
             return;
         }
 //        Customer currentAccount = aDao.getCustomerById(2);
@@ -244,7 +244,7 @@ public class ApplyLoan extends HttpServlet {
             request.setAttribute("errorMessages", errorMessages);
             List<LoanService> listLoan = aDao.getAllLoanServiceByStatus("Approved", "DuringTime", "ASC", "", 1, 10);
             request.setAttribute("optionLoanList", listLoan);
-            request.getRequestDispatcher("ceo/applyLoan.jsp").forward(request, response);
+            request.getRequestDispatcher("customer/applyLoan.jsp").forward(request, response);
             return;
         }
         LoanService loanService = new LoanServiceDAO().getLoanServiceById(loanID);
@@ -266,10 +266,10 @@ public class ApplyLoan extends HttpServlet {
 
         if (isInserted) {
             request.setAttribute("loanServiceUsed", loanServiceUsed);
-            request.getRequestDispatcher("ceo/successApplyLoan.jsp").forward(request, response);
+            request.getRequestDispatcher("customer/successApplyLoan.jsp").forward(request, response);
             return;
         }
-        request.getRequestDispatcher("ceo/applyLoan.jsp").forward(request, response);
+        request.getRequestDispatcher("customer/applyLoan.jsp").forward(request, response);
     }
 
     /**

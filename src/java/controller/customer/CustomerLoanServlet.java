@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller.ceo;
+package controller.customer;
 
 import dal.CeoDAO;
 import java.io.IOException;
@@ -92,7 +92,7 @@ public class CustomerLoanServlet extends HttpServlet {
         // Đẩy thông tin khoản vay vào request và chuyển tiếp sang JSP
         request.setAttribute("loans", loan);
         request.setAttribute("loanStatus", loanStr);
-        request.getRequestDispatcher("./ceo/Loan.jsp").forward(request, response);
+        request.getRequestDispatcher("./customer/Loan.jsp").forward(request, response);
     }
 
     /**

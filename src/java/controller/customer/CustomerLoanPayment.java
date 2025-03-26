@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller.ceo;
+package controller.customer;
 
 import dal.CeoDAO;
 import dal.CustomerDAO;
@@ -147,7 +147,7 @@ public class CustomerLoanPayment extends HttpServlet {
         }
         paymentAmount = paymentAmount.add(overdueInterestDebt).add(overduePrincipal);
         request.setAttribute("paymentAmount", paymentAmount);
-        request.getRequestDispatcher("./ceo/customerLoanPayment.jsp").forward(request, response);
+        request.getRequestDispatcher("./customer/customerLoanPayment.jsp").forward(request, response);
     }
 
     /**
@@ -166,6 +166,7 @@ public class CustomerLoanPayment extends HttpServlet {
         String loanIdStr = request.getParameter("loanId");
         String repayAmountStr = request.getParameter("repayAmount");
         request.setAttribute("paymentAmount", repayAmountStr);
+        request.setAttribute("loanId", loanIdStr);
         String payType = request.getParameter("pType");
         LoanServiceUsed loan = dao.getLoanServiceUsedById(Integer.parseInt(loanIdStr));
         String monthsToPayStr = request.getParameter("monthsToPay");
@@ -173,7 +174,7 @@ public class CustomerLoanPayment extends HttpServlet {
 
         if (loanIdStr == null || repayAmountStr == null || loanIdStr.isEmpty() || repayAmountStr.isEmpty()) {
             request.setAttribute("errorMess", "Thông tin không hợp lệ!");
-            request.getRequestDispatcher("./ceo/customerLoanPayment.jsp").forward(request, response);
+            request.getRequestDispatcher("./customer/errorLoanPayment.jsp").forward(request, response);
             return;
         }
         try {
@@ -181,7 +182,7 @@ public class CustomerLoanPayment extends HttpServlet {
             BigDecimal customerWallet = loan.getCusId().getWallet();
             if (customerWallet.compareTo(repayAmount) < 0) {
                 request.setAttribute("errorMess", "Số dư trong ví không đủ thanh toán");
-                request.getRequestDispatcher("./ceo/customerLoanPayment.jsp").forward(request, response);
+                request.getRequestDispatcher("./customer/errorLoanPayment.jsp").forward(request, response);
                 return;
             }
             // Thanh toan khoan vay
@@ -206,12 +207,12 @@ public class CustomerLoanPayment extends HttpServlet {
             } else {
                 request.setAttribute("errorMess", "Thanh toán thất bại. Vui lòng thử lại!");
             }
-            request.getRequestDispatcher("./ceo/paymentResult.jsp").forward(request, response);
+            request.getRequestDispatcher("./customer/paymentResult.jsp").forward(request, response);
         } catch (NumberFormatException ex) {
             request.setAttribute("errorMess", "Dữ liệu không hợp lệ!");
             loan = dao.getLoanServiceUsedById(Integer.parseInt(loanIdStr));
             request.setAttribute("loan", loan);
-            request.getRequestDispatcher("./ceo/customerLoanPayment.jsp").forward(request, response);
+            request.getRequestDispatcher("./customer/customerLoanPayment.jsp").forward(request, response);
         }
     }
 

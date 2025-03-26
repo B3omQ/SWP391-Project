@@ -82,8 +82,7 @@
         <div class="page-wrapper doctris-theme toggled">
             <jsp:include page="template/sidebar.jsp"/>
             <!-- Start Page Content -->
-            <main class="page-content bg-light">
-                <c:set value="${sessionScope.staff}" var="staff"/>
+            <main class="page-content bg-light" style="padding-left: 0px;">
                 <jsp:include page="template/header.jsp"/> 
                 <div class="container-fluid">
                     <div class="layout-specing">

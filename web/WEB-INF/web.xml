@@ -236,17 +236,17 @@
         <servlet-name>ChatLogConsultant</servlet-name>
         <servlet-class>controller.customer.ChatLogConsultant</servlet-class>
     </servlet>
-    <servlet>    
+    <servlet>
         <servlet-name>ApplyLoan</servlet-name>
-        <servlet-class>controller.ceo.ApplyLoan</servlet-class>
+        <servlet-class>controller.customer.ApplyLoan</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>CustomerLoanServlet</servlet-name>
-        <servlet-class>controller.ceo.CustomerLoanServlet</servlet-class>
+        <servlet-class>controller.customer.CustomerLoanServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>CustomerLoanPayment</servlet-name>
-        <servlet-class>controller.ceo.CustomerLoanPayment</servlet-class>
+        <servlet-class>controller.customer.CustomerLoanPayment</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>HomeServlet</servlet-name>
@@ -539,7 +539,7 @@
     <servlet-mapping>
         <servlet-name>ChatLogConsultant</servlet-name>
         <url-pattern>/ChatLogConsultant</url-pattern>
-        </servlet-mapping>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ApplyLoan</servlet-name>
         <url-pattern>/applyLoan</url-pattern>

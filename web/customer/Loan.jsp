@@ -139,22 +139,10 @@
         <div class="page-wrapper doctris-theme toggled">
             <jsp:include page="template/sidebar.jsp"/>
             <!-- Start Page Content -->
-            <main class="page-content bg-light">
-                <c:set value="${sessionScope.staff}" var="staff"/>
+            <main class="page-content bg-light" style="padding-left: 0px;">
                 <jsp:include page="template/header.jsp"/> 
                 <div class="container-fluid">
                     <div class="layout-specing">
-                        <div class="row">
-                            <div class="col-xl-6 col-lg-6 col-md-4">
-                                <h5 class="mb-0">Banking System</h5>
-                                <nav aria-label="breadcrumb" class="d-inline-block mt-2">
-                                    <ul class="breadcrumb breadcrumb-muted bg-transparent rounded mb-0 p-0">
-                                        <li class="breadcrumb-item"><a href="index.html">Customer</a></li>
-                                        <li class="breadcrumb-item active" aria-current="page">Khoản vay</li>
-                                    </ul>
-                                </nav>
-                            </div><!--end col-->
-                        </div>
                         <div class="tabs">
                             <a href="<%= request.getContextPath() %>/customerLoanServlet?loanStatus=In processing" 
                                class="tab ${loanStatus == 'In processing' ? 'active' : ''}">Đang vay</a>

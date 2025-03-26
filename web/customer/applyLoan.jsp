@@ -4,6 +4,7 @@
     <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
     <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+    
     <head>
         <meta charset="utf-8" />
         <title>SmartBanking</title>
@@ -102,24 +103,11 @@
 
         <div class="page-wrapper doctris-theme toggled">
             <jsp:include page="template/sidebar.jsp"/>
-
             <!-- Start Page Content -->
-            <main class="page-content bg-light">
-                <c:set value="${sessionScope.staff}" var="staff"/>
+            <main class="page-content bg-light" style="padding-left: 0px;">
                 <jsp:include page="template/header.jsp"/>
                 <div class="container-fluid">
                     <div class="layout-specing">
-                        <div class="row">
-                            <div class="col-xl-6 col-lg-6 col-md-4">
-                                <h5 class="mb-0">Banking System</h5>
-                                <nav aria-label="breadcrumb" class="d-inline-block mt-2">
-                                    <ul class="breadcrumb breadcrumb-muted bg-transparent rounded mb-0 p-0">
-                                        <li class="breadcrumb-item"><a href="index.html">Ceo</a></li>
-                                        <li class="breadcrumb-item active" aria-current="page">Apply Loan</li>
-                                    </ul>
-                                </nav>
-                            </div><!--end col-->
-                        </div><!--end row-->
                         <div class="col-xl-8 col-lg-12 col-md-7 mt-4 pt-2 mt-sm-0 pt-sm-0">
                             <div class="rounded shadow mt-4">
                                 <div class="p-4 border-bottom">
@@ -168,7 +156,7 @@
                                                         <strong>${optionLoan.loanServiceName}</strong><br>
                                                         ${optionLoan.duringTime} Tháng - Lãi suất: ${optionLoan.afterTermRate}%/năm <br>
                                                         <c:if test="${optionLoan.loanTypeRepay == 'Amortized Loan'}">
-                                                        Lãi suất ưu đãi: ${optionLoan.onTermRate}%/năm<br>
+                                                            Lãi suất ưu đãi: ${optionLoan.onTermRate}%/năm<br>
                                                         </c:if>
                                                         Hạn mức: <span><fmt:formatNumber value="${optionLoan.minimumLoan}" pattern="#,##0 VND"/> - 
                                                             <fmt:formatNumber value="${optionLoan.maximumLoan}" pattern="#,##0 VND"/></span>
@@ -189,7 +177,7 @@
                     </div>
                 </div><!--end container-->
                 <!-- Footer Start -->
-                <jsp:include page="template/footer.jsp"/>
+                 <jsp:include page="template/footer.jsp"/>
                 <!-- End -->
             </main>
             <!--End page-content" -->
@@ -197,7 +185,6 @@
         <!-- page-wrapper -->
 
         <!-- Offcanvas Start -->
-
         <!-- javascript -->
         <script src="<%= request.getContextPath() %>/assets/js/jquery.min.js"></script>
         <script src="<%= request.getContextPath() %>/assets/js/bootstrap.bundle.min.js"></script>

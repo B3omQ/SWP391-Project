@@ -127,15 +127,21 @@
         <div class="page-wrapper doctris-theme toggled">
             <jsp:include page="template/sidebar.jsp"/>
             <!-- Start Page Content -->
-            <main class="page-content bg-light">
-                <c:set value="${sessionScope.staff}" var="staff"/>
+            <main class="page-content bg-light" style="padding-left: 0px;">
                 <jsp:include page="template/header.jsp"/> 
                 <div class="container-fluid">
                     <div class="layout-specing">
-
+                        
+                        <div class="tabs">
+                            <a href="<%= request.getContextPath() %>/customerLoanPayment?loanId=${loan.id}&payType=Monthly" 
+                               class="tab ${payType == 'Monthly' ? 'active' : ''}">Trả nợ định kỳ</a>
+                            <a href="<%= request.getContextPath() %>/customerLoanPayment?loanId=${loan.id}&payType=Full" 
+                               class="tab ${payType == 'Full' ? 'active' : ''}">Trả nợ toàn phần</a>
+                                <a href="<%= request.getContextPath() %>/customerLoanPayment?loanId=${loan.id}&payType=ToNow"
+                                   class="tab ${payType == 'ToNow' ? 'active' : ''}">Trả nợ tới hiện tại</a>
+                        </div>
                         <div class="loan-container">
-                            <div class="loan-title">Thanh Toán</div>
-
+                            <div class="loan-title">Thanh Toán Khoản Vay</div>
                             <!-- Hiển thị thông báo nếu có -->
                             <c:if test="${not empty message}">
                                 <div class="message">${message}</div>
@@ -152,15 +158,77 @@
                             </div>
 
                             <div class="loan-detail">
-                                <span class="loan-label">Số tiền đã thanh toán:</span>
-                                <span><fmt:formatNumber value="${paymentAmount}"  pattern="#,##0 VND"/></span>
+                                <span class="loan-label">Số tiền đang vay:</span>
+                                <span><fmt:formatNumber value="${loan.amount}" pattern="#,##0 VND"/></span>
+                            </div>
+                            <div class="loan-detail">
+                                <span class="loan-label">Lãi suất 6 tháng đầu:</span>
+                                <span>${loan.loanId.onTermRate}%/năm</span>
                             </div>
 
                             <div class="loan-detail">
-                                <span class="loan-label">Số dư trong ví:</span>
-                                <span><fmt:formatNumber value="${loan.cusId.wallet}"  pattern="#,##0 VND"/></span>
+                                <span class="loan-label">Lãi suất:</span>
+                                <span>${loan.loanId.afterTermRate}%/năm</span>
                             </div>
 
+                            <div class="loan-detail">
+                                <span class="loan-label">Lãi suất quá hạn:</span>
+                                <span>${loan.loanId.penaltyRate}%/năm</span>
+                            </div>
+
+                            <div class="loan-detail">
+                                <span class="loan-label">Kỳ hạn:</span>
+                                <span>${loan.loanId.duringTime} tháng</span>
+                            </div>
+
+                            <div class="loan-detail">
+                                <span class="loan-label">Số gốc còn lại:</span>
+                                <span><fmt:formatNumber value="${loan.debtRepayAmount}"  pattern="#,##0 VND"/></span>
+                            </div>
+
+                            <div class="loan-detail">
+                                <span class="loan-label">Số tiền lãi trong hạn:</span>
+                                <span><fmt:formatNumber value="${interestAmount}"  pattern="#,##0 VND"/></span>
+                            </div>
+
+                            <div class="loan-detail">
+                                <span class="loan-label">Nợ lãi quá hạn:</span>
+                                <span><fmt:formatNumber value="${overdueInterestDebt}"  pattern="#,##0 VND"/></span>
+                            </div>
+
+                            <div class="loan-detail">
+                                <span class="loan-label">Nợ gốc quá hạn:</span>
+                                <span><fmt:formatNumber value="${overduePrincipal}"  pattern="#,##0 VND"/></span>
+                            </div>
+
+                            <div class="loan-detail">
+                                <span class="loan-label">Có thể thanh toán định kỳ sau:</span>
+                                <span><fmt:formatDate value="${minDate}" pattern="dd/MM/yyyy"/></span>
+                            </div>
+
+                            <div class="loan-detail">
+                                <span class="loan-label">Hạn thanh toán kì này:</span>
+                                <span><fmt:formatDate value="${dueDate}" pattern="dd/MM/yyyy"/></span>
+                            </div>
+
+                            <div class="loan-detail">
+                                <span class="loan-label">Số tiền trong ví:</span>
+                                <span><fmt:formatNumber value="${loan.cusId.wallet}"  pattern="#,##0 VND"/></span>
+                            </div>
+                            <form action="customerLoanPayment" method="post">
+                                <!-- Giả sử loan.id chứa ID của LoanServiceUsed -->  
+                                <input type="hidden" name="loanId" value="${loan.id}" />
+                                <div class="loan-detail">
+                                    <span class="loan-label">Tổng số tiền phải trả:</span>
+                                    <span><fmt:formatNumber value="${paymentAmount}"  pattern="#,##0 VND"/></span>
+                                </div>
+                                <input type="hidden" name="repayAmount" value="${paymentAmount}"/>
+                                <input type="hidden" name="monthsToPay" value="${monthsToPay}"/>
+                                <input type="hidden" name="pType" value="${payType}"/>
+                                <c:if test="${now > minDate || payType == 'Full'}">
+                                    <button type="submit" class="loan-button">Xác Nhận Thanh Toán</button>
+                                </c:if>
+                            </form>
                             <button onclick="location.href = 'customerLoanServlet'" class="loan-button back-button">Quay Lại</button>
 
                         </div>
