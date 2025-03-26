@@ -13,13 +13,14 @@ import java.math.BigDecimal;
 public class DepService {
 
     private int id;
-    private String depServiceName;
     private String description;
     private BigDecimal minimumDep;
     private int duringTime;
     private double savingRate;
     private double savingRateMinimum;
     private String pendingStatus;
+    private String reasonReject;
+    private String depServiceName;
 
     public DepService() {
 
@@ -42,14 +43,18 @@ public class DepService {
         this.savingRate = savingRate;
         this.savingRateMinimum = savingRateMinimum;
         this.pendingStatus = pendingStatus;
+
     }
 
-
-    public String getDepServiceName() {
-        return depServiceName;
-    }
-
-    public void setDepServiceName(String depServiceName) {
+    public DepService(int id, String description, BigDecimal minimumDep, int duringTime, double savingRate, double savingRateMinimum, String pendingStatus, String reasonReject, String depServiceName) {
+        this.id = id;
+        this.description = description;
+        this.minimumDep = minimumDep;
+        this.duringTime = duringTime;
+        this.savingRate = savingRate;
+        this.savingRateMinimum = savingRateMinimum;
+        this.pendingStatus = pendingStatus;
+        this.reasonReject = reasonReject;
         this.depServiceName = depServiceName;
     }
 
@@ -109,9 +114,25 @@ public class DepService {
         this.pendingStatus = pendingStatus;
     }
 
+    public String getReasonReject() {
+        return reasonReject;
+    }
+
+    public void setReasonReject(String reasonReject) {
+        this.reasonReject = reasonReject;
+    }
+
+    public String getDepServiceName() {
+        return depServiceName;
+    }
+
+    public void setDepServiceName(String depServiceName) {
+        this.depServiceName = depServiceName;
+    }
+
     @Override
     public String toString() {
-        return "DepService{" + "id=" + id + ", depServiceName=" + depServiceName + ", description=" + description + ", minimumDep=" + minimumDep + ", duringTime=" + duringTime + ", savingRate=" + savingRate + ", savingRateMinimum=" + savingRateMinimum + ", pendingStatus=" + pendingStatus + '}';
+        return "DepService{" + "id=" + id + ", description=" + description + ", minimumDep=" + minimumDep + ", duringTime=" + duringTime + ", savingRate=" + savingRate + ", savingRateMinimum=" + savingRateMinimum + ", pendingStatus=" + pendingStatus + '}';
     }
 
 }
