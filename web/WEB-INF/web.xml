@@ -171,7 +171,7 @@
     <servlet>
         <servlet-name>CustomerDepServiceManagement</servlet-name>
         <servlet-class>controller.manager.CustomerDepServiceManagement</servlet-class>
-        </servlet>
+    </servlet>
     <servlet>
         <servlet-name>Disbursement</servlet-name>
         <servlet-class>controller.accountant.Disbursement</servlet-class>
@@ -215,6 +215,30 @@
     <servlet>
         <servlet-name>AutoProfitServlet</servlet-name>
         <servlet-class>controller.customer.AutoProfitServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ChatHistoryManagement</servlet-name>
+        <servlet-class>controller.manager.ChatHistoryManagement</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ChatLogCustomer</servlet-name>
+        <servlet-class>controller.consultant.ChatLogCustomer</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ChatLogConsultant</servlet-name>
+        <servlet-class>controller.customer.ChatLogConsultant</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DirectDepositListServlet</servlet-name>
+        <servlet-class>controller.customer.DirectDepositListServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DirectDepositServlet</servlet-name>
+        <servlet-class>controller.customer.DirectDepositServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DirectDepositManageServlet</servlet-name>
+        <servlet-class>controller.accountant.DirectDepositManageServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>HomeServlet</servlet-name>
@@ -443,7 +467,7 @@
     <servlet-mapping>
         <servlet-name>CustomerDepServiceManagement</servlet-name>
         <url-pattern>/customer-dep-service-management</url-pattern>
-        </servlet-mapping>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Disbursement</servlet-name>
         <url-pattern>/Disbursement</url-pattern>
@@ -487,6 +511,30 @@
     <servlet-mapping>
         <servlet-name>AutoProfitServlet</servlet-name>
         <url-pattern>/AutoProfitServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChatHistoryManagement</servlet-name>
+        <url-pattern>/ChatHistoryManagement</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChatLogCustomer</servlet-name>
+        <url-pattern>/ChatLogCustomer</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChatLogConsultant</servlet-name>
+        <url-pattern>/ChatLogConsultant</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DirectDepositListServlet</servlet-name>
+        <url-pattern>/DirectDepositListServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DirectDepositServlet</servlet-name>
+        <url-pattern>/DirectDepositServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DirectDepositManageServlet</servlet-name>
+        <url-pattern>/DirectDepositManageServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>1440</session-timeout>

@@ -9,7 +9,7 @@
         </div>
 
         <ul class="sidebar-menu pt-3">
-            <li><a href="index.html"><i class="uil uil-dashboard me-2 d-inline-block"></i>Bảng thông tin</a></li>
+            <li><a href="CustomerReviewManager"><i class="uil uil-dashboard me-2 d-inline-block"></i>Bảng thông tin</a></li>
 
             <li><a href="profile-manager"><i class="uil uil-user me-2 d-inline-block"></i>Quản lí tài khoản</a></li>
 
@@ -41,8 +41,10 @@
                     </ul>
                 </div>
             </li>       
-
-            <li><a href="home"><i class="uil uil-window me-2 d-inline-block"></i>Home page</a></li>
+            
+            <li><a href="ChatHistoryManagement"><i class="uil uil-user me-2 d-inline-block"></i>Lịch sử chat của consultant</a></li>
+            
+            <li><a href="home.jsp"><i class="uil uil-window me-2 d-inline-block"></i>Home page</a></li>
         </ul>
         <!-- sidebar-menu  -->
     </div>

@@ -91,7 +91,7 @@ public class VNpayReturn extends HttpServlet {
                 DepHistoryDAO depHistoryDAO = new DepHistoryDAO();
                 String description = "Nạp tiền qua VNPay - Mã GD: " + txnRef;
                 // Sử dụng null cho DSUId thay vì -1
-                boolean historySaved = depHistoryDAO.addDepHistory(null, description, amount);
+        boolean historySaved = depHistoryDAO.addDepHistory(null, description, amount, customerId);
                 if (!historySaved) {
                     System.out.println("❌ Lỗi: Không thể lưu lịch sử nạp tiền cho giao dịch " + txnRef);
                 } else {

@@ -214,14 +214,14 @@
                 <div class="top-header">
                     <div class="header-bar d-flex justify-content-between border-bottom">
                         <div class="d-flex align-items-center">
-                            <a href="#" class="logo-icon">
+                            <a href="home.jsp" class="logo-icon">
                                 <img src="${pageContext.request.contextPath}/assets/images/logo-icon2.png" height="30" class="small" alt="">
                                 <span class="big">
                                     <img src="${pageContext.request.contextPath}/assets/images/logo-dark.png" height="24" class="logo-light-mode" alt="">
                                     <img src="${pageContext.request.contextPath}/assets/images/logo-light.png" height="24" class="logo-dark-mode" alt="">
                                 </span>
                             </a>
-                            <a id="close-sidebar" class="btn btn-icon btn-pills btn-soft-primary ms-2" href="#">
+                            <a id="close-sidebar" class="btn btn-icon btn-pills btn-soft-primary ms-2" href="home.jsp">
                                 <i class="uil uil-bars"></i>
                             </a>
                             <div class="search-bar p-0 d-none d-md-block ms-2">

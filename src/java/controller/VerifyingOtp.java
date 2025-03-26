@@ -104,22 +104,22 @@ public class VerifyingOtp extends HttpServlet {
                 if (session.getAttribute("staff") != null) {
                     Staff staff = (Staff) session.getAttribute("staff");
                     if (staff.getRoleId().getId() == 1) {
-                        response.sendRedirect("accountant/home.jsp");
+                        response.sendRedirect("home");
                     }
                     if (staff.getRoleId().getId() == 2) {
-                        response.sendRedirect("");
+                        response.sendRedirect("home");
                     }
                     if (staff.getRoleId().getId() == 3) {
-                        response.sendRedirect("profile-manager");
+                        response.sendRedirect("home");
                     }
                     if (staff.getRoleId().getId() == 4) {
-                        response.sendRedirect("profile-admin");
+                        response.sendRedirect("home");
                     }
                     if (staff.getRoleId().getId() == 5) {
                         response.sendRedirect("");
                     }
                 } else {
-                    response.sendRedirect("customer/template/Customer.jsp");
+                    response.sendRedirect("home");
                 }
             } else {
                 session.setAttribute("otpError", "Mã OTP không đúng, vui lòng thử lại!");
@@ -131,13 +131,13 @@ public class VerifyingOtp extends HttpServlet {
 
                 if (session.getAttribute("staff") != null) {
                     // Staff không có tiết kiệm, chuyển hướng thẳng
-                    response.sendRedirect("profile-manager");
+                    response.sendRedirect("home");
                 } else {
                     // Customer: Xử lý đáo hạn trước khi chuyển hướng
                     Customer customer = (Customer) session.getAttribute("account");
                     if (customer != null) {
                     }
-                    response.sendRedirect("customer/Customer.jsp");
+                    response.sendRedirect("home");
                 }
             } else {
                 session.setAttribute("otpError", "Mã OTP không đúng, vui lòng thử lại!");

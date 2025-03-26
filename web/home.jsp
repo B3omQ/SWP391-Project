@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-<%@ include file="/template/header.jsp" %>
+    <%@ include file="/template/header.jsp" %>
 
         <!-- Start Hero -->
         <section class="bg-half-260 d-table w-100" style="background: url('assets/images/bg/banner-home-pc') center;">

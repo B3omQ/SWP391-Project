@@ -16,7 +16,7 @@
                         <c:forEach var="dep" items="${depServices}">
                             <div class="col-md-6 mb-3">
                                 <div class="term-box" onclick="selectTerm(${dep.id})">
-                                    <h4>${dep.duringTime} tháng</h4>
+                                    <h4>${dep.depServiceName} (${dep.duringTime} tháng)</h4> <!-- Thêm tên gói -->
                                     <p>Lãi suất: <strong>${dep.savingRate}%/năm</strong></p>
                                     <c:if test="${not empty interestMap[dep.id]}">
                                         <p>Số tiền lãi ước tính: 

@@ -1,10 +1,5 @@
 package dal;
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
 import util.DBContext;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,21 +9,15 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import model.TokenForgetPassword;
 
-/**
- *
- * @author HP
- */
 public class DAOTokenForget extends DBContext {
 
     public String getFormatDate(LocalDateTime myDateObj) {
         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String formattedDate = myDateObj.format(myFormatObj);
-        return formattedDate;
+        return myDateObj.format(myFormatObj);
     }
 
     public boolean insertTokenForget(TokenForgetPassword tokenForget) {
-        String sql = "INSERT INTO tokenForgetPassword (token, isUsed, userId, expiryTime) VALUES (?, ?, ?, ?)";
-
+        String sql = "INSERT INTO tokenForgetPassword (token, isUsed, userId, expiryTime, UserType) VALUES (?, ?, ?, ?, ?)";
         LocalDateTime expiryTime = LocalDateTime.now().plusHours(1);
         String formattedExpiryTime = getFormatDate(expiryTime);
 
@@ -37,6 +26,7 @@ public class DAOTokenForget extends DBContext {
             ps.setBoolean(2, tokenForget.isIsUsed());
             ps.setInt(3, tokenForget.getUserId());
             ps.setString(4, formattedExpiryTime);
+            ps.setString(5, tokenForget.getUserType()); // Thêm UserType
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             System.err.println("Error while inserting tokenForgetPassword: " + e.getMessage());
@@ -46,38 +36,37 @@ public class DAOTokenForget extends DBContext {
     }
 
     public TokenForgetPassword getTokenPassword(String token) {
-        String sql = "Select * from [tokenForgetPassword] where token = ?";
-        try {
-            PreparedStatement st = connection.prepareStatement(sql);
+        String sql = "SELECT * FROM [tokenForgetPassword] WHERE token = ?";
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setString(1, token);
-            ResultSet rs = st.executeQuery();
-            while (rs.next()) {
-                return new TokenForgetPassword(
-                        rs.getString("token"),
-                        rs.getTimestamp("expiryTime").toLocalDateTime(),
-                        rs.getBoolean("isUsed"),
-                        rs.getInt("userId")
-                );
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    return new TokenForgetPassword(
+                            rs.getString("token"),
+                            rs.getTimestamp("expiryTime").toLocalDateTime(),
+                            rs.getBoolean("isUsed"),
+                            rs.getInt("userId"),
+                            rs.getString("UserType") // Thêm UserType
+                    );
+                }
             }
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println("Error getting token: " + e.getMessage());
+            e.printStackTrace();
         }
         return null;
     }
 
     public void updateStatus(TokenForgetPassword token) {
-        System.out.println("token = " + token);
-        String sql = "UPDATE [dbo].[tokenForgetPassword]\n"
-                + "   SET [isUsed] = ?\n"
-                + " WHERE token = ?";
-        try {
-            PreparedStatement st = connection.prepareStatement(sql);
+        System.out.println("Updating token status: " + token);
+        String sql = "UPDATE [dbo].[tokenForgetPassword] SET [isUsed] = ? WHERE token = ?";
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setBoolean(1, token.isIsUsed());
             st.setString(2, token.getToken());
             st.executeUpdate();
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println("Error updating token status: " + e.getMessage());
+            e.printStackTrace();
         }
     }
-
 }

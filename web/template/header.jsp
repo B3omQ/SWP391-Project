@@ -6,6 +6,8 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="model.Customer" %>
+<%@ page import="model.Staff" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,7 +18,7 @@
     <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health" />
     <meta name="author" content="Shreethemes" />
     <meta name="email" content="support@shreethemes.in" />
-    <meta name="website" content="../../../index.html" />
+    <meta name="website" content="../../../home.jsp" />
     <meta name="Version" content="v1.2.0" />
     <!-- favicon -->
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/images/favicon.ico.png">
@@ -147,7 +149,7 @@
         <div class="container">
             <!-- Logo container-->
             <div>
-                <a class="logo" href="${pageContext.request.contextPath}/index.html">
+                <a class="logo" href="${pageContext.request.contextPath}/home.jsp">
                     <span class="logo-light-mode">
                         <img src="${pageContext.request.contextPath}/assets/images/logo-dark.png" class="l-dark" height="24" alt="">
                         <img src="${pageContext.request.contextPath}/assets/images/logo-light.png" class="l-light" height="24" alt="">
@@ -172,7 +174,6 @@
                 </div>
             </div>
             <!-- End Mobile Toggle -->
-
             <!-- Start Dropdown -->
             <ul class="dropdowns list-inline mb-0">
                 <li class="list-inline-item mb-0">
@@ -180,28 +181,28 @@
                         <div class="btn btn-icon btn-pills btn-primary"><i data-feather="settings" class="fea icon-sm"></i></div>
                     </a>
                 </li>
-                <c:if test="${sessionScope.customer == null && sessionScope.staff == null}">
+                <c:if test="${sessionScope.account == null && sessionScope.staff == null}">
                     <li class="list-inline-item mb-0 ms-1">
                         <a href="${pageContext.request.contextPath}/auth/template/login.jsp" class="btn btn-pills btn-soft-primary">
                             <i class="uil uil-sign-in-alt align-middle h6 me-1"></i> Đăng nhập
                         </a>
                     </li>
                 </c:if>
-                <c:if test="${sessionScope.customer != null}">
+                <c:if test="${sessionScope.account != null}">
                     <li class="list-inline-item mb-0 ms-1">
                         <div class="dropdown dropdown-primary">
                             <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img src="${customer.image}" class="avatar avatar-ex-small rounded-circle" alt="">
+                                <img src="${account.image}" class="avatar avatar-ex-small rounded-circle" alt="">
                             </button>
                             <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3" style="min-width: 200px;">
                                 <a class="dropdown-item d-flex align-items-center text-dark" href="">
-                                    <img src="${pageContext.request.contextPath}/assets/images/doctors/01.jpg" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
+                                    <img src="${account.image}" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
                                     <div class="flex-1 ms-2">
-                                        <span class="d-block mb-1">${sessionScope.customer.username}</span>
+                                        <span class="d-block mb-1">${sessionScope.account.username}</span>
                                     </div>
                                 </a>
-                                <a class="dropdown-item text-dark" href="doctor-dashboard.html"><span class="mb-0 d-inline-block me-1"><i class="uil uil-dashboard align-middle h6"></i></span> Dashboard</a>
-                                <a class="dropdown-item text-dark" href="doctor-profile-setting.html"><span class="mb-0 d-inline-block me-1"><i class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
+                                <a class="dropdown-item text-dark" href="http://localhost:9999/BankingSystem/customer/Customer.jsp"><span class="mb-0 d-inline-block me-1"><i class="uil uil-dashboard align-middle h6"></i></span> Dashboard</a>
+                                <a class="dropdown-item text-dark" href="http://localhost:9999/BankingSystem/customer/account-profile.jsp"><span class="mb-0 d-inline-block me-1"><i class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
                                 <div class="dropdown-divider border-top"></div>
                                 <a class="dropdown-item text-dark" href="${pageContext.request.contextPath}/login.jsp"><span class="mb-0 d-inline-block me-1"><i class="uil uil-sign-out-alt align-middle h6"></i></span> Logout</a>
                             </div>
@@ -212,18 +213,17 @@
                     <li class="list-inline-item mb-0 ms-1">
                         <div class="dropdown dropdown-primary">
                             <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img src="${pageContext.request.contextPath}/assets/images/doctors/01.jpg" class="avatar avatar-ex-small rounded-circle" alt="">
+                                <img src="${staff.image}" class="avatar avatar-ex-small rounded-circle" alt="">
                             </button>
                             <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3" style="min-width: 200px;">
                                 <a class="dropdown-item d-flex align-items-center text-dark" href="">
-                                    <img src="${pageContext.request.contextPath}/assets/images/doctors/01.jpg" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
+                                    <img src="${staff.image}" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
                                     <div class="flex-1 ms-2">
                                         <span class="d-block mb-1">${sessionScope.staff.username}</span>
                                     </div>
                                 </a>
-                                <a class="dropdown-item text-dark" href="doctor-dashboard.html"><span class="mb-0 d-inline-block me-1"><i class="uil uil-dashboard align-middle h6"></i></span> Dashboard</a>
                                 <c:if test="${sessionScope.staff.roleId.id == 1}">
-                                    <a class="dropdown-item text-dark" href="doctor-profile-setting.html"><span class="mb-0 d-inline-block me-1"><i class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
+                                    <a class="dropdown-item text-dark" href="./accountant/home.jsp"><span class="mb-0 d-inline-block me-1"><i class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
                                 </c:if>
                                 <c:if test="${sessionScope.staff.roleId.id == 2}">
                                     <a class="dropdown-item text-dark" href="./consultant-customer"><span class="mb-0 d-inline-block me-1"><i class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
