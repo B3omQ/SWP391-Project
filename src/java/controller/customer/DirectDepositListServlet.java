@@ -35,7 +35,7 @@ public class DirectDepositListServlet extends HttpServlet {
 
             int cusId = customer.getId();
             System.out.println("Fetching deposit requests for CusId: " + cusId);
-            List<DepositRequest> depositRequests = depositRequestDAO.getDepositRequestByCusId(cusId);
+            List<DepositRequest> depositRequests = depositRequestDAO.getDepositRequestsByCusId(cusId);
 
             if (depositRequests == null || depositRequests.isEmpty()) {
                 System.out.println("No deposit requests found for CusId: " + cusId);

@@ -44,7 +44,7 @@ public class DepositRequestDAO extends DBContext {
     }
 
     // Lấy danh sách các phiếu yêu cầu đang ACTIVE
-    public List<DepositRequest> getPendingDepositRequest() {
+    public List<DepositRequest> getPendingDepositRequests() {
         List<DepositRequest> list = new ArrayList<>();
         String sql = "SELECT dr.Id, dr.CusId, dr.Amount, dr.Note, dr.Status, dr.CreatedAt, c.Username " +
                      "FROM DepositRequest dr " +
@@ -83,7 +83,9 @@ public class DepositRequestDAO extends DBContext {
         return null;
     }
 
+    // Cập nhật trạng thái phiếu (chỉ cho phép cập nhật từ ACTIVE)
     public boolean updateDepositRequestStatus(int id, String status) {
+        // Kiểm tra xem status đầu vào có hợp lệ không
         if (!status.equals(STATUS_ACTIVE) && !status.equals(STATUS_COMPLETED) && !status.equals(STATUS_CANCEL)) {
             return false;
         }
@@ -101,7 +103,7 @@ public class DepositRequestDAO extends DBContext {
         }
     }
 
-    public List<DepositRequest> getDepositRequestByCusId(int cusId) {
+    public List<DepositRequest> getDepositRequestsByCusId(int cusId) {
         List<DepositRequest> requests = new ArrayList<>();
         String sql = "SELECT dr.Id, dr.CusId, dr.Amount, dr.Note, dr.Status, dr.CreatedAt, c.Username " +
                      "FROM DepositRequest dr " +
@@ -121,7 +123,7 @@ public class DepositRequestDAO extends DBContext {
         return requests;
     }
 
-    public List<DepositRequest> getFilteredDepositRequest(String search, String statusFilter, String sortBy) {
+    public List<DepositRequest> getFilteredDepositRequests(String search, String statusFilter, String sortBy) {
         List<DepositRequest> requests = new ArrayList<>();
         StringBuilder sql = new StringBuilder(
                 "SELECT dr.Id, dr.CusId, dr.Amount, dr.Note, dr.Status, dr.CreatedAt, c.Username " +

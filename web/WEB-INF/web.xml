@@ -236,6 +236,10 @@
         <servlet-name>DirectDepositServlet</servlet-name>
         <servlet-class>controller.customer.DirectDepositServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DirectDepositManageServlet</servlet-name>
+        <servlet-class>controller.accountant.DirectDepositManageServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>HomeServlet</servlet-name>
         <url-pattern>/home</url-pattern>
@@ -527,6 +531,10 @@
     <servlet-mapping>
         <servlet-name>DirectDepositServlet</servlet-name>
         <url-pattern>/DirectDepositServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DirectDepositManageServlet</servlet-name>
+        <url-pattern>/DirectDepositManageServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>1440</session-timeout>
