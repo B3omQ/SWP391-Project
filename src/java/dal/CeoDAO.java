@@ -466,13 +466,13 @@ public class CeoDAO extends DBContext {
                     return new DepService(
                             rs.getInt("Id"),
                             rs.getString("Description"),
+                            rs.getString("DepServiceName"),
                             rs.getBigDecimal("MinimumDep"),
                             rs.getInt("DuringTime"),
                             rs.getDouble("SavingRate"),
                             rs.getDouble("SavingRateMinimum"),
                             rs.getString("PendingStatus"),
-                            rs.getString("ReasonReject"),
-                            rs.getString("DepServiceName")
+                            rs.getString("ReasonReject")
                     );
                 }
             }
@@ -564,13 +564,14 @@ public class CeoDAO extends DBContext {
                     DepService depService = new DepService(
                             rs.getInt("Id"),
                             rs.getString("Description"),
+                            rs.getString("DepServiceName"),
                             rs.getBigDecimal("MinimumDep"),
                             rs.getInt("DuringTime"),
                             rs.getDouble("SavingRate"),
                             rs.getDouble("SavingRateMinimum"),
                             rs.getString("PendingStatus"),
-                            rs.getString("ReasonReject"),
-                            rs.getString("DepServiceName")
+                            rs.getString("ReasonReject")
+                            
                     );
                     list.add(depService);
                 }
