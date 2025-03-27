@@ -231,10 +231,10 @@ public class ApplyLoan extends HttpServlet {
         if (imagePart.getSize() > 1024 * 1024 * 5) {
             errorMessages.add("Image must be < 5mb");
         }
-        // Kiểm tra file có đúng định dạng ZIP không
-        if (!image.endsWith(".zip")) {
-            errorMessages.add("Only accept zip file");
-        }
+//        // Kiểm tra file có đúng định dạng ZIP không
+//        if (!image.endsWith(".zip")) {
+//            errorMessages.add("Only accept zip file");
+//        }
         if (image == null) {
             errorMessages.add("Missing income vertification");
         }
