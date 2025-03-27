@@ -9,7 +9,6 @@
                 Nạp Tiền Trực Tiếp Tại Quầy
             </div>
             <form action="${pageContext.request.contextPath}/DirectDepositServlet" method="post" id="depositForm" onsubmit="prepareForm()">
-                <!-- Nhập số tiền -->
                 <div class="mb-3">
                     <label for="amountDisplay" class="form-label">Số tiền cần nạp (VNĐ):</label>
                     <input type="text" class="form-control" id="amountDisplay" oninput="formatNumber(this)" required
@@ -18,27 +17,22 @@
                     <small class="form-text text-muted">Tối thiểu: 10,000 VNĐ</small>
                 </div>
 
-                <!-- Ghi chú -->
                 <div class="mb-3">
                     <label for="note" class="form-label">Ghi chú (nếu có):</label>
                     <input type="text" class="form-control" id="note" name="note"
                            style="border: 1px solid #dc3545;">
                 </div>
 
-                <!-- Nút tạo phiếu và xem phiếu -->
-                <div>
-                    <button type="submit" class="btn btn-deposit"
-                            style="background-color: #dc3545; color: white; border: none; padding: 0.5rem 1rem; margin-right: 10px;">
+                <div class="button-group">
+                    <button type="submit" class="btn btn-deposit">
                         Tạo Phiếu Yêu Cầu
                     </button>
-                    <a href="${pageContext.request.contextPath}/DirectDepositListServlet" class="btn btn-secondary"
-                       style="padding: 0.5rem 1rem; border: 1px solid #dc3545; color: #dc3545;">
+                    <a href="${pageContext.request.contextPath}/DirectDepositListServlet" class="btn btn-secondary">
                         Xem phiếu của tôi
                     </a>
                 </div>
             </form>
 
-            <!-- Hiển thị thông báo -->
             <% 
                 String message = (String) session.getAttribute("message");
                 String requestId = (String) session.getAttribute("requestId");
@@ -57,13 +51,39 @@
     </div>
 </div>
 
-<!-- JavaScript để định dạng số tiền -->
+
+<style>
+    .button-group {
+        display: flex;
+        gap: 10px; 
+    }
+
+    .button-group .btn {
+        flex: 1; 
+        text-align: center; 
+        padding: 0.5rem 1rem; 
+    }
+
+    .btn-deposit {
+        background-color: #dc3545;
+        color: white;
+        border: none;
+    }
+
+    .btn-secondary {
+        border: 1px solid #dc3545;
+        color: #dc3545;
+        background-color: transparent;
+    }
+</style>
+
+
 <script>
     function formatNumber(input) {
         let value = input.value.replace(/[^0-9]/g, '');
         if (value) {
             input.value = parseInt(value).toLocaleString('vi-VN');
-            document.getElementById("amount").value = value; // Lưu giá trị sạch vào hidden input
+            document.getElementById("amount").value = value; 
         } else {
             input.value = '';
             document.getElementById("amount").value = '';
@@ -74,7 +94,7 @@
         let displayInput = document.getElementById("amountDisplay");
         let hiddenInput = document.getElementById("amount");
         let value = displayInput.value.replace(/[^0-9]/g, '');
-        hiddenInput.value = value; // Đảm bảo giá trị gửi đi là số nguyên thuần
+        hiddenInput.value = value; 
     }
 </script>
 

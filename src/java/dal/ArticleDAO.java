@@ -13,21 +13,16 @@ public class ArticleDAO extends DBContext {
 
   private String stripHtml(String html) {
         if (html == null) return null;
-        // Loại bỏ thẻ HTML
         String stripped = html.replaceAll("<[^>]+>", "")
-                             // Thay ký tự không gian đặc biệt (non-breaking space) bằng khoảng trắng
                              .replaceAll(" ", " ")
-                             // Chuẩn hóa khoảng trắng (giữ nguyên nội dung, chỉ xử lý dư thừa)
                              .replaceAll("\\s{2,}", " ")
                              .trim();
         return stripped;
     }
 
-    // Giải mã các HTML entities cơ bản
     private String decodeHtmlEntities(String text) {
         if (text == null) return null;
         String decoded = text
-                // Chữ cái có dấu tiếng Việt (bổ sung đầy đủ)
                 .replaceAll("&aacute;", "á")
                 .replaceAll("&Aacute;", "Á")
                 .replaceAll("&agrave;", "à")
@@ -71,12 +66,11 @@ public class ArticleDAO extends DBContext {
         return decoded;
     }
 
-    // Phương thức ánh xạ ResultSet sang đối tượng Article
     private Article mapResultSetToArticle(ResultSet rs) throws SQLException {
         String description = rs.getString("Description");
         if (description != null) {
-            description = stripHtml(description); // Loại bỏ HTML
-            description = decodeHtmlEntities(description); // Giải mã entities
+            description = stripHtml(description); 
+            description = decodeHtmlEntities(description); 
             // Log để debug
             System.out.println("Processed description for ID " + rs.getInt("Id") + ": " + description);
         }
@@ -94,7 +88,6 @@ public class ArticleDAO extends DBContext {
     }
 
 
-    // Lấy danh sách bài viết với các bộ lọc (search, category, sort)
     public List<Article> getFilteredArticles(String search, String categoryFilter, String sortBy) {
         List<Article> articles = new ArrayList<>();
         StringBuilder sql = new StringBuilder(
@@ -102,17 +95,14 @@ public class ArticleDAO extends DBContext {
             "FROM Articles WHERE 1=1"
         );
 
-        // Điều kiện tìm kiếm theo tiêu đề
         if (search != null && !search.trim().isEmpty()) {
             sql.append(" AND Title LIKE ?");
         }
 
-        // Điều kiện lọc theo thể loại
         if (categoryFilter != null && !categoryFilter.trim().isEmpty()) {
             sql.append(" AND Category = ?");
         }
 
-        // Sắp xếp
         if (sortBy != null && !sortBy.trim().isEmpty()) {
             switch (sortBy) {
                 case "publishDate_asc":
@@ -155,7 +145,6 @@ public class ArticleDAO extends DBContext {
         return articles;
     }
 
-    // Thêm bài viết mới
     public void addArticle(Article article) {
         String sql = "INSERT INTO Articles (Title, Description, Category, AuthorId, ImageUrl, PublishDate, CreatedAt) " +
                      "VALUES (?, ?, ?, ?, ?, GETDATE(), GETDATE())";
@@ -176,7 +165,6 @@ public class ArticleDAO extends DBContext {
         }
     }
 
-    // Cập nhật bài viết
     public void updateArticle(Article article) {
         String sql = "UPDATE Articles SET Title = ?, Description = ?, Category = ?, ImageUrl = ?, UpdatedAt = GETDATE() " +
                      "WHERE Id = ?";
@@ -199,7 +187,6 @@ public class ArticleDAO extends DBContext {
         }
     }
 
-    // Xóa bài viết
     public void deleteArticle(int id) {
         String sql = "DELETE FROM Articles WHERE Id = ?";
 
@@ -256,4 +243,104 @@ public class ArticleDAO extends DBContext {
     }
     return articles;
 }
+    public List<Article> getFilteredArticlesWithPagination(String search, String categoryFilter, String sortBy, int offset, int limit) {
+        List<Article> articles = new ArrayList<>();
+        StringBuilder sql = new StringBuilder(
+            "SELECT Id, Title, Description, Category, PublishDate, AuthorId, ImageUrl, CreatedAt, UpdatedAt " +
+            "FROM Articles WHERE 1=1"
+        );
+
+        // Điều kiện tìm kiếm theo tiêu đề
+        if (search != null && !search.trim().isEmpty()) {
+            sql.append(" AND Title LIKE ?");
+        }
+
+        // Điều kiện lọc theo thể loại
+        if (categoryFilter != null && !categoryFilter.trim().isEmpty()) {
+            sql.append(" AND Category = ?");
+        }
+
+        // Sắp xếp
+        if (sortBy != null && !sortBy.trim().isEmpty()) {
+            switch (sortBy) {
+                case "publishDate_asc":
+                    sql.append(" ORDER BY PublishDate ASC");
+                    break;
+                case "title_asc":
+                    sql.append(" ORDER BY Title ASC");
+                    break;
+                case "title_desc":
+                    sql.append(" ORDER BY Title DESC");
+                    break;
+                default:
+                    sql.append(" ORDER BY PublishDate DESC");
+                    break;
+            }
+        } else {
+            sql.append(" ORDER BY PublishDate DESC");
+        }
+
+        // Thêm phân trang
+        sql.append(" OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
+
+        try (PreparedStatement ps = connection.prepareStatement(sql.toString())) {
+            int paramIndex = 1;
+
+            if (search != null && !search.trim().isEmpty()) {
+                ps.setString(paramIndex++, "%" + search.trim() + "%");
+            }
+
+            if (categoryFilter != null && !categoryFilter.trim().isEmpty()) {
+                ps.setString(paramIndex++, categoryFilter.trim());
+            }
+
+            ps.setInt(paramIndex++, offset);
+            ps.setInt(paramIndex++, limit);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    articles.add(mapResultSetToArticle(rs));
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("❌ SQL Error in getFilteredArticlesWithPagination: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return articles;
+    }
+
+    // Đếm tổng số bài viết với các bộ lọc
+    public int countFilteredArticles(String search, String categoryFilter) {
+        StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM Articles WHERE 1=1");
+
+        if (search != null && !search.trim().isEmpty()) {
+            sql.append(" AND Title LIKE ?");
+        }
+
+        if (categoryFilter != null && !categoryFilter.trim().isEmpty()) {
+            sql.append(" AND Category = ?");
+        }
+
+        try (PreparedStatement ps = connection.prepareStatement(sql.toString())) {
+            int paramIndex = 1;
+
+            if (search != null && !search.trim().isEmpty()) {
+                ps.setString(paramIndex++, "%" + search.trim() + "%");
+            }
+
+            if (categoryFilter != null && !categoryFilter.trim().isEmpty()) {
+                ps.setString(paramIndex++, categoryFilter.trim());
+            }
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("❌ SQL Error in countFilteredArticles: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return 0;
+    }
 }

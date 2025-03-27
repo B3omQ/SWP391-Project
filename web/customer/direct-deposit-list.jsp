@@ -10,6 +10,24 @@
         <c:if test="${not empty message}">
             <div class="alert alert-success mt-3">${message}</div>
         </c:if>
+
+        <!-- Dropdown chọn số lượng phiếu trên mỗi trang -->
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <form method="get" action="${pageContext.request.contextPath}/DirectDepositListServlet">
+                    <div class="input-group">
+                        <select class="form-control" name="recordsPerPage" onchange="this.form.submit()">
+                            <option value="5" ${recordsPerPage == 5 ? 'selected' : ''}>5 phiếu</option>
+                            <option value="10" ${recordsPerPage == 10 ? 'selected' : ''}>10 phiếu</option>
+                            <option value="20" ${recordsPerPage == 20 ? 'selected' : ''}>20 phiếu</option>
+                            <option value="50" ${recordsPerPage == 50 ? 'selected' : ''}>50 phiếu</option>
+                        </select>
+                        <input type="hidden" name="page" value="1">
+                    </div>
+                </form>
+            </div>
+        </div>
+
         <div class="card card-body">
             <div class="table-responsive">
                 <table class="table table-hover">
@@ -52,6 +70,7 @@
                                             <form action="${pageContext.request.contextPath}/DirectDepositListServlet" method="post" style="display:inline;">
                                                 <input type="hidden" name="action" value="cancel">
                                                 <input type="hidden" name="id" value="${request.id}">
+                                                <input type="hidden" name="recordsPerPage" value="${recordsPerPage}">
                                                 <button type="submit" class="btn btn-sm btn-outline-danger" 
                                                         onclick="return confirm('Bạn có chắc chắn hủy phiếu này?')">Hủy</button>
                                             </form>
@@ -71,6 +90,31 @@
                     </tbody>
                 </table>
             </div>
+
+            <!-- Phân trang -->
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center mt-4">
+                    <c:if test="${currentPage > 1}">
+                        <li class="page-item">
+                            <a class="page-link" href="${pageContext.request.contextPath}/DirectDepositListServlet?page=${currentPage - 1}&recordsPerPage=${recordsPerPage}" aria-label="Previous">
+                                <span aria-hidden="true">«</span>
+                            </a>
+                        </li>
+                    </c:if>
+                    <c:forEach begin="1" end="${totalPages}" var="i">
+                        <li class="page-item ${currentPage == i ? 'active' : ''}">
+                            <a class="page-link" href="${pageContext.request.contextPath}/DirectDepositListServlet?page=${i}&recordsPerPage=${recordsPerPage}">${i}</a>
+                        </li>
+                    </c:forEach>
+                    <c:if test="${currentPage < totalPages}">
+                        <li class="page-item">
+                            <a class="page-link" href="${pageContext.request.contextPath}/DirectDepositListServlet?page=${currentPage + 1}&recordsPerPage=${recordsPerPage}" aria-label="Next">
+                                <span aria-hidden="true">»</span>
+                            </a>
+                        </li>
+                    </c:if>
+                </ul>
+            </nav>
         </div>
     </div>
 </div>

@@ -25,7 +25,7 @@ public class DepositRequestDAO extends DBContext {
             stmt.setInt(1, request.getCusId());
             stmt.setBigDecimal(2, request.getAmount());
             stmt.setString(3, request.getNote());
-            stmt.setString(4, STATUS_ACTIVE); // Thay 'Pending' bằng STATUS_ACTIVE
+            stmt.setString(4, STATUS_ACTIVE);
 
             int affectedRows = stmt.executeUpdate();
             if (affectedRows > 0) {
@@ -43,7 +43,6 @@ public class DepositRequestDAO extends DBContext {
         }
     }
 
-    // Lấy danh sách các phiếu yêu cầu đang ACTIVE
     public List<DepositRequest> getPendingDepositRequests() {
         List<DepositRequest> list = new ArrayList<>();
         String sql = "SELECT dr.Id, dr.CusId, dr.Amount, dr.Note, dr.Status, dr.CreatedAt, c.Username " +
@@ -51,7 +50,7 @@ public class DepositRequestDAO extends DBContext {
                      "JOIN Customer c ON dr.CusId = c.Id " +
                      "WHERE dr.Status = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, STATUS_ACTIVE); // Thay 'Pending' bằng STATUS_ACTIVE
+            stmt.setString(1, STATUS_ACTIVE);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     list.add(mapResultSetToDepositRequest(rs));
@@ -83,9 +82,7 @@ public class DepositRequestDAO extends DBContext {
         return null;
     }
 
-    // Cập nhật trạng thái phiếu (chỉ cho phép cập nhật từ ACTIVE)
     public boolean updateDepositRequestStatus(int id, String status) {
-        // Kiểm tra xem status đầu vào có hợp lệ không
         if (!status.equals(STATUS_ACTIVE) && !status.equals(STATUS_COMPLETED) && !status.equals(STATUS_CANCEL)) {
             return false;
         }
@@ -94,7 +91,7 @@ public class DepositRequestDAO extends DBContext {
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, status);
             stmt.setInt(2, id);
-            stmt.setString(3, STATUS_ACTIVE); // Chỉ cho phép cập nhật từ trạng thái ACTIVE
+            stmt.setString(3, STATUS_ACTIVE);
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             System.err.println("❌ Error updating deposit request status for Id " + id + ": " + e.getMessage());
@@ -104,26 +101,58 @@ public class DepositRequestDAO extends DBContext {
     }
 
     public List<DepositRequest> getDepositRequestsByCusId(int cusId) {
+        return getDepositRequestsByCusIdWithPagination(cusId, 0, Integer.MAX_VALUE);
+    }
+
+    // Lấy danh sách phiếu yêu cầu theo cusId với phân trang
+    public List<DepositRequest> getDepositRequestsByCusIdWithPagination(int cusId, int offset, int limit) {
         List<DepositRequest> requests = new ArrayList<>();
         String sql = "SELECT dr.Id, dr.CusId, dr.Amount, dr.Note, dr.Status, dr.CreatedAt, c.Username " +
                      "FROM DepositRequest dr " +
                      "JOIN Customer c ON dr.CusId = c.Id " +
-                     "WHERE dr.CusId = ?";
+                     "WHERE dr.CusId = ? " +
+                     "ORDER BY dr.CreatedAt DESC " +
+                     "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, cusId);
+            stmt.setInt(2, offset);
+            stmt.setInt(3, limit);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     requests.add(mapResultSetToDepositRequest(rs));
                 }
             }
         } catch (SQLException e) {
-            System.err.println("❌ Error fetching deposit requests for CusId " + cusId + ": " + e.getMessage());
+            System.err.println("❌ Error fetching deposit requests for CusId " + cusId + " with pagination: " + e.getMessage());
             e.printStackTrace();
         }
         return requests;
     }
 
+    // Đếm tổng số phiếu yêu cầu theo cusId
+    public int countDepositRequestsByCusId(int cusId) {
+        String sql = "SELECT COUNT(*) " +
+                     "FROM DepositRequest dr " +
+                     "WHERE dr.CusId = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, cusId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("❌ Error counting deposit requests for CusId " + cusId + ": " + e.getMessage());
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
     public List<DepositRequest> getFilteredDepositRequests(String search, String statusFilter, String sortBy) {
+        return getFilteredDepositRequestsWithPagination(search, statusFilter, sortBy, 0, Integer.MAX_VALUE);
+    }
+
+    public List<DepositRequest> getFilteredDepositRequestsWithPagination(String search, String statusFilter, String sortBy, int offset, int limit) {
         List<DepositRequest> requests = new ArrayList<>();
         StringBuilder sql = new StringBuilder(
                 "SELECT dr.Id, dr.CusId, dr.Amount, dr.Note, dr.Status, dr.CreatedAt, c.Username " +
@@ -145,6 +174,47 @@ public class DepositRequestDAO extends DBContext {
             sql.append(" ORDER BY dr.CreatedAt DESC");
         }
 
+        sql.append(" OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql.toString())) {
+            int paramIndex = 1;
+            if (search != null && !search.trim().isEmpty()) {
+                stmt.setString(paramIndex++, "%" + search + "%");
+            }
+            if (statusFilter != null && !statusFilter.trim().isEmpty() && 
+                (statusFilter.equals(STATUS_ACTIVE) || statusFilter.equals(STATUS_COMPLETED) || statusFilter.equals(STATUS_CANCEL))) {
+                stmt.setString(paramIndex++, statusFilter);
+            }
+            stmt.setInt(paramIndex++, offset);
+            stmt.setInt(paramIndex++, limit);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    requests.add(mapResultSetToDepositRequest(rs));
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("❌ Error retrieving filtered deposit requests with pagination: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return requests;
+    }
+
+    public int countFilteredDepositRequests(String search, String statusFilter) {
+        StringBuilder sql = new StringBuilder(
+                "SELECT COUNT(*) " +
+                "FROM DepositRequest dr " +
+                "JOIN Customer c ON dr.CusId = c.Id " +
+                "WHERE 1=1");
+
+        if (search != null && !search.trim().isEmpty()) {
+            sql.append(" AND dr.Id LIKE ?");
+        }
+        if (statusFilter != null && !statusFilter.trim().isEmpty() && 
+            (statusFilter.equals(STATUS_ACTIVE) || statusFilter.equals(STATUS_COMPLETED) || statusFilter.equals(STATUS_CANCEL))) {
+            sql.append(" AND dr.Status = ?");
+        }
+
         try (PreparedStatement stmt = connection.prepareStatement(sql.toString())) {
             int paramIndex = 1;
             if (search != null && !search.trim().isEmpty()) {
@@ -156,15 +226,15 @@ public class DepositRequestDAO extends DBContext {
             }
 
             try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    requests.add(mapResultSetToDepositRequest(rs));
+                if (rs.next()) {
+                    return rs.getInt(1);
                 }
             }
         } catch (SQLException e) {
-            System.err.println("❌ Error retrieving filtered deposit requests: " + e.getMessage());
+            System.err.println("❌ Error counting filtered deposit requests: " + e.getMessage());
             e.printStackTrace();
         }
-        return requests;
+        return 0;
     }
 
     private DepositRequest mapResultSetToDepositRequest(ResultSet rs) throws SQLException {
