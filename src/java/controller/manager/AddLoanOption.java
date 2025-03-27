@@ -57,27 +57,34 @@ public class AddLoanOption extends HttpServlet {
             try {
                 String loanServiceName = request.getParameter("loanServiceName");
                 String description = request.getParameter("description");
+                String loanTypeRepay = request.getParameter("loanTypeRepay");
                 String minimumLoanStr = request.getParameter("minimumLoan");
                 String maximumLoanStr = request.getParameter("maximumLoan");
                 String onTermRateStr = request.getParameter("onTermRate");
                 String penaltyRateStr = request.getParameter("penaltyRate");
                 String duringTimeStr = request.getParameter("duringTime");
+                String afterTermRateStr = request.getParameter("afterTermRate");
+                String gracePeriodStr = request.getParameter("gracePeriod");
 
                 BigDecimal minimumLoan = new BigDecimal(minimumLoanStr);
                 BigDecimal maximumLoan = new BigDecimal(maximumLoanStr);
                 int duringTime = Integer.parseInt(duringTimeStr);
+                int gracePeriod = Integer.parseInt(gracePeriodStr);
+                double afterTermRate = Double.parseDouble(afterTermRateStr);
                 double onTermRate = Double.parseDouble(onTermRateStr);
                 double penaltyRate = Double.parseDouble(penaltyRateStr);
 
                 if (minimumLoan.compareTo(BigDecimal.ZERO) <= 0
                         || maximumLoan.compareTo(BigDecimal.ZERO) <= 0
                         || duringTime <= 0
+                        || gracePeriod <= 0
+                        || afterTermRate <= 0
                         || onTermRate <= 0
                         || penaltyRate <= 0) {
                     json.put("success", false);
                     json.put("message", "All numeric values must be greater than 0");
                 } else {
-                    ldao.createLoanService(loanServiceName, description, onTermRate, penaltyRate, duringTime, minimumLoan, maximumLoan);
+                    ldao.createLoanService(loanServiceName, description, loanTypeRepay, onTermRate, afterTermRate, penaltyRate, duringTime, gracePeriod, minimumLoan, maximumLoan);
                     json.put("success", true);
                 }
 

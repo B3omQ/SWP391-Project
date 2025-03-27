@@ -9,7 +9,7 @@
         </div>
 
         <ul class="sidebar-menu pt-3">
-            <li><a href="CustomerReviewManager"><i class="uil uil-dashboard me-2 d-inline-block"></i>Bảng thông tin</a></li>
+            <li><a href="#"><i class="uil uil-dashboard me-2 d-inline-block"></i>Bảng thông tin</a></li>
 
             <li><a href="profile-manager"><i class="uil uil-user me-2 d-inline-block"></i>Quản lí tài khoản</a></li>
 

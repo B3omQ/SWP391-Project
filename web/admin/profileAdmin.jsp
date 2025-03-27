@@ -122,11 +122,11 @@
                                                                 <div class="row mt-3">
                                                                     <div class="col-md-6">
                                                                         <label for="newFirstname" class="form-label head">Tên đầu</label>
-                                                                        <input value="${staff.firstname}" type="text" id="newFirstname" name="newFirstname" class="form-control" required>
+                                                                        <input value="${staff.firstname}" type="text" id="newFirstname" name="newFirstname" class="form-control" readonly="true">
                                                                     </div>
                                                                     <div class="col-md-6">
                                                                         <label for="newLastname" class="form-label head">Tên họ</label>
-                                                                        <input value="${staff.lastname}" type="text" id="newLastname" name="newLastname" class="form-control" required>
+                                                                        <input value="${staff.lastname}" type="text" id="newLastname" name="newLastname" class="form-control" readonly="true">
                                                                     </div>
                                                                 </div>
                                                                 <div class="row mt-3">
@@ -137,7 +137,7 @@
                                                                     </div>
                                                                     <div class="col-md-6">
                                                                         <label for="newAddress" class="form-label head">Địa chỉ</label>
-                                                                        <input value="${staff.address}" type="text" id="newAddress" name="newAddress" class="form-control" required>
+                                                                        <input value="${staff.address}" type="text" id="newAddress" name="newAddress" class="form-control" readonly="true">
                                                                     </div>
                                                                 </div>
                                                                 <div class="row mt-3">
@@ -151,7 +151,7 @@
                                                                     </div>
                                                                     <div class="col-md-6">
                                                                         <label for="newDob" class="form-label head">Ngày khai sinh</label>
-                                                                        <input type="date" id="newDob" name="newDob" value="${staff.dob}" class="form-control">
+                                                                        <input type="date" id="newDob" name="newDob" value="${staff.dob}" class="form-control" readonly="true">
                                                                     </div>
                                                                 </div>
                                                                 <div class="row mt-5">

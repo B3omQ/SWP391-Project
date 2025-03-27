@@ -157,6 +157,14 @@
         <servlet-class>filter.ChatFilter</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>DepositApproval</servlet-name>
+        <servlet-class>controller.ceo.DepositApproval</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoanApproval</servlet-name>
+        <servlet-class>controller.ceo.LoanApproval</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>AddLoanOption</servlet-name>
         <servlet-class>controller.manager.AddLoanOption</servlet-class>
     </servlet>
@@ -228,6 +236,18 @@
         <servlet-name>ChatLogConsultant</servlet-name>
         <servlet-class>controller.customer.ChatLogConsultant</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ApplyLoan</servlet-name>
+        <servlet-class>controller.customer.ApplyLoan</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CustomerLoanServlet</servlet-name>
+        <servlet-class>controller.customer.CustomerLoanServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CustomerLoanPayment</servlet-name>
+        <servlet-class>controller.customer.CustomerLoanPayment</servlet-class>
+        </servlet>
     <servlet>
         <servlet-name>DirectDepositListServlet</servlet-name>
         <servlet-class>controller.customer.DirectDepositListServlet</servlet-class>
@@ -461,6 +481,14 @@
         <url-pattern>/ChatFilter</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>DepositApproval</servlet-name>
+        <url-pattern>/depositApproval</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoanApproval</servlet-name>
+        <url-pattern>/loanApproval</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>AddLoanOption</servlet-name>
         <url-pattern>/add-loan-option</url-pattern>
     </servlet-mapping>
@@ -532,6 +560,18 @@
         <servlet-name>ChatLogConsultant</servlet-name>
         <url-pattern>/ChatLogConsultant</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ApplyLoan</servlet-name>
+        <url-pattern>/applyLoan</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CustomerLoanServlet</servlet-name>
+        <url-pattern>/customerLoanServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CustomerLoanPayment</servlet-name>
+        <url-pattern>/customerLoanPayment</url-pattern>
+        </servlet-mapping>
     <servlet-mapping>
         <servlet-name>DirectDepositListServlet</servlet-name>
         <url-pattern>/DirectDepositListServlet</url-pattern>

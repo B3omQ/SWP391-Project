@@ -40,7 +40,7 @@
 <nav id="sidebar" class="sidebar-wrapper">
     <div class="sidebar-content" data-simplebar style="height: calc(100% - 60px);">
         <div class="sidebar-brand">
-            <a href="http://localhost:8080/BankingSystem/home.jsp">
+            <a href="http://localhost:9999/BankingSystem/home.jsp">
                 <img src="${pageContext.request.contextPath}/assets/images/logo-dark.png" height="24" class="logo-light-mode" alt="">
                 <img src="${pageContext.request.contextPath}/assets/images/logo-light.png" height="24" class="logo-dark-mode" alt="">
             </a>
@@ -55,6 +55,8 @@
                         <li><a href="${pageContext.request.contextPath}/customer/deposit.jsp">Nạp tiền qua VNPay</a></li>
                         <li><a href="${pageContext.request.contextPath}/customer/direct-deposit.jsp">Nạp tiền trực tiếp</a></li>
                         <li><a href="${pageContext.request.contextPath}/customer/Saving.jsp">Gửi tiết kiệm</a></li>
+                        <li><a href="<%= request.getContextPath() %>/applyLoan">Tạo khoản vay</a></li>
+                        <li><a href="<%= request.getContextPath() %>/customerLoanServlet">Khoản vay của tôi</a></li>
                     </ul>
                 </div>
             </li>
@@ -62,7 +64,7 @@
                 <a href="javascript:void(0)"><i class="uil uil-flip-h me-2 d-inline-block"></i>Blogs</a>
                 <div class="sidebar-submenu">
                     <ul>
-                        <li><a href="http://localhost:8080/BankingSystem/NewsServlet">Blogs</a></li>
+                        <li><a href="http://localhost:9999/BankingSystem/NewsServlet">Blogs</a></li>
                     </ul>
                 </div>
             </li>
