@@ -225,14 +225,7 @@
                                 <i class="uil uil-bars"></i>
                             </a>
                             <div class="search-bar p-0 d-none d-md-block ms-2">
-                                <div id="search" class="menu-search mb-0">
-                                    <form role="search" method="get" id="searchform" class="searchform">
-                                        <div>
-                                            <input type="text" class="form-control border rounded-pill" name="s" id="s" placeholder="Search Keywords...">
-                                            <input type="submit" id="searchsubmit" value="Search">
-                                        </div>
-                                    </form>
-                                </div>
+                                
                             </div>
                         </div>
                         <ul class="list-unstyled mb-0">
@@ -351,8 +344,8 @@
                                                 <small class="text-muted">Khách Hàng</small>
                                             </div>
                                         </a>
-                                        <a class="dropdown-item text-dark" href="Customer.jsp"><span class="mb-0 d-inline-block me-1"><i class="uil uil-dashboard align-middle h6"></i></span> Dashboard</a>
-                                        <a class="dropdown-item text-dark" href="account-profile.jsp"><span class="mb-0 d-inline-block me-1"><i class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
+                                        <a class="dropdown-item text-dark" href="customer/Customer.jsp"><span class="mb-0 d-inline-block me-1"><i class="uil uil-dashboard align-middle h6"></i></span> Dashboard</a>
+                                        <a class="dropdown-item text-dark" href="customer/account-profile.jsp"><span class="mb-0 d-inline-block me-1"><i class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
                                         <div class="dropdown-divider border-top"></div>
                                         <a class="dropdown-item text-dark" href="${pageContext.request.contextPath}/AuthServlet?action=logout">
                                             <span class="mb-0 d-inline-block me-1"><i class="uil uil-sign-out-alt align-middle h6"></i></span> Logout
