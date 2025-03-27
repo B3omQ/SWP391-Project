@@ -5,6 +5,7 @@
 package controller.ceo;
 
 import dal.CeoDAO;
+import dal.DepServiceDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,13 +14,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
-import model.Customer;
+import model.DepService;
 
 /**
  *
  * @author Long
  */
-public class CustomerManagement extends HttpServlet {
+public class DepositApproval extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,10 +39,10 @@ public class CustomerManagement extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CustomerManagement</title>");
+            out.println("<title>Servlet DepositApproval</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet CustomerManagement at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet DepositApproval at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -59,10 +60,15 @@ public class CustomerManagement extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        DepServiceDAO depdao = new DepServiceDAO();
+        CeoDAO ceoDAO = new CeoDAO();
         HttpSession session = request.getSession();
-        CeoDAO cdao = new CeoDAO();
+        String status = request.getParameter("pendingStatus");
+        String sortBy = request.getParameter("sortBy");
+        String order = request.getParameter("order");
+        String id = request.getParameter("id");
+        String changeStatus = request.getParameter("changeStatus");
         String currentPage = request.getParameter("page");
-        String deleteId = request.getParameter("deleteId");
         int page;
         int DEFAULT_PER_PAGE = 5;
         int recordsPerPage = 5;
@@ -94,15 +100,39 @@ public class CustomerManagement extends HttpServlet {
         } else {
             session.setAttribute("searchSession", search);
         }
-        if(deleteId != null) {
-             try {
-                int delId = Integer.parseInt(deleteId);
-                cdao.deleteCustomer(delId);
-            } catch (NumberFormatException ex) {
-                System.out.println(ex);
-            }
+
+        if (id != null) {
+            ceoDAO.updateDepServiceStatusById(Integer.parseInt(id), changeStatus);
         }
-        int numberOfRecords = cdao.getTotalCustomerRecords(search);
+
+        if (status == null || status.trim().isEmpty()) {
+            status = (String) session.getAttribute("statusSession");
+            if (status == null) {
+                status = "Pending";
+            }
+        } else {
+            session.setAttribute("statusSession", status);
+        }
+
+        if (sortBy == null || sortBy.trim().isEmpty()) {
+            sortBy = (String) session.getAttribute("sortBySession");
+            if (sortBy == null) {
+                sortBy = "DuringTime";
+            }
+        } else {
+            session.setAttribute("sortBySession", sortBy);
+        }
+
+        if (order == null || order.trim().isEmpty()) {
+            order = (String) session.getAttribute("orderSession");
+            if (order == null) {
+                order = "ASC";
+            }
+        } else {
+            session.setAttribute("orderSession", order);
+        }
+
+        int numberOfRecords = ceoDAO.getTotalDepositRecords(status, search);
         int endPage = numberOfRecords % recordsPerPage == 0 ? numberOfRecords / recordsPerPage : numberOfRecords / recordsPerPage + 1;
         try {
             page = Integer.parseInt(currentPage);
@@ -113,16 +143,24 @@ public class CustomerManagement extends HttpServlet {
             page = 1;
         }
 
-        request.setAttribute("page", page);
-        request.setAttribute("endPage", endPage);
+        try {
+            List<DepService> depList = ceoDAO.getAllDepServiceByStatus(status, sortBy, order, search, page, recordsPerPage);
+            request.setAttribute("page", page);
+            request.setAttribute("endPage", endPage);
+            request.setAttribute("numberOfRecords", numberOfRecords);
+            request.setAttribute("recordsPerPage", recordsPerPage);
+            request.setAttribute("searchValue", search);
+            request.setAttribute("perPage", recordsPerPage);
+            request.setAttribute("currentStatus", status);
+            request.setAttribute("currentSort", sortBy);
+            request.setAttribute("currentOrder", order);
+            request.setAttribute("depOptionServiceList", depList);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
 
-        List<Customer> customers = cdao.searchCustomers(search, page, recordsPerPage);
-        request.setAttribute("customers", customers);
-        request.setAttribute("numberOfRecords", numberOfRecords);
-        request.setAttribute("recordsPerPage", recordsPerPage);
-        request.setAttribute("searchValue", search);
-        request.setAttribute("perPage", recordsPerPage);
-        request.getRequestDispatcher("./ceo/customerManagement.jsp").forward(request, response);
+        request.getRequestDispatcher("./ceo/depositApproval.jsp").forward(request, response);
+
     }
 
     /**

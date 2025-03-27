@@ -79,6 +79,23 @@ public class LoanService {
         this.afterTermRate = afterTermRate;
     }    
 
+    public LoanService(int id, String loanServiceName, String description, int duringTime, double onTermRate, double penaltyRate, BigDecimal minimumLoan, BigDecimal maximumLoan, String pendingStatus, double afterTermRate, String reasonReject, String loanTypeRepay, int gracePeriod) {
+        this.id = id;
+        this.loanServiceName = loanServiceName;
+        this.description = description;
+        this.duringTime = duringTime;
+        this.onTermRate = onTermRate;
+        this.penaltyRate = penaltyRate;
+        this.minimumLoan = minimumLoan;
+        this.maximumLoan = maximumLoan;
+        this.pendingStatus = pendingStatus;
+        this.afterTermRate = afterTermRate;
+        this.reasonReject = reasonReject;
+        this.loanTypeRepay = loanTypeRepay;
+        this.gracePeriod = gracePeriod;
+    }
+    
+
     public int getId() {
         return id;
     }
@@ -151,6 +168,7 @@ public class LoanService {
         this.pendingStatus = pendingStatus;
     }
 
+  
     @Override
     public String toString() {
         return "LoanService{" + "id=" + id + ", loanServiceName=" + loanServiceName + ", description=" + description + ", duringTime=" + duringTime + ", onTermRate=" + onTermRate + ", penaltyRate=" + penaltyRate + ", minimumLoan=" + minimumLoan + ", maximumLoan=" + maximumLoan + ", pendingStatus=" + pendingStatus + '}';

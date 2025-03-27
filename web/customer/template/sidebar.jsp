@@ -55,6 +55,8 @@
                         <li><a href="${pageContext.request.contextPath}/customer/deposit.jsp">Nạp tiền qua VNPay</a></li>
                         <li><a href="${pageContext.request.contextPath}/customer/direct-deposit.jsp">Nạp tiền trực tiếp</a></li>
                         <li><a href="${pageContext.request.contextPath}/customer/Saving.jsp">Gửi tiết kiệm</a></li>
+                        <li><a href="<%= request.getContextPath() %>/applyLoan">Tạo khoản vay</a></li>
+                        <li><a href="<%= request.getContextPath() %>/customerLoanServlet">Khoản vay của tôi</a></li>
                     </ul>
                 </div>
             </li>

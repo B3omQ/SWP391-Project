@@ -38,7 +38,7 @@ public class Disbursement extends HttpServlet {
         String recordsPerPage = request.getParameter("recordPerPage");
         int page = (pageParam == null) ? 1 : Integer.parseInt(pageParam);
         int recordsPerPageInt = 8;
-        String status = "approve";
+        String status = "Approved";
         if (pageParam != null) {
             try {
                 page = Integer.parseInt(pageParam);
