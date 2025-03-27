@@ -265,9 +265,10 @@
                                             <label for="minimumLoan">
                                                 <i class="fas fa-dollar-sign text-danger"></i> Giá trị tối thiểu vay
                                             </label>
-                                            <input type="number" id="minimumLoan" 
-                                                   name="minimumLoan" class="kofi-input" 
-                                                   placeholder="Nhập giá trị (VNĐ)" required>
+                                            <input type="text" id="minimumLoanDisplay" 
+                                                   name="minimumLoanDisplay" class="kofi-input" 
+                                                   placeholder="Nhập giá trị (VNĐ)" required oninput="formatNumberMin(this)">
+                                            <input type="hidden" id="minimumLoan" name="minimumLoan">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -275,9 +276,10 @@
                                             <label for="maximumLoan">
                                                 <i class="fas fa-dollar-sign text-danger"></i> Giá trị tối đa vay
                                             </label>
-                                            <input type="number" id="maximumLoan" 
-                                                   name="maximumLoan" class="kofi-input" 
-                                                   placeholder="Nhập giá trị (VNĐ)" required>
+                                            <input type="text" id="maximumLoanDisplay" 
+                                                   name="maximumLoanDisplay" class="kofi-input" 
+                                                   placeholder="Nhập giá trị (VNĐ)" required oninput="formatNumberMax(this)">
+                                            <input type="hidden" id="maximumLoan" name="maximumLoan">
                                         </div>
                                     </div>
 
@@ -369,6 +371,43 @@
         <script src="<%= request.getContextPath() %>/assets/js/app.js"></script>
         <!-- Thêm đoạn script này vào phần script hiện có -->
         <script>
+
+            function formatNumberMin(input) {
+                let value = input.value.replace(/[^0-9]/g, '');
+                if (value) {
+                    input.value = parseInt(value).toLocaleString('vi-VN');
+                    document.getElementById("minimumLoan").value = value; // Lưu giá trị sạch vào hidden input
+                } else {
+                    input.value = '';
+                    document.getElementById("minimumLoan").value = '';
+                }
+            }
+
+            function prepareFormMin() {
+                let displayInput = document.getElementById("minimumLoanDisplay");
+                let hiddenInput = document.getElementById("minimumLoan");
+                let value = displayInput.value.replace(/[^0-9]/g, '');
+                hiddenInput.value = value; // Đảm bảo giá trị gửi đi là số nguyên thuần
+            }
+            
+            function formatNumberMax(input) {
+                let value = input.value.replace(/[^0-9]/g, '');
+                if (value) {
+                    input.value = parseInt(value).toLocaleString('vi-VN');
+                    document.getElementById("maximumLoan").value = value; // Lưu giá trị sạch vào hidden input
+                } else {
+                    input.value = '';
+                    document.getElementById("maximumLoan").value = '';
+                }
+            }
+
+            function prepareFormMax() {
+                let displayInput = document.getElementById("maximumLoanDisplay");
+                let hiddenInput = document.getElementById("maximumLoan");
+                let value = displayInput.value.replace(/[^0-9]/g, '');
+                hiddenInput.value = value; // Đảm bảo giá trị gửi đi là số nguyên thuần
+            }
+
             $(document).ready(function () {
                 let formDirty = false;
                 let nextUrl = null;

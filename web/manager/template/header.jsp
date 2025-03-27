@@ -5,6 +5,25 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page import="jakarta.servlet.http.HttpSession" %>
+<%@ page import="model.Staff" %>
+<%@ page import="model.Notification" %>
+<%@ page import="dal.NotifyDAO" %>
+<%@ page import="java.util.List, java.util.ArrayList" %>
+
+<%
+    HttpSession sessionObj = request.getSession(false);
+    Staff staff = (sessionObj != null) ? (Staff) sessionObj.getAttribute("staff") : null;
+    pageContext.setAttribute("staff", staff);
+    NotifyDAO ndao = new NotifyDAO();
+    List<Notification> notifyList = ndao.getAllNotificationByCusIdNotRead(staff.getId(), false);
+    if (notifyList == null) {
+        notifyList = new ArrayList<>();
+    }
+    int count = ndao.countNotificationNotReadByCusId(staff.getId(), false);
+    pageContext.setAttribute("count", count);
+    pageContext.setAttribute("notifyList", notifyList);
+%>
 
 
 
@@ -23,57 +42,7 @@
             </a>
         </div>
 
-        <ul class="list-unstyled mb-0">
-            <li class="list-inline-item mb-0">
-                <div class="dropdown dropdown-primary">
-                    <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0"
-                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img
-                            src="<%= request.getContextPath() %>/assets/images/language/american.png"
-                            class="avatar avatar-ex-small rounded-circle p-2" alt=""></button>
-                    <div class="dropdown-menu dd-menu drop-ups dropdown-menu-end bg-white shadow border-0 mt-3 p-2"
-                         data-simplebar style="height: 175px;">
-                        <a href="javascript:void(0)" class="d-flex align-items-center">
-                            <img src="<%= request.getContextPath() %>/assets/images/language/chinese.png"
-                                 class="avatar avatar-client rounded-circle shadow" alt="">
-                            <div class="flex-1 text-left ms-2 overflow-hidden">
-                                <small class="text-dark mb-0">Chinese</small>
-                            </div>
-                        </a>
-
-                        <a href="javascript:void(0)" class="d-flex align-items-center mt-2">
-                            <img src="<%= request.getContextPath() %>/assets/images/language/european.png"
-                                 class="avatar avatar-client rounded-circle shadow" alt="">
-                            <div class="flex-1 text-left ms-2 overflow-hidden">
-                                <small class="text-dark mb-0">European</small>
-                            </div>
-                        </a>
-
-                        <a href="javascript:void(0)" class="d-flex align-items-center mt-2">
-                            <img src="<%= request.getContextPath() %>/assets/images/language/indian.png"
-                                 class="avatar avatar-client rounded-circle shadow" alt="">
-                            <div class="flex-1 text-left ms-2 overflow-hidden">
-                                <small class="text-dark mb-0">Indian</small>
-                            </div>
-                        </a>
-
-                        <a href="javascript:void(0)" class="d-flex align-items-center mt-2">
-                            <img src="<%= request.getContextPath() %>/assets/images/language/japanese.png"
-                                 class="avatar avatar-client rounded-circle shadow" alt="">
-                            <div class="flex-1 text-left ms-2 overflow-hidden">
-                                <small class="text-dark mb-0">Japanese</small>
-                            </div>
-                        </a>
-
-                        <a href="javascript:void(0)" class="d-flex align-items-center mt-2">
-                            <img src="<%= request.getContextPath() %>/assets/images/language/russian.png"
-                                 class="avatar avatar-client rounded-circle shadow" alt="">
-                            <div class="flex-1 text-left ms-2 overflow-hidden">
-                                <small class="text-dark mb-0">Russian</small>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            </li>
+        <ul class="list-unstyled mb-0">            
 
             <li class="list-inline-item mb-0 ms-1">
                 <a href="javascript:void(0)" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
@@ -90,81 +59,54 @@
                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
                             data-feather="mail" class="fea icon-sm"></i></button>
                     <span
-                        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">4
+                        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">${count}
                         <span class="visually-hidden">unread mail</span></span>
 
                     <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow rounded border-0 mt-3 px-2 py-2"
-                         data-simplebar style="height: 320px; width: 300px;">
-                        <a href="#" class="d-flex align-items-center justify-content-between py-2">
-                            <div class="d-inline-flex position-relative overflow-hidden">
-                                <img src="<%= request.getContextPath() %>/assets/images/client/02.jpg"
-                                     class="avatar avatar-md-sm rounded-circle shadow" alt="">
-                                <small class="text-dark mb-0 d-block text-truncat ms-3">You received a new
-                                    email from <b>Janalia</b> <small
-                                        class="text-muted fw-normal d-inline-block">1 hour
-                                        ago</small></small>
-                            </div>
-                        </a>
+                         data-simplebar style="height: auto; width: 300px;">
+                        <c:choose>
+                            <c:when test="${empty notifyList}">
+                                <div class="text-dark mb-0 d-block text-truncat ms-3">Danh sách thông báo trống</div>
+                            </c:when>
+                            <c:otherwise>
+                                <c:forEach var="notify" items="${notifyList}">
+                                    <div class="d-flex bubble align-items-center justify-content-between py-2 notify-item" 
+                                         data-id="${notify.id}"> 
+                                        <div class="d-inline-flex position-relative overflow-hidden">
+                                            <img src="<%= request.getContextPath() %>/assets/images/logo-icon2.png"
+                                                 class="avatar avatar-md-sm rounded-circle shadow" alt="">
+                                            <small class="text-dark mb-0 d-block ms-3">
+                                                ${notify.description} 
+                                                <small class="text-muted fw-normal d-inline-block">${notify.createTime}</small>
+                                            </small>
+                                        </div>
+                                    </div>
+                                </c:forEach>
+                            </c:otherwise>
+                        </c:choose>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function () {
+                                document.querySelectorAll(".notify-item").forEach(item => {
+                                    item.addEventListener("click", function () {
+                                        let notifyId = this.getAttribute("data-id");
 
-                        <a href="#"
-                           class="d-flex align-items-center justify-content-between py-2 border-top">
-                            <div class="d-inline-flex position-relative overflow-hidden">
-                                <img src="<%= request.getContextPath() %>/assets/images/client/Codepen.svg"
-                                     class="avatar avatar-md-sm rounded-circle shadow" alt="">
-                                <small class="text-dark mb-0 d-block text-truncat ms-3">You received a new
-                                    email from <b>codepen</b> <small
-                                        class="text-muted fw-normal d-inline-block">4 hour
-                                        ago</small></small>
-                            </div>
-                        </a>
+                                        // Tạo form ẩn để gửi dữ liệu bằng POST
+                                        let form = document.createElement("form");
+                                        form.method = "POST";
+                                        form.action = "${pageContext.request.contextPath}/identity-information-switch-case";
 
-                        <a href="#"
-                           class="d-flex align-items-center justify-content-between py-2 border-top">
-                            <div class="d-inline-flex position-relative overflow-hidden">
-                                <img src="<%= request.getContextPath() %>/assets/images/client/03.jpg"
-                                     class="avatar avatar-md-sm rounded-circle shadow" alt="">
-                                <small class="text-dark mb-0 d-block text-truncat ms-3">You received a new
-                                    email from <b>Cristina</b> <small
-                                        class="text-muted fw-normal d-inline-block">5 hour
-                                        ago</small></small>
-                            </div>
-                        </a>
+                                        let input = document.createElement("input");
+                                        input.type = "hidden";
+                                        input.name = "notifyId";
+                                        input.value = notifyId;
 
-                        <a href="#"
-                           class="d-flex align-items-center justify-content-between py-2 border-top">
-                            <div class="d-inline-flex position-relative overflow-hidden">
-                                <img src="<%= request.getContextPath() %>/assets/images/client/dribbble.svg"
-                                     class="avatar avatar-md-sm rounded-circle shadow" alt="">
-                                <small class="text-dark mb-0 d-block text-truncat ms-3">You received a new
-                                    email from <b>Dribbble</b> <small
-                                        class="text-muted fw-normal d-inline-block">24 hour
-                                        ago</small></small>
-                            </div>
-                        </a>
-
-                        <a href="#"
-                           class="d-flex align-items-center justify-content-between py-2 border-top">
-                            <div class="d-inline-flex position-relative overflow-hidden">
-                                <img src="<%= request.getContextPath() %>/assets/images/client/06.jpg"
-                                     class="avatar avatar-md-sm rounded-circle shadow" alt="">
-                                <small class="text-dark mb-0 d-block text-truncat ms-3">You received a new
-                                    email from <b>Donald Aghori</b> <small
-                                        class="text-muted fw-normal d-inline-block">1 day
-                                        ago</small></small>
-                            </div>
-                        </a>
-
-                        <a href="#"
-                           class="d-flex align-items-center justify-content-between py-2 border-top">
-                            <div class="d-inline-flex position-relative overflow-hidden">
-                                <img src="<%= request.getContextPath() %>/assets/images/client/07.jpg"
-                                     class="avatar avatar-md-sm rounded-circle shadow" alt="">
-                                <small class="text-dark mb-0 d-block text-truncat ms-3">You received a new
-                                    email from <b>Calvin</b> <small
-                                        class="text-muted fw-normal d-inline-block">2 day
-                                        ago</small></small>
-                            </div>
-                        </a>
+                                        form.appendChild(input);
+                                        document.body.appendChild(form);
+                                        form.submit();
+                                    });
+                                });
+                            });
+                        </script>
                     </div>
                 </div>
             </li>

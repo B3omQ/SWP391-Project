@@ -6,6 +6,8 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="model.Customer" %>
+<%@ page import="model.Staff" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,7 +18,7 @@
     <meta name="keywords" content="Appointment, Booking, System, Dashboard, Health" />
     <meta name="author" content="Shreethemes" />
     <meta name="email" content="support@shreethemes.in" />
-    <meta name="website" content="../../../index.html" />
+    <meta name="website" content="../../../home.jsp" />
     <meta name="Version" content="v1.2.0" />
     <!-- favicon -->
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/images/favicon.ico.png">
@@ -147,7 +149,7 @@
         <div class="container">
             <!-- Logo container-->
             <div>
-                <a class="logo" href="${pageContext.request.contextPath}/index.html">
+                <a class="logo" href="${pageContext.request.contextPath}/home.jsp">
                     <span class="logo-light-mode">
                         <img src="${pageContext.request.contextPath}/assets/images/logo-dark.png" class="l-dark" height="24" alt="">
                         <img src="${pageContext.request.contextPath}/assets/images/logo-light.png" class="l-light" height="24" alt="">
@@ -172,7 +174,6 @@
                 </div>
             </div>
             <!-- End Mobile Toggle -->
-
             <!-- Start Dropdown -->
             <ul class="dropdowns list-inline mb-0">
                 <li class="list-inline-item mb-0">
@@ -222,7 +223,7 @@
                                     </div>
                                 </a>
                                 <c:if test="${sessionScope.staff.roleId.id == 1}">
-                                    <a class="dropdown-item text-dark" href="doctor-profile-setting.html"><span class="mb-0 d-inline-block me-1"><i class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
+                                    <a class="dropdown-item text-dark" href="./accountant/home.jsp"><span class="mb-0 d-inline-block me-1"><i class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
                                 </c:if>
                                 <c:if test="${sessionScope.staff.roleId.id == 2}">
                                     <a class="dropdown-item text-dark" href="./consultant-customer"><span class="mb-0 d-inline-block me-1"><i class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>

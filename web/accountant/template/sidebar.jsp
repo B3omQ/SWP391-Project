@@ -16,7 +16,10 @@
                 <div class="sidebar-submenu">
                     <ul>
                         <li><a href="dep-option-service">View option</a></li>
-                        <li><a href="add-saving-option">Create option</a></li>                        
+                        <li><a href="add-saving-option">Create option</a></li>
+                        <!-- Thêm liên kết danh sách phiếu yêu cầu -->
+<li><a href="<%= request.getContextPath() %>/DirectDepositManageServlet"><i class="uil uil-file me-2 d-inline-block"></i>Quản lý Phiếu Nạp Tiền</a></li>
+
                     </ul>
                 </div>
             </li>            
@@ -58,8 +61,8 @@
                     </ul>
                 </div>
             </li>            
-            <!-- Sửa mục Blogs -->
-            <li><a href="<%= request.getContextPath() %>/BlogServlet"><i class="uil uil-blogger me-2 d-inline-block"></i>Blogs</a></li>            <li><a href="home.jsp"><i class="uil uil-window me-2 d-inline-block"></i>Home page</a></li>
+            <li><a href="<%= request.getContextPath() %>/BlogServlet"><i class="uil uil-blogger me-2 d-inline-block"></i>Blogs</a></li>
+            <li><a href="home.jsp"><i class="uil uil-window me-2 d-inline-block"></i>Home page</a></li>
         </ul>
     </div>
     <ul class="sidebar-footer list-unstyled mb-0">

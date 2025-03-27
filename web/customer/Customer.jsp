@@ -6,62 +6,112 @@
 <%@ include file="template/sidebar.jsp" %>
 
 <% 
-    model.Customer customer = (model.Customer) session.getAttribute("account");
-    if (customer == null) {
-        response.sendRedirect(request.getContextPath() + "/login.jsp");
-        return;
-    }
+    try {
+        model.Customer customer = (model.Customer) session.getAttribute("account");
+        if (customer == null) {
+            System.out.println("[DEBUG] Customer is null, redirecting to login.jsp");
+            response.sendRedirect(request.getContextPath() + "/login.jsp");
+            return;
+        } else {
+            System.out.println("[DEBUG] Customer loaded: ID=" + customer.getId() + ", Name=" + customer.getFirstname()
 
-    // Luôn làm mới dữ liệu từ database mỗi khi tải trang
-    dal.DepHistoryDAO depHistoryDAO = new dal.DepHistoryDAO();
-    java.util.List<model.DepHistory> depHistoryList;
-
-    // Lấy tham số tìm kiếm và sắp xếp từ URL
-    String searchQuery = request.getParameter("s");
-    String sortCriteria = request.getParameter("sort");
-
-    // Áp dụng tìm kiếm nếu có
-    if (searchQuery != null && !searchQuery.trim().isEmpty()) {
-        depHistoryList = depHistoryDAO.searchDepHistoryByCustomerId(customer.getId(), searchQuery);
-    } else {
-        depHistoryList = depHistoryDAO.getDepHistoryByCustomerId(customer.getId());
-    }
-
-    // Áp dụng sắp xếp nếu có
-    if (sortCriteria != null && !sortCriteria.trim().isEmpty()) {
-        switch (sortCriteria) {
-            case "time_desc":
-                java.util.Collections.sort(depHistoryList, java.util.Comparator.comparing(model.DepHistory::getCreatedAt, 
-                        java.util.Comparator.nullsLast(java.util.Comparator.reverseOrder())));
-                break;
-            case "time_asc":
-                java.util.Collections.sort(depHistoryList, java.util.Comparator.comparing(model.DepHistory::getCreatedAt, 
-                        java.util.Comparator.nullsLast(java.util.Comparator.naturalOrder())));
-                break;
-            case "amount_asc":
-                java.util.Collections.sort(depHistoryList, java.util.Comparator.comparing(model.DepHistory::getAmount, 
-                        java.util.Comparator.nullsLast(java.util.Comparator.naturalOrder())));
-                break;
-            case "amount_desc":
-                java.util.Collections.sort(depHistoryList, java.util.Comparator.comparing(model.DepHistory::getAmount, 
-                        java.util.Comparator.nullsLast(java.util.Comparator.reverseOrder())));
-                break;
-            case "description_asc":
-                java.util.Collections.sort(depHistoryList, java.util.Comparator.comparing(model.DepHistory::getDescription, 
-                        java.util.Comparator.nullsLast(java.util.Comparator.naturalOrder())));
-                break;
-            case "description_desc":
-                java.util.Collections.sort(depHistoryList, java.util.Comparator.comparing(model.DepHistory::getDescription, 
-                        java.util.Comparator.nullsLast(java.util.Comparator.reverseOrder())));
-                break;
-            default:
-                break;
+);
         }
-    }
 
-    // Cập nhật danh sách vào session để các servlet khác có thể dùng
-    session.setAttribute("depHistoryList", depHistoryList);
+        // Luôn làm mới dữ liệu từ database mỗi khi tải trang
+        dal.DepHistoryDAO depHistoryDAO = new dal.DepHistoryDAO();
+        dal.CustomerDAO customerDAO = new dal.CustomerDAO();
+        java.util.List<model.DepHistory> depHistoryList = null;
+
+        // Lấy tổng tiền sinh lời tự động từ DepHistoryDAO
+        java.math.BigDecimal totalAutoProfit = null;
+        try {
+            totalAutoProfit = depHistoryDAO.getTotalAutoProfit(customer.getId());
+            System.out.println("[DEBUG] Total Auto Profit: " + totalAutoProfit);
+        } catch (Exception e) {
+            System.err.println("[ERROR] Failed to get total auto profit: " + e.getMessage());
+            e.printStackTrace();
+            totalAutoProfit = java.math.BigDecimal.ZERO;
+        }
+        request.setAttribute("totalAutoProfit", totalAutoProfit);
+
+        // Lấy tham số tìm kiếm và sắp xếp từ URL
+        String searchQuery = request.getParameter("s");
+        String sortCriteria = request.getParameter("sort");
+        System.out.println("[DEBUG] Search Query: " + searchQuery + ", Sort Criteria: " + sortCriteria);
+
+        // Áp dụng tìm kiếm nếu có
+        try {
+            if (searchQuery != null && !searchQuery.trim().isEmpty()) {
+                depHistoryList = depHistoryDAO.searchDepHistoryByCustomerId(customer.getId(), searchQuery);
+                System.out.println("[DEBUG] Search applied, history list size: " + (depHistoryList != null ? depHistoryList.size() : "null"));
+            } else {
+                depHistoryList = depHistoryDAO.getDepHistoryByCustomerId(customer.getId());
+                System.out.println("[DEBUG] No search, history list size: " + (depHistoryList != null ? depHistoryList.size() : "null"));
+            }
+        } catch (Exception e) {
+            System.err.println("[ERROR] Failed to get dep history: " + e.getMessage());
+            e.printStackTrace();
+            depHistoryList = new java.util.ArrayList<>();
+        }
+
+        // Áp dụng sắp xếp nếu có
+        if (sortCriteria != null && !sortCriteria.trim().isEmpty() && depHistoryList != null) {
+            System.out.println("[DEBUG] Applying sort: " + sortCriteria);
+            try {
+                switch (sortCriteria) {
+                    case "time_desc":
+                        java.util.Collections.sort(depHistoryList, java.util.Comparator.comparing(model.DepHistory::getCreatedAt, 
+                                java.util.Comparator.nullsLast(java.util.Comparator.reverseOrder())));
+                        break;
+                    case "time_asc":
+                        java.util.Collections.sort(depHistoryList, java.util.Comparator.comparing(model.DepHistory::getCreatedAt, 
+                                java.util.Comparator.nullsLast(java.util.Comparator.naturalOrder())));
+                        break;
+                    case "amount_asc":
+                        java.util.Collections.sort(depHistoryList, java.util.Comparator.comparing(model.DepHistory::getAmount, 
+                                java.util.Comparator.nullsLast(java.util.Comparator.naturalOrder())));
+                        break;
+                    case "amount_desc":
+                        java.util.Collections.sort(depHistoryList, java.util.Comparator.comparing(model.DepHistory::getAmount, 
+                                java.util.Comparator.nullsLast(java.util.Comparator.reverseOrder())));
+                        break;
+                    case "description_asc":
+                        java.util.Collections.sort(depHistoryList, java.util.Comparator.comparing(model.DepHistory::getDescription, 
+                                java.util.Comparator.nullsLast(java.util.Comparator.naturalOrder())));
+                        break;
+                    case "description_desc":
+                        java.util.Collections.sort(depHistoryList, java.util.Comparator.comparing(model.DepHistory::getDescription, 
+                                java.util.Comparator.nullsLast(java.util.Comparator.reverseOrder())));
+                        break;
+                    default:
+                        break;
+                }
+            } catch (Exception e) {
+                System.err.println("[ERROR] Failed to sort dep history: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
+
+        // Cập nhật danh sách vào session để các servlet khác có thể dùng
+        session.setAttribute("depHistoryList", depHistoryList);
+        System.out.println("[DEBUG] DepHistoryList set in session, size: " + (depHistoryList != null ? depHistoryList.size() : "null"));
+
+    } catch (Exception e) {
+        System.err.println("[ERROR] Exception in customer.jsp: " + e.getMessage());
+        e.printStackTrace();
+        // Hiển thị thông báo lỗi trên trang
+        request.setAttribute("errorMessage", "Đã xảy ra lỗi khi tải dữ liệu: " + e.getMessage());
+    }
 %>
+
+<c:if test="${not empty errorMessage}">
+    <div class="container-fluid">
+        <div class="alert alert-danger" role="alert">
+            ${errorMessage}
+        </div>
+    </div>
+</c:if>
 
 <div class="container-fluid">
     <div class="layout-specing">
@@ -186,6 +236,16 @@
                         <canvas id="assetChart"></canvas>
                         <div id="chart-center" style="position: absolute; top: 50%; left: 35%; transform: translate(-50%, -50%); font-size: 20px; font-weight: bold; color: #333; text-align: center; width: 100%; max-width: 200px; white-space: nowrap;"></div>
                     </div>
+                    <!-- Hiển thị tổng tiền sinh lời tự động với icon -->
+                    <div class="mt-3">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <i class="fas fa-coins me-2" style="font-size: 16px; color: #555;"></i>
+                            <p class="mb-0" style="font-size: 14px; font-weight: 500; color: #555;">
+                                Số dư sinh lời: 
+                                <fmt:formatNumber value="${totalAutoProfit}" type="number" groupingUsed="true" /> VND
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -193,6 +253,9 @@
 </div>
 
 <%@ include file="template/footer.jsp" %>
+
+<!-- Thêm Font Awesome để dùng icon -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/Chart.js"></script>

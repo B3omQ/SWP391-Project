@@ -247,6 +247,18 @@
     <servlet>
         <servlet-name>CustomerLoanPayment</servlet-name>
         <servlet-class>controller.customer.CustomerLoanPayment</servlet-class>
+        </servlet>
+    <servlet>
+        <servlet-name>DirectDepositListServlet</servlet-name>
+        <servlet-class>controller.customer.DirectDepositListServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DirectDepositServlet</servlet-name>
+        <servlet-class>controller.customer.DirectDepositServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DirectDepositManageServlet</servlet-name>
+        <servlet-class>controller.accountant.DirectDepositManageServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>HomeServlet</servlet-name>
@@ -551,6 +563,18 @@
     <servlet-mapping>
         <servlet-name>CustomerLoanPayment</servlet-name>
         <url-pattern>/customerLoanPayment</url-pattern>
+        </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DirectDepositListServlet</servlet-name>
+        <url-pattern>/DirectDepositListServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DirectDepositServlet</servlet-name>
+        <url-pattern>/DirectDepositServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DirectDepositManageServlet</servlet-name>
+        <url-pattern>/DirectDepositManageServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>1440</session-timeout>

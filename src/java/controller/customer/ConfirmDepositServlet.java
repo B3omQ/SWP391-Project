@@ -93,18 +93,16 @@ public class ConfirmDepositServlet extends HttpServlet {
                     maturityAction
             );
 
-            boolean added = depServiceUsedDAO.addDepServiceUsed(newDep);
-            if (!added) {
+            int dsuId = depServiceUsedDAO.addDepServiceUsed(newDep);
+            if (dsuId == -1) {
                 System.out.println("Lỗi: Không thể thêm khoản gửi tiết kiệm của người dùng " + account.getId());
                 response.sendRedirect(request.getContextPath() + "/customer/confirmTermAction.jsp?error=transaction_failed");
                 return;
             }
             System.out.println("Khoản gửi tiết kiệm đã được tạo thành công cho người dùng " + account.getId());
-
-            int dsuId = newDep.getId();
             System.out.println("✅ DSUId vừa tạo: " + dsuId);
 
-            boolean historyAdded = depHistoryDAO.addDepHistory(dsuId, "Gửi tiết kiệm kỳ hạn " + selectedTerm + " tháng", depositAmount);
+            boolean historyAdded = depHistoryDAO.addDepHistory(dsuId, "Gửi tiết kiệm kỳ hạn " + selectedTerm + " tháng", depositAmount, account.getId());
             if (!historyAdded) {
                 System.out.println("❌ Lỗi: Không thể thêm lịch sử giao dịch cho người dùng " + account.getId() + " với DSUId: " + dsuId);
                 response.sendRedirect(request.getContextPath() + "/customer/confirmTermAction.jsp?error=history_failed");
@@ -113,8 +111,7 @@ public class ConfirmDepositServlet extends HttpServlet {
             System.out.println("✅ Đã ghi lịch sử gửi tiết kiệm cho người dùng " + account.getId() + " với DSUId: " + dsuId);
 
             BigDecimal newBalance = currentBalance.subtract(depositAmount);
-            Customer updatedAccount = account;
-            updatedAccount.setWallet(newBalance);
+            Customer updatedAccount = customerDAO.getCustomerById(account.getId());
             session.setAttribute("account", updatedAccount);
 
             session.setAttribute("effectiveDate", effectiveDate);

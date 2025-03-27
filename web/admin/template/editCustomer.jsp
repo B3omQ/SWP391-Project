@@ -6,7 +6,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header bg-primary text-white">
-                    <h1 class="modal-title fs-5" id="editModalLabel${param.id}">Update Customer</h1>
+                    <h1 class="modal-title fs-5" id="editModalLabel${param.id}">Cập nhật thông tin người dùng</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -30,32 +30,32 @@
                                 <input value="${param.email}" type="email" id="newEmail" name="newEmail" class="form-control" required>
                             </div>
                             <div class="mb-3">
-                                <label for="newFirstname" class="form-label">First Name</label>
+                                <label for="newFirstname" class="form-label">Tên đầu</label>
                                 <input value="${param.firstname}" type="text" id="newFirstname" name="newFirstname" class="form-control" required>
                             </div>
                             <div class="mb-3">
-                                <label for="newLastname" class="form-label">Last Name</label>
+                                <label for="newLastname" class="form-label">Tên họ</label>
                                 <input value="${param.lastname}" type="text" id="newLastname" name="newLastname" class="form-control" required>
                             </div>
                             <div class="mb-3">
-                                <label for="newPhone" class="form-label">Phone</label>
+                                <label for="newPhone" class="form-label">Số điện thoại</label>
                                 <input value="${param.phone}" type="text" id="newPhone" name="newPhone" class="form-control" required>
                             </div>
                             <div class="mb-3">
-                                <label for="newAddress" class="form-label">Address</label>
+                                <label for="newAddress" class="form-label">Địa chỉ</label>
                                 <input value="${param.address}" type="text" id="newAddress" name="newAddress" class="form-control" required>
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <label for="newDob" class="form-label">Date of Birth</label>
+                                    <label for="newDob" class="form-label">Ngày khai sinh</label>
                                     <input type="date" id="newDob" name="newDob" value="${param.dob}" class="form-control">
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="newGender" class="form-label">Gender</label>
+                                    <label for="newGender" class="form-label">Giới tính</label>
                                     <select id="newGender" name="newGender" class="form-control">
-                                        <option value="Male" ${param.gender == 'Male' ? 'selected' : ''}>Male</option>
-                                        <option value="Female" ${param.gender == 'Female' ? 'selected' : ''}>Female</option>
-                                        <option value="Other" ${param.gender == 'Other' ? 'selected' : ''}>Other</option>
+                                        <option value="Male" ${param.gender == 'Male' ? 'selected' : ''}>Nam</option>
+                                        <option value="Female" ${param.gender == 'Female' ? 'selected' : ''}>Nữ</option>
+                                        <option value="Other" ${param.gender == 'Other' ? 'selected' : ''}>Khác</option>
                                     </select>
                                 </div>
                             </div>
@@ -66,8 +66,8 @@
                 <!-- Footer -->
                 <div class="modal-footer">
                     <p id="error-message-${param.id}" class="text-danger"></p>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
                 </div>
             </div>
         </div>

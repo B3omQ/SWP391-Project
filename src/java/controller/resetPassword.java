@@ -1,66 +1,25 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package controller;
 
 import dal.CustomerDAO;
 import dal.DAOTokenForget;
+import dal.StaffDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.Customer;
+import model.Staff;
 import model.TokenForgetPassword;
 import util.AccountValidation;
 
-/**
- *
- * @author emkob
- */
 public class resetPassword extends HttpServlet {
 
     DAOTokenForget DAOToken = new DAOTokenForget();
     CustomerDAO DAOAccount = new CustomerDAO();
+    StaffDAO DAOStaff = new StaffDAO();
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet resetPassword</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet resetPassword at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -72,47 +31,55 @@ public class resetPassword extends HttpServlet {
             resetService service = new resetService();
 
             if (tokenForgetPassword == null) {
-                request.setAttribute("mess", "Token invalid");
-                request.getRequestDispatcher("auth/template/requestPassword.jsp").forward(request, response);
+                request.setAttribute("mess", "Token không hợp lệ");
+                request.getRequestDispatcher("auth/template/resetPassword.jsp").forward(request, response);
                 return;
             }
 
             if (tokenForgetPassword.isIsUsed()) {
-                request.setAttribute("mess", "Token is used");
-                request.getRequestDispatcher("auth/template/requestPassword.jsp").forward(request, response);
+                request.setAttribute("mess", "Token đã được sử dụng");
+                request.getRequestDispatcher("auth/template/resetPassword.jsp").forward(request, response);
                 return;
             }
 
-            if (service.isExpireTime(tokenForgetPassword.getExpirytime())) {
-                request.setAttribute("mess", "Token is expired");
-                request.getRequestDispatcher("auth/template/requestPassword.jsp").forward(request, response);
+            if (service.isExpireTime(tokenForgetPassword.getExpiryTime())) {
+                request.setAttribute("mess", "Token đã hết hạn");
+                request.getRequestDispatcher("auth/template/resetPassword.jsp").forward(request, response);
                 return;
             }
 
-            Customer account = DAOAccount.getCustomerById(tokenForgetPassword.getUserId());
-
-            if (account == null) {
-                request.setAttribute("mess", "Account not found");
-                request.getRequestDispatcher("auth/template/requestPassword.jsp").forward(request, response);
+            String userType = tokenForgetPassword.getUserType();
+            String email;
+            if ("Customer".equals(userType)) {
+                Customer account = DAOAccount.getCustomerById(tokenForgetPassword.getUserId());
+                if (account == null) {
+                    request.setAttribute("mess", "Tài khoản không tồn tại");
+                    request.getRequestDispatcher("auth/template/resetPassword.jsp").forward(request, response);
+                    return;
+                }
+                email = account.getEmail();
+            } else if ("Staff".equals(userType)) {
+                Staff staff = DAOStaff.getStaffById(tokenForgetPassword.getUserId());
+                if (staff == null) {
+                    request.setAttribute("mess", "Tài khoản không tồn tại");
+                    request.getRequestDispatcher("auth/template/resetPassword.jsp").forward(request, response);
+                    return;
+                }
+                email = staff.getEmail();
+            } else {
+                request.setAttribute("mess", "Loại tài khoản không hợp lệ");
+                request.getRequestDispatcher("auth/template/resetPassword.jsp").forward(request, response);
                 return;
             }
 
-            request.setAttribute("email", account.getEmail());
+            request.setAttribute("email", email);
             session.setAttribute("token", tokenForgetPassword.getToken());
             request.getRequestDispatcher("auth/template/resetPassword.jsp").forward(request, response);
         } else {
-            request.getRequestDispatcher("auth/template/requestPassword.jsp").forward(request, response);
+            request.getRequestDispatcher("auth/template/resetPassword.jsp").forward(request, response);
         }
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -122,17 +89,15 @@ public class resetPassword extends HttpServlet {
 
         AccountValidation validator = new AccountValidation();
 
-        // Validate password complexity
         if (!validator.checkHashOfPassword(password)) {
-            request.setAttribute("mess", "Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and a special character.");
+            request.setAttribute("mess", "Mật khẩu phải dài ít nhất 8 ký tự và bao gồm chữ cái in hoa, thường, số và ký tự đặc biệt.");
             request.setAttribute("email", email);
             request.getRequestDispatcher("auth/template/resetPassword.jsp").forward(request, response);
             return;
         }
 
-        // Ensure passwords match
         if (!password.equals(confirmPassword)) {
-            request.setAttribute("mess", "Confirmation password does not match.");
+            request.setAttribute("mess", "Mật khẩu xác nhận không khớp.");
             request.setAttribute("email", email);
             request.getRequestDispatcher("auth/template/resetPassword.jsp").forward(request, response);
             return;
@@ -142,43 +107,48 @@ public class resetPassword extends HttpServlet {
         String tokenStr = (String) session.getAttribute("token");
         TokenForgetPassword tokenForgetPassword = DAOToken.getTokenPassword(tokenStr);
 
-        // Validate the token
         resetService service = new resetService();
         if (tokenForgetPassword == null) {
-            request.setAttribute("mess", "Invalid token.");
-            request.getRequestDispatcher("auth/template/requestPassword.jsp").forward(request, response);
+            request.setAttribute("mess", "Token không hợp lệ.");
+            request.setAttribute("email", email);
+            request.getRequestDispatcher("auth/template/resetPassword.jsp").forward(request, response);
             return;
         }
         if (tokenForgetPassword.isIsUsed()) {
-            request.setAttribute("mess", "Token has already been used.");
-            request.getRequestDispatcher("auth/template/requestPassword.jsp").forward(request, response);
+            request.setAttribute("mess", "Token đã được sử dụng.");
+            request.setAttribute("email", email);
+            request.getRequestDispatcher("auth/template/resetPassword.jsp").forward(request, response);
             return;
         }
-        if (service.isExpireTime(tokenForgetPassword.getExpirytime())) {
-            request.setAttribute("mess", "Token has expired.");
-            request.getRequestDispatcher("auth/template/requestPassword.jsp").forward(request, response);
+        if (service.isExpireTime(tokenForgetPassword.getExpiryTime())) {
+            request.setAttribute("mess", "Token đã hết hạn.");
+            request.setAttribute("email", email);
+            request.getRequestDispatcher("auth/template/resetPassword.jsp").forward(request, response);
             return;
         }
 
-        DAOAccount.updatePasswordByEmail(email, password);
+        // Cập nhật mật khẩu dựa trên UserType
+        String userType = tokenForgetPassword.getUserType();
+        if ("Customer".equals(userType)) {
+            DAOAccount.updatePasswordByEmail(email, password);
+        } else if ("Staff".equals(userType)) {
+            DAOStaff.updatePasswordByEmail(email, password);
+        } else {
+            request.setAttribute("mess", "Loại tài khoản không hợp lệ.");
+            request.setAttribute("email", email);
+            request.getRequestDispatcher("auth/template/resetPassword.jsp").forward(request, response);
+            return;
+        }
 
-        // Mark the token as used
         tokenForgetPassword.setIsUsed(true);
         DAOToken.updateStatus(tokenForgetPassword);
 
-        // Redirect to the login page
-        request.setAttribute("success", "Password reset successfully!");
-        request.getRequestDispatcher("index.jsp").forward(request, response);
+        request.setAttribute("success", "Đặt lại mật khẩu thành công! Vui lòng đăng nhập lại.");
+        request.getRequestDispatcher("auth/template/resetPassword.jsp").forward(request, response);
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
-
+    }
 }
