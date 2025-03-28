@@ -250,7 +250,7 @@ public class AdminDAO extends DBContext {
         }
         return null;
     }
-    
+
     public static void main(String[] args) {
         AdminDAO a = new AdminDAO();
         List<Staff> list = a.getAllStaff(0, 10, "", 3);
@@ -286,7 +286,6 @@ public class AdminDAO extends DBContext {
         }
         return null;
     }
-
 
     public void updateInformationCustomer(int id, String img, String email, String firstname, String lastname, String gender, LocalDate dob, String phone, String address) {
         String sql = """
@@ -341,8 +340,8 @@ public class AdminDAO extends DBContext {
         } catch (SQLException ex) {
         }
     }
-    
-        public void updateInformationAdmin(int id, String img, String firstname, String lastname, String gender, LocalDate dob, String phone, String address) {
+
+    public void updateInformationAdmin(int id, String img, String firstname, String lastname, String gender, LocalDate dob, String phone, String address) {
         String sql = """
                  UPDATE BankingSystem.dbo.Staff
                  SET [Image] = ?, FirstName = ?, LastName = ?, Gender = ?, Dob = ?, Phone = ?, Address = ? 
@@ -371,5 +370,93 @@ public class AdminDAO extends DBContext {
             System.out.println(ex);
         }
         return false;
+    }
+
+    public List<Customer> getAllCustomerInBlacklist(int offset, int recordsPerPage, String phone) {
+        List<Customer> customerList = new ArrayList<>();
+        String sql = """
+                     SELECT C.Id, C.[Image], C.Email, C.FirstName, C.LastName, C.Gender, C.Dob, C.Phone, C.Address
+                                 FROM BankingSystem.dbo.Customer C
+                                 JOIN BankingSystem.dbo.Blacklist B ON C.Id = B.CusId
+                     """;
+
+        if (phone != null && !phone.isEmpty()) {
+            sql += " WHERE [Phone] = '" + phone + "'";
+        }
+
+        String pagination = """
+                    ORDER BY C.Id
+                    OFFSET ? ROWS
+                    FETCH NEXT ? ROWS ONLY;
+                    """;
+
+        sql += pagination;
+
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, offset);
+            st.setInt(2, recordsPerPage);
+
+            try (ResultSet rs = st.executeQuery()) {
+                while (rs.next()) {
+                    Customer customer = new Customer(
+                            rs.getInt("Id"),
+                            rs.getString("Image"),
+                            rs.getString("Email"),
+                            rs.getString("FirstName"),
+                            rs.getString("LastName"),
+                            rs.getString("Gender"),
+                            rs.getDate("Dob").toLocalDate(),
+                            rs.getString("Phone"),
+                            rs.getString("Address")
+                    );
+                    customerList.add(customer);
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return customerList;
+    }
+
+    // Method to add all overdue customers to the blacklist
+    public void addAllOverdueCustomersToBlacklist() {
+        CeoDAO cdao = new CeoDAO();
+        String sql = """
+            SELECT DISTINCT LSU.CusId
+            FROM LoanServiceUsed LSU
+            JOIN LoanService LS ON LSU.LoanId = LS.Id
+            WHERE LSU.DebtRepayAmount != 0
+            AND DATEDIFF(MONTH, LSU.EndDate, GETDATE()) > LS.GracePeriod
+            """;
+        try (PreparedStatement ps = connection.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                int cusId = rs.getInt("CusId");
+                if (!cdao.isBlacklisted(cusId)) {
+                    cdao.addToBlacklist(cusId);
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error adding overdue customers to blacklist: " + ex.getMessage());
+        }
+    }
+    public int countTotalBlacklistCustomerRecords() {
+        String sql = """
+                        select count(*) from Blacklist
+                        WHERE 1=1
+                     """;
+        int count = 0;
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt(1);
+
+            }
+        } catch (SQLException ex) {
+
+        }
+
+        return count;
     }
 }

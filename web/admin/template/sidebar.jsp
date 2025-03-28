@@ -24,7 +24,8 @@
                 <div class="sidebar-submenu">
                     <ul>
                         <li><a href="customer-admin-management">Danh sách thông tin cá nhân</a></li>
-                        <li><a href="identity-customer-management">Danh sách thông tin định danh</a></li>                        
+                        <li><a href="identity-customer-management">Danh sách thông tin định danh</a></li>  
+                        <li><a href="blacklist-customer-management">Danh sách đen</a></li>
                     </ul>
                 </div>
             </li>            
