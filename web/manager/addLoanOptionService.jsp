@@ -289,10 +289,8 @@
                                                 <i class="fas fa-dollar-sign text-danger"></i> Cách thức trả nợ
                                             </label>
                                             <select class="form-select me-2" name="loanTypeRepay" id="loanTypeRepay">
-                                                <option value="ReducingBalancePayment">Trả theo dư nợ giảm dần</option>
-                                                <option value="FixedInstallmentPayment">Trả nợ theo kỳ hạn cố định</option>
-                                                <option value="LumpSumPaymentAtMaturity">Trả nợ cuối kỳ </option>
-                                                <option value="FlexiblePayment">Trả nợ linh hoạt</option>
+                                                <option value="Amortization">Trả theo dư nợ giảm dần</option>
+                                                <option value="Fixed-Rate">Trả nợ theo kỳ hạn cố định</option>                                                
                                             </select> 
                                         </div>         
                                     </div>
@@ -389,7 +387,7 @@
                 let value = displayInput.value.replace(/[^0-9]/g, '');
                 hiddenInput.value = value; // Đảm bảo giá trị gửi đi là số nguyên thuần
             }
-            
+
             function formatNumberMax(input) {
                 let value = input.value.replace(/[^0-9]/g, '');
                 if (value) {

@@ -53,6 +53,34 @@ public class NotifyDAO extends DBContext {
         }
         return notifyList;
     }
+    
+    public Notification getNotifyById(int notifyId) {
+        String sql = """
+                     SELECT Id, CusId, StaffId, NotifyType, Description, CreateTime, isRead
+                     FROM BankingSystem.dbo.Notification
+                     WHERE Id = ?
+                     """;
+
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, notifyId);
+            try (ResultSet rs = st.executeQuery()) {
+                while (rs.next()) {
+                    return new Notification(
+                            notifyId,
+                            null,
+                            null,
+                            new NotifyType(rs.getInt("NotifyType")),
+                            rs.getString("Description"),
+                            rs.getTimestamp("CreateTime"),
+                            rs.getBoolean("isRead")
+                    );
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return null;
+    }
 
     public List<Notification> getAllNotificationByCusIdNotRead(int cusId, boolean isRead) {
         List<Notification> notifyList = new ArrayList<>();

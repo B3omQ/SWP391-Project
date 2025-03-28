@@ -18,14 +18,18 @@
                 <div class="modal-body bg-light">
                     <div class="row">
                         <!-- Profile Image -->
-                        <div class="form-group text-center" style="display: flex">
+                        <div class="form-group text-center" style="display: flex; justify-content: center;">
                             <div class="col-md-6 mt-3 mb-3">
                                 <label for="Customer Photo" class="col-form-label col-md-12">Ảnh đại diện</label>
-                                <img src="${param.customerPhoto}" class="col-md-12 img-fluid rounded mt-3" alt="Customer Photo" style="max-width: 250px; height: 250px;">
+                                <div class="img-container">
+                                    <img id="customerPhoto-${param.id}" src="${param.customerPhoto}" class="img-thumbnail zoom-image" alt="Customer Photo" data-zoom-image="${param.customerPhoto}">
+                                </div>
                             </div>
                             <div class="col-md-6 mt-3 mb-3">
                                 <label for="Income Verification" class="col-form-label col-md-12">Giấy chứng minh thu nhập</label>
-                                <img src="${param.customerIncomeVertification}" class="col-md-12 img-fluid rounded mt-3" alt="Income Verification" style="max-width: 250px; height: 250px;">
+                                <div class="img-container">
+                                    <img id="incomeVerification-${param.id}" src="${param.customerIncomeVertification}" class="img-thumbnail zoom-image" alt="Income Verification" data-zoom-image="${param.customerIncomeVertification}">
+                                </div>
                             </div>                            
                         </div>
                     </div>
@@ -62,7 +66,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
 
                 <!-- Modal Footer -->
@@ -79,7 +82,6 @@
     </div>
 </form>
 
-<!-- Add some custom CSS -->
 <style>
     .modal-header {
         background-color: #f8f9fa;
@@ -99,13 +101,42 @@
         font-size: 14px;
     }
 
-    .img-fluid {
-        max-width: 100%;
-        height: auto;
-    }
     .modal-footer {
         display: flex;
         justify-content: space-between;
         align-items: center;
+    }
+
+    .img-container {
+        width: 400px;
+        height: 400px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #f5f5f5;
+        border-radius: 8px;
+        margin: 0 auto;
+    }
+
+    .zoom-image {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        cursor: zoom-in;
+    }
+
+    .img-thumbnail {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        cursor: zoom-in;
+    }
+
+    .zoomContainer {
+        z-index: 1500 !important;
+    }
+
+    .zoomLens {
+        z-index: 1501 !important;
     }
 </style>

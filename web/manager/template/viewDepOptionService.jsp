@@ -1,4 +1,4 @@
-<%-- 
+<%--
     Document   : viewDepOptionService
     Created on : Feb 17, 2025, 4:07:59 PM
     Author     : JIGGER
@@ -47,20 +47,30 @@
                 max-width: 150px;
                 height: auto;
             }
+            .back-button-container {
+                margin-top: 30px;
+                margin-right: 500px;
+                text-align: right;
+            }
             .back-button {
-                display: block;
-                width: 120px;
-                padding: 10px;
-                margin: 20px 0 0 auto;
-                text-align: center;
-                background-color: #ff0000;
+                display: inline-block;
+                padding: 12px 25px;
+                background-color: red;
                 color: white;
                 text-decoration: none;
-                border-radius: 5px;
+                border-radius: 15px;
                 font-size: 16px;
+                font-weight: 500;
+                border: none;
+                cursor: pointer;
+                transition: background-color 0.3s ease, transform 0.2s ease;
             }
             .back-button:hover {
-                background-color: #cc0000;
+                background-color: orange;
+                transform: translateY(-2px);
+            }
+            .back-button:active {
+                transform: translateY(0);
             }
         </style>
     </head>
@@ -72,10 +82,13 @@
                 <div class="description">
                     ${deposite.description}
                 </div>                
-            </div>            
+            </div>
+        </div>
+        <div class="back-button-container">
+            <button class="back-button" type="button" 
+                    onclick="window.location.href = './dep-option-service?pendingStatus=&sortBy=&order='">
+                Quay về
+            </button>
         </div>
     </body>
 </html>
-
-
-

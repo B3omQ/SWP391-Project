@@ -6,6 +6,7 @@ package controller.ceo;
 
 import dal.CeoDAO;
 import dal.DepServiceDAO;
+import dal.NotifyDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -69,6 +70,7 @@ public class DepositApproval extends HttpServlet {
         String id = request.getParameter("id");
         String changeStatus = request.getParameter("changeStatus");
         String currentPage = request.getParameter("page");
+        NotifyDAO ndao = new NotifyDAO();
         int page;
         int DEFAULT_PER_PAGE = 5;
         int recordsPerPage = 5;

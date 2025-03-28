@@ -249,7 +249,7 @@ if (account.getImage() != null && !account.getImage().isEmpty()) {
                                             <c:otherwise>
                                                 <c:forEach var="notify" items="${notifyList}">
                                                     <div class="d-flex bubble align-items-center justify-content-between py-2 notify-item" 
-                                                         data-id="${notify.id}"> 
+                                                         data-id="${notify.id}">                                                         
                                                         <div class="d-inline-flex position-relative overflow-hidden">
                                                             <img src="<%= request.getContextPath() %>/assets/images/logo-icon2.png"
                                                                  class="avatar avatar-md-sm rounded-circle shadow" alt="">
@@ -271,7 +271,7 @@ if (account.getImage() != null && !account.getImage().isEmpty()) {
                                                         // Tạo form ẩn để gửi dữ liệu bằng POST
                                                         let form = document.createElement("form");
                                                         form.method = "POST";
-                                                        form.action = "${pageContext.request.contextPath}/identity-information-switch-case"; 
+                                                        form.action = "${pageContext.request.contextPath}/Notify-Url"; 
 
                                                         let input = document.createElement("input");
                                                         input.type = "hidden";
