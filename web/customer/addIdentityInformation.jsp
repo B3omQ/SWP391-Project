@@ -57,14 +57,14 @@
         </div>
         <!-- Loader -->
 
-        <!-- Navbar STart -->
+        <!-- Navbar Start -->
         <header id="topnav" class="defaultscroll sticky">
             <div class="container">
                 <!-- Logo container-->
                 <a class="logo" href="Customer.jsp">
                     <img src="<%= request.getContextPath() %>/assets/images/logo-dark.png" height="24" class="logo-light-mode" alt="">
                     <img src="<%= request.getContextPath() %>/assets/images/logo-light.png" height="24" class="logo-dark-mode" alt="">
-                </a>                
+                </a>
                 <!-- Logo End -->
 
                 <!-- Start Mobile Toggle -->
@@ -99,45 +99,35 @@
 
                     <li class="list-inline-item mb-0 ms-1">
                         <div class="dropdown dropdown-primary">
-                            <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="<%= imagePath %>" class="avatar avatar-ex-small rounded-circle" alt=""></button>
+                            <button type="button" class="btn btn-pills btn-soft-primary dropdown-toggle p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img src="${account.image}" class="avatar avatar-ex-small rounded-circle" alt="">
+                            </button>
                             <div class="dropdown-menu dd-menu dropdown-menu-end bg-white shadow border-0 mt-3 py-3" style="min-width: 200px;">
                                 <a class="dropdown-item d-flex align-items-center text-dark" href="doctor-profile.html">
-                                    <img src="<%= imagePath %>" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
+                                    <img src="${account.image}" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
                                     <div class="flex-1 ms-2">
-                                        <span class="d-block mb-1">
-                                            ${account.firstname} ${account.lastname}
-                                        </span>
-
-                                        <small class="text-muted">Customer</small>
+                                        <span class="d-block mb-1">${account.firstname} ${account.lastname}</span>
+                                        <small class="text-muted">Khách hàng</small>
                                     </div>
                                 </a>
-                                <a class="dropdown-item text-dark" href="Customer.jsp"><span class="mb-0 d-inline-block me-1"><i class="uil uil-dashboard align-middle h6"></i></span> Dashboard</a>
-                                <a class="dropdown-item text-dark" href="account-profile.jsp"><span class="mb-0 d-inline-block me-1"><i class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
+                                <a class="dropdown-item text-dark" href="<%= request.getContextPath() %>/customer/Customer.jsp"><span class="mb-0 d-inline-block me-1"><i class="uil uil-dashboard align-middle h6"></i></span> Bảng điều khiển</a>
+                                <a class="dropdown-item text-dark" href="<%= request.getContextPath() %>/customer/account-profile.jsp"><span class="mb-0 d-inline-block me-1"><i class="uil uil-setting align-middle h6"></i></span> Cài đặt hồ sơ</a>
                                 <div class="dropdown-divider border-top"></div>
                                 <a class="dropdown-item text-dark" href="<%= request.getContextPath() %>/AuthServlet?action=logout">
-                                    <span class="mb-0 d-inline-block me-1">
-                                        <i class="uil uil-sign-out-alt align-middle h6"></i>
-                                    </span> 
-                                    Logout
-                                </a>                            </div>
+                                    <span class="mb-0 d-inline-block me-1"><i class="uil uil-sign-out-alt align-middle h6"></i></span> Đăng xuất
+                                </a>
+                            </div>
                         </div>
                     </li>
                 </ul>
                 <!-- Start Dropdown -->
 
                 <div id="navigation">
-                    <!-- Navigation Menu-->   
+                    <!-- Navigation Menu-->
                     <ul class="navigation-menu nav-left">
                         <li class="has-submenu parent-menu-item">
-                            <a href="javascript:void(0)">Home</a><span class="menu-arrow"></span>
-                            <ul class="submenu">
-                                <li><a href="index.jsp" class="sub-menu-item">Index One</a></li>
-                                <li><a href="index-two.html" class="sub-menu-item">Index Two</a></li>
-                                <li><a href="index-three.html" class="sub-menu-item">Index Three</a></li>
-                            </ul>
+                            <a href="javascript:void(0)">Trang chủ</a><span class="menu-arrow"></span>                    
                         </li>
-
-
                     </ul><!--end navigation menu-->
                 </div><!--end navigation-->
             </div><!--end container-->
