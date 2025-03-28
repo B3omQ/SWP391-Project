@@ -889,26 +889,40 @@ public class CeoDAO extends DBContext {
     }
 
     // Thêm khách hàng vào danh sách đen
-    public void addToBlacklist(int cusId, String reason) {
-        String sql = "INSERT INTO Blacklist (CusId, Reason, BlacklistDate) VALUES (?, ?, GETDATE())";
+    public void addToBlacklist(int cusId) {
+        String sql = "INSERT INTO Blacklist (CusId) VALUES (?)";
         try (
                 PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, cusId);
-            ps.setString(2, reason);
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+    
+    public boolean isOverdue(int cusId) {
+        String sql = """
+                     SELECT LSU.Id FROM LoanServiceUsed LSU "
+                                     + "JOIN LoanService LS ON LSU.LoanId = LS.Id "
+                                     + "WHERE LSU.CusId = ? "
+                                     + "AND LSU.DebtRepayAmount != 0 "
+                                     + // Ch\u1ec9 x\u00e9t kho\u1ea3n vay ch\u01b0a tr\u1ea3 h\u1ebft
+                                     "AND DATEDIFF(MONTH, LSU.EndDate, GETDATE()) > LS.GracePeriod""";
+
+        try (
+                PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, cusId);
+            ResultSet rs = ps.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
     // Kiểm tra khách hàng có bị blacklist không
     public boolean isBlacklisted(int cusId) {
-        String sql = "SELECT LSU.Id FROM LoanServiceUsed LSU "
-                + "JOIN LoanService LS ON LSU.LoanId = LS.Id "
-                + "WHERE LSU.CusId = ? "
-                + "AND LSU.DebtRepayAmount != 0 "
-                + // Chỉ xét khoản vay chưa trả hết
-                "AND DATEDIFF(MONTH, LSU.EndDate, GETDATE()) > LS.GracePeriod";
+        String sql = "Select * from Blacklist where CusId = ?";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, cusId);
@@ -947,22 +961,7 @@ public class CeoDAO extends DBContext {
         return count;
     }
 
-    public boolean isOverdue(int cusId) {
-        String sql = "SELECT LSU.Id FROM LoanServiceUsed LSU "
-                + "JOIN LoanService LS ON LSU.LoanId = LS.Id "
-                + "WHERE LSU.CusId = ? AND DATEDIFF(DAY, LSU.EndDate, GETDATE()) > LS.GracePeriod";
-
-        try (
-                PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, cusId);
-            ResultSet rs = ps.executeQuery();
-            return rs.next();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
+    
     public static void main(String[] args) {
         CeoDAO c = new CeoDAO();
 //        c.deleteStaff(40);

@@ -150,24 +150,23 @@ public class ApplyLoan extends HttpServlet {
         CeoDAO aDao = new CeoDAO();
         AccountValidation validate = new AccountValidation();
         Customer currentAccount = (Customer) session.getAttribute("account");
-        
-        if (currentAccount != null) {
-            int cusId = currentAccount.getId();
-
-            // Nếu khách hàng có khoản vay quá hạn mà chưa bị blacklist thì thêm vào danh sách đen
-            if (aDao.isOverdue(cusId) && !aDao.isBlacklisted(cusId)) {
-                aDao.addToBlacklist(cusId, "Quá hạn trả nợ");
-                session.setAttribute("blacklistStatus", "Bạn đã bị chặn do quá hạn trả nợ!");
-            }
-        }
+        int cusId = currentAccount.getId();
+        List<LoanService> listLoan = aDao.getAllLoanServiceByStatus("Approved", "DuringTime", "ASC", "", 1, 10);
+        request.setAttribute("optionLoanList", listLoan);
         if (aDao.isBlacklisted(currentAccount.getId())) {
             errorMessages.add("Bạn không thể thực hiện giao dịch vì bạn đang bị blacklist.");
             request.setAttribute("errorMessages", errorMessages);
-            List<LoanService> listLoan = aDao.getAllLoanServiceByStatus("Approved", "DuringTime", "ASC", "", 1, 10);
-            request.setAttribute("optionLoanList", listLoan);
             request.getRequestDispatcher("customer/applyLoan.jsp").forward(request, response);
             return;
         }
+        if (aDao.isOverdue(cusId) && !aDao.isBlacklisted(cusId)) {
+            aDao.addToBlacklist(cusId);
+            errorMessages.add("Bạn không thể thực hiện giao dịch vì bạn đang bị blacklist.");
+            request.setAttribute("errorMessages", errorMessages);
+            request.getRequestDispatcher("customer/applyLoan.jsp").forward(request, response);
+            return;
+        }
+
 //        Customer currentAccount = aDao.getCustomerById(2);
         IdentityDAO idao = new IdentityDAO();
         List<VerifyIdentityInformation> identityList = idao.getListVerifyIdentityInformationByCusId(currentAccount.getId());
@@ -220,12 +219,12 @@ public class ApplyLoan extends HttpServlet {
             }
         }
         if (loanID != 0) {
-            if(loanAmount.compareTo(aDao.getLoanServiceById(loanID).getMinimumLoan()) < 0 || 
-                loanAmount.compareTo(aDao.getLoanServiceById(loanID).getMaximumLoan()) > 0){
-            errorMessages.add("Loan amount is not in the valid loan range.");
+            if (loanAmount.compareTo(aDao.getLoanServiceById(loanID).getMinimumLoan()) < 0
+                    || loanAmount.compareTo(aDao.getLoanServiceById(loanID).getMaximumLoan()) > 0) {
+                errorMessages.add("Loan amount is not in the valid loan range.");
+            }
         }
-        }
-        
+
         String image = (imagePart != null && imagePart.getSize() > 0 ? getAndSaveImg(imagePart) : null);
 
         if (imagePart.getSize() > 1024 * 1024 * 5) {
@@ -242,8 +241,6 @@ public class ApplyLoan extends HttpServlet {
 
         if (!errorMessages.isEmpty()) {
             request.setAttribute("errorMessages", errorMessages);
-            List<LoanService> listLoan = aDao.getAllLoanServiceByStatus("Approved", "DuringTime", "ASC", "", 1, 10);
-            request.setAttribute("optionLoanList", listLoan);
             request.getRequestDispatcher("customer/applyLoan.jsp").forward(request, response);
             return;
         }
