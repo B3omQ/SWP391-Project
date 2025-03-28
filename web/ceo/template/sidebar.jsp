@@ -10,9 +10,9 @@
 
         <ul class="sidebar-menu pt-3">
 
-            <li><a href="<%= request.getContextPath() %>/ceo/ceoProfile.jsp"><i class="uil uil-user me-2 d-inline-block"></i>My profile</a></li>         
-            <li><a href="<%= request.getContextPath() %>/depositApproval"><i class="uil uil-user me-2 d-inline-block"></i>Deposite Service</a></li>         
-            <li><a href="<%= request.getContextPath() %>/loanApproval"><i class="uil uil-user me-2 d-inline-block"></i>Loan Service</a></li>         
+            <li><a href="<%= request.getContextPath() %>/ceo/ceoProfile.jsp"><i class="uil uil-user me-2 d-inline-block"></i>Thông tin cá nhân</a></li>         
+            <li><a href="<%= request.getContextPath() %>/depositApproval"><i class="uil uil-user me-2 d-inline-block"></i>Duyệt phương án tiết kiệm</a></li>         
+            <li><a href="<%= request.getContextPath() %>/loanApproval"><i class="uil uil-user me-2 d-inline-block"></i>Duyệt phương án vay</a></li>         
 
         </ul>
         <!-- sidebar-menu  -->

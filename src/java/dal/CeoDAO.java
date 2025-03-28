@@ -682,7 +682,7 @@ public class CeoDAO extends DBContext {
         if ("DuringTime".equalsIgnoreCase(sortBy)) {
             sql += " ORDER BY [DuringTime] " + order;
         } else {
-            sql += " ORDER BY [OnTermRate] " + order;
+            sql += " ORDER BY [MinimumLoan] " + order;
         }
         // Phân trang cho SQL Server
         sql += " OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";

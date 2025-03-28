@@ -62,7 +62,7 @@
                                 <nav aria-label="breadcrumb" class="d-inline-block mt-2">
                                     <ul class="breadcrumb breadcrumb-muted bg-transparent rounded mb-0 p-0">
                                         <li class="breadcrumb-item"><a href="index.html">Ceo</a></li>
-                                        <li class="breadcrumb-item active" aria-current="page">Profile</li>
+                                        <li class="breadcrumb-item active" aria-current="page">Thông tin cá nhân</li>
                                     </ul>
                                 </nav>
                             </div><!--end col-->
@@ -70,7 +70,7 @@
                         <div class="col-xl-8 col-lg-12 col-md-7 mt-4 pt-2 mt-sm-0 pt-sm-0">
                             <div class="rounded shadow mt-4">
                                 <div class="p-4 border-bottom">
-                                    <h5 class="mb-0">Personal Information :</h5>
+                                    <h5 class="mb-0">Thông tin cá nhân :</h5>
                                 </div>
                                 <c:if test="${not empty errorMessages}">
                                     <div class="alert alert-danger">
@@ -85,7 +85,7 @@
                                 <form action="<%= request.getContextPath() %>/ceoProfileServlet" method="post" enctype="multipart/form-data">
                                     <div class="p-4 border-bottom">
                                         <div class="row align-items-center">
-                                            <label class="form-label">Image</label>
+                                            <label class="form-label">Ảnh đại diện</label>
                                             <div class="col-lg-2 col-md-4">
                                                 <img src="<%= request.getContextPath() %>/${staff.image}" class="avatar avatar-md-md rounded-pill shadow mx-auto d-block" alt="">
                                             </div><!--end col-->
@@ -98,27 +98,27 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="mb-3">
-                                                    <label class="form-label">Username</label>
+                                                    <label class="form-label">Tên đăng nhập</label>
                                                     <input name="username" type="text" class="form-control" value="${staff.username}">
                                                 </div>
                                             </div><!--end col-->
                                             <div class="col-md-6">
                                                 <div class="mb-3">
-                                                    <label class="form-label">First Name</label>
+                                                    <label class="form-label">Họ</label>
                                                     <input name="firstname" type="text" class="form-control" value="${staff.firstname}">
                                                 </div>
                                             </div><!--end col-->
 
                                             <div class="col-md-6">
                                                 <div class="mb-3">
-                                                    <label class="form-label">Last Name</label>
+                                                    <label class="form-label">Tên</label>
                                                     <input name="lastname" type="text" class="form-control" value="${staff.lastname}">
                                                 </div>
                                             </div><!--end col-->
 
                                             <div class="col-md-6">
                                                 <div class="mb-3">
-                                                    <label class="form-label">Gender</label>
+                                                    <label class="form-label">Giới tính</label>
                                                     <select class="form-control" name="gender" required>
                                                         <option value="Male" <c:if test="${staff.gender == 'Male'}">selected</c:if>>Male</option>
                                                         <option value="Female" <c:if test="${staff.gender == 'Female'}">selected</c:if>>Female</option>
@@ -128,28 +128,28 @@
 
                                                 <div class="col-md-6">
                                                     <div class="mb-3">
-                                                        <label class="form-label">DoB:</label>
+                                                        <label class="form-label">Ngày sinh</label>
                                                         <input type="date" class="form-control" name="dob" value="${staff.dob}" readonly=""/>
                                                 </div>
                                             </div>
 
                                             <div class="col-md-6">
                                                 <div class="mb-3">
-                                                    <label class="form-label">Your Email</label>
+                                                    <label class="form-label">Email</label>
                                                     <input name="email" type="email" class="form-control" value="${staff.email}" readonly="">
                                                 </div> 
                                             </div><!--end col-->
 
                                             <div class="col-md-6">
                                                 <div class="mb-3">
-                                                    <label class="form-label">Phone</label>
+                                                    <label class="form-label">Số điện thoại</label>
                                                     <input name="phone" type="text" class="form-control" value="${staff.phone}" readonly="">
                                                 </div>                                                                               
                                             </div><!--end col-->
 
                                             <div class="col-md-12">
                                                 <div class="mb-3">
-                                                    <label class="form-label">Address</label>
+                                                    <label class="form-label">Địa chỉ</label>
                                                     <input type="text" class="form-control" name="address" value="${staff.getAddress()}">
                                                 </div>
                                             </div>
@@ -157,7 +157,7 @@
 
                                         <div class="row">
                                             <div class="col-sm-12">
-                                                <input type="submit" id="submit" name="send" class="btn btn-primary" value="Save changes">
+                                                <input type="submit" id="submit" name="send" class="btn btn-primary" value="Lưu">
                                             </div><!--end col-->
                                         </div><!--end row-->
                                     </div>

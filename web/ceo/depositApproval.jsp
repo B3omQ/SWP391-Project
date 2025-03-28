@@ -70,7 +70,7 @@
                                 <nav aria-label="breadcrumb" class="d-inline-block mt-2">
                                     <ul class="breadcrumb breadcrumb-muted bg-transparent rounded mb-0 p-0">
                                         <li class="breadcrumb-item"><a href="index.html">Ceo</a></li>
-                                        <li class="breadcrumb-item active" aria-current="page">Deposit Approval Lists</li>
+                                        <li class="breadcrumb-item active" aria-current="page">Duyệt phương án tiết kiệm</li>
                                     </ul>
                                 </nav>
                             </div><!--end col-->
@@ -84,7 +84,7 @@
                                                     <input type="text" 
                                                            name="search" 
                                                            class="form-control" 
-                                                           placeholder="Search "
+                                                           placeholder="Tìm"
                                                            value="${searchValue}">
                                                     <button type="submit" class="btn btn-primary">
                                                         <i class="uil uil-search"></i>
@@ -95,11 +95,11 @@
                                             <!-- Status Filter -->
                                             <div class="col-md-6">
                                                 <div class="mb-0 position-relative d-flex align-items-center justify-content-center">
-                                                    <label class="form-label me-2 mb-0">Status:</label>
+                                                    <label class="form-label me-2 mb-0">Trạng thái</label>
                                                     <select class="form-control border-primary rounded-pill" name="pendingStatus" onchange="onChangeSubmit('sort')" id="status">
-                                                        <option value="Approved" ${currentStatus == 'Approved' || empty currentStatus ? 'selected' : ''}>Approved</option>
-                                                        <option value="Denied" ${currentStatus == 'Denied' ? 'selected' : ''}>Denied</option>
-                                                        <option value="Pending" ${currentStatus == 'Pending' ? 'selected' : ''}>Pending</option>
+                                                        <option value="Approved" ${currentStatus == 'Approved' || empty currentStatus ? 'selected' : ''}>Phê duyệt</option>
+                                                        <option value="Denied" ${currentStatus == 'Denied' ? 'selected' : ''}>Từ chối</option>
+                                                        <option value="Pending" ${currentStatus == 'Pending' ? 'selected' : ''}>Đang chờ</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -107,7 +107,6 @@
                                             <!-- Pagination Input -->
                                             <div class="col-md-6">
                                                 <div class="mb-0 position-relative d-flex align-items-center justify-content-center">
-                                                    <label class="form-label me-2 mb-0">Items/page:</label>
                                                     <div class="position-relative">
                                                         <input type="number" 
                                                                name="perPage" 
@@ -122,10 +121,10 @@
                                             <!-- Order Filter -->
                                             <div class="col-md-6">
                                                 <div class="mb-0 position-relative d-flex align-items-center justify-content-center">
-                                                    <label class="form-label me-2 mb-0">Sort:</label>
+                                                    <label class="form-label me-2 mb-0">Sắp xếp theo: </label>
                                                     <select class="form-control border-primary rounded-pill" name="sortBy" onchange="onChangeSubmit('sort')" id="sorBy">
-                                                        <option value="DuringTime" ${currentSort == 'DuringTime' || empty currentSort ? 'selected' : ''}>Months</option>
-                                                        <option value="MinimumDep" ${currentSort == 'MinimumDep' ? 'selected' : ''}>MinMoneyDep</option>
+                                                        <option value="DuringTime" ${currentSort == 'DuringTime' || empty currentSort ? 'selected' : ''}>Kì hạn</option>
+                                                        <option value="MinimumDep" ${currentSort == 'MinimumDep' ? 'selected' : ''}>Số tiền gửi vào nhỏ nhất</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -133,8 +132,8 @@
                                                 <div class="mb-0 position-relative d-flex align-items-center justify-content-center">
                                                     <label class="form-label me-2 mb-0"></label>
                                                     <select class="form-control border-primary rounded-pill" name="order" onchange="onChangeSubmit('sort')" id="order">
-                                                        <option value="ASC" ${currentOrder == 'ASC' || empty currentOrder ? 'selected' : ''}>Asc</option>
-                                                        <option value="DESC" ${currentOrder == 'DESC' ? 'selected' : ''}>Desc</option>
+                                                        <option value="ASC" ${currentOrder == 'ASC' || empty currentOrder ? 'selected' : ''}>Tăng dần</option>
+                                                        <option value="DESC" ${currentOrder == 'DESC' ? 'selected' : ''}>Giảm dần</option>
                                                     </select>
                                                 </div>
                                             </div>      
@@ -158,14 +157,14 @@
                                                 <thead class="thead-dark">
                                                     <tr>
                                                         <th>#</th>
-                                                        <th>Name</th>
-                                                        <th>MinimumDep</th>
-                                                        <th>SavingRateMinimum</th>
-                                                        <th>SavingRate</th>
-                                                        <th>Term (Months)</th> 
+                                                        <th>Tên</th>
+                                                        <th>Số tiền gửi vào thấp nhất</th>
+                                                        <th>Lãi suất rút sớm</th>
+                                                        <th>Lãi suất gửi</th>
+                                                        <th>Kì hạn</th> 
                                                         <!-- Action -->
                                                         <c:if test="${currentStatus == 'Pending'}">
-                                                            <th>Action</th>                                                  
+                                                            <th></th>                                                  
                                                             </c:if>
                                                     </tr>
                                                 </thead>
@@ -208,7 +207,7 @@
                             <div class="col-12 mt-4">
                                 <div class="d-md-flex align-items-center text-center justify-content-between">
                                     <span class="text-muted me-3">
-                                        Total: ${numberOfRecords}
+                                        Tổng: ${numberOfRecords}
                                     </span>                                  
                                     <span class="mx-3">
                                         <input type="text" style="text-align: right; max-width: 60px" value="${page}" class="form-control d-inline w-auto"                                               
