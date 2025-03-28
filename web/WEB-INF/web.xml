@@ -247,7 +247,7 @@
     <servlet>
         <servlet-name>CustomerLoanPayment</servlet-name>
         <servlet-class>controller.customer.CustomerLoanPayment</servlet-class>
-        </servlet>
+    </servlet>
     <servlet>
         <servlet-name>DirectDepositListServlet</servlet-name>
         <servlet-class>controller.customer.DirectDepositListServlet</servlet-class>
@@ -267,6 +267,10 @@
     <servlet>
         <servlet-name>CustomerDashboardServlet</servlet-name>
         <servlet-class>controller.customer.CustomerDashboardServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>NotifyTypeToUrl</servlet-name>
+        <servlet-class>controller.customer.NotifyTypeToUrl</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>HomeServlet</servlet-name>
@@ -571,7 +575,7 @@
     <servlet-mapping>
         <servlet-name>CustomerLoanPayment</servlet-name>
         <url-pattern>/customerLoanPayment</url-pattern>
-        </servlet-mapping>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>DirectDepositListServlet</servlet-name>
         <url-pattern>/DirectDepositListServlet</url-pattern>
@@ -591,6 +595,10 @@
     <servlet-mapping>
         <servlet-name>CustomerDashboardServlet</servlet-name>
         <url-pattern>/CustomerDashboardServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>NotifyTypeToUrl</servlet-name>
+        <url-pattern>/Notify-Url</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>1440</session-timeout>

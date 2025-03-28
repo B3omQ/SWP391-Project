@@ -10,6 +10,7 @@
 <%@ page import="model.Notification" %>
 <%@ page import="dal.NotifyDAO" %>
 <%@ page import="java.util.List, java.util.ArrayList" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%
     HttpSession sessionObj = request.getSession(false);
