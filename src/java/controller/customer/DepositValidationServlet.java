@@ -53,8 +53,7 @@ public class DepositValidationServlet extends HttpServlet {
             // Lấy số dư ví từ database và đồng bộ với session
             BigDecimal walletBalance = customerDAO.getWalletByCustomerId(customerId);
             if (walletBalance == null || amount.compareTo(walletBalance) > 0) {
-                request.getSession().setAttribute("error4", "Số tiền gửi không được vượt quá số dư tài khoản (" + 
-                        (walletBalance != null ? walletBalance.toString() : "0") + " VND)!");
+                request.getSession().setAttribute("error4", "Số tiền gửi không được vượt quá số dư tài khoản");
                 response.sendRedirect(request.getContextPath() + "/customer/savemoney.jsp");
                 return;
             }
