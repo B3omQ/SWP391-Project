@@ -251,10 +251,10 @@
                                                         <button type="button" class="btn btn-warning" data-bs-toggle="modal"
                                                                 data-bs-target="#UpdateAccountform-${customer.id}">Edit</button>
                                                         <!-- Delete button -->
-                                                        <form onsubmit="deleteAlert(event)" action ="consultant-customer" method="post" style ="display:inline-block">
+<!--                                                        <form onsubmit="deleteAlert(event)" action ="consultant-customer" method="post" style ="display:inline-block">
                                                             <input name="deleteId" value="${customer.id}" type="hidden">
                                                             <button class = "btn btn-danger">Delete</button> 
-                                                        </form>
+                                                        </form>-->
                                                         <!-- View profile button -->
                                                         <button type="button" class="btn btn-info" data-bs-toggle="modal"
                                                                 data-bs-target="#ViewAccountModal-${customer.id}">View</button>
