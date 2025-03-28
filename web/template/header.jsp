@@ -247,73 +247,42 @@
                 <!-- Navigation Menu-->
                 <ul class="navigation-menu nav-left nav-light">
                     <li class="has-submenu parent-menu-item">
-                        <a href="javascript:void(0)">Tiết kiệm</a><span class="menu-arrow"></span>
+                        <a>Tiết kiệm</a><span class="menu-arrow"></span>
                         <ul class="submenu">
                             <li class="has-submenu parent-menu-item">
-                                <a href="javascript:void(0)" class="menu-item">Gửi tiết kiệm</a><span class="submenu-arrow"></span>
+                                <a href="${pageContext.request.contextPath}/customer/Saving.jsp" class="menu-item">Gửi tiết kiệm</a><span class="submenu-arrow"></span>
                                 <ul class="submenu">
-                                    <li><a href="${pageContext.request.contextPath}/public/SaveInterestTool.jsp" class="sub-menu-item">Gửi tiết kiệm có kì hạn</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/customer/Termsavings.jsp" class="sub-menu-item">Gửi tiết kiệm có kì hạn</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/customer/auto-profit-intro.jsp" class="sub-menu-item">Sinh lời tự động</a></li>
                                 </ul>
                             </li>
-                            <li><a href="index-three.html" class="sub-menu-item">Chứng chỉ tiền gửi</a></li>
                         </ul>
                     </li>
 
                     <li class="has-submenu parent-parent-menu-item">
-                        <a href="javascript:void(0)">Vay</a><span class="menu-arrow"></span>
+                        <a>Vay</a><span class="menu-arrow"></span>
                         <ul class="submenu">
-                            <li class="has-submenu parent-menu-item">
-                                <a href="javascript:void(0)" class="menu-item"> Dashboard </a>
-                            </li>
-                            <li><a href="doctor-team-one.html" class="sub-menu-item">Vay mua nhà</a></li>
-                            <li><a href="doctor-team-two.html" class="sub-menu-item">Vay mua ô tô</a></li>
-                            <li><a href="doctor-team-three.html" class="sub-menu-item">Vay tiêu dùng</a></li>
-                        </ul>
-                    </li>
-
-                    <li class="has-submenu parent-menu-item">
-                        <a href="javascript:void(0)">Đầu tư</a><span class="menu-arrow"></span>
-                        <ul class="submenu">
-                            <li><a href="patient-dashboard.html" class="sub-menu-item">Dashboard</a></li>
-                            <li><a href="patient-profile.html" class="sub-menu-item">Profile</a></li>
-                            <li><a href="booking-appointment.html" class="sub-menu-item">Book Appointment</a></li>
-                            <li><a href="patient-invoice.html" class="sub-menu-item">Invoice</a></li>
+                            <li><a href="${pageContext.request.contextPath}/applyLoan" class="sub-menu-item">Tạo khoản vay</a></li>
+                            <li><a href="${pageContext.request.contextPath}/customerLoanServlet" class="sub-menu-item">Xem khoản vay</a></li>
                         </ul>
                     </li>
 
                     <li class="has-submenu parent-menu-item">
                         <a href="${pageContext.request.contextPath}/NewsServlet">Thông tin mới</a><span class="menu-arrow"></span>
-                                            </li>
+                    </li>
 
                     <li class="has-submenu parent-parent-menu-item">
-                        <a href="${pageContext.request.contextPath}/public/News.jsp">Các công cụ và tiện ích</a><span class="menu-arrow"></span>
+                        <a>Các công cụ và tiện ích</a><span class="menu-arrow"></span>
                         <ul class="submenu">
                             <li class="has-submenu parent-menu-item">
-                                <a href="javascript:void(0)" class="menu-item"> Các loại bảng tính </a><span class="submenu-arrow"></span>
+                                <a class="menu-item"> Các loại bảng tính </a><span class="submenu-arrow"></span>
                                 <ul class="submenu">
                                     <li><a href="${pageContext.request.contextPath}/public/SaveInterestTool.jsp" class="sub-menu-item">Bảng tính lãi suất vay</a></li>
                                     <li><a href="${pageContext.request.contextPath}/public/InsuranceBenefitsTool.jsp" class="sub-menu-item">Bảng tính quyền lợi bảo hiểm</a></li>
                                     <li><a href="${pageContext.request.contextPath}/public/SaveInterestTool.jsp" class="sub-menu-item">Bảng tính lãi suất tiết kiệm</a></li>
                                 </ul>
                             </li>
-                            <li class="has-submenu parent-menu-item">
-                                <a href="javascript:void(0)" class="menu-item"> Tỉ giá </a><span class="submenu-arrow"></span>
-                                <ul class="submenu">
-                                    <li><a href="blog-detail.html" class="sub-menu-item">Tỷ giá hối đoái</a></li>
-                                    <li><a href="blog-detail.html" class="sub-menu-item">Quy đổi tiền tệ</a></li>
-                                    <li><a href="blog-detail.html" class="sub-menu-item">Tỷ giá chốt</a></li>
-                                    <li><a href="blog-detail.html" class="sub-menu-item">Tỷ giá vàng</a></li>
-                                </ul>
-                            </li>
-                            <li class="has-submenu parent-menu-item">
-                                <a href="javascript:void(0)" class="menu-item"> Biểu phí biểu mẫu </a><span class="submenu-arrow"></span>
-                                <ul class="submenu">
-                                    <li><a href="blogs.html" class="sub-menu-item">Biểu phí và biểu mẫu</a></li>
-                                    <li><a href="blog-detail.html" class="sub-menu-item">Biểu lãi suất</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="departments.html" class="sub-menu-item">Hỗ trợ</a></li>
-                            <li><a href="faqs.html" class="sub-menu-item">Liên hệ</a></li>
+                            <li><a href="${pageContext.request.contextPath}/OnlineSupport" class="sub-menu-item">Hỗ trợ</a></li>
                         </ul>
                     </li>
                 </ul><!--end navigation menu-->
