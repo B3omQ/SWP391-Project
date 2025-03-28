@@ -4,7 +4,6 @@
 
 
 <% 
-    // Không khai báo lại biến session, sử dụng implicit object session có sẵn
     if (session == null || session.getAttribute("staff") == null) {
         response.sendRedirect(request.getContextPath() + "/auth/template/login.jsp");
         return; 
@@ -103,8 +102,8 @@
                         <a class="dropdown-item text-dark" href="${pageContext.request.contextPath}/BlogServlet"><span class="mb-0 d-inline-block me-1"><i class="uil uil-dashboard align-middle h6"></i></span> Quản lý Blogs</a>
                         <a class="dropdown-item text-dark" href="staff-profile.jsp"><span class="mb-0 d-inline-block me-1"><i class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
                         <div class="dropdown-divider border-top"></div>
-                        <a class="dropdown-item text-dark" href="${pageContext.request.contextPath}/LogoutServlet>
-                            <span class="mb-0 d-inline-block me-1"><i class="uil uil-sign-out-alt align-middle h6"></i></span> Logout
+                         <a class="dropdown-item text-dark" href="${pageContext.request.contextPath}/LogoutServlet">
+                            <span class="mb-0 d-inline-block me-1"><i class="uil uil-sign-out-alt align-middle h6"></i></span> Đăng xuất
                         </a>
                     </div>
                 </div>
