@@ -50,8 +50,10 @@ public class ConsultantAdminManagement extends HttpServlet {
             int recordsPerPage;
             int totalRecords = adao.countTotalStaffRecords(2);
 
-            if (totalRecords <= 50) {
-                recordsPerPage = Math.max(1, totalRecords * 50 / 100);
+            if (totalRecords <= 5) {
+                recordsPerPage = 5;
+            } else if (totalRecords <= 50) {
+                recordsPerPage = totalRecords * 50 / 100;
             } else if (totalRecords <= 100) {
                 recordsPerPage = totalRecords * 30 / 100;
             } else if (totalRecords <= 300) {
