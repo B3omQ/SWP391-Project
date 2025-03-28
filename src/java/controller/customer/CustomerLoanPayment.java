@@ -202,6 +202,9 @@ public class CustomerLoanPayment extends HttpServlet {
             dao.insertPayment(loan.getId(), repayAmount);
             loan = dao.getLoanServiceUsedById(Integer.parseInt(loanIdStr));
             request.setAttribute("loan", loan);
+            if(!dao.isOverdue(loan.getCusId().getId()) && dao.isBlacklisted(loan.getCusId().getId())) {
+                dao.removeFromBlacklist(loan.getCusId().getId());
+            }
             if (isSuccessPayment) {
                 request.setAttribute("message", "Thanh toán thành công!");
             } else {

@@ -901,24 +901,25 @@ public class CeoDAO extends DBContext {
     }
     
     public boolean isOverdue(int cusId) {
-        String sql = """
-                     SELECT LSU.Id FROM LoanServiceUsed LSU "
-                                     + "JOIN LoanService LS ON LSU.LoanId = LS.Id "
-                                     + "WHERE LSU.CusId = ? "
-                                     + "AND LSU.DebtRepayAmount != 0 "
-                                     + // Ch\u1ec9 x\u00e9t kho\u1ea3n vay ch\u01b0a tr\u1ea3 h\u1ebft
-                                     "AND DATEDIFF(MONTH, LSU.EndDate, GETDATE()) > LS.GracePeriod""";
+    String sql = """
+            SELECT LSU.Id 
+            FROM LoanServiceUsed LSU 
+            JOIN LoanService LS ON LSU.LoanId = LS.Id 
+            WHERE LSU.CusId = ? 
+            AND LSU.DebtRepayAmount != 0 
+            AND DATEDIFF(MONTH, LSU.EndDate, GETDATE()) > LS.GracePeriod
+            """;
 
-        try (
-                PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, cusId);
-            ResultSet rs = ps.executeQuery();
-            return rs.next();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
+    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        ps.setInt(1, cusId);
+        ResultSet rs = ps.executeQuery();
+        return rs.next(); // If there's a record, the loan is overdue
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+    return false;
+}
+
 
     // Kiểm tra khách hàng có bị blacklist không
     public boolean isBlacklisted(int cusId) {
