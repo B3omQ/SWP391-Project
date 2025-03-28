@@ -1,24 +1,17 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package util;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.Base64;
 import java.util.regex.Pattern;
 
-/**
- *
- * @author emkob
- */
 public class AccountValidation {
 
     public AccountValidation() {
-
     }
 
     public boolean isValidateImage(String fileName) {
@@ -44,16 +37,12 @@ public class AccountValidation {
     }
 
     public boolean isAlphabetic(String input) {
-        // Regular expression that matches letters, both uppercase and lowercase, including Vietnamese characters
         String regex = "^[a-zA-ZàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ\\s]+$";
         return Pattern.matches(regex, input);
     }
 
     public boolean isValidImagePath(String filePath) {
-        // Lấy phần tên file từ đường dẫn
         String fileName = filePath.substring(filePath.lastIndexOf("/") + 1);
-
-        // Regex kiểm tra định dạng file (.jpg, .jpeg, .png)
         return fileName.matches("(?i)^.*\\.(jpg|jpeg|png)$");
     }
 
@@ -87,7 +76,7 @@ public class AccountValidation {
         if (password.length() < 8) {
             return false;
         }
-        if (password.contains(" ")) { // Kiểm tra dấu cách
+        if (password.contains(" ")) {
             return false;
         }
         boolean hasUppercase = Pattern.compile("[A-Z]").matcher(password).find();
@@ -101,7 +90,7 @@ public class AccountValidation {
     public String hashPassword(String password) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
-            byte[] hash = md.digest(password.getBytes(StandardCharsets.UTF_8)); // Sử dụng UTF-8
+            byte[] hash = md.digest(password.getBytes(StandardCharsets.UTF_8));
             return Base64.getEncoder().encodeToString(hash);
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException("Error hashing password", e);
@@ -133,4 +122,24 @@ public class AccountValidation {
         }
     }
 
+    // Thêm các phương thức validation mới
+    public boolean isValidName(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            return false;
+        }
+        return isAlphabetic(name) && name.length() <= 50;
+    }
+
+    public boolean isValidGender(String gender) {
+        return gender != null && (gender.equals("Nam") || gender.equals("Nữ") || gender.equals("Khác"));
+    }
+
+    public boolean isValidDateOfBirth(LocalDate dob) {
+        if (dob == null) {
+            return false;
+        }
+        LocalDate today = LocalDate.now();
+        int age = Period.between(dob, today).getYears();
+        return age >= 18;
+    }
 }

@@ -15,7 +15,6 @@
         </div>
 
         <ul class="sidebar-menu pt-3">
-            <li><a href="index.html"><i class="uil uil-dashboard me-2 d-inline-block"></i>Bảng điều khiển</a></li>
 
             <li><a href="profile-admin"><i class="uil uil-user me-2 d-inline-block"></i>Trang cá nhân</a></li>
 

@@ -22,7 +22,7 @@ import model.VerifyIdentityInformation;
  * @author JIGGER
  */
 public class IdentityInformationSwitchCase extends HttpServlet {
-    
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -32,19 +32,19 @@ public class IdentityInformationSwitchCase extends HttpServlet {
         List<VerifyIdentityInformation> identityList = idao.getListVerifyIdentityInformationByCusId(customer.getId());
         VerifyIdentityInformation reasonRejectIdentity = idao.getTop1(customer.getId(), "Denied");
         request.setAttribute("identityList", identityList);
-        
+
         if (idao.countStatus(customer.getId(), "Approved") == 1) {
             session.setAttribute("status", "approved");
             request.getRequestDispatcher("./customer/identityInformation.jsp").forward(request, response);
             return;
         }
-        
+
         if (idao.countStatus(customer.getId(), "Pending") == 1) {
             session.setAttribute("status", "pending");
             request.getRequestDispatcher("./customer/identityInformation.jsp").forward(request, response);
             return;
         }
-        
+
         if (idao.countStatus(customer.getId(), "Denied") > 0) {
             session.setAttribute("reasonRejectIdentity", reasonRejectIdentity);
             session.setAttribute("status", "denied");
@@ -54,7 +54,7 @@ public class IdentityInformationSwitchCase extends HttpServlet {
         session.setAttribute("status", "none");
         request.getRequestDispatcher("./customer/addIdentityInformation.jsp").forward(request, response);
     }
-    
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -68,9 +68,8 @@ public class IdentityInformationSwitchCase extends HttpServlet {
         } catch (Exception e) {
             System.out.println(e);
         }
-        doGet(request, response);
     }
-    
+
     @Override
     public String getServletInfo() {
         return "Short description";

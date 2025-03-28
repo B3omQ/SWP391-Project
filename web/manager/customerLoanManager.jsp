@@ -33,7 +33,8 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
         <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css">
-
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/elevatezoom/3.0.8/jquery.elevatezoom.min.js"></script>
 
 
     </head>
@@ -354,7 +355,6 @@
 
         </div>
 
-        <script src ="resources/script/jquery-3.7.1.min.js"></script>
         <!--        <script>
                                                 document.addEventListener("DOMContentLoaded", function () {
                                                     tippy('#entries', {

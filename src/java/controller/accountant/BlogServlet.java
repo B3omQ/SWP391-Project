@@ -54,8 +54,8 @@ public class BlogServlet extends HttpServlet {
                     request.setAttribute("article", article);
                     request.getRequestDispatcher("/accountant/edit-blog.jsp").forward(request, response);
                 } else {
-                    request.setAttribute("error", "Không tìm thấy bài viết để chỉnh sửa");
-                    listArticles(request, response);
+                    session.setAttribute("error", "Không tìm thấy bài viết để chỉnh sửa");
+                    response.sendRedirect(request.getContextPath() + "/BlogServlet?action=list");
                 }
                 break;
             case "list":
@@ -115,33 +115,28 @@ public class BlogServlet extends HttpServlet {
         System.out.println("Page: " + pageParam);
         System.out.println("Records Per Page: " + recordsPerPageParam);
 
-        // Xử lý số bản ghi trên mỗi trang
         int recordsPerPage;
         if (recordsPerPageParam != null && !recordsPerPageParam.trim().isEmpty()) {
             try {
                 recordsPerPage = Integer.parseInt(recordsPerPageParam);
-                // Đảm bảo recordsPerPage nằm trong khoảng hợp lệ
                 if (recordsPerPage != 5 && recordsPerPage != 10 && recordsPerPage != 20 && recordsPerPage != 50) {
-                    recordsPerPage = 5; // Giá trị mặc định nếu không hợp lệ
+                    recordsPerPage = 5;
                 }
             } catch (NumberFormatException e) {
-                recordsPerPage = 5; // Giá trị mặc định nếu không parse được
+                recordsPerPage = 5;
             }
         } else {
-            recordsPerPage = 5; // Giá trị mặc định
+            recordsPerPage = 5;
         }
 
-        // Xử lý phân trang
         int page = (pageParam == null || pageParam.trim().isEmpty()) ? 1 : Integer.parseInt(pageParam);
         int totalRecords = articleDAO.countFilteredArticles(search, categoryFilter);
         int totalPages = (int) Math.ceil(totalRecords * 1.0 / recordsPerPage);
         int offset = (page - 1) * recordsPerPage;
 
-        // Lấy danh sách bài viết với phân trang
         List<Article> articles = articleDAO.getFilteredArticlesWithPagination(search, categoryFilter, sortBy, offset, recordsPerPage);
         System.out.println("Số lượng bài viết lấy được: " + articles.size());
 
-        // Truyền dữ liệu vào request
         request.setAttribute("articles", articles != null ? articles : new ArrayList<>());
         request.setAttribute("currentPage", page);
         request.setAttribute("totalPages", totalPages);
@@ -152,96 +147,92 @@ public class BlogServlet extends HttpServlet {
 
     private void addArticle(HttpServletRequest request, HttpServletResponse response, Integer authorId, String uploadPath) 
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
         String title = request.getParameter("title");
         String category = request.getParameter("category");
         String description = request.getParameter("description");
         Part filePart = request.getPart("image");
 
-        // Validate dữ liệu không được để trống
         if (title == null || title.trim().isEmpty()) {
-            request.setAttribute("error", "Tiêu đề không được để trống!");
-            listArticles(request, response);
+            session.setAttribute("error", "Tiêu đề không được để trống!");
+            response.sendRedirect(request.getContextPath() + "/BlogServlet?action=list");
             return;
         }
         if (category == null || category.trim().isEmpty()) {
-            request.setAttribute("error", "Thể loại không được để trống!");
-            listArticles(request, response);
+            session.setAttribute("error", "Thể loại không được để trống!");
+            response.sendRedirect(request.getContextPath() + "/BlogServlet?action=list");
             return;
         }
         if (description == null || description.trim().isEmpty()) {
-            request.setAttribute("error", "Mô tả không được để trống!");
-            listArticles(request, response);
+            session.setAttribute("error", "Mô tả không được để trống!");
+            response.sendRedirect(request.getContextPath() + "/BlogServlet?action=list");
             return;
         }
 
-        // Chuẩn hóa dữ liệu bằng normalizeInput
         title = validator.normalizeInput(title);
         description = validator.normalizeInput(description);
 
-        // Validate ảnh (nếu có)
         String imageUrl = null;
         if (filePart != null && filePart.getSize() > 0) {
             imageUrl = uploadImage(filePart, uploadPath);
             if (imageUrl == null) {
-                request.setAttribute("error", "Lỗi khi upload ảnh! Chỉ chấp nhận JPG, PNG dưới 5MB.");
-                listArticles(request, response);
+                session.setAttribute("error", "Lỗi khi upload ảnh! Chỉ chấp nhận JPG, PNG dưới 5MB.");
+                response.sendRedirect(request.getContextPath() + "/BlogServlet?action=list");
                 return;
             }
         } else {
-            request.setAttribute("error", "Hình ảnh không được để trống khi thêm blog!");
-            listArticles(request, response);
+            session.setAttribute("error", "Hình ảnh không được để trống khi thêm blog!");
+            response.sendRedirect(request.getContextPath() + "/BlogServlet?action=list");
             return;
         }
 
         Article article = new Article(title, description, category, authorId, imageUrl);
         articleDAO.addArticle(article);
-        request.setAttribute("message", "Thêm blog thành công!");
-        listArticles(request, response);
+        session.setAttribute("message", "Thêm blog thành công!");
+        response.sendRedirect(request.getContextPath() + "/BlogServlet?action=list");
     }
 
     private void updateArticle(HttpServletRequest request, HttpServletResponse response, Integer authorId, String uploadPath) 
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
         int id = Integer.parseInt(request.getParameter("id"));
         String title = request.getParameter("title");
         String category = request.getParameter("category");
         String description = request.getParameter("description");
         Part filePart = request.getPart("image");
 
-        // Validate dữ liệu không được để trống
         if (title == null || title.trim().isEmpty()) {
-            request.setAttribute("error", "Tiêu đề không được để trống!");
-            listArticles(request, response);
+            session.setAttribute("error", "Tiêu đề không được để trống!");
+            response.sendRedirect(request.getContextPath() + "/BlogServlet?action=list");
             return;
         }
         if (category == null || category.trim().isEmpty()) {
-            request.setAttribute("error", "Thể loại không được để trống!");
-            listArticles(request, response);
+            session.setAttribute("error", "Thể loại không được để trống!");
+            response.sendRedirect(request.getContextPath() + "/BlogServlet?action=list");
             return;
         }
         if (description == null || description.trim().isEmpty()) {
-            request.setAttribute("error", "Mô tả không được để trống!");
-            listArticles(request, response);
+            session.setAttribute("error", "Mô tả không được để trống!");
+            response.sendRedirect(request.getContextPath() + "/BlogServlet?action=list");
             return;
         }
 
-        // Chuẩn hóa dữ liệu
         title = validator.normalizeInput(title);
         description = validator.normalizeInput(description);
 
         Article existingArticle = articleDAO.getArticleById(id);
         if (existingArticle == null) {
-            request.setAttribute("error", "Không tìm thấy bài viết để cập nhật");
-            listArticles(request, response);
+            session.setAttribute("error", "Không tìm thấy bài viết để cập nhật");
+            response.sendRedirect(request.getContextPath() + "/BlogServlet?action=list");
             return;
         }
 
-        // Validate và upload ảnh (nếu có)
         String imageUrl = existingArticle.getImageUrl();
         if (filePart != null && filePart.getSize() > 0) {
             imageUrl = uploadImage(filePart, uploadPath);
             if (imageUrl == null) {
-                request.setAttribute("error", "Lỗi khi upload ảnh! Chỉ chấp nhận JPG, PNG dưới 5MB.");
-                listArticles(request, response);
+                session.setAttribute("error", "Lỗi khi upload ảnh! Chỉ chấp nhận JPG, PNG dưới 5MB.");
+                response.sendRedirect(request.getContextPath() + "/BlogServlet?action=list");
                 return;
             }
         }
@@ -258,21 +249,22 @@ public class BlogServlet extends HttpServlet {
             new Timestamp(System.currentTimeMillis())
         );
         articleDAO.updateArticle(article);
-        request.setAttribute("message", "Cập nhật blog thành công!");
-        listArticles(request, response);
+        session.setAttribute("message", "Cập nhật blog thành công!");
+        response.sendRedirect(request.getContextPath() + "/BlogServlet?action=list");
     }
 
     private void deleteArticle(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
         int id = Integer.parseInt(request.getParameter("id"));
         Article article = articleDAO.getArticleById(id);
         if (article != null) {
             articleDAO.deleteArticle(id);
-            request.setAttribute("message", "Xóa blog thành công!");
+            session.setAttribute("message", "Xóa blog thành công!");
         } else {
-            request.setAttribute("error", "Không tìm thấy bài viết để xóa");
+            session.setAttribute("error", "Không tìm thấy bài viết để xóa");
         }
-        listArticles(request, response);
+        response.sendRedirect(request.getContextPath() + "/BlogServlet?action=list");
     }
 
     private String uploadImage(Part filePart, String uploadPath) throws IOException {
@@ -281,7 +273,7 @@ public class BlogServlet extends HttpServlet {
             if (!fileName.isEmpty()) {
                 String fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
                 List<String> allowedExtensions = Arrays.asList("jpg", "jpeg", "png");
-                long maxFileSize = 5 * 1024 * 1024; // 5MB
+                long maxFileSize = 5 * 1024 * 1024;
 
                 if (!allowedExtensions.contains(fileExtension)) {
                     System.err.println("Invalid file extension: " + fileExtension);

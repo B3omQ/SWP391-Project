@@ -16,10 +16,12 @@ import java.util.List;
 public class TransactionHistoryServlet extends HttpServlet {
 
     private DepHistoryDAO depHistoryDAO;
+    private MaturityHandlerServlet maturityHandler;
 
     @Override
     public void init() throws ServletException {
         depHistoryDAO = new DepHistoryDAO();
+        maturityHandler = new MaturityHandlerServlet();
     }
 
     @Override
@@ -27,11 +29,16 @@ public class TransactionHistoryServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             Customer customer = (Customer) request.getSession().getAttribute("account");
-           
+            if (customer == null) {
+                response.sendRedirect(request.getContextPath() + "/login.jsp");
+                return;
+            }
 
             int customerId = customer.getId();
             System.out.println("TransactionHistoryServlet - Customer ID: " + customerId);
 
+            // Xử lý các khoản đáo hạn trước khi lấy lịch sử
+            maturityHandler.processMaturedDeposits(customer);
             String searchQuery = request.getParameter("s");
             String sortCriteria = request.getParameter("sort");
             String pageParam = request.getParameter("page");
@@ -42,13 +49,13 @@ public class TransactionHistoryServlet extends HttpServlet {
                 try {
                     recordsPerPage = Integer.parseInt(recordsPerPageParam);
                     if (recordsPerPage != 5 && recordsPerPage != 10 && recordsPerPage != 20 && recordsPerPage != 50) {
-                        recordsPerPage = 10; 
+                        recordsPerPage = 10;
                     }
                 } catch (NumberFormatException e) {
-                    recordsPerPage = 10; 
+                    recordsPerPage = 10;
                 }
             } else {
-                recordsPerPage = 10; 
+                recordsPerPage = 10;
             }
 
             int page = (pageParam == null || pageParam.trim().isEmpty()) ? 1 : Integer.parseInt(pageParam);
@@ -66,10 +73,10 @@ public class TransactionHistoryServlet extends HttpServlet {
             System.out.println("TransactionHistoryServlet - Số giao dịch tìm thấy: " + (depHistoryList != null ? depHistoryList.size() : 0));
             if (depHistoryList != null) {
                 for (DepHistory trans : depHistoryList) {
-                    System.out.println("Transaction - ID: " + trans.getId() + 
-                                      ", CustomerId: " + trans.getCusId() + 
-                                      ", Date: " + trans.getCreatedAt() + 
-                                      ", Amount: " + trans.getAmount() + 
+                    System.out.println("Transaction - ID: " + trans.getId() +
+                                      ", CustomerId: " + trans.getCusId() +
+                                      ", Date: " + trans.getCreatedAt() +
+                                      ", Amount: " + trans.getAmount() +
                                       ", Description: " + trans.getDescription());
                 }
             }
@@ -77,27 +84,27 @@ public class TransactionHistoryServlet extends HttpServlet {
             if (sortCriteria != null && !sortCriteria.trim().isEmpty() && depHistoryList != null) {
                 switch (sortCriteria) {
                     case "time_desc":
-                        Collections.sort(depHistoryList, Comparator.comparing(DepHistory::getCreatedAt, 
+                        Collections.sort(depHistoryList, Comparator.comparing(DepHistory::getCreatedAt,
                                 Comparator.nullsLast(Comparator.reverseOrder())));
                         break;
                     case "time_asc":
-                        Collections.sort(depHistoryList, Comparator.comparing(DepHistory::getCreatedAt, 
+                        Collections.sort(depHistoryList, Comparator.comparing(DepHistory::getCreatedAt,
                                 Comparator.nullsLast(Comparator.naturalOrder())));
                         break;
                     case "amount_asc":
-                        Collections.sort(depHistoryList, Comparator.comparing(DepHistory::getAmount, 
+                        Collections.sort(depHistoryList, Comparator.comparing(DepHistory::getAmount,
                                 Comparator.nullsLast(Comparator.naturalOrder())));
                         break;
                     case "amount_desc":
-                        Collections.sort(depHistoryList, Comparator.comparing(DepHistory::getAmount, 
+                        Collections.sort(depHistoryList, Comparator.comparing(DepHistory::getAmount,
                                 Comparator.nullsLast(Comparator.reverseOrder())));
                         break;
                     case "description_asc":
-                        Collections.sort(depHistoryList, Comparator.comparing(DepHistory::getDescription, 
+                        Collections.sort(depHistoryList, Comparator.comparing(DepHistory::getDescription,
                                 Comparator.nullsLast(Comparator.naturalOrder())));
                         break;
                     case "description_desc":
-                        Collections.sort(depHistoryList, Comparator.comparing(DepHistory::getDescription, 
+                        Collections.sort(depHistoryList, Comparator.comparing(DepHistory::getDescription,
                                 Comparator.nullsLast(Comparator.reverseOrder())));
                         break;
                 }
@@ -111,7 +118,7 @@ public class TransactionHistoryServlet extends HttpServlet {
             request.setAttribute("totalPages", totalPages);
             request.setAttribute("searchQuery", searchQuery);
             request.setAttribute("sortCriteria", sortCriteria);
-            request.setAttribute("recordsPerPage", recordsPerPage); // Truyền recordsPerPage để JSP hiển thị giá trị đã chọn
+            request.setAttribute("recordsPerPage", recordsPerPage);
 
             request.getRequestDispatcher("/customer/Customer.jsp").forward(request, response);
 

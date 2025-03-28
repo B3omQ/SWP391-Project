@@ -4,8 +4,10 @@
  */
 package controller.accountant;
 
+import controller.sendNotificationEmail;
 import dal.LoanServiceUsedDAO;
 import dal.CustomerDAO;
+import dal.NotifyDAO;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -80,7 +82,9 @@ public class Disbursement extends HttpServlet {
         String amountParam = request.getParameter("amount");
         String walletParam = request.getParameter("wallet");
         LoanServiceUsedDAO ldao = new LoanServiceUsedDAO();
+        NotifyDAO ndao = new NotifyDAO();
         CustomerDAO cdao = new CustomerDAO();
+        sendNotificationEmail sendEmail = new sendNotificationEmail();
 
         if (updateLoanId != null && updateCusId != null) {
             try {
@@ -90,9 +94,10 @@ public class Disbursement extends HttpServlet {
                 BigDecimal wallet = new BigDecimal(walletParam);
                 wallet = wallet.add(amount);
                 cdao.updateWallet(cusId, wallet);
-
+                String description = "Gói vay của bạn đã được xác nhận thành công, vui lòng kiểm tra lại số dư tài khoản"; 
+                sendEmail.sendNotify(cdao.getCustomerById(cusId).getEmail(), description, cdao.getCustomerById(cusId).getFirstname());
+                ndao.insertNotificationForCustomer(cusId, description, 3);
                 ldao.updateLoanServiceUsedStatusAndDate(loanId, "In Progress");
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
