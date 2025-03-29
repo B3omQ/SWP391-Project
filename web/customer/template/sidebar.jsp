@@ -40,7 +40,7 @@
 <nav id="sidebar" class="sidebar-wrapper">
     <div class="sidebar-content" data-simplebar style="height: calc(100% - 60px);">
         <div class="sidebar-brand">
-            <a href="http://localhost:9999/BankingSystem/home.jsp">
+            <a href="<%= request.getContextPath() %>/home.jsp">
                 <img src="${pageContext.request.contextPath}/assets/images/logo-dark.png" height="24" class="logo-light-mode" alt="">
                 <img src="${pageContext.request.contextPath}/assets/images/logo-light.png" height="24" class="logo-dark-mode" alt="">
             </a>
@@ -64,12 +64,12 @@
                 <a href="javascript:void(0)"><i class="uil uil-flip-h me-2 d-inline-block"></i>Blogs</a>
                 <div class="sidebar-submenu">
                     <ul>
-                        <li><a href="http://localhost:9999/BankingSystem/NewsServlet">Blogs</a></li>
+                        <li><a href="<%= request.getContextPath() %>/NewsServlet">Blogs</a></li>
                     </ul>
                 </div>
             </li>
-            <li><a href="http://localhost:9999/BankingSystem/CustomerReview"><i class="uil uil-cog me-2 d-inline-block"></i>Đánh giá</a></li>
-            <li><a href="http://localhost:9999/BankingSystem/ChatLogConsultant"><i class="uil uil-cog me-2 d-inline-block"></i>Lịch sử chat với consultant</a></li>
+            <li><a href="<%= request.getContextPath() %>/CustomerReview"><i class="uil uil-cog me-2 d-inline-block"></i>Đánh giá</a></li>
+            <li><a href="<%= request.getContextPath() %>/ChatLogConsultant"><i class="uil uil-cog me-2 d-inline-block"></i>Lịch sử chat với consultant</a></li>
         </ul>
     </div>
     <ul class="sidebar-footer list-unstyled mb-0">
