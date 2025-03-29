@@ -147,7 +147,7 @@
                         <div class="row">
                             <c:choose>
                                 <c:when test="${empty loanServiceList}">
-                                    <div class="col-12 text-center text-muted fw-bold">Empty</div>
+                                    <div class="col-12 text-center text-muted fw-bold">Trống</div>
                                 </c:when>
                                 <c:otherwise>
 

@@ -65,9 +65,9 @@ public class InterestCalculator {
                     .divide(BigDecimal.valueOf(12), BigDecimal.ROUND_HALF_UP);
         }
 
-        if (!loan.getLoanId().getLoanTypeRepay().equalsIgnoreCase("Amortized Loan")) {
+        if (!loan.getLoanId().getLoanTypeRepay().equalsIgnoreCase("Amortization")) {
             interestValue = loanBase
-                    .multiply(BigDecimal.valueOf(loan.getLoanId().getOnTermRate()))
+                    .multiply(BigDecimal.valueOf(loan.getLoanId().getAfterTermRate()))
                     .divide(BigDecimal.valueOf(100), BigDecimal.ROUND_HALF_UP)
                     .divide(BigDecimal.valueOf(12), BigDecimal.ROUND_HALF_UP);
         }

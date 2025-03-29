@@ -144,8 +144,8 @@
                 <div class="container-fluid">
                     <div class="layout-specing">
                         <div class="tabs">
-                            <a href="<%= request.getContextPath() %>/customerLoanServlet?loanStatus=In processing" 
-                               class="tab ${loanStatus == 'In processing' ? 'active' : ''}">Đang vay</a>
+                            <a href="<%= request.getContextPath() %>/customerLoanServlet?loanStatus=In Progress" 
+                               class="tab ${loanStatus == 'In Progress' ? 'active' : ''}">Đang vay</a>
                             <a href="<%= request.getContextPath() %>/customerLoanServlet?loanStatus=Approved" 
                                class="tab ${loanStatus == 'Approved' ? 'active' : ''}">Chờ giải ngân</a>
                             <a href="<%= request.getContextPath() %>/customerLoanServlet?loanStatus=Pending" 
@@ -183,7 +183,7 @@
                                                         <span>${loan.dateExpiredCount} tháng</span>
                                                     </div>
                                                 </c:if>
-                                                 <c:if test="${loanStatus == 'In processing'}">
+                                                 <c:if test="${loanStatus == 'In Progress'}">
                                                 <!-- Nút thanh toán -->
                                                 <a href="<%= request.getContextPath() %>/customerLoanPayment?loanId=${loan.id}" class="loan-button" title="Nhấn để thanh toán khoản vay">
                                                     💳 Thanh Toán
@@ -194,7 +194,7 @@
                                     </div>
                                 </c:when>
                                 <c:otherwise>
-                                    <h3>Bạn không có khoản vay nào.</h3>
+                                    <span>        Trống.</span>
                                 </c:otherwise>
                             </c:choose>
                         </div>

@@ -129,16 +129,16 @@
                                             <div class="row">
 
                                                 <div class="row align-items-center">
-                                                    <label class="form-label">Income Vertification</label>
+                                                    <label class="form-label">Chứng minh thu nhập</label>
                                                     <div class="md-5" style="padding-top: 10px">
-                                                        <input type="file" class="form-control-file" id="fileInput" name="incomeVertification" accept=".zip"> 
+                                                        <input type="file" class="form-control-file" id="fileInput" name="incomeVertification" accept=".jpg,.png,.jpeg"> 
                                                         <small id="fileError" style="color: red;"></small>
                                                     </div>
                                                 </div><!--end row-->
 
                                                 <div class="col-md-12">
                                                     <div class="mb-3">
-                                                        <label class="form-label">Nhập số tiền:</label>
+                                                        <label class="form-label">Nhập số tiền (VNĐ):</label>
                                                         <div class="input-group">
                                                             <input id="amountInput" name="amount" type="number" class="form-control" min="0" oninput="updateDisplay()" />
                                                             <span class="input-group-text" id="formattedAmount">0 VND</span>
