@@ -70,7 +70,7 @@ public class CustomerLoanServlet extends HttpServlet {
         if (loanStr == null) {
             loanStr = (String) session.getAttribute("loanStatusSession");
             if (loanStr == null) {
-                loanStr = "In processing";
+                loanStr = "In Progress";
             }
         } else {
             session.setAttribute("loanStatusSession", loanStr);

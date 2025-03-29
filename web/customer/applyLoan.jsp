@@ -4,7 +4,7 @@
     <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
     <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-    
+
     <head>
         <meta charset="utf-8" />
         <title>SmartBanking</title>
@@ -152,7 +152,7 @@
                                             <p class="text-muted">Chọn gói</p>
                                             <c:forEach var="optionLoan" items="${optionLoanList}">
                                                 <div id="options-container">
-                                                    <div class="option" data-loan-id="${optionLoan.id}" data-months="1" data-rate="0.5%" data-date="10/04/2025">
+                                                    <div class="option position-relative" data-loan-id="${optionLoan.id}" data-months="1" data-rate="0.5%" data-date="10/04/2025">
                                                         <strong>${optionLoan.loanServiceName}</strong><br>
                                                         ${optionLoan.duringTime} Tháng - Lãi suất: ${optionLoan.afterTermRate}%/năm <br>
                                                         <c:if test="${optionLoan.loanTypeRepay == 'Amortized Loan'}">
@@ -160,6 +160,15 @@
                                                         </c:if>
                                                         Hạn mức: <span><fmt:formatNumber value="${optionLoan.minimumLoan}" pattern="#,##0 VND"/> - 
                                                             <fmt:formatNumber value="${optionLoan.maximumLoan}" pattern="#,##0 VND"/></span>
+                                                        <!-- Nút Hành động thay cho 2 icon cũ -->
+                                                        <button type="button" class="btn btn-icon btn-pills position-absolute top-50 end-0 translate-middle-y" 
+                                                                data-bs-toggle="modal" 
+                                                                data-bs-target="#actionModal"
+                                                                onclick="showActionModal('${optionLoan.id}', '${optionLoan.loanServiceName}', '${optionLoan.loanTypeRepay}',
+                                                                                            '${optionLoan.minimumLoan}', '${optionLoan.maximumLoan}', '${optionLoan.onTermRate}',
+                                                                                            '${optionLoan.afterTermRate}', '${optionLoan.penaltyRate}', '${optionLoan.duringTime}')">
+                                                            <i class="fas fa-eye"></i>
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </c:forEach>
@@ -176,8 +185,38 @@
                         </div><!--end col-->
                     </div>
                 </div><!--end container-->
+                <!-- Modal mới cho hành động -->
+                <div class="modal fade" id="actionModal" tabindex="-1" aria-labelledby="actionModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="actionModalLabel">Chi tiết phương án vay</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <form action="<%= request.getContextPath() %>/loanApproval" method="get">
+                                <div class="modal-body">
+                                    <input type="hidden" name="id" id="modalId">
+                                    <div class="row">
+                                        <p><strong>Tên: </strong> <span id="mName"></span></p>
+                                        <p><strong>Phương thức trả nợ: </strong> <span id="modaltype"></span></p>
+                                        <div class="col-md-6">
+                                            <p><strong>Lãi suất ưu đãi: </strong> <span id="modalonTermRate"></span></p>
+                                            <p><strong>Lãi suất: </strong> <span id="modalafterTermRate"></span></p>
+                                            <p><strong>Lãi suất phạt: </strong> <span id="modalpenaltyRate"></span></p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p><strong>Số tiền vay tối thiểu: </strong> <span id="modalminimum"></span></p>
+                                            <p><strong>Số tiền vay tối đa: </strong> <span id="modalmaximum"></span></p>
+                                            <p><strong>Kỳ hạn: </strong> <span id="modalduringTime"></span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
                 <!-- Footer Start -->
-                 <jsp:include page="template/footer.jsp"/>
+                <jsp:include page="template/footer.jsp"/>
                 <!-- End -->
             </main>
             <!--End page-content" -->
@@ -204,18 +243,18 @@
         <!-- Main Js -->
         <script src="<%= request.getContextPath() %>/assets/js/app.js"></script>
         <script>
-            const options = document.querySelectorAll('.option');
-            const continueButton = document.querySelector('.btn-continue');
-            const selectedInfo = document.getElementById('selected-info');
-            let selectedMonths = null;
+                                                                                const options = document.querySelectorAll('.option');
+                                                                                const continueButton = document.querySelector('.btn-continue');
+                                                                                const selectedInfo = document.getElementById('selected-info');
+                                                                                let selectedMonths = null;
 
-            // Xử lý chọn kỳ hạn
-            options.forEach(option => {
-                option.addEventListener('click', function () {
-                    options.forEach(o => o.classList.remove('selected'));
-                    this.classList.add('selected');
-                });
-            });
+                                                                                // Xử lý chọn kỳ hạn
+                                                                                options.forEach(option => {
+                                                                                    option.addEventListener('click', function () {
+                                                                                        options.forEach(o => o.classList.remove('selected'));
+                                                                                        this.classList.add('selected');
+                                                                                    });
+                                                                                });
 
 
         </script>
@@ -271,6 +310,20 @@
                     this.value = ''; // Xóa file đã chọn
                 }
             });
+        </script>
+        <script>
+            function showActionModal(id, name, type, minimum, maximum, onTermRate, afterTermRate, penaltyRate, duringTime) {
+                document.getElementById('modalId').value = id;
+                document.getElementById('mName').textContent = name;
+                document.getElementById('modaltype').textContent = type;
+                document.getElementById('modalminimum').textContent = minimum;
+                document.getElementById('modalmaximum').textContent = maximum;
+                document.getElementById('modalonTermRate').textContent = onTermRate;
+                document.getElementById('modalafterTermRate').textContent = afterTermRate;
+                document.getElementById('modalpenaltyRate').textContent = penaltyRate;
+                document.getElementById('modalduringTime').textContent = duringTime;
+                document.getElementById('comment').value = ''; // Reset textarea
+            }
         </script>
     </body>
 
