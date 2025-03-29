@@ -32,7 +32,7 @@
         <!-- Css -->
         <link href="<%= request.getContextPath() %>/assets/css/style.min.css" rel="stylesheet" type="text/css" id="theme-opt" />
         <style>
-            
+
             .loan-grid {
                 display: grid;
                 grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); /* Tự động xuống hàng nếu không đủ chỗ */
@@ -183,12 +183,20 @@
                                                         <span>${loan.dateExpiredCount} tháng</span>
                                                     </div>
                                                 </c:if>
-                                                 <c:if test="${loanStatus == 'In Progress'}">
-                                                <!-- Nút thanh toán -->
-                                                <a href="<%= request.getContextPath() %>/customerLoanPayment?loanId=${loan.id}" class="loan-button" title="Nhấn để thanh toán khoản vay">
-                                                    💳 Thanh Toán
-                                                </a>
-                                                    </c:if>
+                                                <c:if test="${loanStatus == 'In Progress'}">
+                                                    <div type="button" class="loan-button"
+                                                         data-bs-toggle="modal" 
+                                                         data-bs-target="#actionModal"
+                                                         onclick="showActionModal('${loan.loanId.id}', '${loan.loanId.loanServiceName}', '${loan.loanId.loanTypeRepay}',
+                                                                                            '${loan.amount}', '${loan.debtRepayAmount}', '${loan.loanId.onTermRate}',
+                                                                                            '${loan.loanId.afterTermRate}', '${loan.loanId.penaltyRate}', '${loan.loanId.duringTime}')">
+                                                        Chi tiết
+                                                    </div>
+                                                    <!-- Nút thanh toán -->
+                                                    <a href="<%= request.getContextPath() %>/customerLoanPayment?loanId=${loan.id}" class="loan-button" title="Nhấn để thanh toán khoản vay">
+                                                        💳 Thanh Toán
+                                                    </a>
+                                                </c:if>
                                             </div>
                                         </c:forEach>
                                     </div>
@@ -200,7 +208,36 @@
                         </div>
                     </div>       
                 </div><!--end container-->
-
+                <!-- Modal mới cho hành động -->
+                <div class="modal fade" id="actionModal" tabindex="-1" aria-labelledby="actionModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="actionModalLabel">Chi tiết phương án vay</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <form action="<%= request.getContextPath() %>/loanApproval" method="get">
+                                <div class="modal-body">
+                                    <input type="hidden" name="id" id="modalId">
+                                    <div class="row">
+                                        <p><strong>Tên: </strong> <span id="mName"></span></p>
+                                        <p><strong>Phương thức trả nợ: </strong> <span id="modaltype"></span></p>
+                                        <div class="col-md-6">
+                                            <p><strong>Lãi suất ưu đãi: </strong> <span id="modalonTermRate"></span></p>
+                                            <p><strong>Lãi suất: </strong> <span id="modalafterTermRate"></span></p>
+                                            <p><strong>Lãi suất phạt: </strong> <span id="modalpenaltyRate"></span></p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p><strong>Số tiền vay: </strong> <span id="modalminimum"></span></p>
+                                            <p><strong>Số tiền gốc còn lại: </strong> <span id="modalmaximum"></span></p>
+                                            <p><strong>Kỳ hạn: </strong> <span id="modalduringTime"></span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
                 <!-- Footer Start -->
                 <jsp:include page="template/footer.jsp"/>
                 <!-- End -->
@@ -227,5 +264,19 @@
         <script src="<%= request.getContextPath() %>/assets/js/feather.min.js"></script>
         <!-- Main Js -->
         <script src="<%= request.getContextPath() %>/assets/js/app.js"></script>
+        <script>
+                                                                                function showActionModal(id, name, type, minimum, maximum, onTermRate, afterTermRate, penaltyRate, duringTime) {
+                                                                                    document.getElementById('modalId').value = id;
+                                                                                    document.getElementById('mName').textContent = name;
+                                                                                    document.getElementById('modaltype').textContent = type;
+                                                                                    document.getElementById('modalminimum').textContent = minimum;
+                                                                                    document.getElementById('modalmaximum').textContent = maximum;
+                                                                                    document.getElementById('modalonTermRate').textContent = onTermRate;
+                                                                                    document.getElementById('modalafterTermRate').textContent = afterTermRate;
+                                                                                    document.getElementById('modalpenaltyRate').textContent = penaltyRate;
+                                                                                    document.getElementById('modalduringTime').textContent = duringTime;
+                                                                                    document.getElementById('comment').value = ''; // Reset textarea
+                                                                                }
+        </script>
     </body>
 </html>
