@@ -234,8 +234,11 @@
                                         <a class="dropdown-item text-dark" href="./profile-manager"><span class="mb-0 d-inline-block me-1"><i class="uil uil-setting align-middle h6"></i></span> Cài đặt hồ sơ</a>
                                             </c:if>
                                             <c:if test="${sessionScope.staff.roleId.id == 4}">
-                                        <a class="dropdown-item text-dark" href="./Admin.jsp"><span class="mb-0 d-inline-block me-1"><i class="uil uil-setting align-middle h6"></i></span> Cài đặt hồ sơ</a>
+                                        <a class="dropdown-item text-dark" href="./profile-admin"><span class="mb-0 d-inline-block me-1"><i class="uil uil-setting align-middle h6"></i></span> Cài đặt hồ sơ</a>
                                             </c:if>
+                                        <c:if test="${sessionScope.staff.roleId.id == 5}">
+                                        <a class="dropdown-item text-dark" href="./Admin.jsp"><span class="mb-0 d-inline-block me-1"><i class="uil uil-setting align-middle h6"></i></span> Cài đặt hồ sơ</a>
+                                        </c:if>
                                     <div class="dropdown-divider border-top"></div>
                                     <a class="dropdown-item text-dark" href="${pageContext.request.contextPath}/LogoutServlet"><span class="mb-0 d-inline-block me-1"><i class="uil uil-sign-out-alt align-middle h6"></i></span> Đăng xuất</a>
                                 </div>
