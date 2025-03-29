@@ -98,7 +98,11 @@ public class LoanApproval extends HttpServlet {
         }
 
         if (id != null) {
-            ceoDAO.updatLoanServiceStatusById(Integer.parseInt(id), changeStatus);
+            String comment = request.getParameter("comment");
+            if(changeStatus.equalsIgnoreCase("Approved")) {
+                comment = null;
+            }
+            ceoDAO.updatLoanServiceStatusById(Integer.parseInt(id), changeStatus, comment);
         }
 
         if (status == null || status.trim().isEmpty()) {

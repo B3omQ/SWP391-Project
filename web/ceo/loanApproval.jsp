@@ -124,7 +124,7 @@
                                                     <label class="form-label me-2 mb-0">Sắp xếp theo:</label>
                                                     <select class="form-control border-primary rounded-pill" name="sortBy" onchange="onChangeSubmit('sort')" id="sorBy">
                                                         <option value="DuringTime" ${currentSort == 'DuringTime' || empty currentSort ? 'selected' : ''}>Kì hạn</option>
-                                                        <option value="MinimumLoan" ${currentSort == 'MinimumLoan' ? 'selected' : ''}>Số tiền vay nhỏ nhất</option>
+                                                        <option value="MinimumLoan" ${currentSort == 'MinimumLoan' ? 'selected' : ''}>Số tiền vay tối thiểu</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -159,8 +159,8 @@
                                                         <th>#</th>
                                                         <th>Tên</th>
                                                         <th>Phương thức trả nợ</th>
-                                                        <th>Số tiền vay thấp nhất</th>
-                                                        <th>Số tiền vay lớn nhất</th>
+                                                        <th>Số tiền vay tối thiểu</th>
+                                                        <th>Số tiền vay tối đa</th>
                                                         <th>Lãi suất ưu đãi</th>
                                                         <th>Lãi suất</th>
                                                         <th>Lãi suất phạt</th>
@@ -186,16 +186,19 @@
                                                             <td>                  
                                                                 <!-- Icon View Detail -->
                                                                 <a href="view-loan-option?loanId=${loan.id}"                                                                    
-                                                                   class="btn btn-icon btn-pills">
+                                                                   class="btn btn-icon btn-primary">
                                                                     <i class="fas fa-eye"></i>
                                                                 </a>
                                                                 <c:if test="${currentStatus == 'Pending'}">
-                                                                    <a href="loanApproval?id=${loan.id}&changeStatus=Approved" class="btn btn-icon btn-pills btn-soft-success">
-                                                                        <i class="fas fa-check"></i>
-                                                                    </a>
-                                                                    <a href="loanApproval?id=${loan.id}&changeStatus=Denied" class="btn btn-icon btn-pills btn-danger">
-                                                                        <i class="fas fa-times"></i>
-                                                                    </a>
+                                                                    <!-- Nút Hành động thay cho 2 icon cũ -->
+                                                                    <button type="button" class="btn btn-icon btn-pills btn-primary" 
+                                                                            data-bs-toggle="modal" 
+                                                                            data-bs-target="#actionModal"
+                                                                            onclick="showActionModal('${loan.id}', '${loan.loanServiceName}', '${loan.loanTypeRepay}',
+                                                                                            '${loan.minimumLoan}', '${loan.maximumLoan}', '${loan.onTermRate}',
+                                                                                            '${loan.afterTermRate}', '${loan.penaltyRate}', '${loan.duringTime}')">
+                                                                        <i class="fas fa-cog"></i>
+                                                                    </button>
                                                                 </c:if>
                                                             </td>
                                                         </tr>
@@ -281,6 +284,44 @@
                         </div>
                     </div>
                 </div>
+                <!-- Modal mới cho hành động -->
+                <div class="modal fade" id="actionModal" tabindex="-1" aria-labelledby="actionModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="actionModalLabel">Xử lý phương án vay</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <form action="<%= request.getContextPath() %>/loanApproval" method="get">
+                                <div class="modal-body">
+                                    <input type="hidden" name="id" id="modalId">
+                                    <div class="row">
+                                        <p><strong>Tên: </strong> <span id="mName"></span></p>
+                                        <p><strong>Phương thức trả nợ: </strong> <span id="modaltype"></span></p>
+                                        <div class="col-md-6">
+                                            <p><strong>Lãi suất ưu đãi: </strong> <span id="modalonTermRate"></span></p>
+                                            <p><strong>Lãi suất: </strong> <span id="modalafterTermRate"></span></p>
+                                            <p><strong>Lãi suất phạt: </strong> <span id="modalpenaltyRate"></span></p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p><strong>Số tiền vay tối thiểu: </strong> <span id="modalminimum"></span></p>
+                                            <p><strong>Số tiền vay tối đa: </strong> <span id="modalmaximum"></span></p>
+                                            <p><strong>Kỳ hạn: </strong> <span id="modalduringTime"></span></p>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3">
+                                        <label for="comment" class="form-label">Bình luận:</label>
+                                        <textarea class="form-control" id="comment" name="comment" rows="3" placeholder="Nhập bình luận của bạn"></textarea>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" name="changeStatus" value="Denied" class="btn btn-danger">Từ chối</button>
+                                    <button type="submit" name="changeStatus" value="Approved" class="btn btn-success">Phê duyệt</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
                 <!-- Footer Start -->
                 <jsp:include page="template/footer.jsp"/>
                 <!-- End -->
@@ -324,6 +365,21 @@
                                                        document.getElementById('modalLoanName').textContent = name;
                                                        document.getElementById('modalLoanDescription').textContent = description;
                                                    }
+        </script>
+        <!-- Script cập nhật -->
+        <script>
+            function showActionModal(id, name, type, minimum, maximum, onTermRate, afterTermRate, penaltyRate, duringTime) {
+                document.getElementById('modalId').value = id;
+                document.getElementById('mName').textContent = name;
+                document.getElementById('modaltype').textContent = type;
+                document.getElementById('modalminimum').textContent = minimum;
+                document.getElementById('modalmaximum').textContent = maximum;
+                document.getElementById('modalonTermRate').textContent = onTermRate;
+                document.getElementById('modalafterTermRate').textContent = afterTermRate;
+                document.getElementById('modalpenaltyRate').textContent = penaltyRate;
+                document.getElementById('modalduringTime').textContent = duringTime;
+                document.getElementById('comment').value = ''; // Reset textarea
+            }
         </script>
     </body>
 </html>
