@@ -104,7 +104,7 @@ public class VerifyingOtp extends HttpServlet {
                             response.sendRedirect("home");
                             break;
                         case 4:
-                            response.sendRedirect("loanApproval");
+                            response.sendRedirect("ceoProfileServlet");
                             break;
                         case 5:
                             response.sendRedirect("");

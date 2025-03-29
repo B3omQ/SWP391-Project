@@ -51,7 +51,6 @@
 
             <!-- Start Page Content -->
             <main class="page-content bg-light">
-                <c:set value="${sessionScope.staff}" var="staff"/>
                 <jsp:include page="template/header.jsp"/>
 
                 <div class="container-fluid">

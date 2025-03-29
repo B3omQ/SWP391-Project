@@ -106,7 +106,7 @@ public class CeoProfileServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        request.getRequestDispatcher("./ceo/ceoProfile.jsp").forward(request, response);
     }
 
     /**
@@ -209,7 +209,7 @@ public class CeoProfileServlet extends HttpServlet {
         currentAccount.setImage(image);
         aDao.updateStaffInfo(currentAccount, currentAccount.getId());
         session.setAttribute("staff", currentAccount);
-        request.getRequestDispatcher("ceo/ceoProfile.jsp").forward(request, response);
+        request.getRequestDispatcher("ceo/ceoProfile.jsp").forward(request, response);  
     }
 
     /**

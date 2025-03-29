@@ -79,7 +79,7 @@ public class AuthServlet extends HttpServlet {
                                 response.sendRedirect("home");
                                 break;
                             case 4:
-                                response.sendRedirect("loanApproval");
+                                response.sendRedirect("ceoProfileServlet");
                                 break;
                             default:
                                 response.sendRedirect("home");
