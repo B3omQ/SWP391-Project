@@ -103,17 +103,17 @@
                         <div class="ms-lg-4">
                             <div class="section-title">
                                 <h4 class="title mb-4">Về Ngân Hàng Của Chúng Tôi</h4>
-                                <p class="text-muted para-desc">SmartBank là một hệ thống ngân hàng trực tuyến được phát triển như một dự án cá nhân,
+                                <p class="text-muted para-desc">SmartBank là một hệ thống ngân hàng trực tuyến,
                                     cung cấp các dịch vụ tài chính đa dạng bao gồm cho vay, gửi tiết kiệm và đầu tư.</p>
                                 <p class="text-muted para-desc mb-0">Với giao diện thân thiện và các tính năng tiện ích, 
                                     SmartBank giúp người dùng dễ dàng quản lý tài chính,
                                     thực hiện giao dịch an toàn và tối ưu hóa lợi nhuận từ các khoản đầu tư.</p>
                             </div>
 
-                            <div class="mt-4">
+<!--                            <div class="mt-4">
                                 <a href="aboutus.html" class="btn btn-primary">Tìm hiểu thêm <i
                                         class="ri-arrow-right-line align-middle"></i></a>
-                            </div>
+                            </div>-->
                         </div>
                     </div><!--end col-->
                 </div><!--end row-->
@@ -138,10 +138,10 @@
                                 <i class="ri-bank-card-fill h3 mb-0"></i>
                             </div>
                             <div class="card-body p-0 mt-3">
-                                <a href="departments.html" class="title text-dark h5">Gửi Tiết Kiệm</a>
+                                <a href="${pageContext.request.contextPath}/customer/Saving.jsp" class="title text-dark h5">Gửi Tiết Kiệm</a>
                                 <p class="text-muted mt-3">Tích lũy tài chính an toàn với các gói tiết kiệm linh hoạt,
                                     lãi suất hấp dẫn và rút tiền dễ dàng.</p>
-                                <a href="departments.html" class="link">Tìm Hiểu Thêm <i
+                                <a href="${pageContext.request.contextPath}/customer/Saving.jsp" class="link">Tìm Hiểu Thêm <i
                                         class="ri-arrow-right-line align-middle"></i></a>
                             </div>
                         </div>
@@ -153,10 +153,10 @@
                                 <i class="ri-hand-coin-fill h3 mb-0"></i>
                             </div>
                             <div class="card-body p-0 mt-3">
-                                <a href="departments.html" class="title text-dark h5">Vay Tín Dụng</a>
+                                <a href="${pageContext.request.contextPath}/applyLoan" class="title text-dark h5">Vay Tín Dụng</a>
                                 <p class="text-muted mt-3">Giải pháp vay vốn nhanh chóng, thủ tục đơn giản, lãi suất ưu đãi.
                                     Đáp ứng nhu cầu tài chính cá nhân và kinh doanh một cách thuận tiện nhất.</p>
-                                <a href="departments.html" class="link">Tìm Hiểu Thêm <i
+                                <a href="${pageContext.request.contextPath}/applyLoan" class="link">Tìm Hiểu Thêm <i
                                         class="ri-arrow-right-line align-middle"></i></a>
                             </div>
                         </div>
@@ -168,10 +168,11 @@
                                 <i class="ri-user-add-fill h3 mb-0"></i>
                             </div>
                             <div class="card-body p-0 mt-3">
-                                <a href="departments.html" class="title text-dark h5">Tạo Tài Khoản</a>
-                                <p class="text-muted mt-3">Đăng ký tài khoản trực tuyến chỉ trong vài phút để trải nghiệm các dịch vụ tài chính hiện đại,
+                                <a href="${pageContext.request.contextPath}/OnlineSupport" class="title text-dark h5">Tạo Tài Khoản</a>
+                                <p class="text-muted mt-3">Đăng ký tài khoản trực tuyến chỉ trong vài phút làm việc với nhân viên hỗ trợ 
+                                    để trải nghiệm các dịch vụ tài chính hiện đại,
                                     an toàn và tiện lợi từ SmartBank.</p>
-                                <a href="departments.html" class="link">Tìm Hiểu Thêm <i
+                                <a href="${pageContext.request.contextPath}/OnlineSupport" class="link">Tìm Hiểu Thêm <i
                                         class="ri-arrow-right-line align-middle"></i></a>
                             </div>
                         </div>
@@ -183,10 +184,10 @@
                                 <i class="ri-bar-chart-fill h3 mb-0"></i>
                             </div>
                             <div class="card-body p-0 mt-3">
-                                <a href="departments.html" class="title text-dark h5">Đầu tư</a>
+                                <a  class="title text-dark h5">Đầu tư</a>
                                 <p class="text-muted mt-3">Tối ưu hóa lợi nhuận với các danh mục đầu tư đa dạng, phù hợp với mọi nhu cầu.
                                     Quản lý danh mục thông minh và nhận tư vấn chiến lược đầu tư từ SmartBank.</p>
-                                <a href="departments.html" class="link">Tìm Hiểu Thêm <i
+                                <a  class="link">Tìm Hiểu Thêm <i
                                         class="ri-arrow-right-line align-middle"></i></a>
                             </div>
                         </div>

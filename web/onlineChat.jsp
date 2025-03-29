@@ -372,12 +372,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
 
                 <!-- Menu điều hướng -->
                 <div class="nav-menu">
-                    <a href="home">về trang chủ</a>
-                    <a href="/rates">Tỷ giá</a>
-                    <a href="/forms">Biểu phí & Biểu mẫu</a>
-                    <a href="/interest">Lãi suất</a>
-                    <a href="/payment">Chứng thư bảo lãnh</a>
-                    <a href="/bills">Hóa đơn điện tử</a>
                 </div>
                 <div class="header-controls">
                     <c:choose>
