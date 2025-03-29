@@ -481,13 +481,13 @@ public class CeoDAO extends DBContext {
         return null;
     }
 
-    public void updateDepServiceStatusById(int id, String changeStatus) {
+    public void updateDepServiceStatusById(int id, String changeStatus, String reasonReject) {
         String sql = """
-                     UPDATE BankingSystem.dbo.DepService SET PendingStatus = ? WHERE Id = ?""";
-
+                     UPDATE BankingSystem.dbo.DepService SET PendingStatus = ?, ReasonReject = ? WHERE Id = ?""";
         try (PreparedStatement st = connection.prepareStatement(sql)) {
             st.setString(1, changeStatus);
-            st.setInt(2, id);
+            st.setString(2, reasonReject);
+            st.setInt(3, id);
             st.executeUpdate();
         } catch (Exception e) {
         }

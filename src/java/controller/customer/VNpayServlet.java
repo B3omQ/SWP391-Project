@@ -26,6 +26,7 @@ public class VNpayServlet extends HttpServlet {
     private static final String VNP_HASH_SECRET = "GN5MEE6Q6ZYG941UUB76FYAA786W6NAX";
     private static final String VNP_URL = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
 private static final String RETURN_URL = "http://localhost:8080/BankingSystem/VNpayReturn";
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -47,7 +48,7 @@ private static final String RETURN_URL = "http://localhost:8080/BankingSystem/VN
             request.getSession().setAttribute("vnpayAmount", amount);
 
             BigDecimal vnpayAmount = amount.multiply(BigDecimal.valueOf(100));
-            String orderId = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+            String orderId = "" + System.currentTimeMillis();
 
             Map<String, String> vnp_Params = new HashMap<>();
             vnp_Params.put("vnp_Version", "2.1.0");

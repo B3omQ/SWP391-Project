@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -124,7 +123,7 @@
                                                     <label class="form-label me-2 mb-0">Sắp xếp theo: </label>
                                                     <select class="form-control border-primary rounded-pill" name="sortBy" onchange="onChangeSubmit('sort')" id="sorBy">
                                                         <option value="DuringTime" ${currentSort == 'DuringTime' || empty currentSort ? 'selected' : ''}>Kì hạn</option>
-                                                        <option value="MinimumDep" ${currentSort == 'MinimumDep' ? 'selected' : ''}>Số tiền gửi vào nhỏ nhất</option>
+                                                        <option value="MinimumDep" ${currentSort == 'MinimumDep' ? 'selected' : ''}>Số tiền gửi tối thiểu</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -158,8 +157,8 @@
                                                     <tr>
                                                         <th>#</th>
                                                         <th>Tên</th>
-                                                        <th>Số tiền gửi vào thấp nhất</th>
-                                                        <th>Lãi suất rút sớm</th>
+                                                        <th>Số tiền gửi tối thiểu:</th>
+                                                        <th>Lãi suất gửi không kỳ hạn</th>
                                                         <th>Lãi suất gửi</th>
                                                         <th>Kì hạn</th> 
                                                         <!-- Action -->
@@ -180,17 +179,18 @@
                                                             <td>      
                                                                 <!-- Icon View Detail -->
                                                                 <a href="view-dep-option?depId=${dep.id}"
-                                                                   class="btn btn-icon btn-pills"
+                                                                   class="btn btn-icon btn-primary"
                                                                    >
                                                                     <i class="fas fa-eye"></i>
                                                                 </a>
                                                                 <c:if test="${currentStatus == 'Pending'}">
-                                                                    <a href="depositApproval?id=${dep.id}&changeStatus=Approved" class="btn btn-icon btn-pills btn-soft-success">
-                                                                        <i class="fas fa-check"></i>
-                                                                    </a>
-                                                                    <a href="depositApproval?id=${dep.id}&changeStatus=Denied" class="btn btn-icon btn-pills btn-danger">
-                                                                        <i class="fas fa-times"></i>
-                                                                    </a>
+                                                                    <!-- Nút Hành động thay cho 2 icon cũ -->
+                                                                    <button type="button" class="btn btn-icon btn-pills btn-primary" 
+                                                                            data-bs-toggle="modal" 
+                                                                            data-bs-target="#actionModal"
+                                                                            onclick="showActionModal('${dep.id}', '${dep.depServiceName}', '${dep.minimumDep}', '${dep.savingRate}', '${dep.duringTime}', '${dep.savingRateMinimum}')">
+                                                                        <i class="fas fa-cog"></i>
+                                                                    </button>
                                                                 </c:if>
                                                             </td>
                                                         </tr>
@@ -275,7 +275,42 @@
                             </div>
                         </div>
                     </div>
-                </div>                    
+                </div>        
+                <!-- Modal mới cho hành động -->
+                <div class="modal fade" id="actionModal" tabindex="-1" aria-labelledby="actionModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="actionModalLabel">Xử lý phương án tiết kiệm</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <form action="<%= request.getContextPath() %>/depositApproval" method="get">
+                                <div class="modal-body">
+                                    <input type="hidden" name="id" id="modalDepId">
+                                    <div class="row">
+                                        <p><strong>Tên:</strong> <span id="mDepName"></span></p>
+                                        <div class="col-md-6">
+                                            <p><strong>Lãi suất gửi không kỳ hạn: </strong> <span id="modalSavingRateMinimum"></span></p>
+                                            <p><strong>Số tiền gửi tối thiểu:</strong> <span id="modalMinDep"></span></p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p><strong>Lãi suất gửi:</strong> <span id="modalSavingRate"></span></p>
+                                            <p><strong>Kỳ hạn:</strong> <span id="modalDuringTime"></span></p>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3">
+                                        <label for="comment" class="form-label">Bình luận:</label>
+                                        <textarea class="form-control" id="comment" name="comment" rows="3" placeholder="Nhập bình luận của bạn"></textarea>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" name="changeStatus" value="Denied" class="btn btn-danger">Từ chối</button>
+                                    <button type="submit" name="changeStatus" value="Approved" class="btn btn-success">Phê duyệt</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
                 <!-- Footer Start -->
                 <jsp:include page="template/footer.jsp"/>
                 <!-- End -->
@@ -318,6 +353,18 @@
                                                        document.getElementById('modalDepName').textContent = name;
                                                        document.getElementById('modalDepDescription').textContent = description;
                                                    }
+        </script>
+        <!-- Script cập nhật -->
+        <script>
+            function showActionModal(id, name, minDep, savingRate, duringTime, savingRateMinimum) {
+                document.getElementById('modalDepId').value = id;
+                document.getElementById('mDepName').textContent = name;
+                document.getElementById('modalMinDep').textContent = minDep;
+                document.getElementById('modalSavingRate').textContent = savingRate;
+                document.getElementById('modalSavingRateMinimum').textContent = savingRateMinimum;
+                document.getElementById('modalDuringTime').textContent = duringTime;
+                document.getElementById('comment').value = ''; // Reset textarea
+            }
         </script>
     </body>
 </html>

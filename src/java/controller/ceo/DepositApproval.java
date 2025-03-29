@@ -102,7 +102,11 @@ public class DepositApproval extends HttpServlet {
         }
 
         if (id != null) {
-            ceoDAO.updateDepServiceStatusById(Integer.parseInt(id), changeStatus);
+            String comment = request.getParameter("comment");
+            if(changeStatus.equalsIgnoreCase("Approved")) {
+                comment = null;
+            }
+            ceoDAO.updateDepServiceStatusById(Integer.parseInt(id), changeStatus, comment);
         }
 
         if (status == null || status.trim().isEmpty()) {
