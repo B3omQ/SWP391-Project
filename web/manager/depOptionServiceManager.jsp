@@ -259,13 +259,14 @@
                                                     </c:if>
                                                     <div class="row align-items-center">
                                                         <div class="col-4 text-center" style="border-right: 2px solid rgba(0, 0, 0, 0.1); ">
-                                                            <a class="" style="font-size: 4rem; font-weight: bold; color: black">${dep.duringTime}</a>
+                                                            <p style="font-weight: bold; color: black">${dep.depServiceName}</p>
+                                                            <a class="" style="font-size: 4rem; font-weight: bold; color: black">${dep.duringTime}</a>                                                           
                                                             <p class="text-muted">tháng</p>
                                                         </div>
                                                         <div class="col-8" style="text-align: right">
                                                             <p><strong>Số tiền tối thiểu (VNĐ):</strong> <fmt:formatNumber value="${dep.minimumDep}" type="number" groupingUsed="true" /></p>
-                                                            <p><strong>Lãi suất thấp nhất:</strong> ${dep.savingRateMinimum}%</p>
-                                                            <p><strong>Lãi suất:</strong>${dep.savingRate}%</p>
+                                                            <p><strong>Lãi suất đáo hạn:</strong> ${dep.savingRateMinimum}% / năm</p>
+                                                            <p><strong>Lãi suất thường:</strong> ${dep.savingRate}% / năm</p>
                                                         </div>
                                                     </div>
                                                 </div>

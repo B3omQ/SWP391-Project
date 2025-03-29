@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en">
 
@@ -260,15 +261,14 @@
                                                     </c:if>
                                                     <div class="row align-items-center">
                                                         <div class="col-4 text-center" style="border-right: 2px solid rgba(0, 0, 0, 0.1); ">
+                                                            <p style="font-weight: bold; color: black">${loan.loanServiceName}</p>
                                                             <a class="" style="font-size: 4rem; font-weight: bold; color: black"> ${loan.duringTime}</a>
                                                             <p class="text-muted">tháng</p>
                                                         </div>
-                                                        <div class="col-8" style="text-align: right">
-                                                            <p><strong>Tên gói vay:</strong> ${loan.loanServiceName}</p>
-                                                            <p><strong>Số tiền tối thiểu (VNĐ):</strong> ${loan.minimumLoan}</p> 
-                                                            <p><strong>Số tiền tối đa (VNĐ):</strong> ${loan.maximumLoan}</p>
-                                                            <p><strong>Lãi suất trong kì hạn:</strong> ${loan.onTermRate}%</p>
-                                                            <p><strong>Lãi suất quá kì hạn:</strong> ${loan.penaltyRate}%</p> 
+                                                        <div class="col-8" style="text-align: right">                    
+                                                            <p><strong>Số tiền vay (VNĐ):</strong> <fmt:formatNumber value="${loan.minimumLoan}" type="number" groupingUsed="true" /> - <fmt:formatNumber value="${loan.maximumLoan}" type="number" groupingUsed="true" /></p>                                                             
+                                                            <p><strong>Lãi suất 6 tháng đầu:</strong> ${loan.onTermRate}% / năm</p>
+                                                            <p><strong>Lãi suất những tháng sau:</strong> ${loan.afterTermRate}% / năm</p> 
                                                         </div>
                                                     </div>
                                                 </div>

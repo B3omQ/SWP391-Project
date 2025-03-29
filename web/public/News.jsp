@@ -1,6 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ include file="/template/header.jsp" %>
 
 <!DOCTYPE html>
@@ -11,6 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/assets/css/style.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <style>
         body {
             display: flex;
@@ -20,7 +22,7 @@
         }
         .content-wrapper {
             flex: 1 0 auto;
-            padding-top: 60px;
+            padding-top: 120px; /* Tăng padding-top để tạo khoảng cách lớn hơn giữa header và nội dung */
             padding-bottom: 60px;
         }
         .news-container {
@@ -103,6 +105,9 @@
         }
 
         @media (max-width: 768px) {
+            .content-wrapper {
+                padding-top: 100px; /* Giảm padding-top trên thiết bị di động để không quá trống */
+            }
             .news-item {
                 flex-direction: column;
                 align-items: flex-start;
@@ -227,7 +232,5 @@
     <%@ include file="/template/footer.jsp" %>
 
     <script src="${pageContext.request.contextPath}/assets/js/bootstrap.bundle.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-    <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 </body>
 </html>

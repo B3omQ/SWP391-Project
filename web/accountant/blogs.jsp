@@ -39,11 +39,13 @@
                         </div>
                     </div>
 
-                    <c:if test="${not empty message}">
-                        <div class="alert alert-success" id="successMessage">${message}</div>
+                    <c:if test="${not empty sessionScope.message}">
+                        <div class="alert alert-success" id="successMessage">${sessionScope.message}</div>
+                        <c:remove var="message" scope="session"/>
                     </c:if>
-                    <c:if test="${not empty error}">
-                        <div class="alert alert-danger" id="errorMessage">${error}</div>
+                    <c:if test="${not empty sessionScope.error}">
+                        <div class="alert alert-danger" id="errorMessage">${sessionScope.error}</div>
+                        <c:remove var="error" scope="session"/>
                     </c:if>
 
                     <div class="row">
@@ -137,7 +139,6 @@
                                     </table>
                                 </div>
 
-                                <!-- Phân trang -->
                                 <nav aria-label="Page navigation">
                                     <ul class="pagination justify-content-center mt-4">
                                         <c:if test="${currentPage > 1}">
@@ -170,7 +171,6 @@
         </main>
     </div>
 
-    <!-- Add Blog Modal -->
     <div class="modal fade" id="addBlogModal" tabindex="-1" aria-labelledby="addBlogModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -211,7 +211,6 @@
         </div>
     </div>
 
-    <!-- Edit Blog Modal -->
     <div class="modal fade" id="editBlogModal" tabindex="-1" aria-labelledby="editBlogModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content" id="editBlogModalContent">
@@ -243,10 +242,10 @@
             });
         });
 
-        // Gửi form khi nhấn "Lưu thay đổi" (nếu dùng cách khác)
-        $('#editBlogModal').on('click', '#saveEditBlog', function() {
-            $('#editBlogForm').submit();
-        });
+        setTimeout(function() {
+            $('#successMessage').fadeOut('slow');
+            $('#errorMessage').fadeOut('slow');
+        }, 5000);
     });
     </script>
 </body>

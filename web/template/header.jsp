@@ -9,7 +9,7 @@
 <%@ page import="model.Customer" %>
 <%@ page import="model.Staff" %>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="utf-8" />
     <title>SmartBanking</title>
@@ -198,13 +198,14 @@
                                 <a class="dropdown-item d-flex align-items-center text-dark" href="">
                                     <img src="${account.image}" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
                                     <div class="flex-1 ms-2">
-                                        <span class="d-block mb-1">${sessionScope.account.username}</span>
+                                        <span class="d-block mb-1">${sessionScope.account.firstname} ${sessionScope.account.lastname}</span>
+                                        <small class="text-muted">Khách hàng</small>
                                     </div>
                                 </a>
                                 <a class="dropdown-item text-dark" href="customer/Customer.jsp"><span class="mb-0 d-inline-block me-1"><i class="uil uil-dashboard align-middle h6"></i></span> Dashboard</a>
                                 <a class="dropdown-item text-dark" href="customer/account-profile.jsp"><span class="mb-0 d-inline-block me-1"><i class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
                                 <div class="dropdown-divider border-top"></div>
-                                <a class="dropdown-item text-dark" href="${pageContext.request.contextPath}/login.jsp"><span class="mb-0 d-inline-block me-1"><i class="uil uil-sign-out-alt align-middle h6"></i></span> Logout</a>
+                                <a class="dropdown-item text-dark" href="${pageContext.request.contextPath}/LogoutServlet"><span class="mb-0 d-inline-block me-1"><i class="uil uil-sign-out-alt align-middle h6"></i></span> Đăng xuất</a>
                             </div>
                         </div>
                     </li>
@@ -219,23 +220,24 @@
                                 <a class="dropdown-item d-flex align-items-center text-dark" href="">
                                     <img src="${staff.image}" class="avatar avatar-md-sm rounded-circle border shadow" alt="">
                                     <div class="flex-1 ms-2">
-                                        <span class="d-block mb-1">${sessionScope.staff.username}</span>
+                                        <span class="d-block mb-1">${sessionScope.staff.firstname} ${sessionScope.staff.lastname}</span>
+                                        <small class="text-muted">Nhân viên</small>
                                     </div>
                                 </a>
                                 <c:if test="${sessionScope.staff.roleId.id == 1}">
-                                    <a class="dropdown-item text-dark" href="./accountant/home.jsp"><span class="mb-0 d-inline-block me-1"><i class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
+                                    <a class="dropdown-item text-dark" href="./accountant/home.jsp"><span class="mb-0 d-inline-block me-1"><i class="uil uil-setting align-middle h6"></i></span> Cài đặt hồ sơ</a>
                                 </c:if>
                                 <c:if test="${sessionScope.staff.roleId.id == 2}">
-                                    <a class="dropdown-item text-dark" href="./consultant-customer"><span class="mb-0 d-inline-block me-1"><i class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
+                                    <a class="dropdown-item text-dark" href="./consultant-customer"><span class="mb-0 d-inline-block me-1"><i class="uil uil-setting align-middle h6"></i></span> Cài đặt hồ sơ</a>
                                 </c:if>
                                 <c:if test="${sessionScope.staff.roleId.id == 3}">
-                                    <a class="dropdown-item text-dark" href="./profile-manager"><span class="mb-0 d-inline-block me-1"><i class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
+                                    <a class="dropdown-item text-dark" href="./profile-manager"><span class="mb-0 d-inline-block me-1"><i class="uil uil-setting align-middle h6"></i></span> Cài đặt hồ sơ</a>
                                 </c:if>
                                 <c:if test="${sessionScope.staff.roleId.id == 4}">
-                                    <a class="dropdown-item text-dark" href="./Admin.jsp"><span class="mb-0 d-inline-block me-1"><i class="uil uil-setting align-middle h6"></i></span> Profile Settings</a>
+                                    <a class="dropdown-item text-dark" href="./Admin.jsp"><span class="mb-0 d-inline-block me-1"><i class="uil uil-setting align-middle h6"></i></span> Cài đặt hồ sơ</a>
                                 </c:if>
                                 <div class="dropdown-divider border-top"></div>
-                                <a class="dropdown-item text-dark" href="${pageContext.request.contextPath}/AuthServlet?action=logout"><span class="mb-0 d-inline-block me-1"><i class="uil uil-sign-out-alt align-middle h6"></i></span> Logout</a>
+                                <a class="dropdown-item text-dark" href="${pageContext.request.contextPath}/AuthServlet?action=logout"><span class="mb-0 d-inline-block me-1"><i class="uil uil-sign-out-alt align-middle h6"></i></span> Đăng xuất</a>
                             </div>
                         </div>
                     </li>
@@ -283,7 +285,7 @@
 
                     <li class="has-submenu parent-menu-item">
                         <a href="${pageContext.request.contextPath}/NewsServlet">Thông tin mới</a><span class="menu-arrow"></span>
-                                            </li>
+                    </li>
 
                     <li class="has-submenu parent-parent-menu-item">
                         <a href="${pageContext.request.contextPath}/public/News.jsp">Các công cụ và tiện ích</a><span class="menu-arrow"></span>
@@ -321,3 +323,4 @@
         </div><!--end container-->
     </header><!--end header-->
 </body>
+</html>

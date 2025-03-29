@@ -13,9 +13,7 @@
                     <div class="col">
                         <div class="text-sm-start text-center">
                             <p class="mb-0 text-muted">
-                                <script>document.write(new Date().getFullYear())</script> © Doctris. Design with <i
-                                    class="mdi mdi-heart text-danger"></i> by <a href="../../../index.html"
-                                    target="_blank" class="text-reset">Shreethemes</a>.
+                                <script>document.write(new Date().getFullYear())</script> © Smartbanking <i class="mdi mdi-heart text-danger"></i> <a href="${pageContext.request.contextPath}/Customer.jsp" target="_blank" class="text-reset">Your choice</a>.
                             </p>
                         </div>
                     </div><!--end col-->

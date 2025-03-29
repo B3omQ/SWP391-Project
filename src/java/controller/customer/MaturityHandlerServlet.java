@@ -38,15 +38,15 @@ public class MaturityHandlerServlet {
         BigDecimal interest = InterestCalculator.calculateInterest(principal, savingRate.doubleValue(), termMonths);
         BigDecimal totalAmount = principal.add(interest);
 
-        System.out.println("✅ Principal của deposit " + deposit.getId() + ": " + principal);
-        System.out.println("✅ SavingRate: " + savingRate);
-        System.out.println("✅ TermMonths: " + termMonths);
-        System.out.println("✅ Interest tính được: " + interest);
-        System.out.println("✅ TotalAmount: " + totalAmount);
+        System.out.println(" Principal của deposit " + deposit.getId() + ": " + principal);
+        System.out.println(" SavingRate: " + savingRate);
+        System.out.println(" TermMonths: " + termMonths);
+        System.out.println(" Interest tính được: " + interest);
+        System.out.println(" TotalAmount: " + totalAmount);
 
         String maturityAction = deposit.getMaturityAction();
         if (maturityAction == null) {
-            System.out.println("⚠️ MaturityAction là null, gán mặc định 'withdrawAll'");
+            System.out.println(" MaturityAction là null, gán mặc định 'withdrawAll'");
             maturityAction = "withdrawAll";
         }
 
@@ -70,9 +70,9 @@ public class MaturityHandlerServlet {
                 BigDecimal newBalanceWithdrawAll = currentBalance.add(totalAmount);
                 boolean updated = customerDAO.updateWallet(customer.getId(), newBalanceWithdrawAll);
                 if (!updated) {
-                    System.out.println("❌ Lỗi: Không thể cập nhật ví cho customer " + customer.getId());
+                    System.out.println("Lỗi: Không thể cập nhật ví cho customer " + customer.getId());
                 } else {
-                    System.out.println("✅ Đã cộng " + totalAmount + " (gốc + lãi) vào ví, số dư mới: " + newBalanceWithdrawAll);
+                    System.out.println("Đã cộng " + totalAmount + " (gốc + lãi) vào ví, số dư mới: " + newBalanceWithdrawAll);
                 }
                 depHistoryDAO.addDepHistory(deposit.getId(), "Rút toàn bộ", principal, interest, totalAmount, customer.getId());
                 break;
