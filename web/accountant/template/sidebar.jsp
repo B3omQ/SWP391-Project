@@ -9,17 +9,9 @@
         </div>
 
         <ul class="sidebar-menu pt-3">        
-            <li class="sidebar-dropdown">
-                <a href="javascript:void(0)"><i class="uil uil-file me-2 d-inline-block"></i>Deposite Service</a>
-                <div class="sidebar-submenu">
-                    <ul>
-                        <li><a href="dep-option-service">View option</a></li>
-                        <li><a href="add-saving-option">Create option</a></li>
-                        <!-- Thêm liên kết danh sách phiếu yêu cầu -->
-<li><a href="<%= request.getContextPath() %>/DirectDepositManageServlet"><i class="uil uil-file me-2 d-inline-block"></i>Quản lý Phiếu Nạp Tiền</a></li>
+            <li>
+                <a href="<%= request.getContextPath() %>/DirectDepositManageServlet"><i class="uil uil-file me-2 d-inline-block"></i>Quản lí phiếu nạp tiền</a>
 
-                    </ul>
-                </div>
             </li>
             <li><a href="<%= request.getContextPath() %>/Disbursement"><i class="uil uil-file me-2 d-inline-block"></i>Giải Ngân</a></li>
             <li><a href="<%= request.getContextPath() %>/BlogServlet"><i class="uil uil-blogger me-2 d-inline-block"></i>Blogs</a></li>
