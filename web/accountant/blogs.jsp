@@ -13,6 +13,9 @@
     <link href="<%= request.getContextPath() %>/assets/css/materialdesignicons.min.css" rel="stylesheet" type="text/css" />
     <link href="https://unicons.iconscout.com/release/v3.0.6/css/line.css" rel="stylesheet">
     <link href="<%= request.getContextPath() %>/assets/css/style.min.css" rel="stylesheet" type="text/css" />
+    <link href="<%= request.getContextPath() %>/assets/css/tiny-slider.css" rel="stylesheet" /> <!-- Giữ nguyên theo code gốc -->
+    <!-- Thêm TinyMCE -->
+    <script src="<%= request.getContextPath() %>/assets/tinymce/tinymce.min.js"></script>
     <style>
         body { display: flex; flex-direction: column; min-height: 100vh; }
         .page-content { flex: 1 0 auto; }
@@ -224,7 +227,8 @@
     <script src="<%= request.getContextPath() %>/assets/js/simplebar.min.js"></script>
     <script src="<%= request.getContextPath() %>/assets/js/feather.min.js"></script>
     <script src="<%= request.getContextPath() %>/assets/js/app.js"></script>
- 
+    <!-- Thêm file cấu hình TinyMCE -->
+    <script src="<%= request.getContextPath() %>/resources/script/tinymceConfig.js"></script>
     <script>
     $(document).ready(function() {
         $('.edit-blog').on('click', function() {
@@ -235,12 +239,20 @@
                 success: function(response) {
                     $('#editBlogModalContent').html(response);
                     $('#editBlogModal').modal('show');
+                    if (typeof initTinyMCE === 'function') {
+                        initTinyMCE('#editBlogDescription');
+                    }
                 },
                 error: function() {
                     alert('Lỗi khi tải dữ liệu blog');
                 }
             });
         });
+
+        // Khởi tạo TinyMCE cho modal thêm blog
+        if (typeof initTinyMCE === 'function') {
+            initTinyMCE('#addBlogDescription');
+        }
 
         setTimeout(function() {
             $('#successMessage').fadeOut('slow');
