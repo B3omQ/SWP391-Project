@@ -77,7 +77,7 @@ public class DirectDepositManageServlet extends HttpServlet {
             System.err.println("Error in doGet: " + e.getMessage());
             e.printStackTrace();
             session.setAttribute("error", "Đã xảy ra lỗi: " + e.getMessage());
-            response.sendRedirect(request.getContextPath() + "/login.jsp");
+            response.sendRedirect(request.getContextPath() + "auth/template/login.jsp");
         }
     }
 
@@ -87,7 +87,7 @@ public class DirectDepositManageServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("staff") == null) {
             session.setAttribute("message", "Vui lòng đăng nhập với vai trò nhân viên!");
-            response.sendRedirect(request.getContextPath() + "/login.jsp");
+            response.sendRedirect(request.getContextPath() + "auth/template/login.jsp");
             return;
         }
 

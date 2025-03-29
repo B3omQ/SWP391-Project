@@ -112,7 +112,7 @@
                         <a class="dropdown-item text-dark" href="Customer.jsp"><span class="mb-0 d-inline-block me-1"><i class="uil uil-dashboard align-middle h6"></i></span> Bảng điều khiển</a>
                         <a class="dropdown-item text-dark" href="account-profile.jsp"><span class="mb-0 d-inline-block me-1"><i class="uil uil-setting align-middle h6"></i></span> Cài đặt hồ sơ</a>
                         <div class="dropdown-divider border-top"></div>
-                        <a class="dropdown-item text-dark" href="<%= request.getContextPath() %>/AuthServlet?action=logout">
+                        <a class="dropdown-item text-dark" href="<%= request.getContextPath() %>/LogoutServlet">
                             <span class="mb-0 d-inline-block me-1"><i class="uil uil-sign-out-alt align-middle h6"></i></span> Đăng xuất
                         </a>
                     </div>
@@ -124,14 +124,7 @@
         <div id="navigation">
             <!-- Navigation Menu-->
             <ul class="navigation-menu nav-left">
-                <li class="has-submenu parent-menu-item">
-                    <a href="javascript:void(0)">Trang chủ</a><span class="menu-arrow"></span>
-                    <ul class="submenu">
-                        <li><a href="index.jsp" class="sub-menu-item">Trang chủ 1</a></li>
-                        <li><a href="index-two.html" class="sub-menu-item">Trang chủ 2</a></li>
-                        <li><a href="index-three.html" class="sub-menu-item">Trang chủ 3</a></li>
-                    </ul>
-                </li>
+                
             </ul><!--end navigation menu-->
         </div><!--end navigation-->
     </div><!--end container-->

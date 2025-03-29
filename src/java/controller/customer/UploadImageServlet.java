@@ -1,6 +1,5 @@
 package controller.customer;
 
-import dal.ConsultantDAO;
 import dal.CustomerDAO;
 import dal.StaffDAO;
 import model.Customer;
@@ -16,10 +15,6 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import java.io.File;
 
-/**
- *
- * @author emkob
- */
 @MultipartConfig(maxFileSize = 1024 * 1024 * 5) // Giới hạn file 5MB
 public class UploadImageServlet extends HttpServlet {
     private static final String UPLOAD_DIRECTORY = "assets/images";
@@ -53,13 +48,18 @@ public class UploadImageServlet extends HttpServlet {
             return;
         }
 
-        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-        String fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
+        // Lấy tên file gốc và thêm mili giây để tránh trùng
+        String originalFileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+        String fileExtension = originalFileName.substring(originalFileName.lastIndexOf(".") + 1).toLowerCase();
         if (!fileExtension.equals("jpg") && !fileExtension.equals("png")) {
             session.setAttribute("error2", "Loại file không hợp lệ. Chỉ chấp nhận file JPG và PNG.");
             response.sendRedirect(request.getContextPath() + targetPage);
             return;
         }
+
+        // Tạo tên file mới với mili giây
+        String baseFileName = originalFileName.substring(0, originalFileName.lastIndexOf("."));
+        String uniqueFileName = baseFileName + "_" + System.currentTimeMillis() + "." + fileExtension; // Ví dụ: user_1634567890123.jpg
 
         String uploadPath = getServletContext().getRealPath("/") + UPLOAD_DIRECTORY;
         File uploadDir = new File(uploadPath);
@@ -67,6 +67,7 @@ public class UploadImageServlet extends HttpServlet {
             uploadDir.mkdirs();
         }
 
+        // Xóa ảnh cũ nếu có
         if (account != null) {
             Customer customer = (Customer) account;
             String oldImage = customer.getImage();
@@ -87,25 +88,27 @@ public class UploadImageServlet extends HttpServlet {
             }
         }
 
-        String filePath = uploadPath + File.separator + fileName;
+        // Lưu file với tên mới
+        String filePath = uploadPath + File.separator + uniqueFileName;
         filePart.write(filePath);
 
-        String fullImagePath = UPLOAD_DIRECTORY + "/" + fileName;
+        // Đường dẫn tương đối lưu vào DB
+        String fullImagePath = UPLOAD_DIRECTORY + "/" + uniqueFileName; // Ví dụ: "assets/images/user_1634567890123.jpg"
 
         if (account != null) {
             Customer customer = (Customer) account;
-            customer.setImage(fullImagePath); 
+            customer.setImage(fullImagePath);
             CustomerDAO customerDAO = new CustomerDAO();
-            customerDAO.updateCustomerImage(customer.getId(), fullImagePath); 
+            customerDAO.updateCustomerImage(customer.getId(), fullImagePath);
 
             session.setAttribute("account", customer);
             session.setAttribute("success2", "Cập nhật ảnh thành công.");
             response.sendRedirect(request.getContextPath() + targetPage);
         } else if (staff != null) {
             Staff staffMember = (Staff) staff;
-            staffMember.setImage(fullImagePath); // Lưu đường dẫn đầy đủ
+            staffMember.setImage(fullImagePath);
             StaffDAO staffDAO = new StaffDAO();
-            staffDAO.updateStaffImage(staffMember.getId(), fullImagePath); // Cập nhật đường dẫn đầy đủ vào DB
+            staffDAO.updateStaffImage(staffMember.getId(), fullImagePath);
 
             session.setAttribute("staff", staffMember);
             session.setAttribute("success2", "Cập nhật ảnh thành công.");

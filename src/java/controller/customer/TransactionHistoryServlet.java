@@ -30,7 +30,7 @@ public class TransactionHistoryServlet extends HttpServlet {
         try {
             Customer customer = (Customer) request.getSession().getAttribute("account");
             if (customer == null) {
-                response.sendRedirect(request.getContextPath() + "/login.jsp");
+                response.sendRedirect(request.getContextPath() + "/auth/template/login.jsp");
                 return;
             }
 
