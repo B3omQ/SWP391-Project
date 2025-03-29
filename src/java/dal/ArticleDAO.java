@@ -343,4 +343,22 @@ public class ArticleDAO extends DBContext {
         }
         return 0;
     }
+    
+    public List<Article> getEarliestArticles() {
+    List<Article> articles = new ArrayList<>();
+   String sql = "SELECT TOP 3 Id, Title, Description, Category, PublishDate, AuthorId, ImageUrl, CreatedAt, UpdatedAt " +
+             "FROM Articles ORDER BY PublishDate ASC";
+
+    try (PreparedStatement ps = connection.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+        while (rs.next()) {
+            articles.add(mapResultSetToArticle(rs));
+        }
+        System.out.println("Found " + articles.size() + " earliest articles.");
+    } catch (SQLException e) {
+        System.err.println("SQL Error in getEarliestArticles: " + e.getMessage());
+        e.printStackTrace();
+    }
+    return articles;
+}
 }

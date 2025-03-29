@@ -4,6 +4,7 @@
  */
 package controller;
 
+import dal.ArticleDAO;
 import dal.CustomerReviewDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,6 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
+import model.Article;
 import model.Customer;
 import model.CustomerReview;
 import model.Staff;
@@ -39,9 +41,12 @@ public class HomeServlet extends HttpServlet {
         Customer customer = (Customer) session.getAttribute("customer");
         Staff staff = (Staff) session.getAttribute("staff");
         CustomerReviewDAO crdao = new CustomerReviewDAO();
+        ArticleDAO adao = new ArticleDAO();
         try {
             List<CustomerReview> rlist = crdao.getTop5ReviewsByRate(5);
+            List<Article> alist = adao.getEarliestArticles();
             request.setAttribute("rlist", rlist);
+            request.setAttribute("alist", alist);
             System.out.println("Servlet rlist size: " + rlist.size());
 
         } catch (Exception ex) {
@@ -50,7 +55,6 @@ public class HomeServlet extends HttpServlet {
 
         request.getRequestDispatcher("home.jsp").forward(request, response);
     }
-    
     
 
     /**
