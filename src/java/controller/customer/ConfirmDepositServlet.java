@@ -115,7 +115,7 @@ public class ConfirmDepositServlet extends HttpServlet {
             session.setAttribute("account", updatedAccount);
 
             session.setAttribute("effectiveDate", effectiveDate);
-            session.setAttribute("success", "Gửi tiết kiệm thành công!");
+            session.setAttribute("success5", "Gửi tiết kiệm thành công!");
             session.setAttribute("newWalletBalance", newBalance);
             session.setAttribute("depositAmount", depositAmount);
             session.setAttribute("selectedTerm", selectedTerm);
